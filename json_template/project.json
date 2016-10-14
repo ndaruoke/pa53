@@ -1,0 +1,105 @@
+[
+    {
+        "name": "id",
+        "dbType": "increments",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false,
+        "fillable": false,
+        "primary": true,
+        "inForm": false,
+        "inIndex": false
+    },
+    {
+        "name": "project_name",
+        "dbType": "string",
+        "htmlType": "text",
+        "validations": "required",
+        "searchable": true,
+		"fillable": true,
+		"inForm": true,
+        "inIndex": true
+    },
+	{
+        "name": "tunjangan_list",
+        "dbType": "string",
+        "htmlType": "text",
+        "validations": "required",
+        "searchable": true,
+		"fillable": true,
+		"inForm": true,
+        "inIndex": true
+    },
+	{
+        "name": "iwo",
+        "dbType": "string",
+        "htmlType": "text",
+        "validations": "required",
+        "searchable": true,
+		"fillable": true,
+		"inForm": true,
+        "inIndex": true
+    },
+    {
+        "name": "code",
+        "dbType": "integer",
+        "htmlType": "text",
+        "validations": "required",
+        "searchable": true,
+		"fillable": true,
+		"inForm": true,
+        "inIndex": true
+    },
+    {
+        "name": "claimable",
+        "dbType": "integer",
+        "htmlType": "text",
+        "validations": "required",
+        "searchable": true,
+		"fillable": true,
+		"inForm": true,
+        "inIndex": true
+    },
+    {
+        "name": "department_id",
+        "dbType": "integer",
+        "htmlType": "text",
+        "validations": "required",
+        "searchable": true,
+		"fillable": true,
+		"inForm": true,
+        "inIndex": true
+    },
+    {
+        "name": "pm_user_id",
+        "dbType": "integer",
+        "htmlType": "text",
+        "validations": "required",
+        "searchable": true,
+		"fillable": true,
+		"inForm": true,
+        "inIndex": true
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true,
+        "fillable": false,
+        "primary": false,
+        "inForm": false,
+        "inIndex": false
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true,
+        "fillable": false,
+        "primary": false,
+        "inForm": false,
+        "inIndex": false
+    }
+]
