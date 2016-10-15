@@ -17,7 +17,7 @@
     @yield('css')
 </head>
 
-<body class="skin-blue sidebar-mini">
+<body class="skin-yellow sidebar-mini">
 @if (!Auth::guest())
     <div class="wrapper">
         <!-- Main Header -->
@@ -25,7 +25,7 @@
 
             <!-- Logo -->
             <a href="#" class="logo">
-                <b>InfyOm</b>
+                <b>PA Online</b>
             </a>
 
             <!-- Header Navbar -->
@@ -42,16 +42,23 @@
                             <!-- Menu Toggle Button -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <!-- The user image in the navbar-->
-                                <img src="http://infyom.com/images/logo/blue_logo_150x150.jpg"
-                                     class="user-image" alt="User Image"/>
+                                @if(!empty(Auth::user()->image))
+                                    {{ Html::image('profilepics/'.Auth::user()->image, 'User Image', array('class' => 'img-circle', 'width' => '20pc')) }}
+                                @else
+                                    <i class="img-circle icon ion-person" style="font-size: 15px; color: antiquewhite"></i>
+                            @endif
                                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                 <span class="hidden-xs">{!! Auth::user()->name !!}</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- The user image in the menu -->
                                 <li class="user-header">
-                                    <img src="http://infyom.com/images/logo/blue_logo_150x150.jpg"
-                                         class="img-circle" alt="User Image"/>
+                                    @if(!empty(Auth::user()->image))
+                                        {{ Html::image('profilepics/'.Auth::user()->image, 'User Image', array('class' => 'img-circle')) }}
+                                    @else
+                                        <i class="img-circle icon ion-person" style="font-size: 55px; color: antiquewhite"></i>
+                                    @endif
+
                                     <p>
                                         {!! Auth::user()->name !!}
                                         <small>Member since {!! Auth::user()->created_at->format('M. Y') !!}</small>

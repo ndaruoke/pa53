@@ -11,6 +11,7 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\Role;
+use Intervention\Image\Facades\Image;
 
 class UserController extends AppBaseController
 {
@@ -120,6 +121,20 @@ class UserController extends AppBaseController
 
             return redirect(route('users.index'));
         }
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename  = time() . '.' . $image->getClientOriginalExtension();
+
+            $path = public_path('profilepics/' . $filename);
+
+            //$image->move($path, $filename);
+
+            Image::make($image->getRealPath())->resize(200, 200)->save($path);
+            $user->image = $filename;
+            $user->save();
+        }
+
 
         $user = $this->userRepository->update($request->all(), $id);
 

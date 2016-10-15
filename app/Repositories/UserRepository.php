@@ -20,6 +20,7 @@ class UserRepository extends BaseRepository
         'name',
         'role',
         'remember_token',
+        'image',
         'created_at',
         'updated_at'
     ];

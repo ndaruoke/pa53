@@ -185,7 +185,10 @@ return [
          * Swagger
          */
         Jlapp\Swaggervel\SwaggervelServiceProvider::class,
-
+        /**
+         * Image Intervention
+         */
+        Intervention\Image\ImageServiceProvider::class,
 
     ],
 
@@ -237,6 +240,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Flash' => Laracasts\Flash\Flash::class,
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

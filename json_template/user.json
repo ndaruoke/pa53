@@ -77,6 +77,16 @@
 		"inIndex": true
 	},
 	{
+		"name": "image",
+		"dbType": "string",
+		"htmlType": "file",
+		"validations": "",
+		"searchable": true,
+		"fillable": true,
+		"inForm": true,
+		"inIndex": true
+	},
+	{
 		"name": "password",
 		"dbType": "string",
 		"htmlType": "password",
