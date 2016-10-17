@@ -54,6 +54,10 @@ class UserController extends AppBaseController
      */
     public function store(CreateUserRequest $request)
     {
+        if (!empty($request['password'])) {
+            $request['password'] = bcrypt($request['password']);
+        }
+        
         $input = $request->all();
 
         $user = $this->userRepository->create($input);
@@ -128,13 +132,14 @@ class UserController extends AppBaseController
 
             $path = public_path('profilepics/' . $filename);
 
-            //$image->move($path, $filename);
-
             Image::make($image->getRealPath())->resize(200, 200)->save($path);
             $user->image = $filename;
             $user->save();
         }
 
+        if (!empty($request['password'])) {
+            $request['password'] = bcrypt($request['password']);
+        }
 
         $user = $this->userRepository->update($request->all(), $id);
 
