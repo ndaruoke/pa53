@@ -54,3 +54,11 @@
     <a href="{!! route('tunjanganRoles.index') !!}"><i class="fa fa-edit"></i><span>Tunjangan Role</span></a>
 </li>
 
+<li class="{{ Request::is('accessModules*') ? 'active' : '' }}">
+    <a href="{!! route('accessModules.index') !!}"><i class="fa fa-edit"></i><span>AccessModules</span></a>
+</li>
+
+<li class="{{ Request::is('roleAccesses*') ? 'active' : '' }}">
+    <a href="{!! route('roleAccesses.index') !!}"><i class="fa fa-edit"></i><span>RoleAccesses</span></a>
+</li>
+
