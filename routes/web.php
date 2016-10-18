@@ -47,3 +47,5 @@ Route::resource('tunjangans', 'TunjanganController');
 Route::resource('tunjanganProjects', 'TunjanganProjectController');
 
 Route::resource('tunjanganRoles', 'TunjanganRoleController');
+
+Route::resource('positions', 'PositionController');

@@ -57,7 +57,7 @@ class UserController extends AppBaseController
         if (!empty($request['password'])) {
             $request['password'] = bcrypt($request['password']);
         }
-        
+
         $input = $request->all();
 
         $user = $this->userRepository->create($input);

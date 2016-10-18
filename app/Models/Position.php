@@ -8,8 +8,8 @@ use OwenIt\Auditing\Auditable;
 
 /**
  * @SWG\Definition(
- *      definition="TunjanganProject",
- *      required={"project_id"},
+ *      definition="Position",
+ *      required={"name", "description", "hierarchy", "status"},
  *      @SWG\Property(
  *          property="id",
  *          description="id",
@@ -17,8 +17,24 @@ use OwenIt\Auditing\Auditable;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="project_id",
- *          description="project_id",
+ *          property="name",
+ *          description="name",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="description",
+ *          description="description",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="hierarchy",
+ *          description="hierarchy",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
+ *          property="status",
+ *          description="status",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -36,19 +52,22 @@ use OwenIt\Auditing\Auditable;
  *      )
  * )
  */
-class TunjanganProject extends Model
+class Position extends Model
 {
     use Auditable;
     use SoftDeletes;
 
-    public $table = 'tunjangan_projects';
+    public $table = 'positions';
     
 
     protected $dates = ['deleted_at'];
 
 
     public $fillable = [
-        'project_id'
+        'name',
+        'description',
+        'hierarchy',
+        'status'
     ];
 
     /**
@@ -57,7 +76,10 @@ class TunjanganProject extends Model
      * @var array
      */
     protected $casts = [
-        'project_id' => 'integer'
+        'name' => 'string',
+        'description' => 'string',
+        'hierarchy' => 'integer',
+        'status' => 'integer'
     ];
 
     /**
@@ -66,7 +88,10 @@ class TunjanganProject extends Model
      * @var array
      */
     public static $rules = [
-        'project_id' => 'required'
+        'name' => 'required',
+        'description' => 'required',
+        'hierarchy' => 'required',
+        'status' => 'required'
     ];
 
     
