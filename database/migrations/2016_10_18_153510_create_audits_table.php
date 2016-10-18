@@ -21,7 +21,8 @@ class CreateAuditsTable extends Migration
             $table->string('user_id')->nullable();
             $table->string('route')->nullable();
             $table->ipAddress('ip_address', 45)->nullable();
-            $table->timestamp('created_at');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
