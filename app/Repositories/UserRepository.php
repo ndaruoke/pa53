@@ -19,6 +19,8 @@ class UserRepository extends BaseRepository
         'cabang',
         'name',
         'role',
+        'department',
+        'position',
         'remember_token',
         'image',
         'created_at',

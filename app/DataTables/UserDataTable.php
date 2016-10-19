@@ -73,13 +73,17 @@ class UserDataTable extends DataTable
     {
         return [
             'nik' => ['name' => 'nik', 'data' => 'nik'],
+            /**
             'email' => ['name' => 'email', 'data' => 'email'],
             'nama_rekening' => ['name' => 'nama_rekening', 'data' => 'nama_rekening'],
             'rekening' => ['name' => 'rekening', 'data' => 'rekening'],
             'bank' => ['name' => 'bank', 'data' => 'bank'],
             'cabang' => ['name' => 'cabang', 'data' => 'cabang'],
+             * **/
             'name' => ['name' => 'name', 'data' => 'name'],
-            'role' => ['name' => 'role', 'data' => 'role']
+            'role' => ['name' => 'role', 'data' => 'role'],
+            'department' => ['name' => 'department', 'data' => 'department'],
+            'position' => ['name' => 'position', 'data' => 'position']
         ];
     }
 

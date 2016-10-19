@@ -25,7 +25,7 @@
 <!-- Status Field -->
 <div class="form-group">
     {!! Form::label('status', 'Status:') !!}
-    <p>{!! $leave->status !!}</p>
+    <p>{!! $leave->status == 1 ? "Active" : "Inactive" !!}</p>
 </div>
 
 <!-- Created At Field -->

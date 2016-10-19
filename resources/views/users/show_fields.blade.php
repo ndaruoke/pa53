@@ -58,6 +58,18 @@
     <p>{!! $user->role !!}</p>
 </div>
 
+<!-- Position Field -->
+<div class="form-group">
+    {!! Form::label('position', 'Position:') !!}
+    <p>{!! $user->position !!}</p>
+</div>
+
+<!-- Department Field -->
+<div class="form-group">
+    {!! Form::label('department', 'Department:') !!}
+    <p>{!! $user->department !!}</p>
+</div>
+
 <!-- Remember Token Field -->
 <div class="form-group">
     {!! Form::label('remember_token', 'Remember Token:') !!}
