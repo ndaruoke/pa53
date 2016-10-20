@@ -51,3 +51,7 @@ Route::resource('tunjanganRoles', 'TunjanganRoleController');
 Route::resource('accessModules', 'AccessModuleController');
 
 Route::resource('roleAccesses', 'RoleAccessController');
+
+Route::get('testrole', function () {
+    return 'tes';
+})->middleware('checkRole:programmer|manager');
