@@ -52,6 +52,8 @@ Route::resource('accessModules', 'AccessModuleController');
 
 Route::resource('roleAccesses', 'RoleAccessController');
 
+
+//Example role access
 Route::get('testrole', function () {
     return 'tes';
-})->middleware('checkRole:programmer|manager');
+})->middleware('checkRole:Admin|CBS|Finance|Manager|PMO|VP');

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
-
+use Illuminate\Support\Facades\Auth;
 use Closure;
 
 class CheckRole
@@ -14,10 +14,14 @@ class CheckRole
      * @return mixed
      */
     public function handle($request, Closure $next, $role)
-    {
+    {   if(Auth::guest()){
+         return view('/login');
+    } else {
         if (!$request->user()->hasRole($role)) {
-           return response('Unauthorized.', 401);
-        }
+           return response()->view('errors.401');
+        } 
+        return $next($request);
+    }
         return $next($request);
     }
 }

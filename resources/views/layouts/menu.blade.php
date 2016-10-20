@@ -1,3 +1,6 @@
+<!-- examples roles access -->
+@if (Auth::user()->hasRole('Admin|CBS|Consultant|Finance|Manager|PMO|VP'))
+
 <li class="{{ Request::is('users*') ? 'active' : '' }}">
     <a href="{!! route('users.index') !!}"><i class="fa fa-edit"></i><span>User</span></a>
 </li>
@@ -14,9 +17,6 @@
     <a href="{!! route('holidays.index') !!}"><i class="fa fa-edit"></i><span>Holiday</span></a>
 </li>
 
-<li class="{{ Request::is('leaves*') ? 'active' : '' }}">
-    <a href="{!! route('leaves.index') !!}"><i class="fa fa-edit"></i><span>Leave</span></a>
-</li>
 
 <li class="{{ Request::is('projects*') ? 'active' : '' }}">
     <a href="{!! route('projects.index') !!}"><i class="fa fa-edit"></i><span>Project</span></a>
@@ -30,6 +30,10 @@
     <a href="{!! route('sequences.index') !!}"><i class="fa fa-edit"></i><span>Sequence</span></a>
 </li>
 
+
+
+@endif
+
 <li class="{{ Request::is('timesheets*') ? 'active' : '' }}">
     <a href="{!! route('timesheets.index') !!}"><i class="fa fa-edit"></i><span>Timesheet</span></a>
 </li>
@@ -38,23 +42,16 @@
     <a href="{!! route('timesheetDetails.index') !!}"><i class="fa fa-edit"></i><span>Timesheet Detail</span></a>
 </li>
 
-<li class="{{ Request::is('tunjangans*') ? 'active' : '' }}">
-    <a href="{!! route('tunjangans.index') !!}"><i class="fa fa-edit"></i><span>Tunjangan</span></a>
+<li class="{{ Request::is('leaves*') ? 'active' : '' }}">
+    <a href="{!! route('leaves.index') !!}"><i class="fa fa-edit"></i><span>Leave</span></a>
 </li>
 
-<li class="{{ Request::is('tunjanganProjects*') ? 'active' : '' }}">
+
+<!--<li class="{{ Request::is('tunjanganProjects*') ? 'active' : '' }}">
     <a href="{!! route('tunjanganProjects.index') !!}"><i class="fa fa-edit"></i><span>Tunjangan Project</span></a>
-</li>
+</li>-->
 
-<li class="{{ Request::is('tunjanganRoles*') ? 'active' : '' }}">
+<!--<li class="{{ Request::is('tunjanganRoles*') ? 'active' : '' }}">
     <a href="{!! route('tunjanganRoles.index') !!}"><i class="fa fa-edit"></i><span>Tunjangan Role</span></a>
-</li>
-
-<li class="{{ Request::is('accessModules*') ? 'active' : '' }}">
-    <a href="{!! route('accessModules.index') !!}"><i class="fa fa-edit"></i><span>AccessModules</span></a>
-</li>
-
-<li class="{{ Request::is('roleAccesses*') ? 'active' : '' }}">
-    <a href="{!! route('roleAccesses.index') !!}"><i class="fa fa-edit"></i><span>RoleAccesses</span></a>
-</li>
+</li>-->
 
