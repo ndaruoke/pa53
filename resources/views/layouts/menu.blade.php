@@ -22,10 +22,6 @@
     <a href="{!! route('projects.index') !!}"><i class="fa fa-edit"></i><span>Project</span></a>
 </li>
 
-<li class="{{ Request::is('projectMembers*') ? 'active' : '' }}">
-    <a href="{!! route('projectMembers.index') !!}"><i class="fa fa-edit"></i><span>Project Member</span></a>
-</li>
-
 <li class="{{ Request::is('roles*') ? 'active' : '' }}">
     <a href="{!! route('roles.index') !!}"><i class="fa fa-edit"></i><span>Role</span></a>
 </li>

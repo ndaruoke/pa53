@@ -44,13 +44,23 @@
 
 <!-- Role Field -->
 <div class="form-group col-sm-6">
-
 {!! Form::label('role', 'Role:') !!}
-
 {!! Form::select('role', $roles, null, ['class' => 'form-control']) !!}
-<!-- {!! Form::text('role', null, ['class' => 'form-control']) !!} -->
 </div>
 
+<!-- Department Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('department', 'Department:') !!}
+    {!! Form::select('department', $departments, null, ['class' => 'form-control']) !!}
+</div>
+
+<!-- Position Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('position', 'Position:') !!}
+    {!! Form::select('position', $positions, null, ['class' => 'form-control']) !!}
+</div>
+
+<!-- Image -->
 <div class="form-group col-sm-6">
     {!! Form::label('image', 'Image:') !!}
     {!! Form::file('image', ['class' => 'form-control']) !!}

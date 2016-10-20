@@ -19,7 +19,7 @@
 <!-- Status Field -->
 <div class="form-group">
     {!! Form::label('status', 'Status:') !!}
-    <p>{!! $role->status !!}</p>
+    <p>{!! $role->status == 1 ? "Active" : "Inactive" !!}</p>
 </div>
 
 <!-- Created At Field -->

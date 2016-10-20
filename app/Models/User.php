@@ -99,7 +99,10 @@ class User extends Model
         'cabang',
         'name',
         'password',
-        'role'
+        'role',
+        'position',
+        'department',
+        'image'
     ];
 
     /**
@@ -117,7 +120,10 @@ class User extends Model
         'name' => 'string',
         'password' => 'string',
         'role' => 'integer',
-        'remember_token' => 'string'
+        'position' => 'integer',
+        'department' => 'integer',
+        'remember_token' => 'string',
+        'image' => 'string'
     ];
 
     /**
@@ -126,13 +132,13 @@ class User extends Model
      * @var array
      */
     public static $rules = [
-        'nik' => 'required',
-        'nama_rekening' => 'required',
-        'rekening' => 'required',
-        'bank' => 'required',
-        'cabang' => 'required',
+        'nik' => '',
+        'nama_rekening' => '',
+        'rekening' => '',
+        'bank' => '',
+        'cabang' => '',
         'name' => 'required',
-        'role' => 'required'
+        'role' => ''
     ];
 
     

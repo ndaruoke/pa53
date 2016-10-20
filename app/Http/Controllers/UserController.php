@@ -11,6 +11,8 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\Role;
+use App\Models\Department;
+use App\Models\Position;
 use Intervention\Image\Facades\Image;
 
 class UserController extends AppBaseController
@@ -42,7 +44,9 @@ class UserController extends AppBaseController
     public function create()
     {
         $roles = [''=>''] +Role::pluck('name', 'id')->all();
-        return view('users.create',compact('roles'));
+        $departments = [''=>''] +Department::pluck('name', 'id')->all();
+        $positions = [''=>''] +Position::pluck('name', 'id')->all();
+        return view('users.create',compact('roles','departments','positions'));
     }
 
     /**
@@ -104,7 +108,9 @@ class UserController extends AppBaseController
             return redirect(route('users.index'));
         }
         $roles = [''=>''] +Role::pluck('name', 'id')->all();
-        return view('users.edit',compact('user','roles'));
+        $departments = [''=>''] +Department::pluck('name', 'id')->all();
+        $positions = [''=>''] +Position::pluck('name', 'id')->all();
+        return view('users.edit',compact('user','roles','departments','positions'));
         //return view('users.edit')->with('user', $user);
     }
 
