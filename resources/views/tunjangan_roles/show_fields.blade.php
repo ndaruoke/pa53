@@ -16,10 +16,28 @@
     <p>{!! $tunjanganRole->role_id !!}</p>
 </div>
 
-<!-- Value Field -->
+<!-- Lokal Field -->
 <div class="form-group">
-    {!! Form::label('value', 'Value:') !!}
-    <p>{!! $tunjanganRole->value !!}</p>
+    {!! Form::label('lokal', 'Lokal:') !!}
+    <p>{!! $tunjanganRole->lokal !!}</p>
+</div>
+
+<!-- Non Lokal Field -->
+<div class="form-group">
+    {!! Form::label('non_lokal', 'Non Lokal:') !!}
+    <p>{!! $tunjanganRole->non_lokal !!}</p>
+</div>
+
+<!-- Luar Jawa Field -->
+<div class="form-group">
+    {!! Form::label('luar_jawa', 'Luar Jawa:') !!}
+    <p>{!! $tunjanganRole->luar_jawa !!}</p>
+</div>
+
+<!-- Internasional Field -->
+<div class="form-group">
+    {!! Form::label('internasional', 'Internasional:') !!}
+    <p>{!! $tunjanganRole->internasional !!}</p>
 </div>
 
 <!-- Created At Field -->

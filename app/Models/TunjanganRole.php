@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @SWG\Definition(
  *      definition="TunjanganRole",
- *      required={"tunjangan_id", "role_id", "value"},
+ *      required={"tunjangan_id", "role_id", "lokal", "non_lokal", "luar_jawa", "internasional"},
  *      @SWG\Property(
  *          property="id",
  *          description="id",
@@ -28,8 +28,26 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="value",
- *          description="value",
+ *          property="lokal",
+ *          description="lokal",
+ *          type="number",
+ *          format="double"
+ *      ),
+ *      @SWG\Property(
+ *          property="non_lokal",
+ *          description="non_lokal",
+ *          type="number",
+ *          format="double"
+ *      ),
+ *      @SWG\Property(
+ *          property="luar_jawa",
+ *          description="luar_jawa",
+ *          type="number",
+ *          format="double"
+ *      ),
+ *      @SWG\Property(
+ *          property="internasional",
+ *          description="internasional",
  *          type="number",
  *          format="double"
  *      ),
@@ -60,7 +78,10 @@ class TunjanganRole extends Model
     public $fillable = [
         'tunjangan_id',
         'role_id',
-        'value'
+        'lokal',
+        'non_lokal',
+        'luar_jawa',
+        'internasional'
     ];
 
     /**
@@ -71,7 +92,10 @@ class TunjanganRole extends Model
     protected $casts = [
         'tunjangan_id' => 'integer',
         'role_id' => 'integer',
-        'value' => 'double'
+        'lokal' => 'double',
+        'non_lokal' => 'double',
+        'luar_jawa' => 'double',
+        'internasional' => 'double'
     ];
 
     /**
@@ -82,7 +106,10 @@ class TunjanganRole extends Model
     public static $rules = [
         'tunjangan_id' => 'required',
         'role_id' => 'required',
-        'value' => 'required'
+        'lokal' => 'required',
+        'non_lokal' => 'required',
+        'luar_jawa' => 'required',
+        'internasional' => 'required'
     ];
 
     

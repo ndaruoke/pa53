@@ -74,7 +74,10 @@ class TunjanganRoleDataTable extends DataTable
         return [
             'tunjangan_id' => ['name' => 'tunjangan_id', 'data' => 'tunjangan_id'],
             'role_id' => ['name' => 'role_id', 'data' => 'role_id'],
-            'value' => ['name' => 'value', 'data' => 'value']
+            'lokal' => ['name' => 'lokal', 'data' => 'lokal'],
+            'non_lokal' => ['name' => 'non_lokal', 'data' => 'non_lokal'],
+            'luar_jawa' => ['name' => 'luar_jawa', 'data' => 'luar_jawa'],
+            'internasional' => ['name' => 'internasional', 'data' => 'internasional']
         ];
     }
 

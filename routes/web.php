@@ -57,3 +57,5 @@ Route::resource('roleAccesses', 'RoleAccessController');
 Route::get('testrole', function () {
     return 'tes';
 })->middleware('checkRole:Admin|CBS|Finance|Manager|PMO|VP');
+
+Route::resource('tunjanganRoles', 'TunjanganRoleController');

@@ -31,7 +31,37 @@
         "inIndex": true
     },
 	{
-        "name": "value",
+        "name": "lokal",
+        "dbType": "double",
+        "htmlType": "number",
+        "validations": "required",
+        "searchable": true,
+		"fillable": true,
+		"inForm": true,
+        "inIndex": true
+    },
+    {
+        "name": "non_lokal",
+        "dbType": "double",
+        "htmlType": "number",
+        "validations": "required",
+        "searchable": true,
+		"fillable": true,
+		"inForm": true,
+        "inIndex": true
+    },
+    {
+        "name": "luar_jawa",
+        "dbType": "double",
+        "htmlType": "number",
+        "validations": "required",
+        "searchable": true,
+		"fillable": true,
+		"inForm": true,
+        "inIndex": true
+    },
+    {
+        "name": "internasional",
         "dbType": "double",
         "htmlType": "number",
         "validations": "required",

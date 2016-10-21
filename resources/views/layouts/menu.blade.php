@@ -55,3 +55,7 @@
     <a href="{!! route('tunjanganRoles.index') !!}"><i class="fa fa-edit"></i><span>Tunjangan Role</span></a>
 </li>-->
 
+<li class="{{ Request::is('tunjanganRoles*') ? 'active' : '' }}">
+    <a href="{!! route('tunjanganRoles.index') !!}"><i class="fa fa-edit"></i><span>TunjanganRoles</span></a>
+</li>
+
