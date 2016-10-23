@@ -19,7 +19,7 @@
 <!-- Timesheet Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('timesheet_id', 'Timesheet Periode:') !!}
-    {!! Form::select('timesheet', $timesheet, null, ['class' => 'form-control']) !!}
+    {!! Form::select('timesheet', $timesheet, null, ['class' => 'form-control select2']) !!}
     <!--    {!! Form::text('timesheet_id', null, ['class' => 'form-control']) !!} -->
 </div>
 

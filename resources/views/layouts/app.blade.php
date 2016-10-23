@@ -155,6 +155,13 @@
     <!-- AdminLTE App -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.3/js/app.min.js"></script>
 
+    <!-- page script -->
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $(".select2").select2();
+        });
+    </script>
     @yield('scripts')
 </body>
 </html>

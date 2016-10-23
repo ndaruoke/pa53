@@ -8,7 +8,7 @@
 <!-- Pm User Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('pm_user_id', 'Project Manager:') !!}
-    {!! Form::select('pm_user_id', [''=>'']+$user, null, ['class' => 'form-control']) !!}
+    {!! Form::select('pm_user_id', [''=>'']+$user, null, ['class' => 'form-control select2']) !!}
 </div>
 <!-- Iwo Field -->
 <div class="form-group col-sm-6">
@@ -26,13 +26,13 @@
 <div class="form-group col-sm-6">
     {!! Form::label('claimable', 'Claimable:') !!}
 
-    {!! Form::select('claimable', array(''=>'',1=>'yes',0=>'no'), null, ['class' => 'form-control']) !!}
+    {!! Form::select('claimable', array(''=>'',1=>'Yes',0=>'No'), null, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Departent Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('departent_id', 'Departent Id:') !!}
-    {!! Form::select('departent_id', [''=>'']+$department, null, ['class' => 'form-control']) !!}
+    {!! Form::select('departent_id', [''=>'']+$department, null, ['class' => 'form-control select2']) !!}
 </div>
 <div class="form-group col-sm-12">
     {!! Form::label('Tunjangan', 'Tunjangan :') !!}

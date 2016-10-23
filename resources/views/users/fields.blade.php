@@ -45,19 +45,19 @@
 <!-- Role Field -->
 <div class="form-group col-sm-6">
 {!! Form::label('role', 'Role:') !!}
-{!! Form::select('role', $roles, null, ['class' => 'form-control']) !!}
+{!! Form::select('role', $roles, null, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Department Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('department', 'Department:') !!}
-    {!! Form::select('department', $departments, null, ['class' => 'form-control']) !!}
+    {!! Form::select('department', $departments, null, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Position Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('position', 'Position:') !!}
-    {!! Form::select('position', $positions, null, ['class' => 'form-control']) !!}
+    {!! Form::select('position', $positions, null, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Image -->
