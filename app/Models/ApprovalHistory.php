@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\Auditable;
 
 /**
  * @SWG\Definition(
@@ -49,7 +48,6 @@ use OwenIt\Auditing\Auditable;
  */
 class ApprovalHistory extends Model
 {
-    use Auditable;
     use SoftDeletes;
 
     public $table = 'approval_histories';

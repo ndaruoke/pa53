@@ -13,7 +13,10 @@ class TunjanganRoleRepository extends BaseRepository
     protected $fieldSearchable = [
         'tunjangan_id',
         'role_id',
-        'value',
+        'lokal',
+        'non_lokal',
+        'luar_jawa',
+        'internasional',
         'created_at',
         'updated_at'
     ];

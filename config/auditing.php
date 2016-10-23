@@ -1,9 +1,10 @@
+
 <?php
 
 /*
  * This file is part of laravel-auditing.
  *
- * @author Antério Vieira <anteriovieira@gmail.com>
+ * @author AntÃ©rio Vieira <anteriovieira@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,7 +12,7 @@
 
 return [
 
-    /*
+   /*
     |--------------------------------------------------------------------------
     | Authentication Model
     |--------------------------------------------------------------------------
@@ -22,9 +23,9 @@ return [
     |
     */
 
-    'model' => App\User::class,
+   'model' => App\User::class,
 
-    /*
+   /*
     |--------------------------------------------------------------------------
     | Database Connection
     |--------------------------------------------------------------------------
@@ -32,9 +33,9 @@ return [
     | Here is the the database connection for the auditing log.
     |
     */
-    'connection' => null,
+   'connection' => null,
 
-    /*
+   /*
     |--------------------------------------------------------------------------
     | Queue Auditable Models
     |--------------------------------------------------------------------------
@@ -45,9 +46,9 @@ return [
     |
     */
 
-    'queue' => false,
+   'queue' => false,
 
-    /*
+   /*
     |--------------------------------------------------------------------------
     | Table
     |--------------------------------------------------------------------------
@@ -56,9 +57,9 @@ return [
     |
     */
 
-    'table' => 'audits',
+   'table' => 'audits',
 
-    /*
+   /*
     |--------------------------------------------------------------------------
     | Audit console
     |--------------------------------------------------------------------------
@@ -67,9 +68,9 @@ return [
     |
     */
 
-    'audit_console' => false,
+   'audit_console' => false,
 
-    /*
+   /*
     |--------------------------------------------------------------------------
     | Default Auditor
     |--------------------------------------------------------------------------
@@ -80,3 +81,4 @@ return [
 
     'default_auditor' => 'database',
 ];
+

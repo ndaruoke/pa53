@@ -31,3 +31,4 @@ class AuditRepository extends BaseRepository
         return Audit::class;
     }
 }
+

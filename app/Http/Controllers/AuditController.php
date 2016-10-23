@@ -103,7 +103,7 @@ class AuditController extends AppBaseController
     /**
      * Update the specified Audit in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateAuditRequest $request
      *
      * @return Response

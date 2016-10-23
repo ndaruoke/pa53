@@ -189,10 +189,6 @@ return [
          * Image Intervention
          */
         Intervention\Image\ImageServiceProvider::class,
-        /**
-         * auditing
-         */
-        OwenIt\Auditing\AuditingServiceProvider::class,
 
     ],
 

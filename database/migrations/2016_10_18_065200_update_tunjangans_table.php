@@ -20,3 +20,4 @@ class UpdateTunjangansTable extends Migration
     }
 
 }
+

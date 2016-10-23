@@ -28,3 +28,4 @@ class UpdatePositionRequest extends FormRequest
         return Position::$rules;
     }
 }
+

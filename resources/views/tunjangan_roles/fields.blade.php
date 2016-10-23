@@ -10,10 +10,28 @@
     {!! Form::text('role_id', null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Value Field -->
+<!-- Lokal Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('value', 'Value:') !!}
-    {!! Form::number('value', null, ['class' => 'form-control']) !!}
+    {!! Form::label('lokal', 'Lokal:') !!}
+    {!! Form::number('lokal', null, ['class' => 'form-control']) !!}
+</div>
+
+<!-- Non Lokal Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('non_lokal', 'Non Lokal:') !!}
+    {!! Form::number('non_lokal', null, ['class' => 'form-control']) !!}
+</div>
+
+<!-- Luar Jawa Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('luar_jawa', 'Luar Jawa:') !!}
+    {!! Form::number('luar_jawa', null, ['class' => 'form-control']) !!}
+</div>
+
+<!-- Internasional Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('internasional', 'Internasional:') !!}
+    {!! Form::number('internasional', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Submit Field -->

@@ -1,3 +1,6 @@
+<!-- examples roles access -->
+@if (Auth::user()->hasRole('Admin|CBS|Consultant|Finance|Manager|PMO|VP'))
+
 <li class="{{ Request::is('users*') ? 'active' : '' }}">
     <a href="{!! route('users.index') !!}"><i class="fa fa-user"></i><span>User</span></a>
 </li>
@@ -30,6 +33,10 @@
     <a href="{!! route('sequences.index') !!}"><i class="fa fa-sort-amount-asc"></i><span>Sequence</span></a>
 </li>
 
+
+
+@endif
+
 <li class="{{ Request::is('timesheets*') ? 'active' : '' }}">
     <a href="{!! route('timesheets.index') !!}"><i class="fa fa-pencil-square-o"></i><span>Timesheet</span></a>
 </li>
@@ -51,9 +58,11 @@
 </li>
 
 <li class="{{ Request::is('positions*') ? 'active' : '' }}">
-    <a href="{!! route('positions.index') !!}"><i class="fa fa-sitemap"></i><span>Positions</span></a>
+    <a href="{!! route('positions.index') !!}"><i class="fa fa-sitemap"></i><span>Position</span></a>
 </li>
 
 <li class="{{ Request::is('audits*') ? 'active' : '' }}">
     <a href="{!! route('audits.index') !!}"><i class="fa fa-shield"></i><span>Audits</span></a>
 </li>
+
+

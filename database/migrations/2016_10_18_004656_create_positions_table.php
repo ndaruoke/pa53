@@ -34,3 +34,4 @@ class CreatePositionsTable extends Migration
         Schema::drop('positions');
     }
 }
+

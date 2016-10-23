@@ -14,7 +14,7 @@
                 <div class="row">
                     {!! Form::open(['route' => 'positions.store']) !!}
 
-                        @include('positions.fields')
+                    @include('positions.fields')
 
                     {!! Form::close() !!}
                 </div>
@@ -22,3 +22,10 @@
         </div>
     </div>
 @endsection
+<?php
+/**
++ * Created by PhpStorm.
++ * User: usreng
++ * Date: 10/23/2016
++ * Time: 3:46 PM
++ */

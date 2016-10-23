@@ -51,13 +51,13 @@ class PositionDataTable extends DataTable
                     'reset',
                     'reload',
                     [
-                         'extend'  => 'collection',
-                         'text'    => '<i class="fa fa-download"></i> Export',
-                         'buttons' => [
-                             'csv',
-                             'excel',
-                             'pdf',
-                         ],
+                        'extend' => 'collection',
+                        'text' => '<i class="fa fa-download"></i> Export',
+                        'buttons' => [
+                            'csv',
+                            'excel',
+                            'pdf',
+                        ],
                     ],
                     'colvis'
                 ]
@@ -89,3 +89,4 @@ class PositionDataTable extends DataTable
         return 'positions';
     }
 }
+

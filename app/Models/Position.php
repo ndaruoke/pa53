@@ -58,7 +58,7 @@ class Position extends Model
     use SoftDeletes;
 
     public $table = 'positions';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -94,5 +94,6 @@ class Position extends Model
         'status' => 'required'
     ];
 
-    
+
 }
+

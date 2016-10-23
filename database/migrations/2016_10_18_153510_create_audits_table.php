@@ -36,3 +36,4 @@ class CreateAuditsTable extends Migration
         Schema::dropIfExists('audits');
     }
 }
+
