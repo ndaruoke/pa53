@@ -10,6 +10,8 @@ use App\Repositories\SequenceRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\User;
+use App\Models\Role;
 
 class SequenceController extends AppBaseController
 {
@@ -39,7 +41,9 @@ class SequenceController extends AppBaseController
      */
     public function create()
     {
-        return view('sequences.create');
+        $roles = [''=>''] +Role::pluck('name', 'id')->all();
+        $users = [''=>''] +User::pluck('name', 'id')->all();
+        return view('sequences.create',compact('roles','users'));
     }
 
     /**
@@ -96,8 +100,10 @@ class SequenceController extends AppBaseController
 
             return redirect(route('sequences.index'));
         }
-
-        return view('sequences.edit')->with('sequence', $sequence);
+        $roles = [''=>''] +Role::pluck('name', 'id')->all();
+        $users = [''=>''] +User::pluck('name', 'id')->all();
+        return view('sequences.edit',compact('sequence','roles','users'));
+        //return view('sequences.edit')->with('sequence', $sequence);
     }
 
     /**
