@@ -28,4 +28,3 @@ class CreateAuditRequest extends FormRequest
         return Audit::$rules;
     }
 }
-

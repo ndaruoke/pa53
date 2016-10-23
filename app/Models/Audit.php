@@ -74,7 +74,7 @@ class Audit extends Model
     use SoftDeletes;
 
     public $table = 'audits';
-
+    
 
     protected $dates = ['deleted_at'];
 
@@ -113,9 +113,8 @@ class Audit extends Model
      * @var array
      */
     public static $rules = [
-
+        
     ];
 
-
+    
 }
-

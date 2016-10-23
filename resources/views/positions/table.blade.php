@@ -8,4 +8,3 @@
     @include('layouts.datatables_js')
     {!! $dataTable->scripts() !!}
 @endsection
-

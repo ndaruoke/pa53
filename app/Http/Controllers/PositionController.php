@@ -103,7 +103,7 @@ class PositionController extends AppBaseController
     /**
      * Update the specified Position in storage.
      *
-     * @param  int $id
+     * @param  int              $id
      * @param UpdatePositionRequest $request
      *
      * @return Response
@@ -148,5 +148,4 @@ class PositionController extends AppBaseController
 
         return redirect(route('positions.index'));
     }
-
 }

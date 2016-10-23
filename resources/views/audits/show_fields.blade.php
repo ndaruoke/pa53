@@ -63,3 +63,4 @@
     {!! Form::label('updated_at', 'Updated At:') !!}
     <p>{!! $audit->updated_at !!}</p>
 </div>
+

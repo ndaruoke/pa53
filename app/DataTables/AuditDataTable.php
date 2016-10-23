@@ -8,6 +8,7 @@ use Yajra\Datatables\Services\DataTable;
 
 class AuditDataTable extends DataTable
 {
+
     /**
      * @return \Illuminate\Http\JsonResponse
      */
@@ -27,6 +28,7 @@ class AuditDataTable extends DataTable
     public function query()
     {
         $audits = Audit::query();
+
         return $this->applyScopes($audits);
     }
 
@@ -49,13 +51,13 @@ class AuditDataTable extends DataTable
                     'reset',
                     'reload',
                     [
-                        'extend' => 'collection',
-                        'text' => '<i class="fa fa-download"></i> Export',
-                        'buttons' => [
-                            'csv',
-                            'excel',
-                            'pdf',
-                        ],
+                         'extend'  => 'collection',
+                         'text'    => '<i class="fa fa-download"></i> Export',
+                         'buttons' => [
+                             'csv',
+                             'excel',
+                             'pdf',
+                         ],
                     ],
                     'colvis'
                 ]

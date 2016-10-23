@@ -27,4 +27,3 @@ class PositionRepository extends BaseRepository
         return Position::class;
     }
 }
-

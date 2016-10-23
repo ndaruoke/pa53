@@ -63,6 +63,7 @@
 
 <li class="{{ Request::is('audits*') ? 'active' : '' }}">
     <a href="{!! route('audits.index') !!}"><i class="fa fa-shield"></i><span>Audits</span></a>
+</li><li class="{{ Request::is('positions*') ? 'active' : '' }}">
+    <a href="{!! route('positions.index') !!}"><i class="fa fa-edit"></i><span>Positions</span></a>
 </li>
-
 

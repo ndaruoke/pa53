@@ -48,7 +48,8 @@
     "searchable": true,
     "fillable": true,
     "inForm": true,
-    "inIndex": true,
+    "inIndex": true
+  },
   {
     "name": "created_at",
     "dbType": "timestamp",

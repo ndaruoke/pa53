@@ -5,19 +5,19 @@
         <h1>
             Audit
         </h1>
-    </section>
-    <div class="content">
-        @include('adminlte-templates::common.errors')
-        <div class="box box-primary">
-            <div class="box-body">
-                <div class="row">
-                    {!! Form::model($audit, ['route' => ['audits.update', $audit->id], 'method' => 'patch']) !!}
+   </section>
+   <div class="content">
+       @include('adminlte-templates::common.errors')
+       <div class="box box-primary">
+           <div class="box-body">
+               <div class="row">
+                   {!! Form::model($audit, ['route' => ['audits.update', $audit->id], 'method' => 'patch']) !!}
 
-                    @include('audits.fields')
+                        @include('audits.fields')
 
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-    </div>
+                   {!! Form::close() !!}
+               </div>
+           </div>
+       </div>
+   </div>
 @endsection

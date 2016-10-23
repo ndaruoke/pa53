@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\Auditable;
 
 /**
  * @SWG\Definition(
@@ -54,11 +53,10 @@ use OwenIt\Auditing\Auditable;
  */
 class Position extends Model
 {
-    use Auditable;
     use SoftDeletes;
 
     public $table = 'positions';
-
+    
 
     protected $dates = ['deleted_at'];
 
@@ -94,6 +92,5 @@ class Position extends Model
         'status' => 'required'
     ];
 
-
+    
 }
-
