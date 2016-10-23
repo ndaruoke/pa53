@@ -46,7 +46,7 @@ Route::resource('tunjangans', 'TunjanganController');
 
 Route::resource('tunjanganProjects', 'TunjanganProjectController');
 
-Route::resource('tunjanganRoles', 'TunjanganRoleController');
+Route::resource('tunjanganPositions', 'TunjanganPositionController');
 
 Route::resource('positions', 'PositionController');
 
@@ -61,6 +61,3 @@ Route::resource('roleAccesses', 'RoleAccessController');
 Route::get('testrole', function () {
     return 'tes';
 })->middleware('checkRole:Admin|CBS|Finance|Manager|PMO|VP');
-
-
-Route::resource('positions', 'PositionController');

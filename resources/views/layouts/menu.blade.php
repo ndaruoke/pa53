@@ -53,8 +53,8 @@
     <a href="{!! route('tunjanganProjects.index') !!}"><i class="fa fa-money"></i><span>Tunjangan Project</span></a>
 </li>
 
-<li class="{{ Request::is('tunjanganRoles*') ? 'active' : '' }}">
-    <a href="{!! route('tunjanganRoles.index') !!}"><i class="fa fa-money"></i><span>Tunjangan Role</span></a>
+<li class="{{ Request::is('tunjanganPositions*') ? 'active' : '' }}">
+    <a href="{!! route('tunjanganPositions.index') !!}"><i class="fa fa-money"></i><span>Tunjangan Position</span></a>
 </li>
 
 <li class="{{ Request::is('positions*') ? 'active' : '' }}">
