@@ -45,7 +45,7 @@
 <!-- Role Field -->
 <div class="form-group col-sm-6">
 {!! Form::label('role', 'Role:') !!}
-{!! Form::select('role', $roles, null, ['class' => 'form-control select2']) !!}
+    {!! Form::select('role', $roles, null, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Department Field -->
