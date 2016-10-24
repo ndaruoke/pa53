@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\TimesheetDetailDataTable;
 use App\DataTables\TimesheetDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateTimesheetRequest;
 use App\Http\Requests\UpdateTimesheetRequest;
+use App\Models\TimesheetDetail;
 use App\Repositories\TimesheetRepository;
+use App\Repositories\TimesheetDetailRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
@@ -15,10 +18,12 @@ class TimesheetController extends AppBaseController
 {
     /** @var  TimesheetRepository */
     private $timesheetRepository;
+    private $timesheetDetailRepository;
 
-    public function __construct(TimesheetRepository $timesheetRepo)
+    public function __construct(TimesheetRepository $timesheetRepo, TimesheetDetailRepository $timesheetDetailRepo)
     {
         $this->timesheetRepository = $timesheetRepo;
+        $this->timesheetDetailRepository = $timesheetDetailRepo;
     }
 
     /**
@@ -39,7 +44,8 @@ class TimesheetController extends AppBaseController
      */
     public function create()
     {
-        return view('timesheets.create');
+        $timesheetDetails = $this->timesheetDetailRepository->all();
+        return view('timesheets.create',compact('timesheetDetails'));
     }
 
     /**

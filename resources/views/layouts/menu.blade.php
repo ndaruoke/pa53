@@ -41,10 +41,11 @@
     <a href="{!! route('timesheets.index') !!}"><i class="fa fa-pencil-square-o"></i><span>Timesheet</span></a>
 </li>
 
+<!--
 <li class="{{ Request::is('timesheetDetails*') ? 'active' : '' }}">
     <a href="{!! route('timesheetDetails.index') !!}"><i class="fa fa-calendar-check-o"></i><span>Timesheet Detail</span></a>
 </li>
-
+-->
 <li class="{{ Request::is('tunjangans*') ? 'active' : '' }}">
     <a href="{!! route('tunjangans.index') !!}"><i class="fa fa-money"></i><span>Tunjangan</span></a>
 </li>

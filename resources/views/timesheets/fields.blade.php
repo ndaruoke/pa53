@@ -10,6 +10,19 @@
     {!! Form::date('periode', null, ['class' => 'form-control']) !!}
 </div>
 
+<div class="content">
+    <div class="clearfix"></div>
+
+    @include('flash::message')
+
+    <div class="clearfix"></div>
+    <div class="box box-primary">
+        <div class="box-body">
+            @include('timesheets.table_details')
+        </div>
+    </div>
+</div>
+
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
