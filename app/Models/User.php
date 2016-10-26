@@ -141,5 +141,20 @@ class User extends Model
         'role' => ''
     ];
 
+    public function role()
+    {
+        return $this->hasOne('App\Models\Role', 'id','role');
+    }
+
+    public function position()
+    {
+        return $this->hasOne('App\Models\Position', 'id','position');
+    }
+
+    public function department()
+    {
+        return $this->hasOne('App\Models\Department', 'id','department');
+    }
+
     
 }

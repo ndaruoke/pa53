@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\User;
+use App\Models\Role;
 use Form;
 use Yajra\Datatables\Services\DataTable;
 
@@ -15,7 +16,7 @@ class UserDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables
-            ->eloquent($this->query())
+            ->collection($this->query())
             ->addColumn('action', 'users.datatables_actions')
             ->make(true);
     }
@@ -27,8 +28,8 @@ class UserDataTable extends DataTable
      */
     public function query()
     {
-        $users = User::query();
-
+        //$users2 = User::query();
+        $users = User::with(['role','position','department'])->get();
         return $this->applyScopes($users);
     }
 
@@ -81,9 +82,9 @@ class UserDataTable extends DataTable
             'cabang' => ['name' => 'cabang', 'data' => 'cabang'],
              * **/
             'name' => ['name' => 'name', 'data' => 'name'],
-            'role' => ['name' => 'role', 'data' => 'role'],
-            'department' => ['name' => 'department', 'data' => 'department'],
-            'position' => ['name' => 'position', 'data' => 'position']
+            'role' => ['name' => 'role', 'data' => 'role.name'],
+            'department' => ['name' => 'department', 'data' => 'department.name'],
+            'position' => ['name' => 'position', 'data' => 'position.name']
         ];
     }
 

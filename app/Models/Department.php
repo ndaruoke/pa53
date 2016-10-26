@@ -74,5 +74,9 @@ class Department extends Model
         'note' => 'required'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
     
 }

@@ -92,5 +92,8 @@ class Position extends Model
         'status' => 'required'
     ];
 
-    
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

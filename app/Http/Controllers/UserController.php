@@ -10,6 +10,7 @@ use App\Repositories\UserRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\User;
 use App\Models\Role;
 use App\Models\Department;
 use App\Models\Position;
@@ -46,7 +47,7 @@ class UserController extends AppBaseController
         $roles = [''=>''] +Role::pluck('name', 'id')->all();
         $departments = [''=>''] +Department::pluck('name', 'id')->all();
         $positions = [''=>''] +Position::pluck('name', 'id')->all();
-        return view('users.create',compact('roles','departments','positions'));
+            return view('users.create',compact('roles','departments','positions'));
     }
 
     /**
