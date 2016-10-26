@@ -15,7 +15,7 @@ class AuditDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables
-            ->eloquent($this->query())
+            ->collection($this->query())
             ->addColumn('action', 'audits.datatables_actions')
             ->make(true);
     }
@@ -27,7 +27,7 @@ class AuditDataTable extends DataTable
      */
     public function query()
     {
-        $audits = Audit::query();
+        $audits = Audit::with(['user'])->get();
 
         return $this->applyScopes($audits);
     }
@@ -77,7 +77,7 @@ class AuditDataTable extends DataTable
             'auditable_type' => ['name' => 'auditable_type', 'data' => 'auditable_type'],
             'old' => ['name' => 'old', 'data' => 'old'],
             'new' => ['name' => 'new', 'data' => 'new'],
-            'user_id' => ['name' => 'user_id', 'data' => 'user_id'],
+            'user_id' => ['name' => 'user_id', 'data' => 'user.name'],
             'route' => ['name' => 'route', 'data' => 'route'],
             'ip_address' => ['name' => 'ip_address', 'data' => 'ip_address']
         ];

@@ -15,7 +15,7 @@ class LeaveDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables
-            ->eloquent($this->query())
+            ->collection($this->query())
             ->addColumn('action', 'leaves.datatables_actions')
             ->make(true);
     }
@@ -27,7 +27,7 @@ class LeaveDataTable extends DataTable
      */
     public function query()
     {
-        $leaves = Leave::query();
+        $leaves = Leave::with(['user'])->get();
 
         return $this->applyScopes($leaves);
     }
@@ -74,7 +74,7 @@ class LeaveDataTable extends DataTable
         return [
             'start_date' => ['name' => 'start_date', 'data' => 'start_date'],
             'end_date' => ['name' => 'end_date', 'data' => 'end_date'],
-            'approval_id' => ['name' => 'approval_id', 'data' => 'approval_id'],
+            'approval_id' => ['name' => 'approval_id', 'data' => 'user.name'],
             'status' => ['name' => 'status', 'data' => 'status']
         ];
     }

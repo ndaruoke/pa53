@@ -156,5 +156,15 @@ class User extends Model
         return $this->hasOne('App\Models\Department', 'id','department');
     }
 
+    public function leave()
+    {
+        return $this->belongsTo('App\Models\Leave');
+    }
+
+    public function audit()
+    {
+        return $this->belongsTo('App\Models\Audit');
+    }
+
     
 }

@@ -15,7 +15,7 @@ class TunjanganPositionDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables
-            ->eloquent($this->query())
+            ->collection($this->query())
             ->addColumn('action', 'tunjangan_positions.datatables_actions')
             ->make(true);
     }
@@ -27,7 +27,7 @@ class TunjanganPositionDataTable extends DataTable
      */
     public function query()
     {
-        $tunjanganPositions = TunjanganPosition::query();
+        $tunjanganPositions = TunjanganPosition::with(['tunjangan','position'])->get();
 
         return $this->applyScopes($tunjanganPositions);
     }
@@ -72,8 +72,8 @@ class TunjanganPositionDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'tunjangan_id' => ['name' => 'tunjangan_id', 'data' => 'tunjangan_id'],
-            'position_id' => ['name' => 'position_id', 'data' => 'position_id'],
+            'tunjangan_id' => ['name' => 'tunjangan_id', 'data' => 'tunjangan.name'],
+            'position_id' => ['name' => 'position_id', 'data' => 'position.name'],
             'lokal' => ['name' => 'lokal', 'data' => 'lokal'],
             'non_lokal' => ['name' => 'non_lokal', 'data' => 'non_lokal'],
             'luar_jawa' => ['name' => 'luar_jawa', 'data' => 'luar_jawa'],

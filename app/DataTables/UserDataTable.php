@@ -28,7 +28,6 @@ class UserDataTable extends DataTable
      */
     public function query()
     {
-        //$users2 = User::query();
         $users = User::with(['role','position','department'])->get();
         return $this->applyScopes($users);
     }

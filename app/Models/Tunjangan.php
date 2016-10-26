@@ -66,5 +66,10 @@ class Tunjangan extends Model
         'name' => 'required'
     ];
 
+    public function tunjanganPosition()
+    {
+        return $this->belongsTo('App\Models\TunjanganPosition');
+    }
+
     
 }

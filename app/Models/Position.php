@@ -96,4 +96,9 @@ class Position extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function tunjanganPosition()
+    {
+        return $this->belongsTo('App\Models\TunjanganPosition');
+    }
 }

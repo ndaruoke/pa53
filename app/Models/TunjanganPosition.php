@@ -112,5 +112,15 @@ class TunjanganPosition extends Model
         'internasional' => 'required'
     ];
 
-    
+    public function position()
+    {
+        return $this->hasOne('App\Models\Position', 'id','position_id');
+    }
+
+
+    public function tunjangan()
+    {
+        return $this->hasOne('App\Models\Tunjangan', 'id','tunjangan_id');
+    }
+
 }
