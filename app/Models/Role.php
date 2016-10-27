@@ -87,4 +87,9 @@ class Role extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function status()
+    {
+        return $this->hasOne('App\Models\Constant', 'id','status');
+    }
 }

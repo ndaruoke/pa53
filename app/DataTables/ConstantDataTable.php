@@ -2,11 +2,11 @@
 
 namespace App\DataTables;
 
-use App\Models\Role;
+use App\Models\Constant;
 use Form;
 use Yajra\Datatables\Services\DataTable;
 
-class RoleDataTable extends DataTable
+class ConstantDataTable extends DataTable
 {
 
     /**
@@ -15,8 +15,8 @@ class RoleDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables
-            ->collection($this->query())
-            ->addColumn('action', 'roles.datatables_actions')
+            ->eloquent($this->query())
+            ->addColumn('action', 'constants.datatables_actions')
             ->make(true);
     }
 
@@ -27,9 +27,9 @@ class RoleDataTable extends DataTable
      */
     public function query()
     {
-        $roles = Role::with(['status'])->get();
+        $constants = Constant::query();
 
-        return $this->applyScopes($roles);
+        return $this->applyScopes($constants);
     }
 
     /**
@@ -45,7 +45,7 @@ class RoleDataTable extends DataTable
             ->ajax('')
             ->parameters([
                 'dom' => 'Bfrtip',
-                'scrollX' => true,
+                'scrollX' => false,
                 'buttons' => [
                     'print',
                     'reset',
@@ -73,8 +73,8 @@ class RoleDataTable extends DataTable
     {
         return [
             'name' => ['name' => 'name', 'data' => 'name'],
-            'description' => ['name' => 'description', 'data' => 'description'],
-            'status' => ['name' => 'status', 'data' => 'status.name']
+            'category' => ['name' => 'category', 'data' => 'category'],
+            'status' => ['name' => 'status', 'data' => 'status']
         ];
     }
 
@@ -85,6 +85,6 @@ class RoleDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'roles';
+        return 'constants';
     }
 }

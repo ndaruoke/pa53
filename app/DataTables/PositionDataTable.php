@@ -15,7 +15,7 @@ class PositionDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables
-            ->eloquent($this->query())
+            ->collection($this->query())
             ->addColumn('action', 'positions.datatables_actions')
             ->make(true);
     }
@@ -27,7 +27,7 @@ class PositionDataTable extends DataTable
      */
     public function query()
     {
-        $positions = Position::query();
+        $positions = Position::with(['status'])->get();
 
         return $this->applyScopes($positions);
     }
@@ -75,7 +75,7 @@ class PositionDataTable extends DataTable
             'name' => ['name' => 'name', 'data' => 'name'],
             'description' => ['name' => 'description', 'data' => 'description'],
             'hierarchy' => ['name' => 'hierarchy', 'data' => 'hierarchy'],
-            'status' => ['name' => 'status', 'data' => 'status']
+            'status' => ['name' => 'status', 'data' => 'status.name']
         ];
     }
 

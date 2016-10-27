@@ -96,5 +96,10 @@ class Leave extends Model
     {
         return $this->hasOne('App\Models\User', 'id','approval_id');
     }
+
+    public function status()
+    {
+        return $this->hasOne('App\Models\Constant', 'id','status');
+    }
     
 }
