@@ -22,6 +22,12 @@
     {!! Form::select('status', array(''=>'',1=>'Active',0=>'Inactive'), null, ['class' => 'form-control select2']) !!}
 </div>
 
+ @if (isset($position))
+<div class="form-group col-sm-12">
+    <a href="{{ url('/tunjanganPositions?search=')}}{!!$position->id.'&searchFields=position_id:='!!}">Tunjangan Detail</a>
+</div>
+@endif
+
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}

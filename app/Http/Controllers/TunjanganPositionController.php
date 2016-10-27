@@ -12,6 +12,7 @@ use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\Tunjangan;
 use App\Models\Position;
+use Illuminate\Http\Request;
 
 class TunjanganPositionController extends AppBaseController
 {
@@ -39,10 +40,21 @@ class TunjanganPositionController extends AppBaseController
      *
      * @return Response
      */
-    public function create()
+    public function create(Request $req)
     {
         $positions = [''=>''] +Position::pluck('name', 'id')->all();
         $tunjangans = [''=>''] +Tunjangan::pluck('name', 'id')->all();
+        if($req->input('position_id')) {
+          //  $this->tunjanganRoleRepository->pushCriteria(new RequestCriteria($req));
+            $tunjanganRoles = $this->tunjanganPositionRepository->findByField('position_id',$req->input('position_id'));
+            $filter = array();
+            foreach($tunjanganRoles as $tj){
+                array_push($filter,$tj->tunjangan_id);
+            };
+            $tunjangans = [''=>''] +Tunjangan::whereNotIn('id', $filter)->pluck('name', 'id')->all();
+           // return $tunjangans;
+        }
+        
         return view('tunjangan_positions.create',compact('tunjangans','positions'));
     }
 

@@ -7,7 +7,7 @@
 <!-- Position Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('position_id', 'Position:') !!}
-    {!! Form::select('position_id', $positions, null, ['class' => 'form-control select2']) !!}
+    {!! Form::select('position_id', $positions, app('request')->input('position_id'), ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Lokal Field -->
