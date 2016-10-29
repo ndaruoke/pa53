@@ -27,7 +27,7 @@ class PositionDataTable extends DataTable
      */
     public function query()
     {
-        $positions = Position::with(['status'])->get();
+        $positions = Position::with(['statuses'])->get();
 
         return $this->applyScopes($positions);
     }
@@ -75,7 +75,7 @@ class PositionDataTable extends DataTable
             'name' => ['name' => 'name', 'data' => 'name'],
             'description' => ['name' => 'description', 'data' => 'description'],
             'hierarchy' => ['name' => 'hierarchy', 'data' => 'hierarchy'],
-            'status' => ['name' => 'status', 'data' => 'status.name']
+            'status' => ['name' => 'status', 'data' => 'statuses.name']
         ];
     }
 

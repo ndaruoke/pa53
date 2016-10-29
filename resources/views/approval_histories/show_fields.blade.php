@@ -25,7 +25,7 @@
 <!-- Timesheet Id Field -->
 <div class="form-group">
     {!! Form::label('timesheet_id', 'Timesheet Id:') !!}
-    <p>{!! $approvalHistory->timesheet_id !!}</p>
+    <p>{!! $approvalHistory->timesheets->periode !!}</p>
 </div>
 
 <!-- Created At Field -->

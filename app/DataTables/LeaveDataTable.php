@@ -27,7 +27,7 @@ class LeaveDataTable extends DataTable
      */
     public function query()
     {
-        $leaves = Leave::with(['user','status'])->get();
+        $leaves = Leave::with(['users','statuses'])->get();
 
         return $this->applyScopes($leaves);
     }
@@ -74,8 +74,8 @@ class LeaveDataTable extends DataTable
         return [
             'start_date' => ['name' => 'start_date', 'data' => 'start_date'],
             'end_date' => ['name' => 'end_date', 'data' => 'end_date'],
-            'approval_id' => ['name' => 'approval_id', 'data' => 'user.name'],
-            'status' => ['name' => 'status', 'data' => 'status.name']
+            'approval_id' => ['name' => 'approval_id', 'data' => 'users.name'],
+            'status' => ['name' => 'status', 'data' => 'statuses.name']
         ];
     }
 

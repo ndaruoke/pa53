@@ -1,7 +1,8 @@
 <!-- User Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('user_id', 'User Id:') !!}
-    {!! Form::text('user_id', null, ['class' => 'form-control']) !!}
+    <!--{!! Form::text('user_id', null, ['class' => 'form-control']) !!}-->
+        {!! Form::select('user_id', $users, null, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Periode Field -->

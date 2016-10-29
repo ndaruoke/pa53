@@ -85,5 +85,8 @@ class ApprovalHistory extends Model
         'timesheet_id' => 'required'
     ];
 
-    
+    public function timesheets()
+    {
+        return $this->hasOne('App\Models\Timesheet', 'id','timesheet_id');
+    }
 }

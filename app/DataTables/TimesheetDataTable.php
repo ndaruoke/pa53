@@ -15,7 +15,7 @@ class TimesheetDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables
-            ->eloquent($this->query())
+            ->collection($this->query())
             ->addColumn('action', 'timesheets.datatables_actions')
             ->make(true);
     }
@@ -27,7 +27,7 @@ class TimesheetDataTable extends DataTable
      */
     public function query()
     {
-        $timesheets = Timesheet::query();
+        $timesheets = Timesheet::with(['users'])->get();
 
         return $this->applyScopes($timesheets);
     }
@@ -72,7 +72,7 @@ class TimesheetDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'user_id' => ['name' => 'user_id', 'data' => 'user_id'],
+            'user_id' => ['name' => 'user_id', 'data' => 'users.name'],
             'periode' => ['name' => 'periode', 'data' => 'periode']
         ];
     }

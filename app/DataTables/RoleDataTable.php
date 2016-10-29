@@ -27,7 +27,7 @@ class RoleDataTable extends DataTable
      */
     public function query()
     {
-        $roles = Role::with(['status'])->get();
+        $roles = Role::with(['statuses'])->get();
 
         return $this->applyScopes($roles);
     }
@@ -74,7 +74,7 @@ class RoleDataTable extends DataTable
         return [
             'name' => ['name' => 'name', 'data' => 'name'],
             'description' => ['name' => 'description', 'data' => 'description'],
-            'status' => ['name' => 'status', 'data' => 'status.name']
+            'status' => ['name' => 'status', 'data' => 'statuses.name']
         ];
     }
 

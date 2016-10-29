@@ -118,5 +118,19 @@ class Project extends Model
         'pm_user_id' => 'required'
     ];
 
+    public function departments()
+    {
+        return $this->hasOne('App\Models\Department', 'id','department_id');
+    }
+
+    public function users()
+    {
+        return $this->hasOne('App\Models\User', 'id','pm_user_id');
+    }
+
+    public function tunjanganProject()
+    {
+        return $this->belongsTo('App\Models\TunjanganProject');
+    }
     
 }

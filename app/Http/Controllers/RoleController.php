@@ -69,7 +69,7 @@ class RoleController extends AppBaseController
      */
     public function show($id)
     {
-        $role = $this->roleRepository->findWithoutFail($id);
+        $role = $this->roleRepository->with('statuses')->findWithoutFail($id);
 
         if (empty($role)) {
             Flash::error('Role not found');

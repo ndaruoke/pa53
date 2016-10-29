@@ -15,7 +15,7 @@ class SequenceDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables
-            ->eloquent($this->query())
+            ->collection($this->query())
             ->addColumn('action', 'sequences.datatables_actions')
             ->make(true);
     }
@@ -27,7 +27,7 @@ class SequenceDataTable extends DataTable
      */
     public function query()
     {
-        $sequences = Sequence::query();
+        $sequences = Sequence::with(['roles','users'])->get();
 
         return $this->applyScopes($sequences);
     }
@@ -73,8 +73,8 @@ class SequenceDataTable extends DataTable
     {
         return [
             'level' => ['name' => 'level', 'data' => 'level'],
-            'role_id' => ['name' => 'role_id', 'data' => 'role_id'],
-            'user_id' => ['name' => 'user_id', 'data' => 'user_id']
+            'role_id' => ['name' => 'role_id', 'data' => 'roles.name'],
+            'user_id' => ['name' => 'user_id', 'data' => 'users.name']
         ];
     }
 

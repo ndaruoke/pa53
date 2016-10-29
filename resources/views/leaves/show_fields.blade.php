@@ -19,13 +19,13 @@
 <!-- Approval Id Field -->
 <div class="form-group">
     {!! Form::label('approval_id', 'Approval Id:') !!}
-    <p>{!! $leave->approval_id !!}</p>
+    <p>{!! $leave->users->name !!}</p>
 </div>
 
 <!-- Status Field -->
 <div class="form-group">
     {!! Form::label('status', 'Status:') !!}
-    <p>{!! $leave->status == 1 ? "Active" : "Inactive" !!}</p>
+    <p>{!! $leave->statuses->name !!}</p>
 </div>
 
 <!-- Created At Field -->

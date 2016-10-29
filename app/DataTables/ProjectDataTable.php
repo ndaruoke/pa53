@@ -15,7 +15,7 @@ class ProjectDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables
-            ->eloquent($this->query())
+            ->collection($this->query())
             ->addColumn('action', 'projects.datatables_actions')
             ->make(true);
     }
@@ -28,6 +28,8 @@ class ProjectDataTable extends DataTable
     public function query()
     {
         $projects = Project::query();
+
+        $projects = Project::with(['users','departments'])->get();
 
         return $this->applyScopes($projects);
     }
@@ -77,8 +79,8 @@ class ProjectDataTable extends DataTable
             'iwo' => ['name' => 'iwo', 'data' => 'iwo'],
             'code' => ['name' => 'code', 'data' => 'code'],
             'claimable' => ['name' => 'claimable', 'data' => 'claimable'],
-            'department_id' => ['name' => 'department_id', 'data' => 'department_id'],
-            'pm_user_id' => ['name' => 'pm_user_id', 'data' => 'pm_user_id']
+            'department_id' => ['name' => 'department_id', 'data' => 'departments.name'],
+            'pm_user_id' => ['name' => 'pm_user_id', 'data' => 'users.name']
         ];
     }
 

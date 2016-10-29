@@ -7,7 +7,7 @@
 <!-- Project Id Field -->
 <div class="form-group">
     {!! Form::label('project_id', 'Project Id:') !!}
-    <p>{!! $tunjanganProject->project_id !!}</p>
+    <p>{!! $tunjanganProject->projects->name !!}</p>
 </div>
 
 <!-- Created At Field -->

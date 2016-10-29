@@ -27,7 +27,7 @@ class TunjanganPositionDataTable extends DataTable
      */
     public function query()
     {
-        $tunjanganPositions = TunjanganPosition::with(['tunjangan','position'])->get();
+        $tunjanganPositions = TunjanganPosition::with(['tunjangans','positions'])->get();
 
         return $this->applyScopes($tunjanganPositions);
     }
@@ -72,8 +72,8 @@ class TunjanganPositionDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'tunjangan_id' => ['name' => 'tunjangan_id', 'data' => 'tunjangan.name'],
-            'position_id' => ['name' => 'position_id', 'data' => 'position.name'],
+            'tunjangan_id' => ['name' => 'tunjangan_id', 'data' => 'tunjangans.name'],
+            'position_id' => ['name' => 'position_id', 'data' => 'positions.name'],
             'lokal' => ['name' => 'lokal', 'data' => 'lokal'],
             'non_lokal' => ['name' => 'non_lokal', 'data' => 'non_lokal'],
             'luar_jawa' => ['name' => 'luar_jawa', 'data' => 'luar_jawa'],

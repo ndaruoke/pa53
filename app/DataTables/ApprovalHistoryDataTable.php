@@ -15,7 +15,7 @@ class ApprovalHistoryDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables
-            ->eloquent($this->query())
+            ->collection($this->query())
             ->addColumn('action', 'approval_histories.datatables_actions')
             ->make(true);
     }
@@ -27,7 +27,7 @@ class ApprovalHistoryDataTable extends DataTable
      */
     public function query()
     {
-        $approvalHistories = ApprovalHistory::query();
+        $approvalHistories = ApprovalHistory::with(['timesheets'])->get();
 
         return $this->applyScopes($approvalHistories);
     }
@@ -75,7 +75,7 @@ class ApprovalHistoryDataTable extends DataTable
             'date' => ['name' => 'date', 'data' => 'date'],
             'note' => ['name' => 'note', 'data' => 'note'],
             'sequence_id' => ['name' => 'sequence_id', 'data' => 'sequence_id'],
-            'timesheet_id' => ['name' => 'timesheet_id', 'data' => 'timesheet_id']
+            'timesheet_id' => ['name' => 'timesheet_id', 'data' => 'timesheets.periode']
         ];
     }
 

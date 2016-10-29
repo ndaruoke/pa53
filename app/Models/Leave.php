@@ -92,12 +92,12 @@ class Leave extends Model
         'status' => 'required'
     ];
 
-    public function user()
+    public function users()
     {
         return $this->hasOne('App\Models\User', 'id','approval_id');
     }
 
-    public function status()
+    public function statuses()
     {
         return $this->hasOne('App\Models\Constant', 'id','status');
     }

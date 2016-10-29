@@ -28,7 +28,7 @@ class UserDataTable extends DataTable
      */
     public function query()
     {
-        $users = User::with(['role','position','department'])->get();
+        $users = User::with(['roles','positions','departments'])->get();
         return $this->applyScopes($users);
     }
 
@@ -81,9 +81,9 @@ class UserDataTable extends DataTable
             'cabang' => ['name' => 'cabang', 'data' => 'cabang'],
              * **/
             'name' => ['name' => 'name', 'data' => 'name'],
-            'role' => ['name' => 'role', 'data' => 'role.name'],
-            'department' => ['name' => 'department', 'data' => 'department.name'],
-            'position' => ['name' => 'position', 'data' => 'position.name']
+            'role' => ['name' => 'role', 'data' => 'roles.name'],
+            'department' => ['name' => 'department', 'data' => 'departments.name'],
+            'position' => ['name' => 'position', 'data' => 'positions.name']
         ];
     }
 

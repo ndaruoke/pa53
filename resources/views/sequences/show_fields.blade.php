@@ -19,13 +19,13 @@
 <!-- Role Id Field -->
 <div class="form-group">
     {!! Form::label('role_id', 'Role Id:') !!}
-    <p>{!! $sequence->role_id !!}</p>
+    <p>{!! $sequence->roles->name !!}</p>
 </div>
 
 <!-- User Id Field -->
 <div class="form-group">
     {!! Form::label('user_id', 'User Id:') !!}
-    <p>{!! $sequence->user_id !!}</p>
+    <p>{!! $sequence->users->name !!}</p>
 </div>
 
 <!-- Created At Field -->

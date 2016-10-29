@@ -78,5 +78,9 @@ class Department extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
-    
+
+    public function project()
+    {
+        return $this->belongsTo('App\Models\Project');
+    }
 }

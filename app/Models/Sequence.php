@@ -86,5 +86,13 @@ class Sequence extends Model
         'user_id' => 'required'
     ];
 
-    
+    public function roles()
+    {
+        return $this->hasOne('App\Models\Roles', 'id','status');
+    }
+
+    public function users()
+    {
+        return $this->hasOne('App\Models\USers', 'id','status');
+    }
 }

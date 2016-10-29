@@ -88,7 +88,12 @@ class Role extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function status()
+    public function sequence()
+    {
+        return $this->belongsTo('App\Models\Sequence');
+    }
+
+    public function statuses()
     {
         return $this->hasOne('App\Models\Constant', 'id','status');
     }

@@ -104,7 +104,7 @@ class ProjectController extends AppBaseController
      */
     public function show($id)
     {
-        $project = $this->projectRepository->findWithoutFail($id);
+        $project = $this->projectRepository->with('users')->with('departments')->findWithoutFail($id);
 
         if (empty($project)) {
             Flash::error('Project not found');

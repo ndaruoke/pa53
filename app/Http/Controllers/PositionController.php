@@ -69,7 +69,7 @@ class PositionController extends AppBaseController
      */
     public function show($id)
     {
-        $position = $this->positionRepository->findWithoutFail($id);
+        $position = $this->positionRepository->with('statuses')->findWithoutFail($id);
 
         if (empty($position)) {
             Flash::error('Position not found');
@@ -96,6 +96,7 @@ class PositionController extends AppBaseController
 
             return redirect(route('positions.index'));
         }
+
 
         return view('positions.edit')->with('position', $position);
     }

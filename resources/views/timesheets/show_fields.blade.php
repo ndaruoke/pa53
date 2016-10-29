@@ -7,7 +7,7 @@
 <!-- User Id Field -->
 <div class="form-group">
     {!! Form::label('user_id', 'User Id:') !!}
-    <p>{!! $timesheet->user_id !!}</p>
+    <p>{!! $timesheet->users.name !!}</p>
 </div>
 
 <!-- Periode Field -->

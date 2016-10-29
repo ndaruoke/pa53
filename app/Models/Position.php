@@ -102,7 +102,7 @@ class Position extends Model
         return $this->belongsTo('App\Models\TunjanganPosition');
     }
 
-    public function status()
+    public function statuses()
     {
         return $this->hasOne('App\Models\Constant', 'id','status');
     }

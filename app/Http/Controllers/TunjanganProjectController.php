@@ -10,6 +10,7 @@ use App\Repositories\TunjanganProjectRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\Project;
 
 class TunjanganProjectController extends AppBaseController
 {
@@ -39,7 +40,8 @@ class TunjanganProjectController extends AppBaseController
      */
     public function create()
     {
-        return view('tunjangan_projects.create');
+        $projects = [''=>''] +Project::pluck('name', 'id')->all();
+        return view('tunjangan_projects.create',compact('projects'));
     }
 
     /**
@@ -97,7 +99,8 @@ class TunjanganProjectController extends AppBaseController
             return redirect(route('tunjanganProjects.index'));
         }
 
-        return view('tunjangan_projects.edit')->with('tunjanganProject', $tunjanganProject);
+        $projects = [''=>''] +Project::pluck('name', 'id')->all();
+        return view('tunjangan_projects.edit',compact('tunjanganProject','projects'));
     }
 
     /**

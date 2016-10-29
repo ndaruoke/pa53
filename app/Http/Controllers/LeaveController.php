@@ -72,7 +72,7 @@ class LeaveController extends AppBaseController
      */
     public function show($id)
     {
-        $leave = $this->leaveRepository->findWithoutFail($id);
+        $leave = $this->leaveRepository->with('users')->with('statuses')->findWithoutFail($id);
 
         if (empty($leave)) {
             Flash::error('Leave not found');

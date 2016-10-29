@@ -85,7 +85,7 @@ class TunjanganPositionController extends AppBaseController
      */
     public function show($id)
     {
-        $tunjanganPosition = $this->tunjanganPositionRepository->findWithoutFail($id);
+        $tunjanganPosition = $this->tunjanganPositionRepository->with('tunjangans','positions')->findWithoutFail($id);
 
         if (empty($tunjanganPosition)) {
             Flash::error('Tunjangan Position not found');

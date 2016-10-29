@@ -7,13 +7,13 @@
 <!-- Tunjangan Id Field -->
 <div class="form-group">
     {!! Form::label('tunjangan_id', 'Tunjangan Id:') !!}
-    <p>{!! $tunjanganPosition->tunjangan_id !!}</p>
+    <p>{!! $tunjanganPosition->tunjangans->name !!}</p>
 </div>
 
 <!-- Position Id Field -->
 <div class="form-group">
     {!! Form::label('position_id', 'Position Id:') !!}
-    <p>{!! $tunjanganPosition->position_id !!}</p>
+    <p>{!! $tunjanganPosition->positions->name !!}</p>
 </div>
 
 <!-- Lokal Field -->

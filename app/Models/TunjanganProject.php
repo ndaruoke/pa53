@@ -67,5 +67,8 @@ class TunjanganProject extends Model
         'project_id' => 'required'
     ];
 
-    
+    public function projects()
+    {
+        return $this->hasOne('App\Models\Project', 'id','project_id');
+    }
 }

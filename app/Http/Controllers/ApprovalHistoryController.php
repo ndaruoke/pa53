@@ -71,7 +71,7 @@ class ApprovalHistoryController extends AppBaseController
      */
     public function show($id)
     {
-        $approvalHistory = $this->approvalHistoryRepository->findWithoutFail($id);
+        $approvalHistory = $this->approvalHistoryRepository->with('timesheets')->findWithoutFail($id);
 
         if (empty($approvalHistory)) {
             Flash::error('Approval History not found');

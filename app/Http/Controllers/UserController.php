@@ -81,7 +81,7 @@ class UserController extends AppBaseController
      */
     public function show($id)
     {
-        $user = $this->userRepository->with('role', 'position', 'department')->findWithoutFail($id);
+        $user = $this->userRepository->with('departments')->with('roles')->with('positions')->findWithoutFail($id);
 
         if (empty($user)) {
             Flash::error('User not found');

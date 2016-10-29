@@ -73,7 +73,7 @@ class SequenceController extends AppBaseController
      */
     public function show($id)
     {
-        $sequence = $this->sequenceRepository->findWithoutFail($id);
+        $sequence = $this->sequenceRepository->with('roles')->with('users')->findWithoutFail($id);
 
         if (empty($sequence)) {
             Flash::error('Sequence not found');

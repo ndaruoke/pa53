@@ -55,19 +55,19 @@
 <!-- Role Field -->
 <div class="form-group">
     {!! Form::label('role', 'Role:') !!}
-    <p>{!! $user->role !!}</p>
+    <p>{!! $user->roles->name !!}</p>
 </div>
 
 <!-- Position Field -->
 <div class="form-group">
     {!! Form::label('position', 'Position:') !!}
-    <p>{!! $user->position !!}</p>
+    <p>{!! $user->positions->name !!}</p>
 </div>
 
 <!-- Department Field -->
 <div class="form-group">
     {!! Form::label('department', 'Department:') !!}
-    <p>{!! $user->department !!}</p>
+    <p>{!! $user->departments->name !!}</p>
 </div>
 
 <!-- Remember Token Field -->

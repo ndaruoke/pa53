@@ -74,5 +74,14 @@ class Timesheet extends Model
         
     ];
 
+    public function users()
+    {
+        return $this->hasOne('App\Models\User', 'id','user_id');
+    }
+
+    public function approvalHistory()
+    {
+        return $this->belongsTo('App\Models\ApprovalHistory');
+    }
     
 }

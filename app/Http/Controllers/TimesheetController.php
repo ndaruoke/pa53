@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Requests\CreateTimesheetRequest;
 use App\Http\Requests\UpdateTimesheetRequest;
 use App\Models\TimesheetDetail;
+use App\Models\User;
 use App\Repositories\TimesheetRepository;
 use App\Repositories\TimesheetDetailRepository;
 use Flash;
@@ -45,7 +46,8 @@ class TimesheetController extends AppBaseController
     public function create()
     {
         $timesheetDetails = $this->timesheetDetailRepository->all();
-        return view('timesheets.create',compact('timesheetDetails'));
+        $users = [''=>''] +User::pluck('name', 'id')->all();
+        return view('timesheets.create',compact('timesheetDetails', users));
     }
 
     /**
@@ -75,7 +77,7 @@ class TimesheetController extends AppBaseController
      */
     public function show($id)
     {
-        $timesheet = $this->timesheetRepository->findWithoutFail($id);
+        $timesheet = $this->timesheetRepository->with('users')->findWithoutFail($id);
 
         if (empty($timesheet)) {
             Flash::error('Timesheet not found');
@@ -102,8 +104,9 @@ class TimesheetController extends AppBaseController
 
             return redirect(route('timesheets.index'));
         }
-
-        return view('timesheets.edit')->with('timesheet', $timesheet);
+        $users = [''=>''] +User::pluck('name', 'id')->all();
+        $timesheetDetails = $this->timesheetDetailRepository->whereIn('timesheet_id',$id);
+        return view('timesheets.edit',compact('$timesheet','users', 'timesheetDetails'));
     }
 
     /**

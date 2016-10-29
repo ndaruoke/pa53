@@ -141,17 +141,17 @@ class User extends Model
         'role' => ''
     ];
 
-    public function role()
+    public function roles()
     {
         return $this->hasOne('App\Models\Role', 'id','role');
     }
 
-    public function position()
+    public function positions()
     {
         return $this->hasOne('App\Models\Position', 'id','position');
     }
 
-    public function department()
+    public function departments()
     {
         return $this->hasOne('App\Models\Department', 'id','department');
     }
@@ -166,5 +166,19 @@ class User extends Model
         return $this->belongsTo('App\Models\Audit');
     }
 
+    public function project()
+    {
+        return $this->belongsTo('App\Models\Project');
+    }
+
+    public function sequence()
+    {
+        return $this->belongsTo('App\Models\Sequence');
+    }
+
+    public function timesheet()
+    {
+        return $this->belongsTo('App\Models\Timesheet');
+    }
     
 }
