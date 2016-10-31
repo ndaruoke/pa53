@@ -21,7 +21,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 Route::resource('users', 'UserController');
-
 Route::resource('approvalHistories', 'ApprovalHistoryController');
 
 Route::resource('departments', 'DepartmentController');
@@ -59,7 +58,11 @@ Route::resource('roleAccesses', 'RoleAccessController');
 
 //Example role access
 Route::get('testrole', function () {
-    return 'tes';
+  return 'tes';
 })->middleware('checkRole:Admin|CBS|Finance|Manager|PMO|VP');
 
 Route::resource('constants', 'ConstantController');
+
+Route::resource('userLeaves', 'UserLeaveController');
+
+Route::resource('userLeaves', 'UserLeaveController');

@@ -10,6 +10,7 @@ use App\Repositories\RoleAccessRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\Constant;
 
 class RoleAccessController extends AppBaseController
 {
@@ -39,7 +40,8 @@ class RoleAccessController extends AppBaseController
      */
     public function create()
     {
-        return view('role_accesses.create');
+        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        return view('role_accesses.create',compact('statuses'));
     }
 
     /**
@@ -69,7 +71,7 @@ class RoleAccessController extends AppBaseController
      */
     public function show($id)
     {
-        $roleAccess = $this->roleAccessRepository->findWithoutFail($id);
+        $roleAccess = $this->roleAccessRepository->with('statuses')->findWithoutFail($id);
 
         if (empty($roleAccess)) {
             Flash::error('Role Access not found');
@@ -97,7 +99,8 @@ class RoleAccessController extends AppBaseController
             return redirect(route('roleAccesses.index'));
         }
 
-        return view('role_accesses.edit')->with('roleAccess', $roleAccess);
+        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        return view('role_accesses.edit',compact('roleAccess','statuses'));
     }
 
     /**

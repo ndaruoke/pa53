@@ -13,7 +13,7 @@
 <!-- Status Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('status', 'Status:') !!}
-    {!! Form::select('status', array(''=>'',1=>'Active',0=>'Inactive'), null, ['class' => 'form-control select2']) !!}
+    {!! Form::select('status', $statuses, null, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Submit Field -->

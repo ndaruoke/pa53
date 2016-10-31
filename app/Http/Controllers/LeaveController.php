@@ -11,6 +11,7 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\User;
+use App\Models\Constant;
 
 class LeaveController extends AppBaseController
 {
@@ -41,8 +42,9 @@ class LeaveController extends AppBaseController
      */
     public function create()
     {
-        $user = [''=>''] +User::pluck('name', 'id')->all();
-        return view('leaves.create',compact('user'));
+        $users = [''=>''] +User::pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        return view('leaves.create',compact('users','statuses'));
     }
 
     /**
@@ -100,8 +102,9 @@ class LeaveController extends AppBaseController
 
             return redirect(route('leaves.index'));
         }
-        $user = [''=>''] +User::pluck('name', 'id')->all();
-        return view('leaves.edit',compact('leave','user'));
+        $users = [''=>''] +User::pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        return view('leaves.edit',compact('leave','users','statuses'));
         //return view('leaves.edit')->with('leave', $leave);
     }
 

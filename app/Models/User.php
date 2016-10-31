@@ -180,5 +180,10 @@ class User extends Model
     {
         return $this->belongsTo('App\Models\Timesheet');
     }
+
+    public function userLeave()
+    {
+        return $this->belongsTo('App\Models\UserLeave');
+    }
     
 }

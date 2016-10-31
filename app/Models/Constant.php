@@ -97,4 +97,9 @@ class Constant extends Model
     {
         return $this->belongsTo('App\Models\Role');
     }
+
+    public function userLeave()
+    {
+        return $this->belongsTo('App\Models\UserLeave');
+    }
 }

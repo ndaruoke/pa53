@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
- *      definition="Leave",
- *      required={"start_date", "end_date", "approval_id", "status"},
+ *      definition="UserLeave",
+ *      required={"user_id", "leave_count", "expire_date", "status"},
  *      @SWG\Property(
  *          property="id",
  *          description="id",
@@ -16,22 +16,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="start_date",
- *          description="start_date",
- *          type="string",
- *          format="date-time"
- *      ),
- *      @SWG\Property(
- *          property="end_date",
- *          description="end_date",
- *          type="string",
- *          format="date-time"
- *      ),
- *      @SWG\Property(
- *          property="approval_id",
- *          description="approval_id",
+ *          property="user_id",
+ *          description="user_id",
  *          type="integer",
  *          format="int32"
+ *      ),
+ *      @SWG\Property(
+ *          property="leave_count",
+ *          description="leave_count",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
+ *          property="expire_date",
+ *          description="expire_date",
+ *          type="string",
+ *          format="date-time"
  *      ),
  *      @SWG\Property(
  *          property="status",
@@ -53,20 +53,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Leave extends Model
+class UserLeave extends Model
 {
     use SoftDeletes;
 
-    public $table = 'leaves';
+    public $table = 'user_leaves';
     
 
     protected $dates = ['deleted_at'];
 
 
     public $fillable = [
-        'start_date',
-        'end_date',
-        'approval_id',
+        'user_id',
+        'leave_count',
+        'expire_date',
         'status'
     ];
 
@@ -76,7 +76,8 @@ class Leave extends Model
      * @var array
      */
     protected $casts = [
-        'approval_id' => 'integer',
+        'user_id' => 'integer',
+        'leave_count' => 'integer',
         'status' => 'integer'
     ];
 
@@ -86,20 +87,19 @@ class Leave extends Model
      * @var array
      */
     public static $rules = [
-        'start_date' => 'required',
-        'end_date' => 'required',
-        'approval_id' => 'required',
+        'user_id' => 'required',
+        'leave_count' => 'required',
+        'expire_date' => 'required',
         'status' => 'required'
     ];
 
     public function users()
     {
-        return $this->hasOne('App\Models\User', 'id','approval_id');
+        return $this->hasOne('App\Models\User', 'id','user_id');
     }
 
     public function statuses()
     {
         return $this->hasOne('App\Models\Constant', 'id','status');
     }
-
 }

@@ -10,6 +10,7 @@ use App\Repositories\RoleRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\Constant;
 
 class RoleController extends AppBaseController
 {
@@ -39,7 +40,8 @@ class RoleController extends AppBaseController
      */
     public function create()
     {
-        return view('roles.create');
+        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        return view('roles.create',compact('statuses'));
     }
 
     /**
@@ -97,7 +99,8 @@ class RoleController extends AppBaseController
             return redirect(route('roles.index'));
         }
 
-        return view('roles.edit')->with('role', $role);
+        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        return view('roles.edit',compact('role','statuses'));
     }
 
     /**

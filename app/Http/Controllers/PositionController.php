@@ -10,6 +10,7 @@ use App\Repositories\PositionRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use App\Models\Constant;
 
 class PositionController extends AppBaseController
 {
@@ -39,7 +40,8 @@ class PositionController extends AppBaseController
      */
     public function create()
     {
-        return view('positions.create');
+        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        return view('positions.create',compact('statuses'));
     }
 
     /**
@@ -97,8 +99,8 @@ class PositionController extends AppBaseController
             return redirect(route('positions.index'));
         }
 
-
-        return view('positions.edit')->with('position', $position);
+        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        return view('positions.edit',compact('position','statuses'));
     }
 
     /**

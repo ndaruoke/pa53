@@ -2,12 +2,11 @@
 
 namespace App\DataTables;
 
-use App\Models\User;
-use App\Models\Role;
+use App\Models\UserLeave;
 use Form;
 use Yajra\Datatables\Services\DataTable;
 
-class UserDataTable extends DataTable
+class UserLeaveDataTable extends DataTable
 {
 
     /**
@@ -17,7 +16,7 @@ class UserDataTable extends DataTable
     {
         return $this->datatables
             ->collection($this->query())
-            ->addColumn('action', 'users.datatables_actions')
+            ->addColumn('action', 'user_leaves.datatables_actions')
             ->make(true);
     }
 
@@ -28,8 +27,9 @@ class UserDataTable extends DataTable
      */
     public function query()
     {
-        $users = User::with(['users','positions','departments'])->get();
-        return $this->applyScopes($users);
+        $userLeaves = UserLeave::with(['users','statuses'])->get();
+
+        return $this->applyScopes($userLeaves);
     }
 
     /**
@@ -45,7 +45,7 @@ class UserDataTable extends DataTable
             ->ajax('')
             ->parameters([
                 'dom' => 'Bfrtip',
-                'scrollX' => true,
+                'scrollX' => false,
                 'buttons' => [
                     'print',
                     'reset',
@@ -72,18 +72,10 @@ class UserDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'nik' => ['name' => 'nik', 'data' => 'nik'],
-            /**
-            'email' => ['name' => 'email', 'data' => 'email'],
-            'nama_rekening' => ['name' => 'nama_rekening', 'data' => 'nama_rekening'],
-            'rekening' => ['name' => 'rekening', 'data' => 'rekening'],
-            'bank' => ['name' => 'bank', 'data' => 'bank'],
-            'cabang' => ['name' => 'cabang', 'data' => 'cabang'],
-             * **/
-            'name' => ['name' => 'name', 'data' => 'name'],
-            'role' => ['name' => 'role', 'data' => 'roles.name'],
-            'department' => ['name' => 'department', 'data' => 'departments.name'],
-            'position' => ['name' => 'position', 'data' => 'positions.name']
+            'user_id' => ['name' => 'user_id', 'data' => 'users.name'],
+            'leave_count' => ['name' => 'leave_count', 'data' => 'leave_count'],
+            'expire_date' => ['name' => 'expire_date', 'data' => 'expire_date'],
+            'status' => ['name' => 'status', 'data' => 'statuses.name']
         ];
     }
 
@@ -94,6 +86,6 @@ class UserDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'users';
+        return 'userLeaves';
     }
 }
