@@ -15,6 +15,7 @@ use App\Models\Role;
 use App\Models\Department;
 use App\Models\Position;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends AppBaseController
 {
@@ -116,6 +117,27 @@ class UserController extends AppBaseController
     }
 
     /**
+     * Show the form for editing password the specified User.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function change($id)
+    {
+        $user = $this->userRepository->findWithoutFail($id);
+
+        if (empty($user)) {
+            Flash::error('User not found');
+
+            return redirect(route('users.index'));
+        }
+
+        return view('users.change_password',compact('user'));
+        //return view('users.edit')->with('user', $user);
+    }
+
+    /**
      * Update the specified User in storage.
      *
      * @param  int              $id
@@ -145,7 +167,7 @@ class UserController extends AppBaseController
         }
 
         if (!empty($request['password'])) {
-            $request['password'] = bcrypt($request['password']);
+            $request['password'] = Hash::make($request['password']);
         }
 
         $user = $this->userRepository->update($request->all(), $id);

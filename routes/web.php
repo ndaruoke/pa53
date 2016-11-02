@@ -21,6 +21,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 Route::resource('users', 'UserController');
+
+Route::get('change/{id}', array('uses' => 'UserController@change',
+    'as' => 'change'));
+
 Route::resource('approvalHistories', 'ApprovalHistoryController');
 
 Route::resource('departments', 'DepartmentController');
@@ -62,7 +66,5 @@ Route::get('testrole', function () {
 })->middleware('checkRole:Admin|CBS|Finance|Manager|PMO|VP');
 
 Route::resource('constants', 'ConstantController');
-
-Route::resource('userLeaves', 'UserLeaveController');
 
 Route::resource('userLeaves', 'UserLeaveController');

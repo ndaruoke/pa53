@@ -137,7 +137,7 @@ class User extends Model
         'rekening' => '',
         'bank' => '',
         'cabang' => '',
-        'name' => 'required',
+        'name' => '',
         'role' => ''
     ];
 
