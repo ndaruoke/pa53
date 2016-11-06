@@ -5,50 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3dd7a13a-f1b8-452f-940f-5fa9045cf6b8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/snappy.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrations/2016_11_03_191900_update_user_leaves_table.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrations/2016_11_04_191900_update_leaves_table.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrations/2016_11_06_011900_update_leaves_table2.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/views/leaves/submit.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/DataTables/LeaveDataTable.php" afterPath="$PROJECT_DIR$/app/DataTables/LeaveDataTable.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/DataTables/UserLeaveDataTable.php" afterPath="$PROJECT_DIR$/app/DataTables/UserLeaveDataTable.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/LeaveController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/LeaveController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/AccessModule.php" afterPath="$PROJECT_DIR$/app/Models/AccessModule.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/ApprovalHistory.php" afterPath="$PROJECT_DIR$/app/Models/ApprovalHistory.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Constant.php" afterPath="$PROJECT_DIR$/app/Models/Constant.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Department.php" afterPath="$PROJECT_DIR$/app/Models/Department.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Holiday.php" afterPath="$PROJECT_DIR$/app/Models/Holiday.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Leave.php" afterPath="$PROJECT_DIR$/app/Models/Leave.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Position.php" afterPath="$PROJECT_DIR$/app/Models/Position.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Project.php" afterPath="$PROJECT_DIR$/app/Models/Project.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/ProjectMember.php" afterPath="$PROJECT_DIR$/app/Models/ProjectMember.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Role.php" afterPath="$PROJECT_DIR$/app/Models/Role.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/RoleAccess.php" afterPath="$PROJECT_DIR$/app/Models/RoleAccess.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Sequence.php" afterPath="$PROJECT_DIR$/app/Models/Sequence.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Timesheet.php" afterPath="$PROJECT_DIR$/app/Models/Timesheet.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/TimesheetDetail.php" afterPath="$PROJECT_DIR$/app/Models/TimesheetDetail.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Tunjangan.php" afterPath="$PROJECT_DIR$/app/Models/Tunjangan.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/TunjanganPosition.php" afterPath="$PROJECT_DIR$/app/Models/TunjanganPosition.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/TunjanganProject.php" afterPath="$PROJECT_DIR$/app/Models/TunjanganProject.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/User.php" afterPath="$PROJECT_DIR$/app/Models/User.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/UserLeave.php" afterPath="$PROJECT_DIR$/app/Models/UserLeave.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Repositories/UserLeaveRepository.php" afterPath="$PROJECT_DIR$/app/Repositories/UserLeaveRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.json" afterPath="$PROJECT_DIR$/composer.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.lock" afterPath="$PROJECT_DIR$/composer.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/app.php" afterPath="$PROJECT_DIR$/config/app.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/datatables.php" afterPath="$PROJECT_DIR$/config/datatables.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/mail.php" afterPath="$PROJECT_DIR$/config/mail.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/migrations/2016_10_18_234800_update_users_table.php" afterPath="$PROJECT_DIR$/database/migrations/2016_10_18_234800_update_users_table.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/migrations/2016_10_21_034058_create_tunjangan_roles_table.php" afterPath="$PROJECT_DIR$/database/migrations/2016_10_21_034058_create_tunjangan_roles_table.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/json_template/leave.json" afterPath="$PROJECT_DIR$/json_template/leave.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/json_template/user_leave.json" afterPath="$PROJECT_DIR$/json_template/user_leave.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/layouts/menu.blade.php" afterPath="$PROJECT_DIR$/resources/views/layouts/menu.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/leaves/fields.blade.php" afterPath="$PROJECT_DIR$/resources/views/leaves/fields.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/leaves/show_fields.blade.php" afterPath="$PROJECT_DIR$/resources/views/leaves/show_fields.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/user_leaves/fields.blade.php" afterPath="$PROJECT_DIR$/resources/views/user_leaves/fields.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/user_leaves/show_fields.blade.php" afterPath="$PROJECT_DIR$/resources/views/user_leaves/show_fields.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
     </list>
     <ignored path="pa53.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -534,7 +491,7 @@
       <workItem from="1478092378368" duration="4705000" />
       <workItem from="1478187930417" duration="8929000" />
       <workItem from="1478220500859" duration="1542000" />
-      <workItem from="1478311555520" duration="20494000" />
+      <workItem from="1478311555520" duration="20527000" />
     </task>
     <task id="LOCAL-00001" summary="rename to PA Metrasys">
       <created>1476512413193</created>
@@ -697,11 +654,18 @@
       <option name="project" value="LOCAL" />
       <updated>1478096618103</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="add audit and separate leave from admin and non admin user">
+      <created>1478405696122</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1478405696122</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="147920000" />
+    <option name="totallyTimeSpent" value="147953000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -763,7 +727,8 @@
     <MESSAGE value="add migration" />
     <MESSAGE value="resolve user datatable" />
     <MESSAGE value="add change password" />
-    <option name="LAST_COMMIT_MESSAGE" value="add change password" />
+    <MESSAGE value="add audit and separate leave from admin and non admin user" />
+    <option name="LAST_COMMIT_MESSAGE" value="add audit and separate leave from admin and non admin user" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
