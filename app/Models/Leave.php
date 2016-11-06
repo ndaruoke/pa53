@@ -105,10 +105,10 @@ class Leave extends Model
     public static $rules = [
         'start_date' => 'required',
         'end_date' => 'required',
-        'note' => 'required',
+        'note' => 'required'/**,
         'user_id' => 'required',
         'approval_id' => 'required',
-        'status' => 'required'
+        'status' => 'required'**/
     ];
 
     public function users()

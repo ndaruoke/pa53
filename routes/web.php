@@ -31,7 +31,6 @@ Route::resource('departments', 'DepartmentController');
 
 Route::resource('holidays', 'HolidayController');
 
-Route::resource('leaves', 'LeaveController');
 
 Route::resource('projects', 'ProjectController');
 
@@ -69,5 +68,19 @@ Route::resource('constants', 'ConstantController');
 
 Route::resource('userLeaves', 'UserLeaveController');
 
-Route::get('leaveSubmission', array('uses' => 'LeaveController@leaveSubmission',
-    'as' => 'leaveSubmission'));
+Route::get('cuti/submission', array('uses' => 'LeaveController@submission',
+    'as' => 'cuti.submission'));
+
+Route::get('cuti/submission/create', array('uses' => 'LeaveController@submissionCreate',
+    'as' => 'cuti.submission.create'));
+
+Route::get('cuti/submission/update', array('uses' => 'LeaveController@submissionUpdate',
+    'as' => 'cuti.submission.update'));
+
+Route::post('cuti/submission/store', array('uses' => 'LeaveController@submissionStore',
+    'as' => 'cuti.submission.store'));
+
+Route::get('cuti/submission/show/{id}', array('uses' => 'LeaveController@submissionShow',
+    'as' => 'cuti.submission.show'));
+
+Route::resource('leaves', 'LeaveController');

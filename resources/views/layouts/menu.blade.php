@@ -73,7 +73,7 @@
     <a href="{!! route('userLeaves.index') !!}"><i class="fa fa-hotel"></i><span>User Leave</span></a>
 </li>
 
-<li class="{{ Request::is('leaveSubmission*') ? 'active' : '' }}">
-    <a href="{!! route('leaveSubmission') !!}"><i class="fa fa-hotel"></i><span>Cuti</span></a>
+<li class="{{ Request::is('cuti*') ? 'active' : '' }}">
+    <a href="{!! route('cuti.submission') !!}"><i class="fa fa-hotel"></i><span>Cuti</span></a>
 </li>
 

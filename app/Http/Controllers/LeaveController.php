@@ -4,25 +4,31 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\DataTables\LeaveDataTable;
+use App\DataTables\SubmitLeaveDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateLeaveRequest;
 use App\Http\Requests\UpdateLeaveRequest;
 use App\Repositories\LeaveRepository;
+use App\Repositories\UserLeaveRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\User;
 use App\Models\UserLeave;
 use App\Models\Constant;
+use Carbon\Carbon;
 
 class LeaveController extends AppBaseController
 {
     /** @var  LeaveRepository */
     private $leaveRepository;
+    /** @var  UserLeaveRepository */
+    private $userLeaveRepository;
 
-    public function __construct(LeaveRepository $leaveRepo)
+    public function __construct(LeaveRepository $leaveRepo, UserLeaveRepository $userLeaveRepo)
     {
         $this->leaveRepository = $leaveRepo;
+        $this->userLeaveRepository = $userLeaveRepo;
     }
 
     /**
@@ -174,10 +180,112 @@ class LeaveController extends AppBaseController
      * @param LeaveDataTable $leaveDataTable
      * @return Response
      */
-    public function leaveSubmission(LeaveDataTable $leaveDataTable)
+    public function submission(SubmitLeaveDataTable $submitLeaveDataTable)
     {
         $user = Auth::user();
         $userLeave = UserLeave::where('user_id',$user->id)->first();
-        return $leaveDataTable->render('leaves.submit', array('userLeave'=>$userLeave));
+        return $submitLeaveDataTable->render('leaves.submit', array('userLeave'=>$userLeave));
+    }
+
+    /**
+     * Show the form for creating a new Leave.
+     *
+     * @return Response
+     */
+    public function submissionCreate()
+    {
+        $users = [''=>''] +User::pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        return view('leaves.submit_create',compact('users','statuses'));
+    }
+
+    /**
+     * Store a newly created Leave in storage.
+     *
+     * @param CreateLeaveRequest $request
+     *
+     * @return Response
+     */
+    public function submissionStore(CreateLeaveRequest $request)
+    {
+        $this->validate($request, [
+            'start_date' => 'required|date|after:today',
+            'end_date' => 'required|date|after:start_date-1',
+        ]);
+
+        $user = Auth::user();
+
+        $request->merge(array('status' => 0));
+        $request->merge(array('user_id' => $user->id));
+        $request->merge(array('approval_id' => $user->id));
+
+        $input = $request->all();
+
+        $leave = $this->leaveRepository->create($input);
+
+        $startDate = new Carbon($request->start_date);
+        $endDate = new Carbon($request->end_date);
+        $dayCount = $endDate->diff($startDate)->days;
+
+        $userLeave = UserLeave::where('user_id','=',$user->id)->get()->first();
+
+        $userLeave->leave_used += $dayCount+1;
+        $input = $userLeave->toArray();
+
+        $userLeave = $this->userLeaveRepository->update($input, $userLeave->id);
+
+        Flash::success('Leave saved successfully.');
+
+        return redirect(route('cuti.submission'));
+    }
+
+    /**
+     * Update the specified Leave in storage.
+     *
+     * @param  int              $id
+     * @param UpdateLeaveRequest $request
+     *
+     * @return Response
+     */
+    public function submissionUpdate($id, UpdateLeaveRequest $request)
+    {
+        $this->validate($request, [
+            'end_date' => 'required|date|after:start_date',
+        ]);
+
+        $leave = $this->leaveRepository->findWithoutFail($id);
+
+        if (empty($leave)) {
+            Flash::error('Leave not found');
+
+            return redirect(route('leaves.index'));
+        }
+
+        $leave = $this->leaveRepository->update($request->all(), $id);
+
+        Flash::success('Leave updated successfully.');
+
+        return redirect(route('cuti.submission'));
+    }
+
+    /**
+     * Display the specified Leave.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function submissionShow($id)
+    {
+        $leave = $this->leaveRepository->with('users')->with('approvals')->with('statuses')->findWithoutFail($id);
+
+        if (empty($leave)) {
+            Flash::error('Leave not found');
+
+            return redirect(route('cuti.submission'));
+        }
+
+        return view('leaves.submit_show')->with('leave', $leave);
+
     }
 }
