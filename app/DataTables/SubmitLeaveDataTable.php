@@ -29,11 +29,8 @@ class SubmitLeaveDataTable extends DataTable
     public function query()
     {
         $user = Auth::user();
-
-
-        $leaves = $user->role == 7 ?
-            Leave::with(['approvals','users','statuses'])->get() :
-            Leave::with(['approvals','users','statuses'])->where('user_id', $user->id)->get();
+        
+        $leaves = Leave::with(['approvals','users','statuses'])->where('user_id', $user->id)->get();
 
         return $this->applyScopes($leaves);
     }
