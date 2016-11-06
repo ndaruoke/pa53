@@ -72,11 +72,11 @@ class UserLeaveDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'user_id' => ['name' => 'user_id', 'data' => 'users.name'],
+            'user_id' => ['name' => 'users.name', 'data' => 'users.name'],
             'leave_count' => ['name' => 'leave_count', 'data' => 'leave_count'],
             'leave_used' => ['name' => 'leave_used', 'data' => 'leave_used'],
             'expire_date' => ['name' => 'expire_date', 'data' => 'expire_date'],
-            'status' => ['name' => 'status', 'data' => 'statuses.name']
+            'status' => ['name' => 'statuses.name', 'data' => 'statuses.name']
         ];
     }
 

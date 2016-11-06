@@ -75,7 +75,7 @@ class ApprovalHistoryDataTable extends DataTable
             'date' => ['name' => 'date', 'data' => 'date'],
             'note' => ['name' => 'note', 'data' => 'note'],
             'sequence_id' => ['name' => 'sequence_id', 'data' => 'sequence_id'],
-            'timesheet_id' => ['name' => 'timesheet_id', 'data' => 'timesheets.periode']
+            'timesheet_id' => ['name' => 'timesheets.periode', 'data' => 'timesheets.periode']
         ];
     }
 

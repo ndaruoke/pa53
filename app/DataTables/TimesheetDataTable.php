@@ -72,7 +72,7 @@ class TimesheetDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'user_id' => ['name' => 'user_id', 'data' => 'users.name'],
+            'user_id' => ['name' => 'users.name', 'data' => 'users.name'],
             'periode' => ['name' => 'periode', 'data' => 'periode']
         ];
     }

@@ -73,8 +73,8 @@ class SequenceDataTable extends DataTable
     {
         return [
             'level' => ['name' => 'level', 'data' => 'level'],
-            'role_id' => ['name' => 'role_id', 'data' => 'roles.name'],
-            'user_id' => ['name' => 'user_id', 'data' => 'users.name']
+            'role_id' => ['name' => 'roles.name', 'data' => 'roles.name'],
+            'user_id' => ['name' => 'users.name', 'data' => 'users.name']
         ];
     }
 

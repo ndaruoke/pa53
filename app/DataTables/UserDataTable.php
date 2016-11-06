@@ -81,9 +81,9 @@ class UserDataTable extends DataTable
             'cabang' => ['name' => 'cabang', 'data' => 'cabang'],
              * **/
             'name' => ['name' => 'name', 'data' => 'name'],
-            'role' => ['name' => 'role', 'data' => 'roles.name'],
-            'department' => ['name' => 'department', 'data' => 'departments.name'],
-            'position' => ['name' => 'position', 'data' => 'positions.name']
+            'role' => ['name' => 'roles.name', 'data' => 'roles.name'],
+            'department' => ['name' => 'departments.name', 'data' => 'departments.name'],
+            'position' => ['name' => 'positions.name', 'data' => 'positions.name']
         ];
     }
 

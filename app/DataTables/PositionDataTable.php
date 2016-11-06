@@ -75,7 +75,7 @@ class PositionDataTable extends DataTable
             'name' => ['name' => 'name', 'data' => 'name'],
             'description' => ['name' => 'description', 'data' => 'description'],
             'hierarchy' => ['name' => 'hierarchy', 'data' => 'hierarchy'],
-            'status' => ['name' => 'status', 'data' => 'statuses.name']
+            'status' => ['name' => 'statuses.name', 'data' => 'statuses.name']
         ];
     }
 

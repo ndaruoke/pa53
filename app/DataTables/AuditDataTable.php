@@ -77,7 +77,7 @@ class AuditDataTable extends DataTable
             'auditable_type' => ['name' => 'auditable_type', 'data' => 'auditable_type'],
             'old' => ['name' => 'old', 'data' => 'old'],
             'new' => ['name' => 'new', 'data' => 'new'],
-            'user_id' => ['name' => 'user_id', 'data' => 'user.name'],
+            'user_id' => ['name' => 'user.name', 'data' => 'user.name'],
             'route' => ['name' => 'route', 'data' => 'route'],
             'ip_address' => ['name' => 'ip_address', 'data' => 'ip_address']
         ];

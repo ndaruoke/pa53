@@ -78,12 +78,12 @@ class LeaveDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'user_id' => ['name' => 'user_id', 'data' => 'users.name'],
+            'user_id' => ['name' => 'users.name', 'data' => 'users.name'],
             'start_date' => ['name' => 'start_date', 'data' => 'start_date'],
             'end_date' => ['name' => 'end_date', 'data' => 'end_date'],
             'note' => ['name' => 'note', 'data' => 'note'],
-            'approval_id' => ['name' => 'approval_id', 'data' => 'approvals.name'],
-            'status' => ['name' => 'status', 'data' => 'statuses.name']
+            'approval_id' => ['name' => 'approvals.name', 'data' => 'approvals.name'],
+            'status' => ['name' => 'statuses.name', 'data' => 'statuses.name']
         ];
     }
 

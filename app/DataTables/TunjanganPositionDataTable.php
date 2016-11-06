@@ -72,8 +72,8 @@ class TunjanganPositionDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'tunjangan_id' => ['name' => 'tunjangan_id', 'data' => 'tunjangans.name'],
-            'position_id' => ['name' => 'position_id', 'data' => 'positions.name'],
+            'tunjangan_id' => ['name' => 'tunjangans.name', 'data' => 'tunjangans.name'],
+            'position_id' => ['name' => 'positions.name', 'data' => 'positions.name'],
             'lokal' => ['name' => 'lokal', 'data' => 'lokal'],
             'non_lokal' => ['name' => 'non_lokal', 'data' => 'non_lokal'],
             'luar_jawa' => ['name' => 'luar_jawa', 'data' => 'luar_jawa'],

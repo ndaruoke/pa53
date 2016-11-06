@@ -79,8 +79,8 @@ class ProjectDataTable extends DataTable
             'iwo' => ['name' => 'iwo', 'data' => 'iwo'],
             'code' => ['name' => 'code', 'data' => 'code'],
             'claimable' => ['name' => 'claimable', 'data' => 'claimable'],
-            'department_id' => ['name' => 'department_id', 'data' => 'departments.name'],
-            'pm_user_id' => ['name' => 'pm_user_id', 'data' => 'users.name']
+            'department_id' => ['name' => 'departments.name', 'data' => 'departments.name'],
+            'pm_user_id' => ['name' => 'users.name', 'data' => 'users.name']
         ];
     }
 

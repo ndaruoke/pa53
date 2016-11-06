@@ -74,7 +74,7 @@ class RoleDataTable extends DataTable
         return [
             'name' => ['name' => 'name', 'data' => 'name'],
             'description' => ['name' => 'description', 'data' => 'description'],
-            'status' => ['name' => 'status', 'data' => 'statuses.name']
+            'status' => ['name' => 'statuses.name', 'data' => 'statuses.name']
         ];
     }
 
