@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Auditable;
 
 /**
  * @SWG\Definition(
@@ -44,6 +45,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class RoleAccess extends Model
 {
     use SoftDeletes;
+
+    use Auditable;
 
     public $table = 'role_accesses';
     

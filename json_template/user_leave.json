@@ -31,6 +31,16 @@
     "inIndex": true
   },
   {
+    "name": "leave_used",
+    "dbType": "integer",
+    "htmlType": "number",
+    "validations": "required",
+    "searchable": true,
+    "fillable": true,
+    "inForm": true,
+    "inIndex": true
+  },
+  {
     "name": "expire_date",
     "dbType": "timestamp",
     "htmlType": "date",

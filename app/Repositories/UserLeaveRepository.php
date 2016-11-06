@@ -13,6 +13,7 @@ class UserLeaveRepository extends BaseRepository
     protected $fieldSearchable = [
         'user_id',
         'leave_count',
+        'leave_used',
         'expire_date',
         'status',
         'created_at',

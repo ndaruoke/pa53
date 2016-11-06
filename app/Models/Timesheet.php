@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Auditable;
 
 /**
  * @SWG\Definition(
@@ -45,6 +46,8 @@ class Timesheet extends Model
 {
     use SoftDeletes;
 
+    use Auditable;
+
     public $table = 'timesheets';
     
 
@@ -83,5 +86,10 @@ class Timesheet extends Model
     {
         return $this->belongsTo('App\Models\ApprovalHistory');
     }
-    
+
+    public function getPeriodeAttribute($date)
+    {
+        $cDate = \Carbon\Carbon::parse($date)->toDateString();
+        return $cDate;
+    }
 }

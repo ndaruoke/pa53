@@ -16,6 +16,12 @@
     <p>{!! $userLeave->leave_count !!}</p>
 </div>
 
+<!-- Leave Used Field -->
+<div class="form-group">
+    {!! Form::label('leave_used', 'Leave Used:') !!}
+    <p>{!! $userLeave->leave_used !!}</p>
+</div>
+
 <!-- Expire Date Field -->
 <div class="form-group">
     {!! Form::label('expire_date', 'Expire Date:') !!}

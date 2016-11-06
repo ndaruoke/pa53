@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Auditable;
 
 /**
  * @SWG\Definition(
@@ -44,6 +45,8 @@ class Holiday extends Model
 {
     use SoftDeletes;
 
+    use Auditable;
+
     public $table = 'holidays';
     
 
@@ -74,5 +77,9 @@ class Holiday extends Model
         'date' => 'required'
     ];
 
-    
+    public function getDateAttribute($date)
+    {
+        $cDate = \Carbon\Carbon::parse($date)->toDateString();
+        return $cDate;
+    }
 }

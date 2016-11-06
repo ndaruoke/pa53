@@ -15,7 +15,11 @@
         "infyomlabs/swagger-generator": "dev-master",
         "jlapp/swaggervel": "dev-master",
         "doctrine/dbal": "~2.3",
-        "intervention/image": "^2.3"
+        "intervention/image": "^2.3",
+        "barryvdh/laravel-snappy": "^0.3.1",
+        "h4cc/wkhtmltopdf-amd64": "0.12.x",
+        "h4cc/wkhtmltoimage-amd64": "0.12.x",
+        "owen-it/laravel-auditing": "^3.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

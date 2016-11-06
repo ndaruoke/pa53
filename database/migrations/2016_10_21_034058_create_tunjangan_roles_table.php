@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTunjanganRolesTable extends Migration
+class CreateTunjanganRolesTable2 extends Migration
 {
 
     /**

@@ -68,11 +68,12 @@
     <a href="{!! route('constants.index') !!}"><i class="fa fa-edit"></i><span>Constants</span></a>
 </li>
 
-<li class="{{ Request::is('userLeaves*') ? 'active' : '' }}">
-    <a href="{!! route('userLeaves.index') !!}"><i class="fa fa-edit"></i><span>UserLeaves</span></a>
-</li>
 
 <li class="{{ Request::is('userLeaves*') ? 'active' : '' }}">
     <a href="{!! route('userLeaves.index') !!}"><i class="fa fa-hotel"></i><span>User Leave</span></a>
+</li>
+
+<li class="{{ Request::is('leaveSubmission*') ? 'active' : '' }}">
+    <a href="{!! route('leaveSubmission') !!}"><i class="fa fa-hotel"></i><span>Cuti</span></a>
 </li>
 

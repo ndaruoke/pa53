@@ -10,6 +10,12 @@
     {!! Form::number('leave_count', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Leave Used Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('leave_used', 'Leave Used:') !!}
+    {!! Form::number('leave_used', null, ['class' => 'form-control']) !!}
+</div>
+
 <!-- Expire Date Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('expire_date', 'Expire Date:') !!}

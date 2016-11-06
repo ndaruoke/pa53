@@ -2,6 +2,7 @@
 
 namespace App\DataTables;
 
+use Auth;
 use App\Models\Leave;
 use Form;
 use Yajra\Datatables\Services\DataTable;
@@ -27,7 +28,12 @@ class LeaveDataTable extends DataTable
      */
     public function query()
     {
-        $leaves = Leave::with(['users','statuses'])->get();
+        $user = Auth::user();
+
+
+        $leaves = $user->role == 7 ?
+            Leave::with(['approvals','users','statuses'])->get() :
+            Leave::with(['approvals','users','statuses'])->where('user_id', $user->id)->get();
 
         return $this->applyScopes($leaves);
     }
@@ -72,9 +78,11 @@ class LeaveDataTable extends DataTable
     private function getColumns()
     {
         return [
+            'user_id' => ['name' => 'user_id', 'data' => 'users.name'],
             'start_date' => ['name' => 'start_date', 'data' => 'start_date'],
             'end_date' => ['name' => 'end_date', 'data' => 'end_date'],
-            'approval_id' => ['name' => 'approval_id', 'data' => 'users.name'],
+            'note' => ['name' => 'note', 'data' => 'note'],
+            'approval_id' => ['name' => 'approval_id', 'data' => 'approvals.name'],
             'status' => ['name' => 'status', 'data' => 'statuses.name']
         ];
     }

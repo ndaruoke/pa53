@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\DataTables\LeaveDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateLeaveRequest;
@@ -11,6 +12,7 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\User;
+use App\Models\UserLeave;
 use App\Models\Constant;
 
 class LeaveController extends AppBaseController
@@ -56,6 +58,10 @@ class LeaveController extends AppBaseController
      */
     public function store(CreateLeaveRequest $request)
     {
+        $this->validate($request, [
+            'end_date' => 'required|date|after:start_date',
+        ]);
+
         $input = $request->all();
 
         $leave = $this->leaveRepository->create($input);
@@ -74,7 +80,7 @@ class LeaveController extends AppBaseController
      */
     public function show($id)
     {
-        $leave = $this->leaveRepository->with('users')->with('statuses')->findWithoutFail($id);
+        $leave = $this->leaveRepository->with('users')->with('approvals')->with('statuses')->findWithoutFail($id);
 
         if (empty($leave)) {
             Flash::error('Leave not found');
@@ -118,6 +124,10 @@ class LeaveController extends AppBaseController
      */
     public function update($id, UpdateLeaveRequest $request)
     {
+        $this->validate($request, [
+            'end_date' => 'required|date|after:start_date',
+        ]);
+
         $leave = $this->leaveRepository->findWithoutFail($id);
 
         if (empty($leave)) {
@@ -155,5 +165,19 @@ class LeaveController extends AppBaseController
         Flash::success('Leave deleted successfully.');
 
         return redirect(route('leaves.index'));
+    }
+
+
+    /**
+     * Display a listing of the Leave.
+     *
+     * @param LeaveDataTable $leaveDataTable
+     * @return Response
+     */
+    public function leaveSubmission(LeaveDataTable $leaveDataTable)
+    {
+        $user = Auth::user();
+        $userLeave = UserLeave::where('user_id',$user->id)->first();
+        return $leaveDataTable->render('leaves.submit', array('userLeave'=>$userLeave));
     }
 }

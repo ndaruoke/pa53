@@ -74,6 +74,7 @@ class UserLeaveDataTable extends DataTable
         return [
             'user_id' => ['name' => 'user_id', 'data' => 'users.name'],
             'leave_count' => ['name' => 'leave_count', 'data' => 'leave_count'],
+            'leave_used' => ['name' => 'leave_used', 'data' => 'leave_used'],
             'expire_date' => ['name' => 'expire_date', 'data' => 'expire_date'],
             'status' => ['name' => 'status', 'data' => 'statuses.name']
         ];

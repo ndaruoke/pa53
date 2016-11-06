@@ -1,3 +1,9 @@
+<!-- User Id Field -->
+<div class="form-group">
+    {!! Form::label('approval_id', 'User:') !!}
+    <p>{!! $leave->users->name !!}</p>
+</div>
+
 <!-- Id Field -->
 <div class="form-group">
     {!! Form::label('id', 'Id:') !!}
@@ -16,10 +22,16 @@
     <p>{!! $leave->end_date !!}</p>
 </div>
 
+<!-- Note Field -->
+<div class="form-group">
+    {!! Form::label('note', 'Note:') !!}
+    <p>{!! $leave->note !!}</p>
+</div>
+
 <!-- Approval Id Field -->
 <div class="form-group">
-    {!! Form::label('approval_id', 'Approval Id:') !!}
-    <p>{!! $leave->users->name !!}</p>
+    {!! Form::label('approval_id', 'Approver:') !!}
+    <p>{!! $leave->approvals->name !!}</p>
 </div>
 
 <!-- Status Field -->

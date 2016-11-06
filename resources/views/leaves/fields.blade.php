@@ -1,3 +1,10 @@
+<!-- Approval Id Field -->
+<div class="form-group col-sm-6">
+{!! Form::label('user_id', 'User:') !!}
+{!! Form::select('user_id', $users, null, ['class' => 'form-control select2']) !!}
+<!-- {!! Form::text('user_id', null, ['class' => 'form-control']) !!} -->
+</div>
+
 <!-- Start Date Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('start_date', 'Start Date:') !!}
@@ -10,9 +17,15 @@
     {!! Form::date('end_date', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Note Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('note', 'Note:') !!}
+    {!! Form::textarea('note', null, ['class' => 'form-control']) !!}
+</div>
+
 <!-- Approval Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('approval_id', 'Approval:') !!}
+    {!! Form::label('approval_id', 'Approver:') !!}
     {!! Form::select('approval_id', $users, null, ['class' => 'form-control select2']) !!}
     <!-- {!! Form::text('approval_id', null, ['class' => 'form-control']) !!} -->
 </div>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Auditable;
 
 /**
  * @SWG\Definition(
@@ -18,6 +19,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      @SWG\Property(
  *          property="user_id",
  *          description="user_id",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
+ *          property="leave_count",
+ *          description="leave_count",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -57,6 +64,8 @@ class UserLeave extends Model
 {
     use SoftDeletes;
 
+    use Auditable;
+
     public $table = 'user_leaves';
     
 
@@ -66,6 +75,7 @@ class UserLeave extends Model
     public $fillable = [
         'user_id',
         'leave_count',
+        'leave_used',
         'expire_date',
         'status'
     ];
@@ -78,6 +88,7 @@ class UserLeave extends Model
     protected $casts = [
         'user_id' => 'integer',
         'leave_count' => 'integer',
+        'leave_used' => 'integer',
         'status' => 'integer'
     ];
 
@@ -89,6 +100,7 @@ class UserLeave extends Model
     public static $rules = [
         'user_id' => 'required',
         'leave_count' => 'required',
+        'leave_used' => 'required',
         'expire_date' => 'required',
         'status' => 'required'
     ];
@@ -101,5 +113,11 @@ class UserLeave extends Model
     public function statuses()
     {
         return $this->hasOne('App\Models\Constant', 'id','status');
+    }
+
+    public function getExpireDateAttribute($date)
+    {
+        $cDate = \Carbon\Carbon::parse($date)->toDateString();
+        return $cDate;
     }
 }

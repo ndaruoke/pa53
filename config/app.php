@@ -189,6 +189,14 @@ return [
          * Image Intervention
          */
         Intervention\Image\ImageServiceProvider::class,
+        /**
+         * PDF
+         */
+        Barryvdh\Snappy\ServiceProvider::class,
+        /**
+         * audit
+         */
+        OwenIt\Auditing\AuditingServiceProvider::class,
 
     ],
 
@@ -241,6 +249,8 @@ return [
         'Flash' => Laracasts\Flash\Flash::class,
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
     ],
 
 ];

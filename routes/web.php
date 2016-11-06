@@ -68,3 +68,6 @@ Route::get('testrole', function () {
 Route::resource('constants', 'ConstantController');
 
 Route::resource('userLeaves', 'UserLeaveController');
+
+Route::get('leaveSubmission', array('uses' => 'LeaveController@leaveSubmission',
+    'as' => 'leaveSubmission'));

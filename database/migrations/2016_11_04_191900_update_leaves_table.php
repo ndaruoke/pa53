@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class UpdateUsersTable2 extends Migration
+class UpdateLeavesTable extends Migration
 {
 
     /**
@@ -13,10 +13,8 @@ class UpdateUsersTable2 extends Migration
      */
     public function up()
     {
-
-        Schema::table('users', function ($table) {
-            $table->integer('position');
-            $table->integer('department');
+        Schema::table('leaves', function ($table) {
+            $table->string('note');
         });
     }
 
