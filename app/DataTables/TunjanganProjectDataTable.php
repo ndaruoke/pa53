@@ -55,7 +55,7 @@ class TunjanganProjectDataTable extends DataTable
                          'text'    => '<i class="fa fa-download"></i> Export',
                          'buttons' => [
                              'csv',
-                             'excel',
+
                              'pdf',
                          ],
                     ],
