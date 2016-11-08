@@ -27,9 +27,9 @@ use OwenIt\Auditing\Auditable;
  *          type="string"
  *      ),
  *      @SWG\Property(
- *          property="iwo",
- *          description="iwo",
- *          type="string"
+ *          property="budget",
+ *          description="integer",
+ *          type="integer",format="int32"
  *      ),
  *      @SWG\Property(
  *          property="code",
@@ -84,7 +84,7 @@ class Project extends Model
     public $fillable = [
         'project_name',
         'tunjangan_list',
-        'iwo',
+        'budget',
         'code',
         'claimable',
         'department_id',
@@ -99,7 +99,7 @@ class Project extends Model
     protected $casts = [
         'project_name' => 'string',
         'tunjangan_list' => 'string',
-        'iwo' => 'string',
+        'budget' => 'integer',
         'code' => 'integer',
         'claimable' => 'integer',
         'department_id' => 'integer',
@@ -114,7 +114,7 @@ class Project extends Model
     public static $rules = [
         'project_name' => 'required',
         'tunjangan_list' => 'required',
-        'iwo' => 'required',
+        'budget' => 'required',
         'code' => 'required',
         'claimable' => 'required',
         'department_id' => 'required',

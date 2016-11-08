@@ -76,7 +76,7 @@ class ProjectDataTable extends DataTable
         return [
             'project_name' => ['name' => 'project_name', 'data' => 'project_name'],
             'tunjangan_list' => ['name' => 'tunjangan_list', 'data' => 'tunjangan_list'],
-            'iwo' => ['name' => 'iwo', 'data' => 'iwo'],
+            'budget' => ['name' => 'budget', 'data' => 'budget'],
             'code' => ['name' => 'code', 'data' => 'code'],
             'claimable' => ['name' => 'claimable', 'data' => 'claimable'],
             'department_id' => ['name' => 'departments.name', 'data' => 'departments.name'],

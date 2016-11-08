@@ -13,7 +13,7 @@ class ProjectRepository extends BaseRepository
     protected $fieldSearchable = [
         'project_name',
         'tunjangan_list',
-        'iwo',
+        'budget',
         'code',
         'claimable',
         'department_id',

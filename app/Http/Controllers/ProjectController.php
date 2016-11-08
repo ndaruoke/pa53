@@ -65,7 +65,7 @@ class ProjectController extends AppBaseController
     public function store(CreateProjectRequest $request)
     {
         $input = $request->all();
-        // return $request->tunjangan;
+         return $input;
 
         $project = $this->projectRepository->create($input);
         //$project = Project::create($input);

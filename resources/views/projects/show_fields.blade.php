@@ -18,8 +18,8 @@
 
 <!-- Iwo Field -->
 <div class="form-group">
-    {!! Form::label('iwo', 'Iwo:') !!}
-    <p>{!! $project->iwo !!}</p>
+    {!! Form::label('budget', 'Budget:') !!}
+    <p>{!! $project->budget !!}</p>
 </div>
 
 <!-- Code Field -->

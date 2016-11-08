@@ -12,8 +12,8 @@
 </div>
 <!-- Iwo Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('iwo', 'Iwo:') !!}
-    {!! Form::text('iwo', null, ['class' => 'form-control']) !!}
+    {!! Form::label('budget', 'budget :') !!}
+    {!! Form::text('budget', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Code Field -->
@@ -31,8 +31,8 @@
 
 <!-- Departent Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('departent_id', 'Departent Id:') !!}
-    {!! Form::select('departent_id', [''=>'']+$department, null, ['class' => 'form-control select2']) !!}
+    {!! Form::label('departement_id', 'Departent Id:') !!}
+    {!! Form::select('departement_id', [''=>'']+$department, null, ['class' => 'form-control select2']) !!}
 </div>
 <div class="form-group col-sm-12">
     {!! Form::label('Tunjangan', 'Tunjangan :') !!}
