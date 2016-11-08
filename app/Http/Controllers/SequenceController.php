@@ -20,6 +20,7 @@ class SequenceController extends AppBaseController
 
     public function __construct(SequenceRepository $sequenceRepo)
     {
+        $this->middleware('auth');
         $this->sequenceRepository = $sequenceRepo;
     }
 

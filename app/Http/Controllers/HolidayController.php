@@ -18,6 +18,7 @@ class HolidayController extends AppBaseController
 
     public function __construct(HolidayRepository $holidayRepo)
     {
+        $this->middleware('auth');
         $this->holidayRepository = $holidayRepo;
     }
 

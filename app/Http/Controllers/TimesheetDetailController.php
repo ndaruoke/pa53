@@ -18,6 +18,7 @@ class TimesheetDetailController extends AppBaseController
 
     public function __construct(TimesheetDetailRepository $timesheetDetailRepo)
     {
+        $this->middleware('auth');
         $this->timesheetDetailRepository = $timesheetDetailRepo;
     }
 

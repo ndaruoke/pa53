@@ -18,6 +18,7 @@ class ConstantController extends AppBaseController
 
     public function __construct(ConstantRepository $constantRepo)
     {
+        $this->middleware('auth');
         $this->constantRepository = $constantRepo;
     }
 

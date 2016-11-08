@@ -19,6 +19,7 @@ class TunjanganProjectController extends AppBaseController
 
     public function __construct(TunjanganProjectRepository $tunjanganProjectRepo)
     {
+        $this->middleware('auth');
         $this->tunjanganProjectRepository = $tunjanganProjectRepo;
     }
 

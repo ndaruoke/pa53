@@ -19,6 +19,7 @@ class PositionController extends AppBaseController
 
     public function __construct(PositionRepository $positionRepo)
     {
+        $this->middleware('auth');
         $this->positionRepository = $positionRepo;
     }
 

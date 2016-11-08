@@ -19,6 +19,7 @@ class RoleAccessController extends AppBaseController
 
     public function __construct(RoleAccessRepository $roleAccessRepo)
     {
+        $this->middleware('auth');
         $this->roleAccessRepository = $roleAccessRepo;
     }
 

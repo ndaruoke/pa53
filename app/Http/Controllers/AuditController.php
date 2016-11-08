@@ -18,6 +18,7 @@ class AuditController extends AppBaseController
 
     public function __construct(AuditRepository $auditRepo)
     {
+        $this->middleware('auth');
         $this->auditRepository = $auditRepo;
     }
 

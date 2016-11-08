@@ -20,6 +20,7 @@ class ProjectMemberController extends AppBaseController
 
     public function __construct(ProjectMemberRepository $projectMemberRepo)
     {
+        $this->middleware('auth');
         $this->projectMemberRepository = $projectMemberRepo;
     }
 

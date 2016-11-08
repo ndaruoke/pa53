@@ -20,6 +20,7 @@ class UserLeaveController extends AppBaseController
 
     public function __construct(UserLeaveRepository $userLeaveRepo)
     {
+        $this->middleware('auth');
         $this->userLeaveRepository = $userLeaveRepo;
     }
 

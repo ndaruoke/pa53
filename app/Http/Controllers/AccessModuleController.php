@@ -18,6 +18,7 @@ class AccessModuleController extends AppBaseController
 
     public function __construct(AccessModuleRepository $accessModuleRepo)
     {
+        $this->middleware('auth');
         $this->accessModuleRepository = $accessModuleRepo;
     }
 

@@ -19,6 +19,7 @@ class ApprovalHistoryController extends AppBaseController
 
     public function __construct(ApprovalHistoryRepository $approvalHistoryRepo)
     {
+        $this->middleware('auth');
         $this->approvalHistoryRepository = $approvalHistoryRepo;
     }
 

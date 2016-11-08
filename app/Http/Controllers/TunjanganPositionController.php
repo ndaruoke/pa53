@@ -21,6 +21,7 @@ class TunjanganPositionController extends AppBaseController
 
     public function __construct(TunjanganPositionRepository $tunjanganPositionRepo)
     {
+        $this->middleware('auth');
         $this->tunjanganPositionRepository = $tunjanganPositionRepo;
     }
 
