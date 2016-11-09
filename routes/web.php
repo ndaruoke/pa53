@@ -29,6 +29,10 @@ Route::resource('approvalHistories', 'ApprovalHistoryController');
 
 Route::resource('departments', 'DepartmentController');
 
+//Route::post('holidaysimport', 'HolidayController@processSheet');
+Route::post('holidaysimport', array('uses' => 'HolidayController@processSheet',
+    'as' => 'holidaysimport'));
+
 Route::resource('holidays', 'HolidayController');
 
 
