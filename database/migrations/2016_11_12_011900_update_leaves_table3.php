@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class UpdateLeavesTable2 extends Migration
+class UpdateLeavesTable3 extends Migration
 {
 
     /**
@@ -14,10 +14,10 @@ class UpdateLeavesTable2 extends Migration
     public function up()
     {
         Schema::table('leaves', function ($table) {
-            $table->smallInteger('status')->default(0);
+            $table->smallInteger('approval_status')->default(0);
             $table->dateTime('moderated_at')->nullable();
             //If you want to track who moderated the Model add 'moderated_by' too.
-            $table->integer('moderated_by')->nullable()->unsigned();
+            //$table->integer('approval_id')->nullable()->unsigned();
         });
     }
 

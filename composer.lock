@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b7bbb0f1930aa065bab4a718b93a75e1",
-    "content-hash": "40fa1005f077df00233d28ee05379f0c",
+    "hash": "e78c77c60ceab7a2986859e08ff1e718",
+    "content-hash": "4d69b825c04258cc7efc8577fb877344",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -928,6 +928,52 @@
                 "wkhtmltopdf"
             ],
             "time": "2016-02-02 19:38:55"
+        },
+        {
+            "name": "hootlex/laravel-moderation",
+            "version": "v1.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hootlex/laravel-moderation.git",
+                "reference": "84b8fda3cd7e5abea3125626aa63137ae2e1202d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hootlex/laravel-moderation/zipball/84b8fda3cd7e5abea3125626aa63137ae2e1202d",
+                "reference": "84b8fda3cd7e5abea3125626aa63137ae2e1202d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "laravel/laravel": "5.*",
+                "phpunit/phpunit": "5.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Hootlex\\Moderation\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Kyriakidis",
+                    "email": "hootlex@icloud.com"
+                }
+            ],
+            "description": "A simple Content Moderation System for Laravel 5.* that allows you to Approve or Reject resources like posts, comments, users, etc.",
+            "keywords": [
+                "content-moderation",
+                "laravel",
+                "moderation",
+                "moderation-system"
+            ],
+            "time": "2016-06-22 19:15:35"
         },
         {
             "name": "infyomlabs/adminlte-templates",

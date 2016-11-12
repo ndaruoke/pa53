@@ -16,7 +16,7 @@
 
         </div>
         <h1 class="pull-right">
-            <a class="btn btn-primary btn-block " style="margin-top: -10px;margin-bottom: 5px" href="{!! route('cuti.submission.create') !!}">Ajukan Cuti</a>
+            <a class="btn btn-primary btn-block " style="margin-top: -10px;margin-bottom: 5px" href="{!! route('leaves.submission.create') !!}">Ajukan Cuti</a>
         </h1>
     </section>
     <div class="content">

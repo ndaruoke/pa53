@@ -11,7 +11,7 @@
        <div class="box box-primary">
            <div class="box-body">
                <div class="row">
-                   {!! Form::model($leave, ['route' => ['cuti.submit_update', $leave->id], 'method' => 'patch']) !!}
+                   {!! Form::model($leave, ['route' => ['leaves.submit_update', $leave->id], 'method' => 'patch']) !!}
 
                         @include('submit_leaves.fields')
 

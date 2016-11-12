@@ -16,7 +16,12 @@ use Response;
 use App\Models\User;
 use App\Models\UserLeave;
 use App\Models\Constant;
+use App\Models\Project;
+use App\Models\ProjectMember;
+
 use Carbon\Carbon;
+use App\Mail\LeaveSubmission;
+use Illuminate\Support\Facades\Mail;
 
 class LeaveController extends AppBaseController
 {
@@ -51,8 +56,9 @@ class LeaveController extends AppBaseController
      */
     public function create()
     {
-        $users = [''=>''] +User::pluck('name', 'id')->all();
-        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        $users = [''=>''] +User::whereIn('position',[1,2,3])  //Presdir,Director,VP
+					->pluck('name', 'id')->get();
+        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
         return view('leaves.create',compact('users','statuses'));
     }
 
@@ -116,7 +122,7 @@ class LeaveController extends AppBaseController
             return redirect(route('leaves.index'));
         }
         $users = [''=>''] +User::pluck('name', 'id')->all();
-        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
         return view('leaves.edit',compact('leave','users','statuses'));
         //return view('leaves.edit')->with('leave', $leave);
     }
@@ -196,7 +202,8 @@ class LeaveController extends AppBaseController
     public function submissionCreate()
     {
         $users = [''=>''] +User::pluck('name', 'id')->all();
-        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
+		
         return view('leaves.submit_create',compact('users','statuses'));
     }
 
@@ -234,11 +241,35 @@ class LeaveController extends AppBaseController
         $input = $userLeave->toArray();
 
         $userLeave = $this->userLeaveRepository->update($input, $userLeave->id);
+		
+		//send email TODO
+		Mail::to($request->user())->send(new LeaveSubmission($request));
 
         Flash::success('Leave saved successfully.');
 
         return redirect(route('cuti.submission'));
     }
+	
+	private function getApprover(CreateLeaveRequest $request)
+	{
+		$user = Auth::user();
+		
+		$consultantPosition = [6,7,8,9,16];
+		
+		if(array_has($consultantPosition, $user->position)) // konsultan
+		{
+			$projectMember = ProjectMember::where('user_id', $user->id)->get();
+			$project = Project::whereIn('id', $projectMember::pluck('id')->all());
+		}
+	}
+	
+	public funtion getProject()
+	{
+		$user = Auth::user();
+		
+		$projectMember = ProjectMember::where('user_id', $user->id)->get();
+		return Project::whereIn('id', $projectMember::pluck('id')->all());
+	}
 
     /**
      * Update the specified Leave in storage.

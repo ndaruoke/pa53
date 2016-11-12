@@ -41,7 +41,7 @@ class RoleAccessController extends AppBaseController
      */
     public function create()
     {
-        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
         return view('role_accesses.create',compact('statuses'));
     }
 
@@ -100,7 +100,7 @@ class RoleAccessController extends AppBaseController
             return redirect(route('roleAccesses.index'));
         }
 
-        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
         return view('role_accesses.edit',compact('roleAccess','statuses'));
     }
 
