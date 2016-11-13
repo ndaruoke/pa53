@@ -173,6 +173,11 @@ class User extends Model
     {
         return $this->belongsTo('App\Models\Project');
     }
+	
+	public function projectMember()
+    {
+        return $this->belongsTo('App\Models\ProjectMember');
+    }
 
     public function sequence()
     {

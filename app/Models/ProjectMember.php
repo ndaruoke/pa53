@@ -79,5 +79,9 @@ class ProjectMember extends Model
         'project_id' => 'required'
     ];
 
+	public function users()
+    {
+        return $this->hasOne('App\Models\User', 'id','user_id');
+    }
     
 }

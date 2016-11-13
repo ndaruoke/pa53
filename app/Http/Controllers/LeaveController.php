@@ -23,6 +23,8 @@ use Carbon\Carbon;
 use App\Mail\LeaveSubmission;
 use Illuminate\Support\Facades\Mail;
 
+use Log;
+
 class LeaveController extends AppBaseController
 {
     /** @var  LeaveRepository */
@@ -57,7 +59,7 @@ class LeaveController extends AppBaseController
     public function create()
     {
         $users = [''=>''] +User::whereIn('position',[1,2,3])  //Presdir,Director,VP
-					->pluck('name', 'id')->get();
+					->pluck('name', 'id')->all();
         $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
         return view('leaves.create',compact('users','statuses'));
     }
@@ -203,8 +205,17 @@ class LeaveController extends AppBaseController
     {
         $users = [''=>''] +User::pluck('name', 'id')->all();
         $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
+		$projects = $this->getProject();
 		
-        return view('leaves.submit_create',compact('users','statuses'));
+		if($projects!=null){
+			$projects = [''=>''] +$projects->pluck('project_name', 'id')->all();
+			return view('leaves.submit_create',compact('users','statuses','projects'));
+		}
+		else 
+		{
+			return view('leaves.submit_create',compact('users','statuses'));
+		}
+        
     }
 
     /**
@@ -225,7 +236,7 @@ class LeaveController extends AppBaseController
 
         $request->merge(array('status' => 0));
         $request->merge(array('user_id' => $user->id));
-        $request->merge(array('approval_id' => $user->id));
+        $request->merge(array('approval_id' => $this->getApprover($request)));
 
         $input = $request->all();
 
@@ -243,11 +254,11 @@ class LeaveController extends AppBaseController
         $userLeave = $this->userLeaveRepository->update($input, $userLeave->id);
 		
 		//send email TODO
-		Mail::to($request->user())->send(new LeaveSubmission($request));
+		//Mail::to($request->user())->send(new LeaveSubmission($request));
 
         Flash::success('Leave saved successfully.');
 
-        return redirect(route('cuti.submission'));
+        return redirect(route('leaves.submission'));
     }
 	
 	private function getApprover(CreateLeaveRequest $request)
@@ -255,20 +266,34 @@ class LeaveController extends AppBaseController
 		$user = Auth::user();
 		
 		$consultantPosition = [6,7,8,9,16];
-		
-		if(array_has($consultantPosition, $user->position)) // konsultan
+
+		if($request->project != null) // konsultan
 		{
-			$projectMember = ProjectMember::where('user_id', $user->id)->get();
-			$project = Project::whereIn('id', $projectMember::pluck('id')->all());
+			$project = Project::where('id', $request->project)->get();
+			return $project->first()->pm_user_id;
+		}
+		
+		else
+		{
+			return $user->id;
 		}
 	}
 	
-	public funtion getProject()
+	public function getProject()
 	{
 		$user = Auth::user();
+				
+		$projectMember = ProjectMember::where('user_id', $user->id)->where('deleted_at', null)->get();
+
+		if (count($projectMember)) {
+			$project = Project::whereIn('id', $projectMember->pluck('id')->where('deleted_at', null))->get();
+			return $project;
+		}
+		else 
+		{
+			return null;
+		}
 		
-		$projectMember = ProjectMember::where('user_id', $user->id)->get();
-		return Project::whereIn('id', $projectMember::pluck('id')->all());
 	}
 
     /**
