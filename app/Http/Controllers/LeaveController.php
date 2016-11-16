@@ -233,10 +233,12 @@ class LeaveController extends AppBaseController
         ]);
 
         $user = Auth::user();
+        $approver = $this->getApprover($request);
 
         $request->merge(array('status' => 0));
         $request->merge(array('user_id' => $user->id));
-        $request->merge(array('approval_id' => $this->getApprover($request)));
+         
+        $request->merge(array('approval_id' => $approver->id));
 
         $input = $request->all();
 
@@ -254,28 +256,101 @@ class LeaveController extends AppBaseController
         $userLeave = $this->userLeaveRepository->update($input, $userLeave->id);
 		
 		//send email TODO
-		//Mail::to($request->user())->send(new LeaveSubmission($request));
+		Mail::to($approver->email)
+                ->cc(getCC($request))
+                ->send(new LeaveSubmission($request,$approver));
 
         Flash::success('Leave saved successfully.');
 
         return redirect(route('leaves.submission'));
     }
 	
+    //TODO make flexible in table
 	private function getApprover(CreateLeaveRequest $request)
 	{
 		$user = Auth::user();
 		
 		$consultantPosition = [6,7,8,9,16];
+        $managingConsultantPosition = [4,5];
+        $bod = [1,2,3];
 
-		if($request->project != null) // konsultan
+		if($request->project != null) // consultant to PM
 		{
 			$project = Project::where('id', $request->project)->get();
 			return $project->first()->pm_user_id;
 		}
-		
+        if(in_array($user->position, $consultantPosition)) // PM to Managing Consultant
+        {
+            $approver = User::whereIn('position',$managingConsultantPosition)
+                ->where('department',$user->department)->get();
+            return $approver->first()->id;
+        }
+
+		if(in_array($user->position, $managingConsultantPosition)) // Managing Consultant to Vice President
+        {
+            $approver = User::where('position',3)
+                ->where('department',$user->department)->get();
+            return $approver->first()->id;
+        }
+
+        if(in_array($user->position, $bod)) // VP, Director auto approve admin
+        {
+            return $user->id;
+        }
+
 		else
 		{
 			return $user->id;
+		}
+	}
+
+    private function getCC(CreateLeaveRequest $request)
+	{
+		$user = Auth::user();
+		
+		$consultantPosition = [6,7,8,9,16];
+        $managingConsultantPosition = [4,5];
+        $bod = [1,2,3];
+        $hrd = [];
+
+		if($request->project != null) // Consultant to MC + HRD
+		{
+			$cc = User::whereIn('position',$managingConsultantPosition)
+                ->where('department',$user->department)->get();
+            $cc2 = User::whereIn('position',$hrd)
+                ->get();
+            $cc->combine($cc2);
+			return $cc->pluck('email')->all();
+		}
+        if(in_array($user->position, $consultantPosition)) // PM to VP+HRD
+        {
+            $cc = User::where('position',3)
+                ->where('department',$user->department)->get();
+            $cc2 = User::whereIn('position',$hrd)
+                ->get();
+            $cc->combine($cc2);
+            return $cc->pluck('email')->all();
+        }
+
+		if(in_array($user->position, $managingConsultantPosition)) // Managing Consultant to Vice President
+        {
+            $cc = User::whereIn('position',$hrd)
+                ->get();
+            return $cc->pluck('email')->all();
+        }
+
+        if(in_array($user->position, $bod)) // VP, Director auto approve admin
+        {
+            $cc = User::whereIn('position',$hrd)
+                ->get();
+            return $cc->pluck('email')->all();
+        }
+
+		else
+		{
+			$cc = User::whereIn('position',$hrd)
+                ->get();
+            return $cc->pluck('email')->all();
 		}
 	}
 	
