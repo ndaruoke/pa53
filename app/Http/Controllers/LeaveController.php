@@ -255,9 +255,11 @@ class LeaveController extends AppBaseController
 
         $userLeave = $this->userLeaveRepository->update($input, $userLeave->id);
 		
+        $cc = $this->getCC($request);
+
 		//send email TODO
 		Mail::to($approver->email)
-                ->cc(getCC($request))
+                ->cc($cc)
                 ->send(new LeaveSubmission($request,$approver));
 
         Flash::success('Leave saved successfully.');
@@ -277,25 +279,27 @@ class LeaveController extends AppBaseController
 		if($request->project != null) // consultant to PM
 		{
 			$project = Project::where('id', $request->project)->get();
-			return $project->first()->pm_user_id;
+            $approver = User::where('id',$project->first()->pm_user_id)
+                ->get();
+			return $approver->first();
 		}
         if(in_array($user->position, $consultantPosition)) // PM to Managing Consultant
         {
             $approver = User::whereIn('position',$managingConsultantPosition)
                 ->where('department',$user->department)->get();
-            return $approver->first()->id;
+            return $approver->first();
         }
 
 		if(in_array($user->position, $managingConsultantPosition)) // Managing Consultant to Vice President
         {
             $approver = User::where('position',3)
                 ->where('department',$user->department)->get();
-            return $approver->first()->id;
+            return $approver->first();
         }
 
         if(in_array($user->position, $bod)) // VP, Director auto approve admin
         {
-            return $user->id;
+            return $user;
         }
 
 		else
@@ -311,7 +315,7 @@ class LeaveController extends AppBaseController
 		$consultantPosition = [6,7,8,9,16];
         $managingConsultantPosition = [4,5];
         $bod = [1,2,3];
-        $hrd = [];
+        $hrd = [17];
 
 		if($request->project != null) // Consultant to MC + HRD
 		{
@@ -319,7 +323,7 @@ class LeaveController extends AppBaseController
                 ->where('department',$user->department)->get();
             $cc2 = User::whereIn('position',$hrd)
                 ->get();
-            $cc->combine($cc2);
+            $cc->merge($cc2);
 			return $cc->pluck('email')->all();
 		}
         if(in_array($user->position, $consultantPosition)) // PM to VP+HRD
@@ -328,7 +332,7 @@ class LeaveController extends AppBaseController
                 ->where('department',$user->department)->get();
             $cc2 = User::whereIn('position',$hrd)
                 ->get();
-            $cc->combine($cc2);
+            $cc->merge($cc2);
             return $cc->pluck('email')->all();
         }
 
@@ -351,9 +355,9 @@ class LeaveController extends AppBaseController
 			$cc = User::whereIn('position',$hrd)
                 ->get();
             return $cc->pluck('email')->all();
-		}
-	}
-	
+        }
+    }
+
 	public function getProject()
 	{
 		$user = Auth::user();

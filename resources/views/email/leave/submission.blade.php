@@ -1,7 +1,7 @@
 <div>
     Dear {{ $approver->name }}.
 	There is request for leave whose name {{ $user->name }}
-	{{ $request->type }} application from {{ $startDate }} to {{ $endDate }}
+	 application from {{ $startDate }} to {{ $endDate }}
 	
 	Reason : {{ $request->note }}
 	

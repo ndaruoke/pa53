@@ -10,7 +10,7 @@ use App\Http\Requests\CreateLeaveRequest;
 use Carbon\Carbon;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\Auth;
-use App\User;
+use App\Models\User;
 
 class LeaveSubmission extends Mailable
 {
@@ -34,16 +34,16 @@ class LeaveSubmission extends Mailable
      *
      * @return void
      */
-    public function __construct(CreateLeaveRequest request, User approver)
+    public function __construct(CreateLeaveRequest $request, User $approver)
     {
         $this->request = $request;
 		
 		$this->startDate = new Carbon($request->start_date);
 		$this->endDate = new Carbon($request->end_date);
 		$this->dayCount = $this->endDate->diff($this->startDate)->days;
-		$this->url = URL::to('/');
+		$this->url = url()->to('/');
 		$this->user = Auth::user();
-		$this->approver = approver;
+		$this->approver = $approver;
     }
 
     /**
