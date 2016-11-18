@@ -88,3 +88,4 @@ Route::get('cuti/submission/show/{id}', array('uses' => 'LeaveController@submiss
     'as' => 'cuti.submission.show'));
 
 Route::resource('leaves', 'LeaveController');
+Route::resource('add_timesheet', 'Add_Timesheet');

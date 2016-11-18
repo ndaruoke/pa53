@@ -113,11 +113,11 @@ class Project extends Model
      */
     public static $rules = [
         'project_name' => 'required',
-        'tunjangan_list' => 'required',
+     //   'tunjangan_list' => 'required',
         'budget' => 'required',
         'code' => 'required',
         'claimable' => 'required',
-        'department_id' => 'required',
+    //    'department_id' => 'required',
         'pm_user_id' => 'required'
     ];
 
