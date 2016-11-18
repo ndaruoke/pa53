@@ -137,7 +137,7 @@ class ProjectController extends AppBaseController
         $user = User::pluck('name', 'id')->all();
 
         $selected_tunjangan = TunjanganProject::where('project_id','=',$id)->with('tunjangan')->get();
-        $selected_member = ProjectMember::where('project_id','=',$id)->with('user')->get();
+        $selected_member = ProjectMember::where('project_id','=',$id)->with('users')->get();
         $department = Department::pluck('name', 'id')->all();
         // return $selected_tunjangan;
         return view('projects.edit',compact('project','tunjangan','user','department','selected_tunjangan','selected_member'));

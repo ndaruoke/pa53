@@ -198,8 +198,10 @@ return [
          */
         OwenIt\Auditing\AuditingServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
-
+		/**
+		 * moderation approval
+		 */
+		Hootlex\Moderation\ModerationServiceProvider::class,
     ],
 
     /*

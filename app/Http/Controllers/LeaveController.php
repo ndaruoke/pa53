@@ -16,7 +16,14 @@ use Response;
 use App\Models\User;
 use App\Models\UserLeave;
 use App\Models\Constant;
+use App\Models\Project;
+use App\Models\ProjectMember;
+
 use Carbon\Carbon;
+use App\Mail\LeaveSubmission;
+use Illuminate\Support\Facades\Mail;
+
+use Log;
 
 class LeaveController extends AppBaseController
 {
@@ -51,8 +58,9 @@ class LeaveController extends AppBaseController
      */
     public function create()
     {
-        $users = [''=>''] +User::pluck('name', 'id')->all();
-        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        $users = [''=>''] +User::whereIn('position',[1,2,3])  //Presdir,Director,VP
+					->pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
         return view('leaves.create',compact('users','statuses'));
     }
 
@@ -116,7 +124,7 @@ class LeaveController extends AppBaseController
             return redirect(route('leaves.index'));
         }
         $users = [''=>''] +User::pluck('name', 'id')->all();
-        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
         return view('leaves.edit',compact('leave','users','statuses'));
         //return view('leaves.edit')->with('leave', $leave);
     }
@@ -196,8 +204,18 @@ class LeaveController extends AppBaseController
     public function submissionCreate()
     {
         $users = [''=>''] +User::pluck('name', 'id')->all();
-        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
-        return view('leaves.submit_create',compact('users','statuses'));
+        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
+		$projects = $this->getProject();
+		
+		if($projects!=null){
+			$projects = [''=>''] +$projects->pluck('project_name', 'id')->all();
+			return view('leaves.submit_create',compact('users','statuses','projects'));
+		}
+		else 
+		{
+			return view('leaves.submit_create',compact('users','statuses'));
+		}
+        
     }
 
     /**
@@ -215,10 +233,12 @@ class LeaveController extends AppBaseController
         ]);
 
         $user = Auth::user();
+        $approver = $this->getApprover($request);
 
         $request->merge(array('status' => 0));
         $request->merge(array('user_id' => $user->id));
-        $request->merge(array('approval_id' => $user->id));
+         
+        $request->merge(array('approval_id' => $approver->id));
 
         $input = $request->all();
 
@@ -234,11 +254,126 @@ class LeaveController extends AppBaseController
         $input = $userLeave->toArray();
 
         $userLeave = $this->userLeaveRepository->update($input, $userLeave->id);
+		
+        $cc = $this->getCC($request);
+
+		//send email TODO
+		Mail::to($approver->email)
+                ->cc($cc)
+                ->send(new LeaveSubmission($request,$approver));
 
         Flash::success('Leave saved successfully.');
 
-        return redirect(route('cuti.submission'));
+        return redirect(route('leaves.submission'));
     }
+	
+    //TODO make flexible in table
+	private function getApprover(CreateLeaveRequest $request)
+	{
+		$user = Auth::user();
+		
+		$consultantPosition = [6,7,8,9,16];
+        $managingConsultantPosition = [4,5];
+        $bod = [1,2,3];
+
+		if($request->project != null) // consultant to PM
+		{
+			$project = Project::where('id', $request->project)->get();
+            $approver = User::where('id',$project->first()->pm_user_id)
+                ->get();
+			return $approver->first();
+		}
+        if(in_array($user->position, $consultantPosition)) // PM to Managing Consultant
+        {
+            $approver = User::whereIn('position',$managingConsultantPosition)
+                ->where('department',$user->department)->get();
+            return $approver->first();
+        }
+
+		if(in_array($user->position, $managingConsultantPosition)) // Managing Consultant to Vice President
+        {
+            $approver = User::where('position',3)
+                ->where('department',$user->department)->get();
+            return $approver->first();
+        }
+
+        if(in_array($user->position, $bod)) // VP, Director auto approve admin
+        {
+            return $user;
+        }
+
+		else
+		{
+			return $user->id;
+		}
+	}
+
+    private function getCC(CreateLeaveRequest $request)
+	{
+		$user = Auth::user();
+		
+		$consultantPosition = [6,7,8,9,16];
+        $managingConsultantPosition = [4,5];
+        $bod = [1,2,3];
+        $hrd = [17];
+
+		if($request->project != null) // Consultant to MC + HRD
+		{
+			$cc = User::whereIn('position',$managingConsultantPosition)
+                ->where('department',$user->department)->get();
+            $cc2 = User::whereIn('position',$hrd)
+                ->get();
+            $cc->merge($cc2);
+			return $cc->pluck('email')->all();
+		}
+        if(in_array($user->position, $consultantPosition)) // PM to VP+HRD
+        {
+            $cc = User::where('position',3)
+                ->where('department',$user->department)->get();
+            $cc2 = User::whereIn('position',$hrd)
+                ->get();
+            $cc->merge($cc2);
+            return $cc->pluck('email')->all();
+        }
+
+		if(in_array($user->position, $managingConsultantPosition)) // Managing Consultant to Vice President
+        {
+            $cc = User::whereIn('position',$hrd)
+                ->get();
+            return $cc->pluck('email')->all();
+        }
+
+        if(in_array($user->position, $bod)) // VP, Director auto approve admin
+        {
+            $cc = User::whereIn('position',$hrd)
+                ->get();
+            return $cc->pluck('email')->all();
+        }
+
+		else
+		{
+			$cc = User::whereIn('position',$hrd)
+                ->get();
+            return $cc->pluck('email')->all();
+        }
+    }
+
+	public function getProject()
+	{
+		$user = Auth::user();
+				
+		$projectMember = ProjectMember::where('user_id', $user->id)->where('deleted_at', null)->get();
+
+		if (count($projectMember)) {
+			$project = Project::whereIn('id', $projectMember->pluck('id')->where('deleted_at', null))->get();
+			return $project;
+		}
+		else 
+		{
+			return null;
+		}
+		
+	}
 
     /**
      * Update the specified Leave in storage.

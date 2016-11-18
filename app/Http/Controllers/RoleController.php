@@ -41,7 +41,7 @@ class RoleController extends AppBaseController
      */
     public function create()
     {
-        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
         return view('roles.create',compact('statuses'));
     }
 
@@ -100,7 +100,7 @@ class RoleController extends AppBaseController
             return redirect(route('roles.index'));
         }
 
-        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
         return view('roles.edit',compact('role','statuses'));
     }
 

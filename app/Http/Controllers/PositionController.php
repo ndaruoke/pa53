@@ -41,7 +41,7 @@ class PositionController extends AppBaseController
      */
     public function create()
     {
-        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
         return view('positions.create',compact('statuses'));
     }
 
@@ -100,7 +100,7 @@ class PositionController extends AppBaseController
             return redirect(route('positions.index'));
         }
 
-        $statuses = [''=>''] +Constant::pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
         return view('positions.edit',compact('position','statuses'));
     }
 

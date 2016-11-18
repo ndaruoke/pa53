@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
+use Hootlex\Moderation\Moderatable;
 
 /**
  * @SWG\Definition(
@@ -40,8 +41,20 @@ use OwenIt\Auditing\Auditable;
  *          format="int32"
  *      ),
  *      @SWG\Property(
+ *          property="user_id",
+ *          description="user_id",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
  *          property="approval_id",
  *          description="approval_id",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
+ *          property="approval_status",
+ *          description="approval_status",
  *          type="integer",
  *          format="int32"
  *      ),
@@ -50,6 +63,12 @@ use OwenIt\Auditing\Auditable;
  *          description="status",
  *          type="integer",
  *          format="int32"
+ *      ),
+ *      @SWG\Property(
+ *          property="moderated_at",
+ *          description="moderated_at",
+ *          type="string",
+ *          format="date-time"
  *      ),
  *      @SWG\Property(
  *          property="created_at",
@@ -70,6 +89,8 @@ class Leave extends Model
     use SoftDeletes;
 
     use Auditable;
+	
+	use Moderatable;
 
     public $table = 'leaves';
 
@@ -83,7 +104,9 @@ class Leave extends Model
         'note',
         'user_id',
         'approval_id',
-        'status'
+        'status',
+		'approval_status',
+		'moderated_at'
     ];
 
     /**
@@ -94,7 +117,8 @@ class Leave extends Model
     protected $casts = [
         'user_id' => 'integer',
         'approval_id' => 'integer',
-        'status' => 'integer'
+        'status' => 'integer',
+		'approval_status' => 'integer',
     ];
 
     /**
@@ -120,10 +144,15 @@ class Leave extends Model
     {
         return $this->hasOne('App\Models\User', 'id','approval_id');
     }
+	
+	public function approvalStatuses()
+    {
+        return $this->hasOne('App\Models\Constant', 'value','status');
+    }
 
     public function statuses()
     {
-        return $this->hasOne('App\Models\Constant', 'id','status');
+        return $this->hasOne('App\Models\Constant', 'value','status');
     }
 
     public function getStartDateAttribute($date)

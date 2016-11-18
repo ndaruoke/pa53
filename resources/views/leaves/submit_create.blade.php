@@ -12,7 +12,7 @@
 
             <div class="box-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'cuti.submission.store']) !!}
+                    {!! Form::open(['route' => 'leaves.submission.store']) !!}
 
                         @include('leaves.submit_fields')
 

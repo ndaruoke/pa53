@@ -72,20 +72,35 @@ Route::resource('constants', 'ConstantController');
 
 Route::resource('userLeaves', 'UserLeaveController');
 
-Route::get('cuti/submission', array('uses' => 'LeaveController@submission',
-    'as' => 'cuti.submission'));
+Route::get('leaves/submission', array('uses' => 'LeaveController@submission',
+    'as' => 'leaves.submission'));
 
-Route::get('cuti/submission/create', array('uses' => 'LeaveController@submissionCreate',
-    'as' => 'cuti.submission.create'));
+Route::get('leaves/submission/create', array('uses' => 'LeaveController@submissionCreate',
+    'as' => 'leaves.submission.create'));
 
-Route::get('cuti/submission/update', array('uses' => 'LeaveController@submissionUpdate',
-    'as' => 'cuti.submission.update'));
+Route::get('leaves/submission/update', array('uses' => 'LeaveController@submissionUpdate',
+    'as' => 'leaves.submission.update'));
 
-Route::post('cuti/submission/store', array('uses' => 'LeaveController@submissionStore',
-    'as' => 'cuti.submission.store'));
+Route::post('leaves/submission/store', array('uses' => 'LeaveController@submissionStore',
+    'as' => 'leaves.submission.store'));
 
-Route::get('cuti/submission/show/{id}', array('uses' => 'LeaveController@submissionShow',
-    'as' => 'cuti.submission.show'));
+Route::get('leaves/submission/show/{id}', array('uses' => 'LeaveController@submissionShow',
+    'as' => 'leaves.submission.show'));
+
+
+Route::resource('add_timesheet', 'Add_Timesheet');
+
+Route::get('leaves/moderation', array('uses' => 'LeaveController@moderation',
+    'as' => 'leaves.moderation'));		
+	
+Route::get('leaves/moderation/show/{id}', array('uses' => 'LeaveController@moderationShow',
+    'as' => 'leaves.moderation.show'));		
+	
+Route::post('leaves/submission/approve', array('uses' => 'LeaveController@submissionApprove',
+    'as' => 'leaves.submission.approve'));	
+
+Route::post('leaves/submission/reject', array('uses' => 'LeaveController@submissionReject',
+    'as' => 'leaves.submission.reject'));
 
 Route::resource('leaves', 'LeaveController');
-Route::resource('add_timesheet', 'Add_Timesheet');
+

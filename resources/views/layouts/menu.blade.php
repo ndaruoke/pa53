@@ -17,7 +17,7 @@
     <a href="{!! route('holidays.index') !!}"><i class="fa fa-calendar"></i><span>Holiday</span></a>
 </li>
 
-<li class="{{ Request::is('leaves*') ? 'active' : '' }}">
+<li class="{{ Request::is('leaves*') && !Request::is('leaves/submission*') ? 'active' : '' }}">
     <a href="{!! route('leaves.index') !!}"><i class="fa fa-plane"></i><span>Leave</span></a>
 </li>
 
@@ -35,7 +35,7 @@
 
 
 
-@endif
+
 
 <li class="{{ Request::is('timesheets*') ? 'active' : '' }}">
     <a href="{!! route('timesheets.index') !!}"><i class="fa fa-pencil-square-o"></i><span>Timesheet</span></a>
@@ -73,7 +73,13 @@
     <a href="{!! route('userLeaves.index') !!}"><i class="fa fa-hotel"></i><span>User Leave</span></a>
 </li>
 
-<li class="{{ Request::is('cuti*') ? 'active' : '' }}">
-    <a href="{!! route('cuti.submission') !!}"><i class="fa fa-hotel"></i><span>Cuti</span></a>
+<li class="{{ Request::is('leaves/submission*') ? 'active' : '' }}">
+    <a href="{!! route('leaves.submission') !!}"><i class="fa fa-hotel"></i><span>Cuti</span></a>
 </li>
 
+<li class="{{ Request::is('leaves/moderation*') ? 'active' : '' }}">
+    <a href="{!! route('leaves.moderation') !!}"><i class="fa fa-hotel"></i><span>Moderasi Cuti</span></a>
+</li>
+
+
+@endif

@@ -16,6 +16,14 @@
     {!! Form::textarea('note', null, ['class' => 'form-control']) !!}
 </div>
 
+@if( ! empty($projects))
+<!-- Project Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('project', 'Project:') !!}
+    {!! Form::select('project', $projects, null, ['class' => 'form-control select2']) !!}
+</div>
+@endif
+
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
