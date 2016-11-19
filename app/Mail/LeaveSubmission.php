@@ -37,7 +37,7 @@ class LeaveSubmission extends Mailable
     public function __construct(CreateLeaveRequest $request, User $approver)
     {
         $this->request = $request;
-		
+		Carbon::setLocale('id');
 		$this->startDate = new Carbon($request->start_date);
 		$this->endDate = new Carbon($request->end_date);
 		$this->dayCount = $this->endDate->diff($this->startDate)->days;
