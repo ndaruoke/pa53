@@ -7,7 +7,7 @@ use App\Models\Leave;
 use Form;
 use Yajra\Datatables\Services\DataTable;
 
-class SubmitLeaveDataTable extends DataTable
+class ModerationLeaveDataTable extends DataTable
 {
 
     /**
@@ -17,7 +17,7 @@ class SubmitLeaveDataTable extends DataTable
     {
         return $this->datatables
             ->collection($this->query())
-            ->addColumn('action', 'leaves.submit_datatables_actions')
+            ->addColumn('action', 'leaves.moderation_datatables_actions')
             ->make(true);
     }
 
@@ -30,7 +30,7 @@ class SubmitLeaveDataTable extends DataTable
     {
         $user = Auth::user();
         
-        $leaves = Leave::with(['approvals','users','statuses','types','approvalstat'])->where('user_id', $user->id)->get();
+        $leaves = Leave::withAnyStatus()->with(['approvals','users','statuses','types','approvalstat'])->where('approval_id', $user->id)->get();
 
         return $this->applyScopes($leaves);
     }

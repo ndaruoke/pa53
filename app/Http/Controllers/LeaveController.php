@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\DataTables\LeaveDataTable;
 use App\DataTables\SubmitLeaveDataTable;
+use App\DataTables\ModerationLeaveDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateLeaveRequest;
 use App\Http\Requests\UpdateLeaveRequest;
@@ -14,6 +15,7 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\User;
+use App\Models\Leave;
 use App\Models\UserLeave;
 use App\Models\Constant;
 use App\Models\Project;
@@ -204,16 +206,17 @@ class LeaveController extends AppBaseController
     public function submissionCreate()
     {
         $users = [''=>''] +User::pluck('name', 'id')->all();
-        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
+        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'value')->all();
+        $types = [''=>''] +Constant::where('category','Cuti')->orderBy('name','asc')->pluck('name', 'value')->all();
 		$projects = $this->getProject();
 		
 		if($projects!=null){
 			$projects = [''=>''] +$projects->pluck('project_name', 'id')->all();
-			return view('leaves.submit_create',compact('users','statuses','projects'));
+			return view('leaves.submit_create',compact('users','statuses','types','projects'));
 		}
 		else 
 		{
-			return view('leaves.submit_create',compact('users','statuses'));
+			return view('leaves.submit_create',compact('users','statuses','types'));
 		}
         
     }
@@ -260,7 +263,7 @@ class LeaveController extends AppBaseController
 		//send email TODO
 		Mail::to($approver->email)
                 ->cc($cc)
-                ->send(new LeaveSubmission($request,$approver));
+                ->queue(new LeaveSubmission($request->all(), $approver));
 
         Flash::success('Leave saved successfully.');
 
@@ -418,10 +421,111 @@ class LeaveController extends AppBaseController
         if (empty($leave)) {
             Flash::error('Leave not found');
 
-            return redirect(route('cuti.submission'));
+            return redirect(route('leaves.submission'));
         }
 
         return view('leaves.submit_show')->with('leave', $leave);
 
+    }
+
+        /**
+     * Display a listing of the Leave.
+     *
+     * @param LeaveDataTable $leaveDataTable
+     * @return Response
+     */
+    public function moderation(ModerationLeaveDataTable $moderationLeaveDataTable)
+    {
+        $user = Auth::user();
+        $userLeave = UserLeave::where('user_id',$user->id)->first();
+        return $moderationLeaveDataTable->render('leaves.moderation', array('userLeave'=>$userLeave));
+    }
+
+        /**
+     * Display the specified Leave.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function moderationShow($id)
+    {
+        $leave = $this->leaveRepository->with('users')->with('approvals')->with('statuses')->findWithoutFail($id);
+
+        if (empty($leave)) {
+            Flash::error('Leave not found');
+
+            return redirect(route('leaves.moderation'));
+        }
+
+        return view('leaves.moderation_show')->with('leave', $leave);
+
+    }
+
+            /**
+     * Display the specified Leave.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function moderationEdit($id)
+    {
+        $leave = $this->leaveRepository->with('users')->with('approvals')->with('statuses')->findWithoutFail($id);
+
+        if (empty($leave)) {
+            Flash::error('Leave not found');
+
+            return redirect(route('leaves.moderation'));
+        }
+
+        return view('leaves.moderation_edit')->with('leave', $leave);
+
+    }
+
+    /**
+     * Approve Leave in storage.
+     *
+     * @param CreateLeaveRequest $request
+     *
+     * @return Response
+     */
+    public function moderationApprove($id)
+    {
+        $leave = Leave::approve($id);
+
+        if ($leave == false) {
+            Flash::error('Approve Leave Fail');
+
+            return redirect(route('leaves.moderation'));
+        }
+
+        Flash::success('Approve successfully.');
+
+        return redirect(route('leaves.moderation'));
+    }
+
+    /**
+     * Reject Leave in storage.
+     *
+     * @param CreateLeaveRequest $request
+     *
+     * @return Response
+     */
+    public function moderationReject($id)
+    {
+        $leave = Leave::reject($id);
+
+        if ($leave == false) {
+            Flash::error('Reject Leave Fail');
+
+            return redirect(route('leaves.moderation'));
+        }
+
+        $leave = $this->leaveRepository->findWithoutFail($id);
+        
+        Flash::success('Reject successfully.');
+
+        return redirect(route('leaves.moderation'));
     }
 }

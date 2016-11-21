@@ -289,8 +289,8 @@
 
                         <p>Dear {{ $approver->name }},</p>
                         <p>There is request for leave whose name {{ $user->name }}</p>
-						<p> application from {{ $startDate }} to {{ $endDate }}</p>
-						<p> Reason : {{ $request->note }}</p>
+						<p> Leave application with type : {{ $type }} from {{ $startDate }} to {{ $endDate }}</p>
+						<p> Reason : {{ $request['note'] }}</p>
                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                           <tbody>
                             <tr>

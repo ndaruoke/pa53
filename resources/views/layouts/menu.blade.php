@@ -1,3 +1,5 @@
+@inject('count', 'App\Services\MenuCountService')
+
 <!-- examples roles access -->
 @if (Auth::user()->hasRole('Admin|CBS|Consultant|Finance|Manager|PMO|VP'))
 
@@ -17,7 +19,9 @@
     <a href="{!! route('holidays.index') !!}"><i class="fa fa-calendar"></i><span>Holiday</span></a>
 </li>
 
-<li class="{{ Request::is('leaves*') && !Request::is('leaves/submission*') ? 'active' : '' }}">
+<li class="{{ Request::is('leaves*') 
+    && !Request::is('leaves/submission*') 
+    && !Request::is('leaves/moderation*') ? 'active' : '' }}">
     <a href="{!! route('leaves.index') !!}"><i class="fa fa-plane"></i><span>Leave</span></a>
 </li>
 
@@ -78,7 +82,11 @@
 </li>
 
 <li class="{{ Request::is('leaves/moderation*') ? 'active' : '' }}">
-    <a href="{!! route('leaves.moderation') !!}"><i class="fa fa-hotel"></i><span>Moderasi Cuti</span></a>
+    <a href="{!! route('leaves.moderation') !!}"><i class="fa fa-hotel"></i><span>Moderasi Cuti 
+            <span class="pull-right-container">
+                <span class="label label-primary pull-right">{{$count->leave}}</span>
+            </span>
+        </span></a>
 </li>
 
 

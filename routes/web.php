@@ -94,13 +94,16 @@ Route::get('leaves/moderation', array('uses' => 'LeaveController@moderation',
     'as' => 'leaves.moderation'));		
 	
 Route::get('leaves/moderation/show/{id}', array('uses' => 'LeaveController@moderationShow',
-    'as' => 'leaves.moderation.show'));		
-	
-Route::post('leaves/submission/approve', array('uses' => 'LeaveController@submissionApprove',
-    'as' => 'leaves.submission.approve'));	
+    'as' => 'leaves.moderation.show'));	
 
-Route::post('leaves/submission/reject', array('uses' => 'LeaveController@submissionReject',
-    'as' => 'leaves.submission.reject'));
+Route::get('leaves/moderation/edit/{id}', array('uses' => 'LeaveController@moderationEdit',
+    'as' => 'leaves.moderation.edit'));		
+	
+Route::get('leaves/moderation/approve/{id}', array('uses' => 'LeaveController@moderationApprove',
+    'as' => 'leaves.moderation.approve'));	
+
+Route::get('leaves/moderation/reject/{id}', array('uses' => 'LeaveController@moderationReject',
+    'as' => 'leaves.moderation.reject'));
 
 Route::resource('leaves', 'LeaveController');
 

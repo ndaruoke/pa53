@@ -10,10 +10,10 @@
     {!! Form::date('end_date', null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Note Field -->
+<!-- Type Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('note', 'Note:') !!}
-    {!! Form::textarea('note', null, ['class' => 'form-control']) !!}
+{!! Form::label('type', 'Type:') !!}
+    {!! Form::select('type', $types, null, ['class' => 'form-control select2']) !!}
 </div>
 
 @if( ! empty($projects))
@@ -23,6 +23,12 @@
     {!! Form::select('project', $projects, null, ['class' => 'form-control select2']) !!}
 </div>
 @endif
+
+<!-- Note Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('note', 'Note:') !!}
+    {!! Form::textarea('note', null, ['class' => 'form-control']) !!}
+</div>
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">

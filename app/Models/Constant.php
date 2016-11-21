@@ -27,6 +27,11 @@ use OwenIt\Auditing\Auditable;
  *          type="string"
  *      ),
  *      @SWG\Property(
+ *          property="value",
+ *          description="value",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
  *          property="status",
  *          description="status",
  *          type="integer",
@@ -54,14 +59,14 @@ class Constant extends Model
 
     public $table = 'constants';
     
-
     protected $dates = ['deleted_at'];
 
 
     public $fillable = [
         'name',
         'category',
-        'status'
+        'status',
+        'value'
     ];
 
     /**
@@ -72,7 +77,8 @@ class Constant extends Model
     protected $casts = [
         'name' => 'string',
         'category' => 'string',
-        'status' => 'integer'
+        'status' => 'integer',
+        'value' => 'string'
     ];
 
     /**
@@ -83,7 +89,8 @@ class Constant extends Model
     public static $rules = [
         'name' => 'required',
         'category' => 'required',
-        'status' => 'required'
+        'status' => 'required',
+        'value' => 'required'
     ];
 
     public function leave()

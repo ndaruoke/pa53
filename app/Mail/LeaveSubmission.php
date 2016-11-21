@@ -11,8 +11,9 @@ use Carbon\Carbon;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Constant;
 
-class LeaveSubmission extends Mailable
+class LeaveSubmission extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 	
@@ -28,22 +29,28 @@ class LeaveSubmission extends Mailable
 	public $dayCount;
 	public $url;
 	public $approver;
+    public $type;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(CreateLeaveRequest $request, User $approver)
+    public function __construct(Array $request, User $approver)
     {
         $this->request = $request;
 		Carbon::setLocale('id');
-		$this->startDate = new Carbon($request->start_date);
-		$this->endDate = new Carbon($request->end_date);
-		$this->dayCount = $this->endDate->diff($this->startDate)->days;
+        $start = new Carbon($request['start_date']);
+        $end = new Carbon($request['end_date']);
+		$this->startDate = $start->format('d M Y');
+		$this->endDate = $end->format('d M Y');
+		$this->dayCount = $end->diff($start)->days;
 		$this->url = url()->to('/');
 		$this->user = Auth::user();
 		$this->approver = $approver;
+
+        $constant = Constant::where('category','Cuti')->where('value',$request['type'])->get();
+        $this->type = $constant->first()->name;
     }
 
     /**

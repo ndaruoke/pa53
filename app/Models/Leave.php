@@ -59,6 +59,11 @@ use Hootlex\Moderation\Moderatable;
  *          format="int32"
  *      ),
  *      @SWG\Property(
+ *          property="type",
+ *          description="type",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
  *          property="status",
  *          description="status",
  *          type="integer",
@@ -104,6 +109,7 @@ class Leave extends Model
         'note',
         'user_id',
         'approval_id',
+        'type',
         'status',
 		'approval_status',
 		'moderated_at'
@@ -129,10 +135,12 @@ class Leave extends Model
     public static $rules = [
         'start_date' => 'required',
         'end_date' => 'required',
-        'note' => 'required'/**,
+        'note' => 'required'
+        /**,
         'user_id' => 'required',
         'approval_id' => 'required',
-        'status' => 'required'**/
+        'status' => 'required'
+        **/
     ];
 
     public function users()
@@ -145,14 +153,19 @@ class Leave extends Model
         return $this->hasOne('App\Models\User', 'id','approval_id');
     }
 	
-	public function approvalStatuses()
+	public function approvalstat()
     {
-        return $this->hasOne('App\Models\Constant', 'value','status');
+        return $this->hasOne('App\Models\Constant', 'value','approval_status')->where('category', '=','Moderation');
     }
 
     public function statuses()
     {
-        return $this->hasOne('App\Models\Constant', 'value','status');
+        return $this->hasOne('App\Models\Constant', 'value','status')->where('category', '=','Status');
+    }
+
+    public function types()
+    {
+        return $this->hasOne('App\Models\Constant', 'value','type')->where('category', '=','Cuti');
     }
 
     public function getStartDateAttribute($date)

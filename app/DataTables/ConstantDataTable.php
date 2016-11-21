@@ -74,6 +74,7 @@ class ConstantDataTable extends DataTable
         return [
             'name' => ['name' => 'name', 'data' => 'name'],
             'category' => ['name' => 'category', 'data' => 'category'],
+            'value' => ['name' => 'category', 'data' => 'value'],
             'status' => ['name' => 'status', 'data' => 'status']
         ];
     }

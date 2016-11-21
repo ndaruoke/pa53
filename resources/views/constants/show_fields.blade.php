@@ -16,6 +16,12 @@
     <p>{!! $constant->category !!}</p>
 </div>
 
+<!-- Value Field -->
+<div class="form-group">
+    {!! Form::label('value', 'Value:') !!}
+    <p>{!! $constant->value !!}</p>
+</div>
+
 <!-- Status Field -->
 <div class="form-group">
     {!! Form::label('status', 'Status:') !!}
