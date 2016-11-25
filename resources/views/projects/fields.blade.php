@@ -31,8 +31,8 @@
 
 <!-- Departent Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('departement_id', 'Departent Id:') !!}
-    {!! Form::select('departement_id', [''=>'']+$department, null, ['class' => 'form-control select2']) !!}
+    {!! Form::label('department_id', 'Departent Id:') !!}
+    {!! Form::select('department_id', [''=>'']+$department, null, ['class' => 'form-control select2']) !!}
 </div>
 <div class="form-group col-sm-12">
     {!! Form::label('Tunjangan', 'Tunjangan :') !!}

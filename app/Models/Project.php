@@ -115,7 +115,7 @@ class Project extends Model
         'project_name' => 'required',
 		
       //  'tunjangan_list' => 'required',
-		'department_id' => 'required',
+	//	'department_id' => 'required',
 	//	
         'budget' => 'required',
         'code' => 'required',

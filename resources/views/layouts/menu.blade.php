@@ -45,6 +45,9 @@
     <a href="{!! route('timesheets.index') !!}"><i class="fa fa-pencil-square-o"></i><span>Timesheet</span></a>
 </li>
 
+<li class="{{ Request::is('add_timesheet*') ? 'active' : '' }}">
+    <a href="{!! route('add_timesheet.index') !!}"><i class="fa fa-pencil-square-o"></i><span>Create Timesheet</span></a>
+</li>
 <!--
 <li class="{{ Request::is('timesheetDetails*') ? 'active' : '' }}">
     <a href="{!! route('timesheetDetails.index') !!}"><i class="fa fa-calendar-check-o"></i><span>Timesheet Detail</span></a>

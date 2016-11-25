@@ -87,7 +87,11 @@ Route::post('leaves/submission/store', array('uses' => 'LeaveController@submissi
 Route::get('leaves/submission/show/{id}', array('uses' => 'LeaveController@submissionShow',
     'as' => 'leaves.submission.show'));
 
+Route::post('add_timesheet/create', array('uses' => 'Add_Timesheet@create',
+    'as' => 'add_timesheet.store'));
 
+Route::post('add_timesheet/form', array('uses' => 'Add_Timesheet@form',
+    'as' => 'add_timesheet.form'));
 Route::resource('add_timesheet', 'Add_Timesheet');
 
 Route::get('leaves/moderation', array('uses' => 'LeaveController@moderation',
