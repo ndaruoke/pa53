@@ -112,7 +112,7 @@ class UserLeave extends Model
 
     public function statuses()
     {
-        return $this->hasOne('App\Models\Constant', 'id','status');
+        return $this->hasOne('App\Models\Constant', 'value','status')->where('category', '=','Status');
     }
 
     public function getExpireDateAttribute($date)
