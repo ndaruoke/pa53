@@ -9,7 +9,7 @@ use OwenIt\Auditing\Auditable;
 /**
  * @SWG\Definition(
  *      definition="ApprovalHistory",
- *      required={"note", "sequence_id", "timesheet_id"},
+ *      required={"note", "sequence_id", "transaction_id"},
  *      @SWG\Property(
  *          property="id",
  *          description="id",
@@ -28,10 +28,27 @@ use OwenIt\Auditing\Auditable;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="timesheet_id",
- *          description="timesheet_id",
+ *          property="transaction_id",
+ *          description="transaction_id",
  *          type="integer",
  *          format="int32"
+ *      ),
+  *      @SWG\Property(
+ *          property="user_id",
+ *          description="user_id",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+*      @SWG\Property(
+ *          property="approval_id",
+ *          description="approval_id",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
+ *          property="transaction_type",
+ *          description="transaction_type",
+ *          type="string"
  *      ),
  *      @SWG\Property(
  *          property="created_at",
@@ -63,7 +80,10 @@ class ApprovalHistory extends Model
         'date',
         'note',
         'sequence_id',
-        'timesheet_id'
+        'transaction_id',
+        'transaction_type',
+        'user_id',
+        'approval_id'
     ];
 
     /**
@@ -74,7 +94,9 @@ class ApprovalHistory extends Model
     protected $casts = [
         'note' => 'string',
         'sequence_id' => 'integer',
-        'timesheet_id' => 'integer'
+        'transaction_id' => 'integer',
+        'user_id' => 'integer',
+        'approval_id' => 'integer'
     ];
 
     /**
@@ -85,12 +107,35 @@ class ApprovalHistory extends Model
     public static $rules = [
         'note' => 'required',
         'sequence_id' => 'required',
-        'timesheet_id' => 'required'
+        'transaction_id' => 'required',
+        'transaction_type' => 'required',
+        'user_id' => 'required',
+        'approval_id' => 'required'
     ];
 
     public function timesheets()
     {
-        return $this->hasOne('App\Models\Timesheet', 'id','timesheet_id');
+        return $this->hasOne('App\Models\Timesheet', 'id','transaction_id');
+    }
+
+    public function leaves()
+    {
+        return $this->hasOne('App\Models\Leave', 'id','transaction_id');
+    }
+
+    public function users()
+    {
+        return $this->hasOne('App\Models\User', 'id','user_id');
+    }
+
+    public function approvers()
+    {
+        return $this->hasOne('App\Models\User', 'id','approval_id');
+    }
+
+    public function approvalstatuses()
+    {
+        return $this->hasOne('App\Models\Constant', 'value','approval_status')->where('category', '=','Moderation');
     }
 
     public function getDateAttribute($date)

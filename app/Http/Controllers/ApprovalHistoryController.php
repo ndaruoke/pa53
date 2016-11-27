@@ -11,6 +11,9 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use App\Models\Timesheet;
+use App\Models\User;
+use App\Models\Leave;
+use App\Models\Constant;
 
 class ApprovalHistoryController extends AppBaseController
 {
@@ -41,8 +44,11 @@ class ApprovalHistoryController extends AppBaseController
      */
     public function create()
     {
-        $timesheet = [''=>''] +Timesheet::pluck('periode', 'id')->all();
-        return view('approval_histories.create',compact('timesheet'));
+        $timesheets = [''=>''] +Timesheet::pluck('periode', 'id')->all();
+        $leaves = [''=>''] +Leave::pluck('note', 'id')->all();
+        $users = [''=>''] +User::pluck('name', 'id')->all();
+        $approver = [''=>''] +User::pluck('name', 'id')->all();
+        return view('approval_histories.create',compact('timesheets','leaves','users','approvers'));
     }
 
     /**
@@ -99,8 +105,13 @@ class ApprovalHistoryController extends AppBaseController
 
             return redirect(route('approvalHistories.index'));
         }
-        $timesheet = [''=>''] +Timesheet::pluck('periode', 'id')->all();
-        return view('approval_histories.edit',compact('approvalHistory','timesheet'));
+        $timesheets = array_filter([''=>''] +Timesheet::pluck('periode', 'id')->all());
+        $leaves = array_filter([''=>''] +Leave::pluck('note', 'id')->all());
+        $users = [''=>''] +User::pluck('name', 'id')->all();
+        $approver = [''=>''] +User::pluck('name', 'id')->all();
+        $approvalstatuses = [''=>''] +Constant::where('category','Moderation')->orderBy('name','asc')->pluck('name', 'value')->all();
+        return view('approval_histories.edit',compact('approvalHistory','timesheets','leaves','users','approvers','approvalstatuses'));
+
         //return view('approval_histories.edit')->with('approvalHistory', $approvalHistory);
     }
 

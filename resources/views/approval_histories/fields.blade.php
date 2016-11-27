@@ -16,12 +16,42 @@
     {!! Form::number('sequence_id', null, ['class' => 'form-control']) !!}
 </div>
 
+@if( ! empty($timesheets))
 <!-- Timesheet Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('timesheet_id', 'Timesheet Periode:') !!}
-    {!! Form::select('timesheet', $timesheet, null, ['class' => 'form-control select2']) !!}
+    {!! Form::label('transaction_id', 'Timesheet Periode:') !!}
+    {!! Form::select('transaction_id', $timesheets, null, ['class' => 'form-control select2']) !!}
     <!--    {!! Form::text('timesheet_id', null, ['class' => 'form-control']) !!} -->
 </div>
+@endif
+
+@if( ! empty($leaves))
+<!-- Leave Id Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('transaction_id', 'Leave Note:') !!}
+    {!! Form::select('transaction_id', $leaves, null, ['class' => 'form-control select2']) !!}
+    <!--    {!! Form::text('timesheet_id', null, ['class' => 'form-control']) !!} -->
+</div>
+@endif
+
+<!-- Transaction Type Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('transaction_type', 'Transaction Type:') !!}
+    {!! Form::text('transaction_type', null, ['class' => 'form-control']) !!}
+</div>
+
+<!-- User Id Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('user_id', 'User:') !!}
+    {!! Form::select('user_id', $users, null, ['class' => 'form-control select2']) !!}
+</div>
+
+<!-- Approval Status Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('approval_status', 'Approval Status:') !!}
+    {!! Form::select('approval_status', $approvalstatuses, null, ['class' => 'form-control select2']) !!}
+</div>
+
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">

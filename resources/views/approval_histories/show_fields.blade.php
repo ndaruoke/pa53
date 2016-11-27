@@ -22,10 +22,26 @@
     <p>{!! $approvalHistory->sequence_id !!}</p>
 </div>
 
+@if( ! empty($approvalHistory->timesheets))
 <!-- Timesheet Id Field -->
 <div class="form-group">
-    {!! Form::label('timesheet_id', 'Timesheet Id:') !!}
+    {!! Form::label('transaction_id', 'Timesheet:') !!}
     <p>{!! $approvalHistory->timesheets->periode !!}</p>
+</div>
+@endif
+
+@if( ! empty($approvalHistory->leaves))
+<!-- Timesheet Id Field -->
+<div class="form-group">
+    {!! Form::label('transaction_id', 'Leave:') !!}
+    <p>{!! $approvalHistory->leaves->name !!}</p>
+</div>
+@endif
+
+<!-- Sequence Id Field -->
+<div class="form-group">
+    {!! Form::label('approval_status', 'Approval Status:') !!}
+    <p>{!! $approvalHistory->approvalstatuses->name !!}</p>
 </div>
 
 <!-- Created At Field -->

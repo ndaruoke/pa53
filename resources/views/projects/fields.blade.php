@@ -13,7 +13,7 @@
 <!-- Iwo Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('budget', 'budget :') !!}
-    {!! Form::text('budget', null, ['class' => 'form-control']) !!}
+    {!! Form::number('budget', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Code Field -->

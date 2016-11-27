@@ -30,7 +30,7 @@ class ModerationLeaveDataTable extends DataTable
     {
         $user = Auth::user();
         
-        $leaves = Leave::withAnyStatus()->with(['approvals','users','statuses','types','approvalstat'])->where('approval_id', $user->id)->get();
+        $leaves = Leave::with(['approvals','users','statuses','types','approvalstat'])->where('approval_id', $user->id)->get();
 
         return $this->applyScopes($leaves);
     }

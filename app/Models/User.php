@@ -193,5 +193,10 @@ class User extends Model
     {
         return $this->belongsTo('App\Models\UserLeave');
     }
+
+    public function approvalHistory()
+    {
+        return $this->belongsTo('App\Models\ApprovalHistory');
+    }
     
 }

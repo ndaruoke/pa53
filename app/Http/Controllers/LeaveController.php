@@ -11,6 +11,7 @@ use App\Http\Requests\CreateLeaveRequest;
 use App\Http\Requests\UpdateLeaveRequest;
 use App\Repositories\LeaveRepository;
 use App\Repositories\UserLeaveRepository;
+use App\Repositories\ApprovalHistoryRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
@@ -23,6 +24,7 @@ use App\Models\ProjectMember;
 
 use Carbon\Carbon;
 use App\Mail\LeaveSubmission;
+use App\Mail\LeaveNotification;
 use Illuminate\Support\Facades\Mail;
 
 use Log;
@@ -33,12 +35,15 @@ class LeaveController extends AppBaseController
     private $leaveRepository;
     /** @var  UserLeaveRepository */
     private $userLeaveRepository;
+    /** @var  ApprovalHistoryRepository */
+    private $approvalHistoryRepository;
 
-    public function __construct(LeaveRepository $leaveRepo, UserLeaveRepository $userLeaveRepo)
+    public function __construct(LeaveRepository $leaveRepo, UserLeaveRepository $userLeaveRepo, ApprovalHistoryRepository $approvalHistoryRepo)
     {
         $this->middleware('auth');
         $this->leaveRepository = $leaveRepo;
         $this->userLeaveRepository = $userLeaveRepo;
+        $this->approvalHistoryRepository = $approvalHistoryRepo;
     }
 
     /**
@@ -238,7 +243,7 @@ class LeaveController extends AppBaseController
         $user = Auth::user();
         $approver = $this->getApprover($request);
 
-        $request->merge(array('status' => 0));
+        $request->merge(array('status' => 1));
         $request->merge(array('user_id' => $user->id));
          
         $request->merge(array('approval_id' => $approver->id));
@@ -246,6 +251,9 @@ class LeaveController extends AppBaseController
         $input = $request->all();
 
         $leave = $this->leaveRepository->create($input);
+
+        $approvalHistory = $this->createFromLeave($leave);
+        $approvalHistory = $this->approvalHistoryRepository->create($approvalHistory);
 
         $startDate = new Carbon($request->start_date);
         $endDate = new Carbon($request->end_date);
@@ -260,7 +268,7 @@ class LeaveController extends AppBaseController
 		
         $cc = $this->getCC($request);
 
-		//send email TODO
+		//send email
 		Mail::to($approver->email)
                 ->cc($cc)
                 ->queue(new LeaveSubmission($request->all(), $approver));
@@ -311,55 +319,7 @@ class LeaveController extends AppBaseController
 		}
 	}
 
-    private function getCC(CreateLeaveRequest $request)
-	{
-		$user = Auth::user();
-		
-		$consultantPosition = [6,7,8,9,16];
-        $managingConsultantPosition = [4,5];
-        $bod = [1,2,3];
-        $hrd = [17];
-
-		if($request->project != null) // Consultant to MC + HRD
-		{
-			$cc = User::whereIn('position',$managingConsultantPosition)
-                ->where('department',$user->department)->get();
-            $cc2 = User::whereIn('position',$hrd)
-                ->get();
-            $cc->merge($cc2);
-			return $cc->pluck('email')->all();
-		}
-        if(in_array($user->position, $consultantPosition)) // PM to VP+HRD
-        {
-            $cc = User::where('position',3)
-                ->where('department',$user->department)->get();
-            $cc2 = User::whereIn('position',$hrd)
-                ->get();
-            $cc->merge($cc2);
-            return $cc->pluck('email')->all();
-        }
-
-		if(in_array($user->position, $managingConsultantPosition)) // Managing Consultant to Vice President
-        {
-            $cc = User::whereIn('position',$hrd)
-                ->get();
-            return $cc->pluck('email')->all();
-        }
-
-        if(in_array($user->position, $bod)) // VP, Director auto approve admin
-        {
-            $cc = User::whereIn('position',$hrd)
-                ->get();
-            return $cc->pluck('email')->all();
-        }
-
-		else
-		{
-			$cc = User::whereIn('position',$hrd)
-                ->get();
-            return $cc->pluck('email')->all();
-        }
-    }
+    
 
 	public function getProject()
 	{
@@ -492,6 +452,7 @@ class LeaveController extends AppBaseController
      */
     public function moderationApprove($id)
     {
+        //approve
         $leave = Leave::approve($id);
 
         if ($leave == false) {
@@ -500,10 +461,22 @@ class LeaveController extends AppBaseController
             return redirect(route('leaves.moderation'));
         }
 
+        $leave = $this->leaveRepository->findWithoutFail($id);
+        $cc = $this->getHRD(); 
+        $approver = User::where('id',$leave->approval_id)->get()->first();
+        $user = User::where('id',$leave->user_id)->get()->first();
+
+        //send email
+		Mail::to($user->email)
+                ->cc($cc)
+                ->queue(new LeaveNotification($leave, $approver, $user, 'approved'));
+
         Flash::success('Approve successfully.');
 
         return redirect(route('leaves.moderation'));
     }
+
+
 
     /**
      * Reject Leave in storage.
@@ -514,6 +487,26 @@ class LeaveController extends AppBaseController
      */
     public function moderationReject($id)
     {
+        $leave = $this->leaveRepository->findWithoutFail($id);
+        if (empty($leave)) {
+            Flash::error('Leave not found');
+
+            return redirect(route('leaves.moderation'));
+        }
+        $userLeave = $this->userLeaveRepository->findByField('user_id',$leave->user_id)->first();
+        if (empty($userLeave)) {
+            Flash::error('User Leave not found');
+
+            return redirect(route('leaves.moderation'));
+        }
+
+        $endDate = new Carbon($leave->end_date);
+        $startDate = new Carbon($leave->start_date);
+        $dayCount = $endDate->diff($startDate)->days;
+        $userLeave->leave_used = $userLeave->leave_used-$dayCount;
+        
+        $userLeave->save();
+
         $leave = Leave::reject($id);
 
         if ($leave == false) {
@@ -523,9 +516,73 @@ class LeaveController extends AppBaseController
         }
 
         $leave = $this->leaveRepository->findWithoutFail($id);
-        
+        $approver = User::where('id',$leave->approval_id)->get()->first();
+        $user = User::where('id',$leave->user_id)->get()->first();
+        //send email
+		Mail::to($user->email)
+                ->queue(new LeaveNotification($leave, $approver, $user, 'rejected'));
+
         Flash::success('Reject successfully.');
 
         return redirect(route('leaves.moderation'));
+    }
+
+    private function getCC(CreateLeaveRequest $request)
+	{
+		$user = Auth::user();
+		
+		$consultantPosition = [6,7,8,9,16];
+        $managingConsultantPosition = [4,5];
+        $bod = [1,2,3];;
+
+		if($request->project != null) // Consultant to MC + HRD
+		{
+			$cc = User::whereIn('position',$managingConsultantPosition)
+                ->where('department',$user->department)->get();
+			return $cc->pluck('email')->all()->first();
+		}
+        if(in_array($user->position, $consultantPosition)) // PM to VP+HRD
+        {
+            $cc = User::where('position',3)
+                ->where('department',$user->department)->get();
+            return $cc->pluck('email')->all()->first();
+        }
+
+		if(in_array($user->position, $managingConsultantPosition)) // Managing Consultant to Vice President
+        {
+            return $this->getHRD();
+        }
+
+        if(in_array($user->position, $bod)) // VP, Director auto approve admin
+        {
+            return $this->getHRD();
+        }
+
+		else
+		{
+			return $this->getHRD();
+        }
+    }
+
+    private function getHRD()
+	{
+        $hrd = [17];
+
+        $cc = User::whereIn('position',$hrd)->get();
+        return $cc->pluck('email')->all(); 
+    }
+
+    private function createFromLeave(Leave $leave)
+    {
+        return array(
+                    'date' => Carbon::now(),
+                    'note' => $leave->note,
+                    'sequence_id' => 0,
+                    'transaction_id' => $leave->id,
+                    'transaction_type' => 'leave',
+                    'approval_status' => $leave->approval_status,
+                    'user_id' => $leave->user_id,
+                    'approval_id' => $leave->approval_id
+                 );
     }
 }
