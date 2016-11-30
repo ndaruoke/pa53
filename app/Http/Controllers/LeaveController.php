@@ -214,7 +214,7 @@ class LeaveController extends AppBaseController
         $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'value')->all();
         $types = [''=>''] +Constant::where('category','Cuti')->orderBy('name','asc')->pluck('name', 'value')->all();
 		$projects = $this->getProject();
-		
+
 		if($projects!=null){
 			$projects = [''=>''] +$projects->pluck('project_name', 'id')->all();
 			return view('leaves.submit_create',compact('users','statuses','types','projects'));
@@ -242,6 +242,12 @@ class LeaveController extends AppBaseController
 
         $user = Auth::user();
         $approver = $this->getApprover($request);
+        
+        if (empty($approver)) {
+            Flash::error('Approver not found');
+
+            return redirect(route('leaves.submission'));
+        }
 
         $request->merge(array('status' => 1));
         $request->merge(array('user_id' => $user->id));
@@ -435,6 +441,12 @@ class LeaveController extends AppBaseController
 
         if (empty($leave)) {
             Flash::error('Leave not found');
+
+            return redirect(route('leaves.moderation'));
+        }
+
+        if($leave->approval_status == 1 || $leave->approval_status == 2) {//approved or rejected
+            Flash::error('Data '.$leave->note.' has been approved or rejected');
 
             return redirect(route('leaves.moderation'));
         }
