@@ -1,7 +1,7 @@
 @inject('count', 'App\Services\MenuCountService')
 
 <!-- examples roles access -->
-@if (Auth::user()->hasRole('Admin|CBS|Consultant|Finance|Manager|PMO|VP'))
+@if (Auth::user()->hasRole('Admin'))
 
 <li class="{{ Request::is('users*') ? 'active' : '' }}">
     <a href="{!! route('users.index') !!}"><i class="fa fa-user"></i><span>User</span></a>
@@ -37,10 +37,6 @@
     <a href="{!! route('sequences.index') !!}"><i class="fa fa-sort-amount-asc"></i><span>Sequence</span></a>
 </li>
 
-
-
-
-
 <li class="{{ Request::is('timesheets*') ? 'active' : '' }}">
     <a href="{!! route('timesheets.index') !!}"><i class="fa fa-pencil-square-o"></i><span>Timesheet</span></a>
 </li>
@@ -71,13 +67,23 @@
 
 <li class="{{ Request::is('audits*') ? 'active' : '' }}">
     <a href="{!! route('audits.index') !!}"><i class="fa fa-shield"></i><span>Audits</span></a>
-</li><li class="{{ Request::is('constants*') ? 'active' : '' }}">
+</li>
+
+<li class="{{ Request::is('constants*') ? 'active' : '' }}">
     <a href="{!! route('constants.index') !!}"><i class="fa fa-edit"></i><span>Constants</span></a>
 </li>
 
 
 <li class="{{ Request::is('userLeaves*') ? 'active' : '' }}">
     <a href="{!! route('userLeaves.index') !!}"><i class="fa fa-hotel"></i><span>User Leave</span></a>
+</li>
+
+@endif
+
+@if (Auth::user()->hasRole('CBS|Consultant|Finance|Manager|PMO|VP'))
+
+<li class="{{ Request::is('add_timesheet*') ? 'active' : '' }}">
+    <a href="{!! route('add_timesheet.index') !!}"><i class="fa fa-pencil-square-o"></i><span>Create Timesheet</span></a>
 </li>
 
 <li class="{{ Request::is('leaves/submission*') ? 'active' : '' }}">
@@ -91,6 +97,5 @@
             </span>
         </span></a>
 </li>
-
 
 @endif
