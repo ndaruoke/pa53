@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
+use Hootlex\Moderation\Moderatable;
 
 /**
  * @SWG\Definition(
@@ -39,6 +40,24 @@ use OwenIt\Auditing\Auditable;
  *          description="updated_at",
  *          type="string",
  *          format="date-time"
+ *      ),
+ *      @SWG\Property(
+ *          property="approval_id",
+ *          description="approval_id",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
+ *          property="approval_status",
+ *          description="approval_status",
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @SWG\Property(
+ *          property="moderated_at",
+ *          description="moderated_at",
+ *          type="string",
+ *          format="date-time"
  *      )
  * )
  */
@@ -48,6 +67,8 @@ class Timesheet extends Model
 
     use Auditable;
 
+    use Moderatable;
+
     public $table = 'timesheets';
     
 
@@ -56,7 +77,10 @@ class Timesheet extends Model
 
     public $fillable = [
         'user_id',
-        'periode'
+        'periode',
+        'approval_id',
+        'approval_status',
+		'moderated_at'
     ];
 
     /**
@@ -65,7 +89,9 @@ class Timesheet extends Model
      * @var array
      */
     protected $casts = [
-        'user_id' => 'integer'
+        'user_id' => 'integer',
+        'approval_id' => 'integer',
+        'approval_status' => 'integer'
     ];
 
     /**
