@@ -5,7 +5,6 @@ namespace App\DataTables;
 use App\Models\Project;
 use Form;
 use Yajra\Datatables\Services\DataTable;
-
 class ProjectDataTable extends DataTable
 {
 
