@@ -6,6 +6,7 @@ use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
 use Hootlex\Moderation\Moderatable;
+use DB;
 
 /**
  * @SWG\Definition(
@@ -69,6 +70,8 @@ class Timesheet extends Model
 
     use Moderatable;
 
+	use Eloquent as Model;
+
     public $table = 'timesheets';
     
 
@@ -76,6 +79,10 @@ class Timesheet extends Model
 
 
     public $fillable = [
+		'id',
+		'month',
+		'week',
+		'year',
         'user_id',
         'periode',
         'approval_id',
@@ -93,6 +100,9 @@ class Timesheet extends Model
         'approval_id' => 'integer',
         'approval_status' => 'integer'
     ];
+
+	protected $appends = ['total','monthname','status','link'];
+
 
     /**
      * Validation rules
@@ -118,4 +128,24 @@ class Timesheet extends Model
         $cDate = \Carbon\Carbon::parse($date)->toDateString();
         return $cDate;
     }
+
+	public function getTotalAttribute()
+	{
+		return DB::table('timesheet_details')->where('timesheet_id','=',$this->id)->count();
+	}
+
+	public function getMonthnameAttribute()
+	{
+		return date("F", mktime(0, 0, 0, $this->month, 10));	
+	}
+
+	public function getStatusAttribute()
+	{
+		return $this->action;
+	}
+
+	public function getLinkAttribute()
+	{
+		return '<a href="timesheet/show/'.$this->id.'" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-eye-open"></i>';	
+	}
 }

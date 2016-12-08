@@ -15,8 +15,8 @@ class TimesheetDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables
-            ->collection($this->query())
-            ->addColumn('action', 'timesheets.datatables_actions')
+            ->of($this->query())
+            ->addColumn('detail', 'timesheets.datatables_actions')
             ->make(true);
     }
 
@@ -27,7 +27,7 @@ class TimesheetDataTable extends DataTable
      */
     public function query()
     {
-        $timesheets = Timesheet::with(['users'])->get();
+        $timesheets = Timesheet::query();
 
         return $this->applyScopes($timesheets);
     }
@@ -41,7 +41,7 @@ class TimesheetDataTable extends DataTable
     {
         return $this->builder()
             ->columns($this->getColumns())
-            ->addAction(['width' => '10%'])
+            //->addAction(['width' => '10%'])
             ->ajax('')
             ->parameters([
                 'dom' => 'Bfrtip',
@@ -72,8 +72,14 @@ class TimesheetDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'user_id' => ['name' => 'users.name', 'data' => 'users.name'],
-            'periode' => ['name' => 'periode', 'data' => 'periode']
+            'id' => ['name' => 'id', 'id' => 'id'],
+            'periode' => ['name' => 'periode', 'data' => 'periode'],
+            'week' => ['name' => 'week', 'data' => 'week'],
+            'month' => ['name' => 'monthname', 'data' => 'monthname'],
+            'year' => ['name' => 'year', 'data' => 'year'],
+            'total' => ['name' => 'total', 'data' => 'total'],
+            'status' => ['name' => 'status', 'data' => 'status'],
+            'detail' => ['name' => 'link', 'data' => 'link']
         ];
     }
 

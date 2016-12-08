@@ -2,52 +2,6 @@
 
 @section('content')
 
-
-
- {!! Form::open(['route' => 'add_timesheet.form']) !!}
-
-
-<div class="box-body">
-              <div class="input-group input-group-sm">
-                <span class="input-group-btn">
-                    <button type="reset" class="btn" disabled="disabled">Timesheet</button>
-                </span>
-                 <select name="week" class="form-control select2" style="width: 40%;">
-                  <option value="01">Week 1</option>
-                  <option value="02">Week 2</option>
-                  <option value="03">Week 3</option>
-                  <option value="04">Week 4</option>
-                </select>
-                <select name="month" class="form-control select2" style="width: 40%;">
-                  <option value="01">Januari</option>
-                  <option value="02">Februari</option>
-                  <option value="03">Maret</option>
-                  <option value="04">April</option>
-                  <option value="05">Mei</option>
-                  <option value="06">Juni</option>
-                  <option value="07">Juli</option>
-                  <option value="08">Agustus</option>
-                  <option value="09">September</option>
-                  <option value="10">Oktober</option>
-                  <option value="11">November</option>
-                  <option value="12">Desember</option>
-                </select>
-                <select name="year" class="form-control select2" style="width: 20%;">
-                  <option>2016</option>
-                  <option>2017</option>
-                  <option>2016</option>
-                  <option>2017</option>
-                </select>
-                <span class="input-group-btn">
-                    <button type="submit" class="btn btn-info btn-flat">Tampilkan</button>
-                </span>
-              </div>
-            </div>
-          
-        </form>
-
-        
-
 <!--    <section class="content-header">
         <h1 class="pull-left">Create</h1>
         <h1 class="pull-right">
@@ -56,8 +10,8 @@
     </section>-->
     <div class="content">
     @include('flash::message')
-    
-@if(isset($_POST['week']))
+ 
+@if(!isset($_POST['week']))
 <hr>
     <?php function getListDate($y,$m,$w){
 	if($w>2){
@@ -71,24 +25,9 @@
     if($w==4){
         $totalDayWeek = $totalDay-21;
     }
-    switch ($w) {
-    case 1:
-        $d = 1;
-        break;
-    case 2:
-        $d = 8;
-        break;
-    case 3:
-        $d = 15;
-        break;
-    case 4:
-        $d = 22;
-        break;
-}
 	$listDate;
 	for($i=1;$i<$totalDayWeek+1;$i++){
-		$listDate[]= $y.'-'.$m.'-'.$d;
-        $d++;
+		$listDate[]= $y.'-'.$m.'-'.$i;
 	}
 	
 	return array('period'=>$period,'week'=>$w,'year'=>$y,'listDate' => $listDate);
@@ -105,7 +44,7 @@
 
         <div class="clearfix"></div>
 
-                  <div class="nav-tabs-custom">
+                  <div class="nav-tabs-custom" id="timesheet_tab">
             <ul class="nav nav-tabs">
               <li class="active"><a href="#tab_1" data-toggle="tab">Timesheet</a></li>
               <li><a href="#tab_2" data-toggle="tab">Insentif</a></li>
@@ -121,34 +60,29 @@
                   <th width="70">End</th>
                   <th>Lokasi</th>
 				  <th>Aktifitas</th>
-				  <!--<th>Keterangan</th>-->
+				  <th>Keterangan</th>
                 </tr>
-<?php
-if(isset($_POST['week'])){
-   foreach (getListDate($_POST["year"],$_POST["month"],$_POST["week"])['listDate'] as $row=>$date){
-       ?>
-       <tr>
-            <td class="col-md-2">
-{!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, null, ['class' => 'form-control select2']) !!}
-			</td>
-             <td class="col-md-2">{{$date}}{{ Form::hidden('timesheet['.$row.'][date]', $date) }}</td>
-             <td class="col-md-2"><input type="text" name="timesheet[{{$row}}][start]" class="form-control timepicker" placeholder="00:00"></td>
-             <td class="col-md-2"><input type="text" name="timesheet[{{$row}}][end]" class="form-control timepicker" placeholder="00:00"></td>
-             <td>
-{!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, null, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi']) !!}
+                @foreach ($timesheet_details as $row=>$detail)
+ <tr>
+                  <td>
+{!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
+				  </td>
+                  <td>{{str_replace(' 00:00:00','',$detail->date)}}{{ Form::hidden('timesheet['.$row.'][date]', str_replace(' 00:00:00','',$detail->date)) }}</td>
+             <td><input type="text" name="timesheet[{{$row}}][start]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->start_time }}"></td>
+             <td><input type="text" name="timesheet[{{$row}}][end]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->end_time }}"></td>
+                  
+                  <td>
+{!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, $detail->lokasi, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi']) !!}
 			</td>
 			<td class="col-md-2">
-{!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, null, ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')']) !!}				    
+{!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, $detail->activity, ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')']) !!}				    
             <input type="text" name="timesheet[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" style="display:none;">
 			</td>
-                  <!--<td><input type="text" name="timesheet[{{$row}}][keterangan]" class="form-control" placeholder="Keterangan"></td>-->
-           </tr>
-       <?php
-   }
-}
-?>
 
-              </tbody></table>
+                  <td><input type="text" name="timesheet[{{$row}}][keterangan]" class="form-control" placeholder="Keterangan"></td>
+                </tr>
+@endforeach
+                </tbody></table>
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="tab_2">
@@ -158,7 +92,22 @@ if(isset($_POST['week'])){
                 <th>Proyek</th>
                 <th>Insentif</th>
                 <th>Keterangan</th>
-                <th><a href="javascript:void(0);" style="font-size:18px;" id="addInsentif" title="Add Insentif"><span class="glyphicon glyphicon-plus"></span></a></th>
+                <th><a href="javascript:void(0);" style="font-size:18px;" id="addInsentif" title="Add Insentif"><span class="glyphicon glyphicon-plus"></span></a>
+                </th></tr>
+                @foreach ($timesheet_insentif as $row=>$detail)
+                <tr>
+                <td>
+                {{ Form::text('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control')) }}
+                <td>
+                {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
+                </td>
+                <td>
+                {{ Form::text('insentif['.$row.'][value]', $detail->value, array('class' => 'form-control')) }}
+                <td>
+                {{ Form::text('insentif['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control')) }}
+                </td><td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>
+                </tr>
+                @endforeach
                 </table>
               </div>
               <!-- /.tab-pane -->
@@ -169,22 +118,37 @@ if(isset($_POST['week'])){
                 <th>Proyek</th>
                 <th>Transportasi</th>
                 <th>Keterangan</th>
-                <th><a href="javascript:void(0);" style="font-size:18px;" id="addTransportasi" title="Add Transportasi"><span class="glyphicon glyphicon-plus"></span></a></th>
+                <th><a href="javascript:void(0);" style="font-size:18px;" id="addTransportasi" title="Add Transportasi"><span class="glyphicon glyphicon-plus"></span></a>
+                 </th></tr>
+                @foreach ($timesheet_transport as $row=>$detail)
+                <tr>
+                <td>
+                {{ Form::text('trans['.$row.'][date]', $detail->date, array('class' => 'form-control')) }}
+                <td>
+                {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
+                </td>
+                <td>
+                {{ Form::text('trans['.$row.'][value]', $detail->value, array('class' => 'form-control')) }}
+                <td>
+                {{ Form::text('trans['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control')) }}
+                </td><td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>
+                </tr>
+                @endforeach
                 </table>        
               </div>
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
           </div>
-@if(isset($_POST['week']))
-{{ Form::hidden('month', $_POST['month']) }}
-{{ Form::hidden('year', $_POST['year']) }}
-{{ Form::hidden('week', $_POST['week']) }}
-{{ Form::hidden('period', getListDate($_POST["year"],$_POST["month"],$_POST["week"])['period']) }}
-@endif
+            
+            {{ Form::hidden('edit', $id) }}
+            {{ Form::hidden('month', $timesheet->month) }}
+            {{ Form::hidden('year', $timesheet->year) }}
+            {{ Form::hidden('week', $timesheet->week) }}
+            {{ Form::hidden('period', getListDate($timesheet->year,$timesheet->month,$timesheet->week)['period']) }}
+
 <div class="form-group col-sm-12">
-    {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
-    {!! Form::submit('Save',['name'=>'action','class' => 'btn btn-primary']) !!}
+    {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
 </div>
 {!! Form::close() !!}
        
@@ -195,36 +159,32 @@ if(isset($_POST['week'])){
     @section('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
     <script>
+    $(document).ready(function(){
+        $('.content').find('.select2-container--default').removeAttr("style");
+        $('.content').find('.select2-container--default').css('width','100%');
+    })
+    
 function onChangeActivity(id){
     setTimeout(function() {
   var selected = $("[id*=select2-timesheet"+id+"activity]").text();
   if(selected ==='SUPPORT'){
       $('#timesheet'+id+'lokasi').val("UNCLAIMABLE").trigger("change");
-     // $('#timesheet'+id+'lokasi').prop("disabled", true);
-      $(' #timesheet'+id+'lokasi option:not(:selected)').each(function(){
-        $(this).attr('disabled', 'disabled');
-        });
-        $('#timesheet'+id+'activity_other').hide();
+      $('#timesheet'+id+'lokasi').prop("disabled", true);
   } 
   else if(selected ==='OTHERS'){
       $('#timesheet'+id+'activity_other').show();
-    //  $('#timesheet'+id+'lokasi').val("").trigger("change");
+   //   $('#timesheet'+id+'lokasi').val("").trigger("change");
       $('#timesheet'+id+'lokasi').prop("disabled", false);
   } 
   else {
       $('#timesheet'+id+'activity_other').hide();
-     // $('#timesheet'+id+'lokasi').val("").trigger("change");
+  //    $('#timesheet'+id+'lokasi').val("").trigger("change");
       $('#timesheet'+id+'lokasi').prop("disabled", false);
   }
   
 }, 50);
     
 }
-
-$(document).ready(function(){
-        $('.content').find('.select2-container--default').removeAttr("style");
-        $('.content').find('.select2-container--default').css('width','100%');
-    })
   $(".timepicker").timepicker({
       showInputs: false,
       showMeridian : false
@@ -269,7 +229,7 @@ foreach ($project as $key=>$value){
     }
 
 $(function(){
-   var id=0;
+   var id={!! count($timesheet_transport) !!};
     $('#addTransportasi').on('click', function() {
             //  var data = row.appendTo("#tb_trasnportasi");
              // data.find("input").val('');
@@ -284,7 +244,7 @@ $(function(){
 });      
 
 $(function(){
-    var id=0;
+    var id={!! count($timesheet_insentif) !!};
     $('#addInsentif').on('click', function() {
             //   var data = $("#tb_copy tr:eq(1)").clone(true).appendTo("#tb_insentif");
             //   data.find("input").val('');

@@ -23,7 +23,7 @@ Route::get('/home', 'HomeController@index');
 Route::resource('users', 'UserController');
 
 Route::get('change/{id}', array('uses' => 'UserController@change',
-    'as' => 'change'));
+'as' => 'change'));
 
 Route::resource('approvalHistories', 'ApprovalHistoryController');
 
@@ -31,7 +31,7 @@ Route::resource('departments', 'DepartmentController');
 
 //Route::post('holidaysimport', 'HolidayController@processSheet');
 Route::post('holidaysimport', array('uses' => 'HolidayController@processSheet',
-    'as' => 'holidaysimport'));
+'as' => 'holidaysimport'));
 
 Route::resource('holidays', 'HolidayController');
 
@@ -65,7 +65,7 @@ Route::resource('roleAccesses', 'RoleAccessController');
 
 //Example role access
 Route::get('testrole', function () {
-  return 'tes';
+    return 'tes';
 })->middleware('checkRole:Admin|CBS|Finance|Manager|PMO|VP');
 
 Route::resource('constants', 'ConstantController');
@@ -73,41 +73,45 @@ Route::resource('constants', 'ConstantController');
 Route::resource('userLeaves', 'UserLeaveController');
 
 Route::get('leaves/submission', array('uses' => 'LeaveController@submission',
-    'as' => 'leaves.submission'));
+'as' => 'leaves.submission'));
 
 Route::get('leaves/submission/create', array('uses' => 'LeaveController@submissionCreate',
-    'as' => 'leaves.submission.create'));
+'as' => 'leaves.submission.create'));
 
 Route::get('leaves/submission/update', array('uses' => 'LeaveController@submissionUpdate',
-    'as' => 'leaves.submission.update'));
+'as' => 'leaves.submission.update'));
 
 Route::post('leaves/submission/store', array('uses' => 'LeaveController@submissionStore',
-    'as' => 'leaves.submission.store'));
+'as' => 'leaves.submission.store'));
 
 Route::get('leaves/submission/show/{id}', array('uses' => 'LeaveController@submissionShow',
-    'as' => 'leaves.submission.show'));
+'as' => 'leaves.submission.show'));
+
+Route::get('timesheet_history', 'Add_Timesheet@getColumns');
+
+Route::get('timesheet/show/{id}', array('uses' => 'Add_Timesheet@show',
+'as' => 'add_timesheet.show'));
 
 Route::post('add_timesheet/create', array('uses' => 'Add_Timesheet@create',
-    'as' => 'add_timesheet.store'));
+'as' => 'add_timesheet.store'));
 
 Route::post('add_timesheet/form', array('uses' => 'Add_Timesheet@form',
-    'as' => 'add_timesheet.form'));
+'as' => 'add_timesheet.form'));
 Route::resource('add_timesheet', 'Add_Timesheet');
 
 Route::get('leaves/moderation', array('uses' => 'LeaveController@moderation',
-    'as' => 'leaves.moderation'));		
-	
+'as' => 'leaves.moderation'));
+
 Route::get('leaves/moderation/show/{id}', array('uses' => 'LeaveController@moderationShow',
-    'as' => 'leaves.moderation.show'));	
+'as' => 'leaves.moderation.show'));
 
 Route::get('leaves/moderation/edit/{id}', array('uses' => 'LeaveController@moderationEdit',
-    'as' => 'leaves.moderation.edit'));		
-	
+'as' => 'leaves.moderation.edit'));
+
 Route::get('leaves/moderation/approve/{id}', array('uses' => 'LeaveController@moderationApprove',
-    'as' => 'leaves.moderation.approve'));	
+'as' => 'leaves.moderation.approve'));
 
 Route::get('leaves/moderation/reject/{id}', array('uses' => 'LeaveController@moderationReject',
-    'as' => 'leaves.moderation.reject'));
+'as' => 'leaves.moderation.reject'));
 
 Route::resource('leaves', 'LeaveController');
-
