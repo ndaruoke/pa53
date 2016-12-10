@@ -70,8 +70,6 @@ class Timesheet extends Model
 
     use Moderatable;
 
-	use Eloquent as Model;
-
     public $table = 'timesheets';
     
 
