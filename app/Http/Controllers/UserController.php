@@ -16,6 +16,7 @@ use App\Models\Department;
 use App\Models\Position;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Hash;
+use Auth;
 
 class UserController extends AppBaseController
 {
@@ -200,5 +201,66 @@ class UserController extends AppBaseController
         Flash::success('User deleted successfully.');
 
         return redirect(route('users.index'));
+    }
+
+    /**
+     * Show the form for editing the specified User.
+     *
+     * @return Response
+     */
+    public function profile()
+    {
+        $id = Auth::User()->id;
+        $user = $this->userRepository->findWithoutFail($id);
+
+        if (empty($user)) {
+            Flash::error('User not found');
+
+            return redirect(route('users.index'));
+        }
+        $roles = [''=>''] +Role::pluck('name', 'id')->all();
+        $departments = [''=>''] +Department::pluck('name', 'id')->all();
+        $positions = [''=>''] +Position::pluck('name', 'id')->all();
+        return view('users.profile',compact('user','roles','departments','positions'));
+    }
+
+    /*
+     * Update the specified User in storage.
+     *
+     * @param  int              $id
+     * @param UpdateUserRequest $request
+     *
+     * @return Response
+     */
+    public function profileUpdate($id, UpdateUserRequest $request)
+    {
+        $user = $this->userRepository->findWithoutFail($id);
+
+        if (empty($user)) {
+            Flash::error('User not found');
+
+            return redirect(route('users.index'));
+        }
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename  = time() . '.' . $image->getClientOriginalExtension();
+
+            $path = public_path('profilepics/' . $filename);
+
+            Image::make($image->getRealPath())->resize(200, 200)->save($path);
+            $user->image = $filename;
+            $user->save();
+        }
+
+        if (!empty($request['password'])) {
+            $request['password'] = Hash::make($request['password']);
+        }
+
+        $user = $this->userRepository->update($request->all(), $id);
+
+        Flash::success('User updated successfully.');
+
+        return redirect(route('home'));
     }
 }

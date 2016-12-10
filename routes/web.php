@@ -18,7 +18,19 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', array('uses'=>'HomeController@index',
+'as' => 'home'));
+
+Route::get('users/profile', array('uses' => 'UserController@profile',
+'as' => 'users.profile'));
+
+/**
+Route::patch('users/profile/{user}', array('uses' => 'UserController@profileUpdate',
+'as' => 'users.profile.update'));
+**/
+
+Route::patch('users/profile/update/{user}', array('uses' => 'UserController@profileUpdate',
+'as' => 'users.profile.update'));
 
 Route::resource('users', 'UserController');
 
