@@ -16,15 +16,27 @@
     <p>{!! $sequence->date !!}</p>
 </div>
 
+<!-- Position Id Field -->
+<div class="form-group">
+    {!! Form::label('transaction_type', 'Transaction:') !!}
+    <p>{!! $sequence->transaction_type !!}</p>
+</div>
+
+<!-- Position Id Field -->
+<div class="form-group">
+    {!! Form::label('position_id', 'Position:') !!}
+    <p>{!! $sequence->positions->name !!}</p>
+</div>
+
 <!-- Role Id Field -->
 <div class="form-group">
-    {!! Form::label('role_id', 'Role Id:') !!}
+    {!! Form::label('role_id', 'Role:') !!}
     <p>{!! $sequence->roles->name !!}</p>
 </div>
 
 <!-- User Id Field -->
 <div class="form-group">
-    {!! Form::label('user_id', 'User Id:') !!}
+    {!! Form::label('user_id', 'User:') !!}
     <p>{!! $sequence->users->name !!}</p>
 </div>
 

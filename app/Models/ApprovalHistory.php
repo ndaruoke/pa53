@@ -138,6 +138,11 @@ class ApprovalHistory extends Model
         return $this->hasOne('App\Models\Constant', 'value','approval_status')->where('category', '=','Moderation');
     }
 
+    public function transactiontypes()
+    {
+        return $this->hasOne('App\Models\Constant', 'value','transaction_type')->where('category', '=','TransactionType');
+    }
+
     public function getDateAttribute($date)
     {
         $cDate = \Carbon\Carbon::parse($date)->toDateString();

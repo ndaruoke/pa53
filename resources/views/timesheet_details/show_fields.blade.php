@@ -36,19 +36,19 @@
 
 <!-- Timesheet Id Field -->
 <div class="form-group">
-    {!! Form::label('timesheet_id', 'Timesheet Id:') !!}
+    {!! Form::label('timesheet_id', 'Timesheet:') !!}
     <p>{!! $timesheetDetail->timesheet_id !!}</p>
 </div>
 
 <!-- Leave Id Field -->
 <div class="form-group">
-    {!! Form::label('leave_id', 'Leave Id:') !!}
+    {!! Form::label('leave_id', 'Leave:') !!}
     <p>{!! $timesheetDetail->leave_id !!}</p>
 </div>
 
 <!-- Project Id Field -->
 <div class="form-group">
-    {!! Form::label('project_id', 'Project Id:') !!}
+    {!! Form::label('project_id', 'Project:') !!}
     <p>{!! $timesheetDetail->project_id !!}</p>
 </div>
 

@@ -27,7 +27,7 @@ class ApprovalHistoryDataTable extends DataTable
      */
     public function query()
     {
-        $approvalHistories = ApprovalHistory::with(['timesheets','users','approvers','leaves','approvalstatuses'])->get();
+        $approvalHistories = ApprovalHistory::with(['timesheets','users','approvers','leaves','approvalstatuses','transactiontypes'])->get();
 
         return $this->applyScopes($approvalHistories);
     }
@@ -75,7 +75,7 @@ class ApprovalHistoryDataTable extends DataTable
             'date' => ['name' => 'date', 'data' => 'date'],
             'note' => ['name' => 'note', 'data' => 'note'],
             'sequence' => ['name' => 'sequence_id', 'data' => 'sequence_id'],
-            'transaction type' => ['name' => 'transaction_type', 'data' => 'transaction_type'],
+            'transaction type' => ['name' => 'transactiontypes.name', 'data' => 'transactiontypes.name'],
             'transaction id' => ['name' => 'transaction_id', 'data' => 'transaction_id'],
             'user' => ['name' => 'users.name', 'data' => 'users.name'],
             'approver' => ['name' => 'approvers.name', 'data' => 'approvers.name'],

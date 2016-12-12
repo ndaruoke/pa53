@@ -591,7 +591,7 @@ class LeaveController extends AppBaseController
                     'note' => $leave->note,
                     'sequence_id' => 0,
                     'transaction_id' => $leave->id,
-                    'transaction_type' => 'leave',
+                    'transaction_type' => 0, //leave
                     'approval_status' => $leave->approval_status,
                     'user_id' => $leave->user_id,
                     'approval_id' => $leave->approval_id

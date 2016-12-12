@@ -105,6 +105,11 @@ class Position extends Model
         return $this->belongsTo('App\Models\TunjanganPosition');
     }
 
+        public function sequence()
+    {
+        return $this->belongsTo('App\Models\Sequence');
+    }
+
     public function statuses()
     {
         return $this->hasOne('App\Models\Constant', 'value','status')->where('category', '=','Status');

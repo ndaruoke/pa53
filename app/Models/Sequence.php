@@ -75,7 +75,8 @@ class Sequence extends Model
     protected $casts = [
         'level' => 'integer',
         'role_id' => 'integer',
-        'user_id' => 'integer'
+        'user_id' => 'integer',
+        'user_position' => 'integer'
     ];
 
     /**
@@ -91,11 +92,16 @@ class Sequence extends Model
 
     public function roles()
     {
-        return $this->hasOne('App\Models\Roles', 'id','status');
+        return $this->hasOne('App\Models\Roles', 'id','role_id');
     }
 
     public function users()
     {
-        return $this->hasOne('App\Models\USers', 'id','status');
+        return $this->hasOne('App\Models\Users', 'id','user_id');
+    }
+
+    public function userPositions()
+    {
+        return $this->hasOne('App\Models\Position', 'id','position_id');
     }
 }

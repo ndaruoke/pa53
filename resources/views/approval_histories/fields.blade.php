@@ -21,7 +21,6 @@
 <div class="form-group col-sm-6">
     {!! Form::label('transaction_id', 'Timesheet Periode:') !!}
     {!! Form::select('transaction_id', $timesheets, null, ['class' => 'form-control select2']) !!}
-    <!--    {!! Form::text('timesheet_id', null, ['class' => 'form-control']) !!} -->
 </div>
 @endif
 
@@ -37,7 +36,7 @@
 <!-- Transaction Type Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('transaction_type', 'Transaction Type:') !!}
-    {!! Form::text('transaction_type', null, ['class' => 'form-control']) !!}
+    {!! Form::select('transaction_type', $transactiontypes, null, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- User Id Field -->

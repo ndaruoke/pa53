@@ -6,13 +6,13 @@
 
 <!-- User Id Field -->
 <div class="form-group">
-    {!! Form::label('user_id', 'User Id:') !!}
+    {!! Form::label('user_id', 'User:') !!}
     <p>{!! $projectMember->user_id !!}</p>
 </div>
 
 <!-- Project Id Field -->
 <div class="form-group">
-    {!! Form::label('project_id', 'Project Id:') !!}
+    {!! Form::label('project_id', 'Project:') !!}
     <p>{!! $projectMember->project_id !!}</p>
 </div>
 

@@ -36,13 +36,13 @@
 
 <!-- Department Id Field -->
 <div class="form-group">
-    {!! Form::label('department_id', 'Department Id:') !!}
+    {!! Form::label('department_id', 'Department:') !!}
     <p>{!! $project->departments->name !!}</p>
 </div>
 
 <!-- Pm User Id Field -->
 <div class="form-group">
-    {!! Form::label('pm_user_id', 'Pm User Id:') !!}
+    {!! Form::label('pm_user_id', 'Pm User:') !!}
     <p>{!! $project->users->name !!}</p>
 </div>
 

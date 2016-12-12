@@ -18,7 +18,7 @@
 
 <!-- Sequence Id Field -->
 <div class="form-group">
-    {!! Form::label('sequence_id', 'Sequence Id:') !!}
+    {!! Form::label('sequence_id', 'Sequence:') !!}
     <p>{!! $approvalHistory->sequence_id !!}</p>
 </div>
 
@@ -38,10 +38,16 @@
 </div>
 @endif
 
-<!-- Sequence Id Field -->
+<!-- Approval Status Field -->
 <div class="form-group">
     {!! Form::label('approval_status', 'Approval Status:') !!}
     <p>{!! $approvalHistory->approvalstatuses->name !!}</p>
+</div>
+
+<!-- Transaction Type Field -->
+<div class="form-group">
+    {!! Form::label('transaction_type', 'Transaction Type:') !!}
+    <p>{!! $approvalHistory->transactiontypes->name !!}</p>
 </div>
 
 <!-- Created At Field -->

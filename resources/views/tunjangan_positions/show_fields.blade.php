@@ -6,13 +6,13 @@
 
 <!-- Tunjangan Id Field -->
 <div class="form-group">
-    {!! Form::label('tunjangan_id', 'Tunjangan Id:') !!}
+    {!! Form::label('tunjangan_id', 'Tunjangan:') !!}
     <p>{!! $tunjanganPosition->tunjangans->name !!}</p>
 </div>
 
 <!-- Position Id Field -->
 <div class="form-group">
-    {!! Form::label('position_id', 'Position Id:') !!}
+    {!! Form::label('position_id', 'Position:') !!}
     <p>{!! $tunjanganPosition->positions->name !!}</p>
 </div>
 
