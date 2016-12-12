@@ -169,6 +169,17 @@ class UserController extends AppBaseController
         }
 
         if (!empty($request['password'])) {
+            if(empty($request['confirm_password'])) 
+            {
+                Flash::error('Confirm password must be filled');
+                return redirect()->back();
+            }
+
+            if($request['confirm_password'] != $request['password']) 
+            {
+                Flash::error('Password not same');
+                return redirect()->back();
+            }
             $request['password'] = Hash::make($request['password']);
         }
 
@@ -239,7 +250,7 @@ class UserController extends AppBaseController
         if (empty($user)) {
             Flash::error('User not found');
 
-            return redirect(route('users.index'));
+            return redirect(route('home'));
         }
 
         if ($request->hasFile('image')) {
@@ -254,6 +265,17 @@ class UserController extends AppBaseController
         }
 
         if (!empty($request['password'])) {
+            if(empty($request['confirm_password'])) 
+            {
+                Flash::error('Confirm password must be filled');
+                return redirect()->back();
+            }
+
+            if($request['confirm_password'] != $request['password']) 
+            {
+                Flash::error('Password not same');
+                return redirect()->back();
+            }
             $request['password'] = Hash::make($request['password']);
         }
 
