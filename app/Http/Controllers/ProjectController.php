@@ -136,7 +136,7 @@ class ProjectController extends AppBaseController
         $tunjangan = Tunjangan::pluck('name', 'id')->all();
         $user = User::pluck('name', 'id')->all();
 
-        $selected_tunjangan = TunjanganProject::where('project_id','=',$id)->with('tunjangan')->get();
+        $selected_tunjangan = TunjanganProject::where('project_id','=',$id)->with('tunjangans')->get();
         $selected_member = ProjectMember::where('project_id','=',$id)->with('users')->get();
         $department = Department::pluck('name', 'id')->all();
         // return $selected_tunjangan;

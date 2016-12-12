@@ -10,7 +10,8 @@
     {!! Form::label('pm_user_id', 'Project Manager:') !!}
     {!! Form::select('pm_user_id', [''=>'']+$user, null, ['class' => 'form-control select2']) !!}
 </div>
-<!-- Iwo Field -->
+
+<!-- Budget Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('budget', 'budget :') !!}
     {!! Form::number('budget', null, ['class' => 'form-control']) !!}
@@ -19,7 +20,7 @@
 <!-- Code Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('code', 'Code:') !!}
-    {!! Form::text('code', null, ['class' => 'form-control']) !!}
+    {!! Form::text('code', null, ['class' => 'form-control ']) !!}
 </div>
 
 <!-- Claimable Field -->

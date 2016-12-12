@@ -74,4 +74,9 @@ class TunjanganProject extends Model
     {
         return $this->hasOne('App\Models\Project', 'id','project_id');
     }
+
+    public function tunjangans()
+    {
+        return $this->hasOne('App\Models\Tunjangan', 'id','tunjangan_id');
+    }
 }

@@ -41,7 +41,7 @@ class ApprovalHistoryDataTable extends DataTable
     {
         return $this->builder()
             ->columns($this->getColumns())
-            ->addAction(['width' => '10%'])
+            ->addAction(['width' => '13%'])
             ->ajax('')
             ->parameters([
                 'dom' => 'Bfrtip',
