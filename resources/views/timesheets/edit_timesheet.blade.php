@@ -40,7 +40,7 @@
         <div class="clearfix"></div>
 
         
-            {!! Form::open(['route' => 'add_timesheet.create']) !!}
+ {!! Form::open(['route' => 'add_timesheet.form','data-toggle'=>'validator','id'=>'create_timesheet']) !!}
 
         <div class="clearfix"></div>
 
@@ -65,17 +65,17 @@
                 @foreach ($timesheet_details as $row=>$detail)
  <tr>
                   <td>
-{!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
+{!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','required' => '']) !!}
 				  </td>
                   <td>{{str_replace(' 00:00:00','',$detail->date)}}{{ Form::hidden('timesheet['.$row.'][date]', str_replace(' 00:00:00','',$detail->date)) }}</td>
-             <td><input type="text" name="timesheet[{{$row}}][start]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->start_time }}"></td>
-             <td><input type="text" name="timesheet[{{$row}}][end]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->end_time }}"></td>
+             <td><input type="text" name="timesheet[{{$row}}][start]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->start_time }}" required></td>
+             <td><input type="text" name="timesheet[{{$row}}][end]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->end_time }}" required></td>
                   
                   <td>
-{!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, $detail->lokasi, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi']) !!}
+{!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, $detail->lokasi, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi','required' => '']) !!}
 			</td>
 			<td class="col-md-2">
-{!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, $detail->activity, ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')']) !!}				    
+{!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, $detail->activity, ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')','required' => '']) !!}				    
             <input type="text" name="timesheet[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" style="display:none;">
 			</td>
 
@@ -97,14 +97,14 @@
                 @foreach ($timesheet_insentif as $row=>$detail)
                 <tr>
                 <td>
-                {{ Form::text('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control')) }}
+                {{ Form::text('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control','required' => '')) }}
                 <td>
-                {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
+                {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','required' => '']) !!}
                 </td>
                 <td>
-                {{ Form::text('insentif['.$row.'][value]', $detail->value, array('class' => 'form-control')) }}
+                {{ Form::text('insentif['.$row.'][value]', $detail->value, array('class' => 'form-control','required' => '')) }}
                 <td>
-                {{ Form::text('insentif['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control')) }}
+                {{ Form::text('insentif['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control','required' => '')) }}
                 </td><td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>
                 </tr>
                 @endforeach
@@ -123,14 +123,14 @@
                 @foreach ($timesheet_transport as $row=>$detail)
                 <tr>
                 <td>
-                {{ Form::text('trans['.$row.'][date]', $detail->date, array('class' => 'form-control')) }}
+                {{ Form::text('trans['.$row.'][date]', $detail->date, array('class' => 'form-control','required' => '')) }}
                 <td>
-                {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
+                {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','required' => '']) !!}
                 </td>
                 <td>
-                {{ Form::text('trans['.$row.'][value]', $detail->value, array('class' => 'form-control')) }}
+                {{ Form::text('trans['.$row.'][value]', $detail->value, array('class' => 'form-control','required' => '')) }}
                 <td>
-                {{ Form::text('trans['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control')) }}
+                {{ Form::text('trans['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control','required' => '')) }}
                 </td><td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>
                 </tr>
                 @endforeach
@@ -193,7 +193,7 @@ function onChangeActivity(id){
     function getRowTransport(id){
          var row =  '<tr>'  + 
  '   <td><input type="text" name="trans['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" required></td>  '  + 
- '   <td><select class="form-control" name="trans['+id+'][project_id]"><option value="" selected="selected"></option>' +
+ '   <td><select class="form-control" name="trans['+id+'][project_id]"  required><option value="" selected="selected"></option>' +
  '<?php
 foreach ($project as $key=>$value){
     echo ' <option value="'.$key.'">'.$value.'</option>';
@@ -201,8 +201,8 @@ foreach ($project as $key=>$value){
 
 ?>'+
  '</select></td>'  + 
- '   <td><input type="text" name="trans['+id+'][value]" class="form-control"></td>  '  + 
- '   <td><input type="text" name="trans['+id+'][desc]" class="form-control"></td>  '  + 
+ '   <td><input type="text" name="trans['+id+'][value]" class="form-control"  required></td>  '  + 
+ '   <td><input type="text" name="trans['+id+'][desc]" class="form-control"  required></td>  '  + 
  '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  '  + 
  '   </tr>  '  + 
  '    ' ; 
@@ -211,8 +211,8 @@ foreach ($project as $key=>$value){
 
     function getRowInsentif(id){
          var row =  '<tr>'  + 
- '   <td><input type="text" name="insentif['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  '  + 
- '   <td><select class="form-control" name="insentif['+id+'][project_id]"><option value="" selected="selected"></option>' +
+ '   <td><input type="text" name="insentif['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control"  required></td>  '  + 
+ '   <td><select class="form-control" name="insentif['+id+'][project_id]"><option value="" selected="selected"  required></option>' +
  '<?php
 foreach ($project as $key=>$value){
     echo ' <option value="'.$key.'">'.$value.'</option>';
@@ -220,8 +220,8 @@ foreach ($project as $key=>$value){
 
 ?>'+
  '</select></td>'  + 
- '   <td><input type="text" name="insentif['+id+'][value]" class="form-control"></td>  '  + 
- '   <td><input type="text" name="insentif['+id+'][desc]" class="form-control"></td>  '  + 
+ '   <td><input type="text" name="insentif['+id+'][value]" class="form-control" required></td>  '  + 
+ '   <td><input type="text" name="insentif['+id+'][desc]" class="form-control" required></td>  '  + 
  '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  '  + 
  '   </tr>  '  + 
  '    ' ; 

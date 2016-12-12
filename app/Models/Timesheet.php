@@ -99,7 +99,7 @@ class Timesheet extends Model
         'approval_status' => 'integer'
     ];
 
-	protected $appends = ['total','monthname','status','link'];
+	protected $appends = ['total','monthname','status','link','approval'];
 
 
     /**
@@ -121,11 +121,11 @@ class Timesheet extends Model
         return $this->belongsTo('App\Models\ApprovalHistory');
     }
 
-    public function getPeriodeAttribute($date)
-    {
-        $cDate = \Carbon\Carbon::parse($date)->toDateString();
-        return $cDate;
-    }
+    // public function getPeriodeAttribute($date)
+    // {
+    //     $cDate = \Carbon\Carbon::parse($date)->toDateString();
+    //     return $cDate;
+    // }
 
 	public function getTotalAttribute()
 	{
@@ -146,4 +146,19 @@ class Timesheet extends Model
 	{
 		return '<a href="timesheet/show/'.$this->id.'" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-eye-open"></i>';	
 	}
+
+    public function getApprovalAttribute()
+	{
+		 $liststatus = DB::select(DB::raw("select if(approval_histories.approval_status = 0,'approved','rejected')status , count(approval_histories.approval_status)total from timesheet_details, approval_histories where timesheet_details.id = approval_histories.transaction_id and timesheet_details.timesheet_id = ".$this->id." and approval_histories.transaction_type = 12  group by status"));
+         $statuses = '';
+         foreach($liststatus as $status){
+             $statuses = $statuses.' '.$status->status.' ('.$status->total.')';
+         }
+         if ( $statuses === ''){
+             $statuses = 'waiting';
+         }
+         return $statuses;
+	}
+
+           
 }

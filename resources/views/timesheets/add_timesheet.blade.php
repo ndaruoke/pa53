@@ -4,7 +4,7 @@
 
 
 
- {!! Form::open(['route' => 'add_timesheet.form']) !!}
+ {!! Form::open(['route' => 'add_timesheet.form','data-toggle'=>'validator','id'=>'create_timesheet']) !!}
 
 
 <div class="box-body">
@@ -129,17 +129,17 @@ if(isset($_POST['week'])){
        ?>
        <tr>
             <td class="col-md-2">
-{!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, null, ['class' => 'form-control select2']) !!}
+{!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, null, ['class' => 'form-control select2','required' => '']) !!}
 			</td>
              <td class="col-md-2">{{$date}}{{ Form::hidden('timesheet['.$row.'][date]', $date) }}</td>
-             <td class="col-md-2"><input type="text" name="timesheet[{{$row}}][start]" class="form-control timepicker" placeholder="00:00"></td>
-             <td class="col-md-2"><input type="text" name="timesheet[{{$row}}][end]" class="form-control timepicker" placeholder="00:00"></td>
+             <td class="col-md-2"><input type="text" name="timesheet[{{$row}}][start]" class="form-control timepicker" placeholder="00:00" required></td>
+             <td class="col-md-2"><input type="text" name="timesheet[{{$row}}][end]" class="form-control timepicker" placeholder="00:00" required></td>
              <td>
-{!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, null, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi']) !!}
+{!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, null, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi','required' => '']) !!}
 			</td>
 			<td class="col-md-2">
-{!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, null, ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')']) !!}				    
-            <input type="text" name="timesheet[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" style="display:none;">
+{!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, null, ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')','required' => '']) !!}				    
+            <input type="text" name="timesheet[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" style="display:none;" required>
 			</td>
                   <!--<td><input type="text" name="timesheet[{{$row}}][keterangan]" class="form-control" placeholder="Keterangan"></td>-->
            </tr>
@@ -194,6 +194,7 @@ if(isset($_POST['week'])){
     
     @section('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.8/validator.min.js"></script>
     <script>
 function onChangeActivity(id){
     setTimeout(function() {
@@ -222,6 +223,7 @@ function onChangeActivity(id){
 }
 
 $(document).ready(function(){
+    $('#create_timesheet').validator()
         $('.content').find('.select2-container--default').removeAttr("style");
         $('.content').find('.select2-container--default').css('width','100%');
     })
@@ -233,7 +235,7 @@ $(document).ready(function(){
     function getRowTransport(id){
          var row =  '<tr>'  + 
  '   <td><input type="text" name="trans['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" required></td>  '  + 
- '   <td><select class="form-control" name="trans['+id+'][project_id]"><option value="" selected="selected"></option>' +
+ '   <td><select class="form-control" name="trans['+id+'][project_id]" required><option value="" selected="selected"></option>' +
  '<?php
 foreach ($project as $key=>$value){
     echo ' <option value="'.$key.'">'.$value.'</option>';
@@ -241,8 +243,8 @@ foreach ($project as $key=>$value){
 
 ?>'+
  '</select></td>'  + 
- '   <td><input type="text" name="trans['+id+'][value]" class="form-control"></td>  '  + 
- '   <td><input type="text" name="trans['+id+'][desc]" class="form-control"></td>  '  + 
+ '   <td><input type="text" name="trans['+id+'][value]" class="form-control" required></td>  '  + 
+ '   <td><input type="text" name="trans['+id+'][desc]" class="form-control" required></td>  '  + 
  '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  '  + 
  '   </tr>  '  + 
  '    ' ; 
@@ -251,8 +253,8 @@ foreach ($project as $key=>$value){
 
     function getRowInsentif(id){
          var row =  '<tr>'  + 
- '   <td><input type="text" name="insentif['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  '  + 
- '   <td><select class="form-control" name="insentif['+id+'][project_id]"><option value="" selected="selected"></option>' +
+ '   <td><input type="text" name="insentif['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" required></td>  '  + 
+ '   <td><select class="form-control" name="insentif['+id+'][project_id]"><option value="" selected="selected" required></option>' +
  '<?php
 foreach ($project as $key=>$value){
     echo ' <option value="'.$key.'">'.$value.'</option>';
@@ -260,8 +262,8 @@ foreach ($project as $key=>$value){
 
 ?>'+
  '</select></td>'  + 
- '   <td><input type="text" name="insentif['+id+'][value]" class="form-control"></td>  '  + 
- '   <td><input type="text" name="insentif['+id+'][desc]" class="form-control"></td>  '  + 
+ '   <td><input type="text" name="insentif['+id+'][value]" class="form-control" required></td>  '  + 
+ '   <td><input type="text" name="insentif['+id+'][desc]" class="form-control" required></td>  '  + 
  '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  '  + 
  '   </tr>  '  + 
  '    ' ; 

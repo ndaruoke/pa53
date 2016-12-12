@@ -132,7 +132,9 @@ class Add_Timesheet extends Controller
 
     public function getColumns()
     {
-        //return response()->json(Timesheet::all());
+
+      // return response()->json();
+        return response()->json(Timesheet::all());
        //return response()->json(DB::select(DB::raw('SELECT id,periode,week, MONTHNAME(STR_TO_DATE(month, "%m")) as month,year FROM `timesheets`')));
        //return response()->json(DB::table('timesheets')->select(['id', 'periode', 'week', 'month', 'year'])->get());
         $columns = ['id', 'periode', 'week', 'month', 'year'];

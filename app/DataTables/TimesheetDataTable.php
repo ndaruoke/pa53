@@ -78,7 +78,7 @@ class TimesheetDataTable extends DataTable
             'month' => ['name' => 'monthname', 'data' => 'monthname'],
             'year' => ['name' => 'year', 'data' => 'year'],
             'total' => ['name' => 'total', 'data' => 'total'],
-            'status' => ['name' => 'status', 'data' => 'status'],
+            'status' => ['name' => 'status', 'data' => 'approval'],
             'detail' => ['name' => 'link', 'data' => 'link']
         ];
     }
