@@ -95,6 +95,10 @@
 
 } 
 
+function isWeekend($date) {
+    return (date('N', strtotime($date)) >= 6);
+}
+
 ?>
 
 
@@ -126,8 +130,8 @@
 <?php
 if(isset($_POST['week'])){
    foreach (getListDate($_POST["year"],$_POST["month"],$_POST["week"])['listDate'] as $row=>$date){
-       ?>
-       <tr>
+?>
+       <tr {!! isWeekend($date) ? 'style="background-color: antiquewhite; "' : ''; !!}>
             <td class="col-md-2">
 {!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, null, ['class' => 'form-control select2','required' => '']) !!}
 			</td>
@@ -138,8 +142,8 @@ if(isset($_POST['week'])){
 {!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, null, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi','required' => '']) !!}
 			</td>
 			<td class="col-md-2">
-{!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, null, ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')','required' => '']) !!}				    
-            <input type="text" name="timesheet[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" style="display:none;" required>
+{!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, isWeekend($date) ? 'LIBUR' : null , ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')','required' => '']) !!}				    
+            <input type="text" name="timesheet[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" style="display:none;">
 			</td>
                   <!--<td><input type="text" name="timesheet[{{$row}}][keterangan]" class="form-control" placeholder="Keterangan"></td>-->
            </tr>
@@ -234,7 +238,7 @@ $(document).ready(function(){
 
     function getRowTransport(id){
          var row =  '<tr>'  + 
- '   <td><input type="text" name="trans['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" required></td>  '  + 
+ '   <td><input type="date" name="trans['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" required></td>  '  + 
  '   <td><select class="form-control" name="trans['+id+'][project_id]" required><option value="" selected="selected"></option>' +
  '<?php
 foreach ($project as $key=>$value){
@@ -253,7 +257,7 @@ foreach ($project as $key=>$value){
 
     function getRowInsentif(id){
          var row =  '<tr>'  + 
- '   <td><input type="text" name="insentif['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" required></td>  '  + 
+ '   <td><input type="date" name="insentif['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" required></td>  '  + 
  '   <td><select class="form-control" name="insentif['+id+'][project_id]"><option value="" selected="selected" required></option>' +
  '<?php
 foreach ($project as $key=>$value){

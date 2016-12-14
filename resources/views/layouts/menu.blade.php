@@ -38,7 +38,7 @@
 </li>
 
 <li class="{{ Request::is('timesheets*') ? 'active' : '' }}">
-    <a href="{!! route('timesheets.index') !!}"><i class="fa fa-pencil-square-o"></i><span>Timesheet</span></a>
+    <a href="{!! route('timesheets.index') !!}"><i class="fa fa-calendar"></i><span>Timesheet</span></a>
 </li>
 
 <li class="{{ Request::is('add_timesheet*') ? 'active' : '' }}">
@@ -81,7 +81,9 @@
 @endif
 
 @if (Auth::user()->hasRole('CBS|Consultant|Finance|Manager|PMO|VP'))
-
+<li class="{{ Request::is('timesheets*') ? 'active' : '' }}">
+    <a href="{!! route('timesheets.index') !!}"><i class="fa fa-calendar"></i><span>Timesheet</span></a>
+</li>
 <li class="{{ Request::is('add_timesheet*') ? 'active' : '' }}">
     <a href="{!! route('add_timesheet.index') !!}"><i class="fa fa-pencil-square-o"></i><span>Create Timesheet</span></a>
 </li>

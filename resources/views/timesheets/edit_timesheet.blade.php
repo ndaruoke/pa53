@@ -97,7 +97,7 @@
                 @foreach ($timesheet_insentif as $row=>$detail)
                 <tr>
                 <td>
-                {{ Form::text('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control','required' => '')) }}
+                {{ Form::date('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control','required' => '')) }}
                 <td>
                 {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','required' => '']) !!}
                 </td>
@@ -123,7 +123,7 @@
                 @foreach ($timesheet_transport as $row=>$detail)
                 <tr>
                 <td>
-                {{ Form::text('trans['.$row.'][date]', $detail->date, array('class' => 'form-control','required' => '')) }}
+                {{ Form::date('trans['.$row.'][date]', $detail->date, array('class' => 'form-control','required' => '')) }}
                 <td>
                 {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','required' => '']) !!}
                 </td>
@@ -192,7 +192,7 @@ function onChangeActivity(id){
 
     function getRowTransport(id){
          var row =  '<tr>'  + 
- '   <td><input type="text" name="trans['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" required></td>  '  + 
+ '   <td><input type="date" name="trans['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" required></td>  '  + 
  '   <td><select class="form-control" name="trans['+id+'][project_id]"  required><option value="" selected="selected"></option>' +
  '<?php
 foreach ($project as $key=>$value){
@@ -211,7 +211,7 @@ foreach ($project as $key=>$value){
 
     function getRowInsentif(id){
          var row =  '<tr>'  + 
- '   <td><input type="text" name="insentif['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control"  required></td>  '  + 
+ '   <td><input type="date" name="insentif['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control"  required></td>  '  + 
  '   <td><select class="form-control" name="insentif['+id+'][project_id]"><option value="" selected="selected"  required></option>' +
  '<?php
 foreach ($project as $key=>$value){

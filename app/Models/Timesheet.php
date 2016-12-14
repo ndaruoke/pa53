@@ -152,10 +152,17 @@ class Timesheet extends Model
 		 $liststatus = DB::select(DB::raw("select if(approval_histories.approval_status = 0,'approved','rejected')status , count(approval_histories.approval_status)total from timesheet_details, approval_histories where timesheet_details.id = approval_histories.transaction_id and timesheet_details.timesheet_id = ".$this->id." and approval_histories.transaction_type = 12  group by status"));
          $statuses = '';
          foreach($liststatus as $status){
-             $statuses = $statuses.' '.$status->status.' ('.$status->total.')';
+             if($status->status==='approved'){
+               //  
+                $statuses = $statuses.' '.'<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="color:#00a65a" data-original-title="'.$status->status.' ('.$status->total.')"></i>';
+             } else {
+                 $statuses = $statuses.' '.'<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="color:#dd4b39" data-original-title="'.$status->status.' ('.$status->total.')"></i>';
+             }
+             
          }
          if ( $statuses === ''){
-             $statuses = 'waiting';
+             // 'waiting';
+             $statuses = '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="color:#f39c12" data-original-title="Verivikasi"></i>';
          }
          return $statuses;
 	}
