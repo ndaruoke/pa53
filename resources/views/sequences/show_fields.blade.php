@@ -16,10 +16,10 @@
     <p>{!! $sequence->date !!}</p>
 </div>
 
-<!-- Position Id Field -->
+<!-- Transaction Type Field -->
 <div class="form-group">
-    {!! Form::label('transaction_type', 'Transaction:') !!}
-    <p>{!! $sequence->transaction_type !!}</p>
+    {!! Form::label('transaction_type', 'Transaction Type:') !!}
+    <p>{!! $sequence->transactiontypes->name !!}</p>
 </div>
 
 <!-- Position Id Field -->

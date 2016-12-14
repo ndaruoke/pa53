@@ -96,7 +96,8 @@ class ApprovalHistory extends Model
         'sequence_id' => 'integer',
         'transaction_id' => 'integer',
         'user_id' => 'integer',
-        'approval_id' => 'integer'
+        'approval_id' => 'integer',
+        'transaction_type' => 'integer'
     ];
 
     /**

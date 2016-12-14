@@ -4,6 +4,12 @@
     {!! Form::number('level', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Transaction Type Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('transaction_type', 'Transaction Type:') !!}
+    {!! Form::select('transaction_type', $transactiontypes, null, ['class' => 'form-control select2']) !!}
+</div>
+
 <!-- Position Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('position_id', 'Role:') !!}

@@ -27,7 +27,7 @@ class SequenceDataTable extends DataTable
      */
     public function query()
     {
-        $sequences = Sequence::with(['roles','users'])->get();
+        $sequences = Sequence::with(['roles','users','transactiontypes'])->get();
 
         return $this->applyScopes($sequences);
     }
@@ -73,8 +73,10 @@ class SequenceDataTable extends DataTable
     {
         return [
             'level' => ['name' => 'level', 'data' => 'level'],
-            'role_id' => ['name' => 'roles.name', 'data' => 'roles.name'],
-            'user_id' => ['name' => 'users.name', 'data' => 'users.name']
+            'transaction type' => ['name' => 'transactiontypes.name', 'data' => 'transactiontypes.name'],
+            'position' => ['name' => 'position.name', 'data' => 'position.name'],
+            'role' => ['name' => 'roles.name', 'data' => 'roles.name'],
+            'user' => ['name' => 'users.name', 'data' => 'users.name']
         ];
     }
 

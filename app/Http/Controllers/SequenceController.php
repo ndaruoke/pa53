@@ -44,7 +44,8 @@ class SequenceController extends AppBaseController
     {
         $roles = [''=>''] +Role::pluck('name', 'id')->all();
         $users = [''=>''] +User::pluck('name', 'id')->all();
-        return view('sequences.create',compact('roles','users'));
+        $transactiontypes = [''=>''] +Constant::where('category','TransactionType')->orderBy('name','asc')->pluck('name', 'value')->all();
+        return view('sequences.create',compact('roles','users','transactiontypes'));
     }
 
     /**
@@ -103,7 +104,8 @@ class SequenceController extends AppBaseController
         }
         $roles = [''=>''] +Role::pluck('name', 'id')->all();
         $users = [''=>''] +User::pluck('name', 'id')->all();
-        return view('sequences.edit',compact('sequence','roles','users'));
+        $transactiontypes = [''=>''] +Constant::where('category','TransactionType')->orderBy('name','asc')->pluck('name', 'value')->all();
+        return view('sequences.edit',compact('sequence','roles','users', 'transactiontypes'));
         //return view('sequences.edit')->with('sequence', $sequence);
     }
 

@@ -76,7 +76,8 @@ class Sequence extends Model
         'level' => 'integer',
         'role_id' => 'integer',
         'user_id' => 'integer',
-        'user_position' => 'integer'
+        'user_position' => 'integer',
+        'transaction_type' => 'integer'
     ];
 
     /**
@@ -103,5 +104,10 @@ class Sequence extends Model
     public function userPositions()
     {
         return $this->hasOne('App\Models\Position', 'id','position_id');
+    }
+
+    public function transactiontypes()
+    {
+        return $this->hasOne('App\Models\Constant', 'value','transaction_type')->where('category', '=','TransactionType');
     }
 }

@@ -117,4 +117,9 @@ class Constant extends Model
     {
         return $this->belongsTo('App\Models\ApprovalHistory');
     }
+
+    public function sequence()
+    {
+        return $this->belongsTo('App\Models\Sequence');
+    }
 }
