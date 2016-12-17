@@ -122,4 +122,9 @@ class Constant extends Model
     {
         return $this->belongsTo('App\Models\Sequence');
     }
+
+    public function project()
+    {
+        return $this->belongsTo('App\Models\Project');
+    }
 }

@@ -17,6 +17,7 @@ use App\Models\Project;
 use App\Models\Department;
 use App\Models\TunjanganProject;
 use App\Models\ProjectMember;
+use App\Models\Constant;
 use DB;
 
 class ProjectController extends AppBaseController
@@ -52,7 +53,8 @@ class ProjectController extends AppBaseController
         $tunjangan = Tunjangan::pluck('name', 'id')->all();
         $user = User::pluck('name', 'id')->all();
         $department = Department::pluck('name', 'id')->all();
-        return view('projects.create',compact('tunjangan','user','department'));
+        $efforttypes = [''=>''] +Constant::where('category','EffortType')->orderBy('name','asc')->pluck('name', 'value')->all();
+        return view('projects.create',compact('tunjangan','user','department','efforttypes'));
     }
 
     /**
@@ -128,7 +130,7 @@ class ProjectController extends AppBaseController
         $project = $this->projectRepository->findWithoutFail($id);
 
         if (empty($project)) {
-            Flash::error('Project not found');
+            Flash::error('Project not found');  
 
             return redirect(route('projects.index'));
         }
@@ -139,8 +141,8 @@ class ProjectController extends AppBaseController
         $selected_tunjangan = TunjanganProject::where('project_id','=',$id)->with('tunjangans')->get();
         $selected_member = ProjectMember::where('project_id','=',$id)->with('users')->get();
         $department = Department::pluck('name', 'id')->all();
-        // return $selected_tunjangan;
-        return view('projects.edit',compact('project','tunjangan','user','department','selected_tunjangan','selected_member'));
+        $efforttypes = [''=>''] +Constant::where('category','EffortType')->orderBy('name','asc')->pluck('name', 'value')->all();
+        return view('projects.edit',compact('project','tunjangan','user','department','selected_tunjangan','selected_member','efforttypes'));
     }
 
     /**

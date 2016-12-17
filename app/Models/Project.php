@@ -88,7 +88,8 @@ class Project extends Model
         'code',
         'claimable',
         'department_id',
-        'pm_user_id'
+        'pm_user_id',
+        'effort_type'
     ];
 
     /**
@@ -99,11 +100,12 @@ class Project extends Model
     protected $casts = [
         'project_name' => 'string',
         'tunjangan_list' => 'string',
-        'budget' => 'integer',
+        'budget' => 'decimal',
         'code' => 'integer',
         'claimable' => 'integer',
         'department_id' => 'integer',
-        'pm_user_id' => 'integer'
+        'pm_user_id' => 'integer',
+        'effort_type' => 'decimal'
     ];
 
     /**
@@ -136,6 +138,11 @@ class Project extends Model
     public function tunjanganProject()
     {
         return $this->belongsTo('App\Models\TunjanganProject');
+    }
+
+    public function efforttypes()
+    {
+        return $this->hasOne('App\Models\Constant', 'value','effort_type')->where('category', '=','EffortType');
     }
     
 }

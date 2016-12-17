@@ -24,7 +24,7 @@
 
 <!-- Code Field -->
 <div class="form-group">
-    {!! Form::label('code', 'Code:') !!}
+    {!! Form::label('iwo', 'Iwo:') !!}
     <p>{!! $project->code !!}</p>
 </div>
 
@@ -38,6 +38,12 @@
 <div class="form-group">
     {!! Form::label('department_id', 'Department:') !!}
     <p>{!! $project->departments->name !!}</p>
+</div>
+
+<!-- Effort Type Field -->
+<div class="form-group">
+    {!! Form::label('effort_type', 'Effort Type:') !!}
+    <p>{!! $project->efforttypes->name !!}</p>
 </div>
 
 <!-- Pm User Id Field -->

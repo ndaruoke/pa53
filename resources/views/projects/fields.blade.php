@@ -13,13 +13,13 @@
 
 <!-- Budget Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('budget', 'budget :') !!}
-    {!! Form::number('budget', null, ['class' => 'form-control']) !!}
+    {!! Form::label('budget', 'Budget :') !!}
+    {!! Form::number('budget', null, ['class' => 'form-control','step'=>'any']) !!}
 </div>
 
 <!-- Code Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('code', 'Code:') !!}
+    {!! Form::label('iwo', 'Iwo:') !!}
     {!! Form::text('code', null, ['class' => 'form-control ']) !!}
 </div>
 
@@ -30,11 +30,18 @@
     {!! Form::select('claimable', array(''=>'',1=>'Yes',0=>'No'), null, ['class' => 'form-control select2']) !!}
 </div>
 
-<!-- Departent Id Field -->
+<!-- Department Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('department_id', 'Departent Id:') !!}
+    {!! Form::label('department_id', 'Department:') !!}
     {!! Form::select('department_id', [''=>'']+$department, null, ['class' => 'form-control select2']) !!}
 </div>
+
+<!-- Effort Type Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('effort_type', 'Effort Type:') !!}
+    {!! Form::select('effort_type', $efforttypes, null, ['class' => 'form-control select2']) !!}
+</div>
+
 <div class="form-group col-sm-12">
     {!! Form::label('Tunjangan', 'Tunjangan :') !!}
 </div>
@@ -61,7 +68,7 @@
         @if (empty($selected_tunjangan))
         @else
             @foreach ($selected_tunjangan as $stj)
-                <option value="{{ $stj->tunjangan['id'] }}">{{ $stj->tunjangan['name'] }}</option>
+                <option value="{{ $stj->tunjangans['id'] }}">{{ $stj->tunjangans['name'] }}</option>
             @endforeach
         @endif
     </select>
@@ -93,7 +100,7 @@
         @if (empty($selected_member))
         @else
             @foreach ($selected_member as $stm)
-                <option value="{{ $stm->user['id'] }}">{{ $stm->user['name'] }}</option>
+                <option value="{{ $stm->users['id'] }}">{{ $stm->users['name'] }}</option>
             @endforeach
         @endif
     </select>
