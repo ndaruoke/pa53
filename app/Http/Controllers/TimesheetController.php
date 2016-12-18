@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ModerationTimesheetDataTable;
 use App\DataTables\TimesheetDetailDataTable;
 use App\DataTables\TimesheetDataTable;
 use App\Http\Requests;
@@ -9,11 +10,13 @@ use App\Http\Requests\CreateTimesheetRequest;
 use App\Http\Requests\UpdateTimesheetRequest;
 use App\Models\TimesheetDetail;
 use App\Models\User;
+use App\Models\UserLeave;
 use App\Repositories\TimesheetRepository;
 use App\Repositories\TimesheetDetailRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use Auth;
 
 class TimesheetController extends AppBaseController
 {
@@ -159,6 +162,19 @@ class TimesheetController extends AppBaseController
         return redirect(route('timesheets.index'));
     }
 
+            /**
+     * Display a listing of the Leave.
+     *
+     * @param LeaveDataTable $leaveDataTable
+     * @return Response
+     */
+    public function moderation(ModerationTimesheetDataTable $moderationTimesheetDataTable)
+    {
+        $user = Auth::user();
+        $userLeave = UserLeave::where('user_id',$user->id)->first();
+        return $moderationTimesheetDataTable->render('timesheets.moderation', array('userLeave'=>$userLeave));
+    }
+
     /**
      * Approve Timesheet in storage.
      *
@@ -169,9 +185,9 @@ class TimesheetController extends AppBaseController
     public function moderationApprove($id)
     {
         //approve
-        $tiemsheet = Timesheet::approve($id);
+        $timesheet = Timesheet::approve($id);
 
-        if ($leave == false) {
+        if ($timesheet == false) {
             Flash::error('Approve Timesheet Fail');
 
             return redirect(route('timesheet.moderation'));

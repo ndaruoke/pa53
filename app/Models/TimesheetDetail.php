@@ -154,5 +154,8 @@ class TimesheetDetail extends Model
         'project_id' => 'required'
     ];
 
-    
+    public function timesheets()
+    {
+        return $this->hasOne('App\Models\Timesheet');
+    }
 }

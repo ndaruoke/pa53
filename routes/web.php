@@ -56,6 +56,9 @@ Route::resource('roles', 'RoleController');
 
 Route::resource('sequences', 'SequenceController');
 
+Route::get('timesheets/moderation', array('uses' => 'TimesheetController@moderation',
+'as' => 'timesheets.moderation'));
+
 Route::resource('timesheets', 'TimesheetController');
 
 Route::resource('timesheetDetails', 'TimesheetDetailController');
@@ -127,3 +130,7 @@ Route::get('leaves/moderation/reject/{id}', array('uses' => 'LeaveController@mod
 'as' => 'leaves.moderation.reject'));
 
 Route::resource('leaves', 'LeaveController');
+
+Route::resource('timesheetTransports', 'TimesheetTransportController');
+
+Route::resource('timesheetInsentifs', 'TimesheetInsentifController');

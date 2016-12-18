@@ -2,11 +2,12 @@
 
 namespace App\DataTables;
 
-use App\Models\ApprovalHistory;
+use Auth;
+use App\Models\Timesheet;
 use Form;
 use Yajra\Datatables\Services\DataTable;
 
-class ApprovalHistoryDataTable extends DataTable
+class ModerationTimesheetDataTable extends DataTable
 {
 
     /**
@@ -16,7 +17,7 @@ class ApprovalHistoryDataTable extends DataTable
     {
         return $this->datatables
             ->collection($this->query())
-            ->addColumn('action', 'approval_histories.datatables_actions')
+            ->addColumn('action', 'Timesheets.moderation_datatables_actions')
             ->make(true);
     }
 
@@ -27,9 +28,11 @@ class ApprovalHistoryDataTable extends DataTable
      */
     public function query()
     {
-        $approvalHistories = ApprovalHistory::with(['timesheets','users','approvers','leaves','approvalstatuses','transactiontypes'])->get();
+        $user = Auth::user();
+        
+        $timesheets = Timesheet::with(['users'])->where('approval_id', $user->id)->get();
 
-        return $this->applyScopes($approvalHistories);
+        return $this->applyScopes($timesheets);
     }
 
     /**
@@ -41,7 +44,7 @@ class ApprovalHistoryDataTable extends DataTable
     {
         return $this->builder()
             ->columns($this->getColumns())
-            ->addAction(['width' => '13%'])
+            ->addAction(['width' => '10%'])
             ->ajax('')
             ->parameters([
                 'dom' => 'Bfrtip',
@@ -72,14 +75,8 @@ class ApprovalHistoryDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'date' => ['name' => 'date', 'data' => 'date'],
-            'note' => ['name' => 'note', 'data' => 'note'],
-            'sequence' => ['name' => 'sequence_id', 'data' => 'sequence_id'],
-            'transaction_type' => ['name' => 'transactiontypes.name', 'data' => 'transactiontypes.name'],
-            'transaction_id' => ['name' => 'transaction_id', 'data' => 'transaction_id'],
-            'user' => ['name' => 'users.name', 'data' => 'users.name'],
-            'approver' => ['name' => 'approvers.name', 'data' => 'approvers.name'],
-            'approval_status' => ['name' => 'approvalstatuses.name', 'data' => 'approvalstatuses.name']
+            'nama' => ['name' => 'users.name', 'data' => 'users.name'],
+            'jumlah_pengajuan_pa' => ['name' => 'total', 'data' => 'total']
         ];
     }
 
@@ -90,6 +87,6 @@ class ApprovalHistoryDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'approvalHistories';
+        return 'Timesheets';
     }
 }

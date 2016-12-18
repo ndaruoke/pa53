@@ -1,14 +1,14 @@
-@inject('count', 'App\Services\LeaveCountService')
+@inject('count', 'App\Services\TimesheetCountService')
 @extends('layouts.app')
 
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">Leave Approval</h1>
+        <h1 class="pull-left">Timesheet Approval</h1>
         <br/><br/>
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="small-box bg-red pull-left">
                 <div class="inner">
-                    <h3>{{$count->leavepending}}</h3>
+                    <h3>{{$count->timesheetpending}}</h3>
                     <p>Pending Request</p>
                 </div>
                 <div class="icon">
@@ -20,7 +20,7 @@
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="small-box bg-green pull-left">
                 <div class="inner">
-                    <h3>{{$count->leaveapproved}}</h3>
+                    <h3>{{$count->timesheetapproved}}</h3>
                     <p>Approved Request</p>
                 </div>
                 <div class="icon">
@@ -32,7 +32,7 @@
         <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="small-box bg-blue pull-left">
                 <div class="inner">
-                    <h3>{{$count->leaverejected}}</h3>
+                    <h3>{{$count->timesheetrejected}}</h3>
                     <p>Rejected Request</p>
                 </div>
                 <div class="icon">

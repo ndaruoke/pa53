@@ -167,5 +167,19 @@ class Timesheet extends Model
          return $statuses;
 	}
 
+    public function timesheetdetails()
+    {
+        return $this->hasMany('App\Models\TimesheetDetail');
+    }
+
+    public function timesheetinsentifs()
+    {
+        return $this->hasMany('App\Models\TimesheetInsentif');
+    }
+
+    public function timesheettransports()
+    {
+        return $this->hasMany('App\Models\TimesheetTransport');
+    }
            
 }

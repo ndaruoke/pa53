@@ -2,11 +2,11 @@
 
 namespace App\DataTables;
 
-use App\Models\ApprovalHistory;
+use App\Models\TimesheetInsentif;
 use Form;
 use Yajra\Datatables\Services\DataTable;
 
-class ApprovalHistoryDataTable extends DataTable
+class TimesheetInsentifDataTable extends DataTable
 {
 
     /**
@@ -15,8 +15,8 @@ class ApprovalHistoryDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables
-            ->collection($this->query())
-            ->addColumn('action', 'approval_histories.datatables_actions')
+            ->eloquent($this->query())
+            ->addColumn('action', 'timesheet_insentifs.datatables_actions')
             ->make(true);
     }
 
@@ -27,9 +27,9 @@ class ApprovalHistoryDataTable extends DataTable
      */
     public function query()
     {
-        $approvalHistories = ApprovalHistory::with(['timesheets','users','approvers','leaves','approvalstatuses','transactiontypes'])->get();
+        $timesheetInsentifs = TimesheetInsentif::query();
 
-        return $this->applyScopes($approvalHistories);
+        return $this->applyScopes($timesheetInsentifs);
     }
 
     /**
@@ -41,11 +41,11 @@ class ApprovalHistoryDataTable extends DataTable
     {
         return $this->builder()
             ->columns($this->getColumns())
-            ->addAction(['width' => '13%'])
+            ->addAction(['width' => '10%'])
             ->ajax('')
             ->parameters([
                 'dom' => 'Bfrtip',
-                'scrollX' => true,
+                'scrollX' => false,
                 'buttons' => [
                     'print',
                     'reset',
@@ -55,7 +55,7 @@ class ApprovalHistoryDataTable extends DataTable
                          'text'    => '<i class="fa fa-download"></i> Export',
                          'buttons' => [
                              'csv',
-
+                             'excel',
                              'pdf',
                          ],
                     ],
@@ -72,14 +72,12 @@ class ApprovalHistoryDataTable extends DataTable
     private function getColumns()
     {
         return [
+            'timesheet_id' => ['name' => 'timesheet_id', 'data' => 'timesheet_id'],
+            'project_id' => ['name' => 'project_id', 'data' => 'project_id'],
             'date' => ['name' => 'date', 'data' => 'date'],
-            'note' => ['name' => 'note', 'data' => 'note'],
-            'sequence' => ['name' => 'sequence_id', 'data' => 'sequence_id'],
-            'transaction_type' => ['name' => 'transactiontypes.name', 'data' => 'transactiontypes.name'],
-            'transaction_id' => ['name' => 'transaction_id', 'data' => 'transaction_id'],
-            'user' => ['name' => 'users.name', 'data' => 'users.name'],
-            'approver' => ['name' => 'approvers.name', 'data' => 'approvers.name'],
-            'approval_status' => ['name' => 'approvalstatuses.name', 'data' => 'approvalstatuses.name']
+            'value' => ['name' => 'value', 'data' => 'value'],
+            'keterangan' => ['name' => 'keterangan', 'data' => 'keterangan'],
+            'status' => ['name' => 'status', 'data' => 'status']
         ];
     }
 
@@ -90,6 +88,6 @@ class ApprovalHistoryDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'approvalHistories';
+        return 'timesheetInsentifs';
     }
 }

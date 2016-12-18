@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Auth;
-use App\Models\Leave;
 use App\Models\Timesheet;
 
 class TimesheetCountService
