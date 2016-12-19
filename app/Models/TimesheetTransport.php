@@ -67,7 +67,7 @@ class TimesheetTransport extends Model
 {
     use SoftDeletes;
 
-    public $table = 'timesheet_transports';
+    public $table = 'timesheet_transport';
     
 
     protected $dates = ['deleted_at'];
@@ -90,7 +90,7 @@ class TimesheetTransport extends Model
     protected $casts = [
         'timesheet_id' => 'integer',
         'project_id' => 'integer',
-        'value' => 'string',
+        'value' => 'decimal',
         'keterangan' => 'string',
         'status' => 'integer'
     ];

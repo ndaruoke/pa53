@@ -137,7 +137,7 @@ class Timesheet extends Model
         $insentif = DB::table('timesheet_insentif')->where('timesheet_id','=',$this->id);
         if($insentif->count()>0)
         {
-            return $insentif->select((int)'value')->sum();
+            return $insentif->select('value')->sum();
         }
 		else 
         {
@@ -150,7 +150,7 @@ class Timesheet extends Model
 		$transport = DB::table('timesheet_insentif')->where('timesheet_id','=',$this->id);
         if($transport->count()>0)
         {
-            return $transport->select((int)'value')->sum();
+            return $transport->select('value')->sum();
         }
 		else 
         {
