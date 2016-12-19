@@ -76,7 +76,8 @@ class ModerationTimesheetDataTable extends DataTable
     {
         return [
             'nama' => ['name' => 'users.name', 'data' => 'users.name'],
-            'jumlah_pengajuan_pa' => ['name' => 'total', 'data' => 'total']
+            'jumlah_pengajuan_pa' => ['name' => 'total', 'data' => 'total'],
+            'jumlah_pengajuan_tunjangan' => ['name' => 'totaltunjangan', 'data' => 'totaltunjangan']
         ];
     }
 

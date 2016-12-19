@@ -99,7 +99,7 @@ class Timesheet extends Model
         'approval_status' => 'integer'
     ];
 
-	protected $appends = ['total','monthname','status','link','approval'];
+	protected $appends = ['total','monthname','status','link','approval','totaltunjangan','totalinsentif','totaltransport'];
 
 
     /**
@@ -131,6 +131,37 @@ class Timesheet extends Model
 	{
 		return DB::table('timesheet_details')->where('timesheet_id','=',$this->id)->count();
 	}
+
+    public function getTotalInsentifAttribute()
+	{
+        $insentif = DB::table('timesheet_insentif')->where('timesheet_id','=',$this->id);
+        if($insentif->count()>0)
+        {
+            return $insentif->select((int)'value')->sum();
+        }
+		else 
+        {
+            return 0;
+        }
+	}
+
+    public function getTotalTransportAttribute()
+	{
+		$transport = DB::table('timesheet_insentif')->where('timesheet_id','=',$this->id);
+        if($transport->count()>0)
+        {
+            return $transport->select((int)'value')->sum();
+        }
+		else 
+        {
+            return 0;
+        }
+	}
+
+    public function getTotalTunjanganAttribute()
+    {
+        return $this->getTotalInsentifAttribute() + $this->getTotalTransportAttribute();
+    }
 
 	public function getMonthnameAttribute()
 	{
