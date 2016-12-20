@@ -171,8 +171,7 @@ class TimesheetController extends AppBaseController
     public function moderation(ModerationTimesheetDataTable $moderationTimesheetDataTable)
     {
         $user = Auth::user();
-        $userLeave = UserLeave::where('user_id',$user->id)->first();
-        return $moderationTimesheetDataTable->render('timesheets.moderation', array('userLeave'=>$userLeave));
+        return $moderationTimesheetDataTable->render('timesheets.moderation', array('user]'=>$user));
     }
 
     /**

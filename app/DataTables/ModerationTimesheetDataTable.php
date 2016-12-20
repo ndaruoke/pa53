@@ -6,6 +6,7 @@ use Auth;
 use App\Models\Timesheet;
 use Form;
 use Yajra\Datatables\Services\DataTable;
+use Illuminate\Support\Str;
 
 class ModerationTimesheetDataTable extends DataTable
 {
@@ -15,10 +16,30 @@ class ModerationTimesheetDataTable extends DataTable
      */
     public function ajax()
     {
-        return $this->datatables
+            $request = $_REQUEST;
+            return $this->datatables
             ->collection($this->query())
+            ->filter(function ($instance) use ($request) {
+                if (array_key_exists('year', $request)){
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['year'], $request['year']) ? true : false;
+                    });
+                }
+                if (array_key_exists('month', $request)){
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['month'], $request['month']) ? true : false;
+                    });
+                }
+                if (array_key_exists('periode', $request)){
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        return Str::contains($row['periode'], $request['periode']) ? true : false;
+                    });
+                }
+            })
             ->addColumn('action', 'Timesheets.moderation_datatables_actions')
             ->make(true);
+            
+    
     }
 
     /**
@@ -45,6 +66,7 @@ class ModerationTimesheetDataTable extends DataTable
         return $this->builder()
             ->columns($this->getColumns())
             ->addAction(['width' => '10%'])
+            
             ->ajax('')
             ->parameters([
                 'dom' => 'Bfrtip',
@@ -64,7 +86,8 @@ class ModerationTimesheetDataTable extends DataTable
                     ],
                     'colvis'
                 ]
-            ]);
+            ])
+            ;
     }
 
     /**
@@ -75,9 +98,12 @@ class ModerationTimesheetDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'nama' => ['name' => 'users.name', 'data' => 'users.name'],
+            'nama' => ['name' => 'name', 'data' => 'users.name'],
             'jumlah_pengajuan_pa' => ['name' => 'total', 'data' => 'total'],
-            'jumlah_pengajuan_tunjangan' => ['name' => 'totaltunjangan', 'data' => 'totaltunjangan']
+            'jumlah_pengajuan_tunjangan' => ['name' => 'totaltunjangan', 'data' => 'totaltunjangan'],
+            'periode' => ['name' => 'periode', 'data' => 'periode'],
+            'month' => ['name' => 'month', 'data' => 'month'],
+            'year' => ['name' => 'year', 'data' => 'year']
         ];
     }
 
