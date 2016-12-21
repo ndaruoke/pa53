@@ -58,7 +58,7 @@
                 <span class="input-group-btn">
                     <button type="reset" class="btn" disabled="disabled">Timesheet</button>
                 </span>
-                 <select name="termin" id="termin" class="form-control select2" style="width: 40%;">
+                 <select name="periode" id="periode" class="form-control select2" style="width: 40%;">
                   <option value="1">Termin 1</option>
                   <option value="2">Termin 2</option>
                 </select>
@@ -100,10 +100,9 @@
 
 @section('scripts')
     <script type="text/javascript">
-
         jQuery(document).ready(function($) {
+            $('year');
             $('#search-form').on('submit', function(e) {
-                window.alert('hit');
                 oTable.draw();
                 e.preventDefault();
             });
