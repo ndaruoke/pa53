@@ -55,6 +55,7 @@
         </h1>
     </section>-->
     <div class="content">
+   
     @include('flash::message')
     
 @if(isset($_POST['week']))
@@ -109,16 +110,22 @@ function isWeekend($date) {
 
         <div class="clearfix"></div>
 
-                  <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_1" data-toggle="tab">Timesheet</a></li>
-              <li><a href="#tab_2" data-toggle="tab">Insentif</a></li>
-              <li><a href="#tab_3" data-toggle="tab">Transport</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="tab_1">
+
+
+
+
+<div class="clearfix"></div>
+
+<div class="col-md-12">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Timesheet</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
                  <table class="table table-hover">
                 <tbody><tr>
+                <th>Sent</th>
                   <th>Proyek</th>
                   <th>Tanggal</th>
                   <th width="70">Start</th>
@@ -132,17 +139,21 @@ if(isset($_POST['week'])){
    foreach (getListDate($_POST["year"],$_POST["month"],$_POST["week"])['listDate'] as $row=>$date){
 ?>
        <tr {!! isWeekend($date) ? 'style="background-color: antiquewhite; "' : ''; !!}>
-            <td class="col-md-2">
-{!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, null, ['class' => 'form-control select2','required' => '']) !!}
+           
+           <td class="col-md-1">
+           {{ Form::checkbox('timesheet['.$row.'][select]', true, false) }}
 			</td>
-             <td class="col-md-2">{{$date}}{{ Form::hidden('timesheet['.$row.'][date]', $date) }}</td>
-             <td class="col-md-2"><input type="text" name="timesheet[{{$row}}][start]" class="form-control timepicker" placeholder="00:00" required></td>
-             <td class="col-md-2"><input type="text" name="timesheet[{{$row}}][end]" class="form-control timepicker" placeholder="00:00" required></td>
+            <td class="col-md-3">
+{!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, null, ['class' => 'form-control select2']) !!}
+			</td>
+             <td class="col-md-1">{{$date}}{{ Form::hidden('timesheet['.$row.'][date]', $date) }}</td>
+             <td class="col-md-1"><input type="text" name="timesheet[{{$row}}][start]" class="form-control timepicker" placeholder="00:00" ></td>
+             <td class="col-md-1"><input type="text" name="timesheet[{{$row}}][end]" class="form-control timepicker" placeholder="00:00" ></td>
              <td>
-{!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, null, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi','required' => '']) !!}
+{!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, null, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi']) !!}
 			</td>
 			<td class="col-md-2">
-{!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, isWeekend($date) ? 'LIBUR' : null , ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')','required' => '']) !!}				    
+{!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, isWeekend($date) ? 'LIBUR' : null , ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')']) !!}				    
             <input type="text" name="timesheet[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" style="display:none;">
 			</td>
                   <!--<td><input type="text" name="timesheet[{{$row}}][keterangan]" class="form-control" placeholder="Keterangan"></td>-->
@@ -153,10 +164,22 @@ if(isset($_POST['week'])){
 ?>
 
               </tbody></table>
-              </div>
-              <!-- /.tab-pane -->
-              <div class="tab-pane" id="tab_2">
-                <table  class="table table-hover small-text" id="tb_insentif">
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+
+<div class="clearfix"></div>
+
+<div class="col-md-12">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Bantuan Perumahan</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table  class="table table-hover small-text" id="tb_insentif">
                 <tr class="tr-header">
                 <th>Tanggal</th>
                 <th>Proyek</th>
@@ -164,22 +187,36 @@ if(isset($_POST['week'])){
                 <th>Keterangan</th>
                 <th><a href="javascript:void(0);" style="font-size:18px;" id="addInsentif" title="Add Insentif"><span class="glyphicon glyphicon-plus"></span></a></th>
                 </table>
-              </div>
-              <!-- /.tab-pane -->
-              <div class="tab-pane" id="tab_3">
-                <table  class="table table-hover small-text" id="tb_trasnportasi">
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+
+<div class="clearfix"></div>
+
+<div class="col-md-12">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Transport Proyek Konsultasi Luar Kota</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table  class="table table-hover small-text" id="tb_trasnportasi">
                 <tr class="tr-header">
                 <th>Tanggal</th>
                 <th>Proyek</th>
                 <th>Transportasi</th>
                 <th>Keterangan</th>
                 <th><a href="javascript:void(0);" style="font-size:18px;" id="addTransportasi" title="Add Transportasi"><span class="glyphicon glyphicon-plus"></span></a></th>
-                </table>        
-              </div>
-              <!-- /.tab-pane -->
+                </table>    
             </div>
-            <!-- /.tab-content -->
+            <!-- /.box-body -->
           </div>
+          <!-- /.box -->
+        </div>
+
+<div class="clearfix"></div>
 @if(isset($_POST['week']))
 {{ Form::hidden('month', $_POST['month']) }}
 {{ Form::hidden('year', $_POST['year']) }}
@@ -190,6 +227,7 @@ if(isset($_POST['week'])){
     {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
     {!! Form::submit('Save',['name'=>'action','class' => 'btn btn-primary']) !!}
 </div>
+<div class="clearfix"></div>
 {!! Form::close() !!}
        
     @endif
@@ -211,11 +249,18 @@ function onChangeActivity(id){
         });
         $('#timesheet'+id+'activity_other').hide();
   } 
-  else if(selected ==='OTHERS'){
+  else if(selected ==='IMPLEMENTASI'){
       $('#timesheet'+id+'activity_other').show();
     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
       $('#timesheet'+id+'lokasi').prop("disabled", false);
   } 
+
+   else if(selected ==='MANAGED OPERATION'){
+      $('#timesheet'+id+'activity_other').show();
+    //  $('#timesheet'+id+'lokasi').val("").trigger("change");
+      $('#timesheet'+id+'lokasi').prop("disabled", false);
+  }
+
   else {
       $('#timesheet'+id+'activity_other').hide();
      // $('#timesheet'+id+'lokasi').val("").trigger("change");
@@ -227,7 +272,7 @@ function onChangeActivity(id){
 }
 
 $(document).ready(function(){
-    $('#create_timesheet').validator()
+  //  $('#create_timesheet').validator()
         $('.content').find('.select2-container--default').removeAttr("style");
         $('.content').find('.select2-container--default').css('width','100%');
     })
@@ -238,8 +283,8 @@ $(document).ready(function(){
 
     function getRowTransport(id){
          var row =  '<tr>'  + 
- '   <td><input type="date" name="trans['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" required></td>  '  + 
- '   <td><select class="form-control" name="trans['+id+'][project_id]" required><option value="" selected="selected"></option>' +
+ '   <td><input type="date" name="trans['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  '  + 
+ '   <td><select class="form-control" name="trans['+id+'][project_id]" ><option value="" selected="selected"></option>' +
  '<?php
 foreach ($project as $key=>$value){
     echo ' <option value="'.$key.'">'.$value.'</option>';
@@ -247,8 +292,8 @@ foreach ($project as $key=>$value){
 
 ?>'+
  '</select></td>'  + 
- '   <td><input type="text" name="trans['+id+'][value]" class="form-control" required></td>  '  + 
- '   <td><input type="text" name="trans['+id+'][desc]" class="form-control" required></td>  '  + 
+ '   <td><input type="text" name="trans['+id+'][value]" class="form-control" ></td>  '  + 
+ '   <td><input type="text" name="trans['+id+'][desc]" class="form-control" ></td>  '  + 
  '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  '  + 
  '   </tr>  '  + 
  '    ' ; 
@@ -257,8 +302,8 @@ foreach ($project as $key=>$value){
 
     function getRowInsentif(id){
          var row =  '<tr>'  + 
- '   <td><input type="date" name="insentif['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" required></td>  '  + 
- '   <td><select class="form-control" name="insentif['+id+'][project_id]"><option value="" selected="selected" required></option>' +
+ '   <td><input type="date" name="insentif['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  '  + 
+ '   <td><select class="form-control" name="insentif['+id+'][project_id]"><option value="" selected="selected" ></option>' +
  '<?php
 foreach ($project as $key=>$value){
     echo ' <option value="'.$key.'">'.$value.'</option>';
@@ -266,8 +311,8 @@ foreach ($project as $key=>$value){
 
 ?>'+
  '</select></td>'  + 
- '   <td><input type="text" name="insentif['+id+'][value]" class="form-control" required></td>  '  + 
- '   <td><input type="text" name="insentif['+id+'][desc]" class="form-control" required></td>  '  + 
+ '   <td><input type="text" name="insentif['+id+'][value]" class="form-control" ></td>  '  + 
+ '   <td><input type="text" name="insentif['+id+'][desc]" class="form-control" ></td>  '  + 
  '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  '  + 
  '   </tr>  '  + 
  '    ' ; 
