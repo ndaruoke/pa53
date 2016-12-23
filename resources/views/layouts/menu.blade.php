@@ -1,6 +1,6 @@
 @inject('count', 'App\Services\MenuCountService')
 
-<!-- examples roles access -->
+<!-- Admin -->
 @if (Auth::user()->hasRole('Admin'))
 
 <li class="{{ Request::is('users*') ? 'active' : '' }}">
@@ -80,6 +80,27 @@
 
 @endif
 
+<!-- PMO -->
+@if (Auth::user()->hasRole('PMO'))
+<li class="{{ Request::is('projects*') ? 'active' : '' }}">
+    <a href="{!! route('projects.index') !!}"><i class="fa fa-laptop"></i><span>Project</span></a>
+</li>
+
+<li class="{{ Request::is('tunjanganPositions*') ? 'active' : '' }}">
+    <a href="{!! route('tunjanganPositions.index') !!}"><i class="fa fa-money"></i><span>Tunjangan Position</span></a>
+</li>
+
+<li class="{{ Request::is('departments*') ? 'active' : '' }}">
+    <a href="{!! route('departments.index') !!}"><i class="fa fa-university"></i><span>Department</span></a>
+</li>
+
+<li class="{{ Request::is('holidays*') ? 'active' : '' }}">
+    <a href="{!! route('holidays.index') !!}"><i class="fa fa-calendar"></i><span>Holiday</span></a>
+</li>
+@endif
+
+
+<!-- Common User -->
 @if (Auth::user()->hasRole('CBS|Consultant|Finance|Manager|PMO|VP'))
 <li class="{{ Request::is('timesheets*') ? 'active' : '' }}">
     <a href="{!! route('timesheets.index') !!}"><i class="fa fa-calendar"></i><span>Timesheet</span></a>
