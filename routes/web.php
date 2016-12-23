@@ -56,8 +56,20 @@ Route::resource('roles', 'RoleController');
 
 Route::resource('sequences', 'SequenceController');
 
-Route::get('timesheets/moderation', array('uses' => 'TimesheetController@moderation',
+Route::get('timesheets/moderation', array('uses' => 'TimesheetApprovalController@moderation',
 'as' => 'timesheets.moderation'));
+
+Route::get('timesheets/moderation/show/{id}', array('uses' => 'TimesheetApprovalController@moderationShow',
+'as' => 'timesheets.moderation.show'));
+
+Route::get('timesheets/moderation/edit/{id}', array('uses' => 'TimesheetApprovalController@moderationEdit',
+'as' => 'timesheets.moderation.edit'));
+
+Route::get('timesheets/moderation/approve/{id}', array('uses' => 'TimesheetApprovalController@moderationApprove',
+'as' => 'timesheets.moderation.approve'));
+
+Route::get('timesheets/moderation/reject/{id}', array('uses' => 'TimesheetApprovalController@moderationReject',
+'as' => 'timesheets.moderation.reject'));
 
 Route::resource('timesheets', 'TimesheetController');
 

@@ -3,20 +3,20 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Leave
+            Timesheet
         </h1>
     </section>
     <div class="content">
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row" style="padding-left: 20px">
-                    @include('leaves.show_fields')
+                    @include('timesheets.moderate_fields')
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="{!! route('leaves.moderation') !!}" class="btn btn-default">Back</a>
+                            <a href="{!! route('timesheets.moderation') !!}" class="btn btn-default">Back</a>
                         </li>
                         <li>
-                            {!! Form::open(['route' => ['leaves.moderation.approve', $leave->id], 'method' => 'get']) !!}
+                            {!! Form::open(['route' => ['timesheets.moderation.approve', $timesheet], 'method' => 'get']) !!}
 
                                 {!! Form::button('Approve', [
                                     'type' => 'submit',
@@ -26,7 +26,7 @@
                             {!! Form::close() !!}
                         </li>
                         <li>
-                            {!! Form::open(['route' => ['leaves.moderation.reject', $leave->id], 'method' => 'get']) !!}
+                            {!! Form::open(['route' => ['timesheets.moderation.reject', $timesheet], 'method' => 'get']) !!}
 
                                 {!! Form::button('Reject', [
                                     'type' => 'submit',

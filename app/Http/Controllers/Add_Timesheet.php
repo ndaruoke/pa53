@@ -163,27 +163,36 @@ class Add_Timesheet extends Controller
         {
             if($m->lokasi === "JABODETABEK"){
                 $summary['lokal']['count'] = $m->total;
-                foreach ($arr['lokal'] as $key => $value){
+                if ( !empty ( $arr ) ) {
+                    foreach ($arr['lokal'] as $key => $value){
                     $summary['lokal'][$key] = $value*$m->total;
                   //  echo $key. ' = '.$value. ' * '.$m->total.' '.$value*$m->total.'<br>';
+                    }
                 }
+                
             } else if ($m->lokasi === "DOMESTIK L. JAWA"){
                 $summary['luar_jawa']['count'] = $m->total;
-                foreach ($arr['luar_jawa'] as $key => $value){
-                    $summary['luar_jawa'][$key] = $value*$m->total;
-                  //  echo $key. ' = '.$value. ' * '.$m->total.' '.$value*$m->total.'<br>';
+                if ( !empty ( $arr ) ) {
+                    foreach ($arr['luar_jawa'] as $key => $value){
+                        $summary['luar_jawa'][$key] = $value*$m->total;
+                    //  echo $key. ' = '.$value. ' * '.$m->total.' '.$value*$m->total.'<br>';
+                    }
                 }
             } else if ($m->lokasi === "DOMESTIK P. JAWA"){
                $summary['non_lokal']['count'] = $m->total;
-                foreach ($arr['non_lokal'] as $key => $value){
-                    $summary['non_lokal'][$key] = $value*$m->total;
-                 //   echo $key. ' = '.$value. ' * '.$m->total.' '.$value*$m->total.'<br>';
-                }
+               if ( !empty ( $arr ) ) {
+                    foreach ($arr['non_lokal'] as $key => $value){
+                        $summary['non_lokal'][$key] = $value*$m->total;
+                    //   echo $key. ' = '.$value. ' * '.$m->total.' '.$value*$m->total.'<br>';
+                    }
+               }
             } else if ($m->lokasi === "INTERNATIONAL"){
                 $summary['internasional']['count'] = $m->total;
-                foreach ($arr['internasional'] as $key => $value){
-                    $summary['internasional'][$key] = $value*$m->total;
-                 //   echo $key. ' = '.$value. ' * '.$m->total.' '.$value*$m->total.'<br>';
+                if ( !empty ( $arr ) ) {
+                    foreach ($arr['internasional'] as $key => $value){
+                        $summary['internasional'][$key] = $value*$m->total;
+                    //   echo $key. ' = '.$value. ' * '.$m->total.' '.$value*$m->total.'<br>';
+                    }
                 }
             }
            // echo $m->lokasi;

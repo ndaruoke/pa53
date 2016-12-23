@@ -12,7 +12,7 @@
 
             <div class="box-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'projects.store']) !!}
+                    {!! Form::open(['id'=>'project_form', 'route' => 'projects.store']) !!}
 
                         @include('projects.fields')
 
@@ -28,6 +28,24 @@
 @section('scripts')
     <script type="text/javascript" src="{{ URL::asset('js/multiselect.min.js') }}"></script>
     <script type="text/javascript">
+    
+        $(document).ready(function($){
+            VMasker(document.querySelector("#budgetid")).maskMoney({
+                // Decimal precision -> "90"
+                precision: 0,
+                // Decimal separator -> ",90"
+                separator: ',',
+                // Number delimiter -> "12.345.678"
+                delimiter: '.',
+                // Money unit -> "R$ 12.345.678,90"
+                unit: 'Rp'
+                });
+        });
+
+        $("#project_form").submit(function($){
+            VMasker(document.querySelector("#budgetid")).unMask();
+        });
+
         jQuery(document).ready(function($) {
             //remove duplicates
             var origin = new Array();

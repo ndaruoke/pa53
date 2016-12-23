@@ -14,7 +14,7 @@ class UpdateLeavesTable4 extends Migration
     public function up()
     {
         Schema::table('leaves', function ($table) {
-            $table->string('type')->default(0);
+            //$table->string('type')->default(0);
         });
     }
 

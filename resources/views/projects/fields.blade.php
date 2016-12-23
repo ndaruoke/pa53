@@ -14,7 +14,7 @@
 <!-- Budget Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('budget', 'Budget :') !!}
-    {!! Form::number('budget', null, ['class' => 'form-control','step'=>'any']) !!}
+    {!! Form::text('budget', null, ['id'=>'budgetid','class' => 'form-control']) !!}
 </div>
 
 <!-- Code Field -->
@@ -117,4 +117,3 @@
     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
     <a href="{!! route('projects.index') !!}" class="btn btn-default">Cancel</a>
 </div>
-

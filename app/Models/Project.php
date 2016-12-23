@@ -101,7 +101,7 @@ class Project extends Model
         'project_name' => 'string',
         'tunjangan_list' => 'string',
         'budget' => 'decimal',
-        'code' => 'integer',
+        'code' => 'string',
         'claimable' => 'integer',
         'department_id' => 'integer',
         'pm_user_id' => 'integer',

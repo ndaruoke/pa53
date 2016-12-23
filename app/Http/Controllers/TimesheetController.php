@@ -8,8 +8,10 @@ use App\DataTables\TimesheetDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateTimesheetRequest;
 use App\Http\Requests\UpdateTimesheetRequest;
+use App\Models\Timesheet;
 use App\Models\TimesheetDetail;
 use App\Models\User;
+use App\Models\Project;
 use App\Models\UserLeave;
 use App\Repositories\TimesheetRepository;
 use App\Repositories\TimesheetDetailRepository;
@@ -162,136 +164,4 @@ class TimesheetController extends AppBaseController
         return redirect(route('timesheets.index'));
     }
 
-            /**
-     * Display a listing of the Leave.
-     *
-     * @param LeaveDataTable $leaveDataTable
-     * @return Response
-     */
-    public function moderation(ModerationTimesheetDataTable $moderationTimesheetDataTable)
-    {
-        $user = Auth::user();
-        return $moderationTimesheetDataTable->render('timesheets.moderation', array('user]'=>$user));
-    }
-
-    /**
-     * Approve Timesheet in storage.
-     *
-     * @param CreateTimesheetRequest $request
-     *
-     * @return Response
-     */
-    public function moderationApprove($id)
-    {
-        //approve
-        $timesheet = Timesheet::approve($id);
-
-        if ($timesheet == false) {
-            Flash::error('Approve Timesheet Fail');
-
-            return redirect(route('timesheet.moderation'));
-        }
-
-        $timesheet = $this->timesheetRepository->findWithoutFail($id);
-        $cc = $this->getHRD(); 
-        $approver = User::where('id',$timesheet->approval_id)->get()->first();
-        $user = User::where('id',$timesheet->user_id)->get()->first();
-
-        //send email
-		Mail::to($user->email)
-                ->cc($cc)
-                ->queue(new TimesheetNotification($timesheet, $approver, $user, 'approved'));
-
-        Flash::success('Approve successfully.');
-
-        return redirect(route('timesheet.moderation'));
-    }
-
-
-
-    /**
-     * Reject Leave in storage.
-     *
-     * @param CreateLeaveRequest $request
-     *
-     * @return Response
-     */
-    public function moderationReject($id)
-    {
-        $timesheet = $this->timesheetRepository->findWithoutFail($id);
-        if (empty($timesheet)) {
-            Flash::error('Timesheet not found');
-
-            return redirect(route('timesheet.moderation'));
-        }
-        $userLeave = $this->userLeaveRepository->findByField('user_id',$leave->user_id)->first();
-        if (empty($userLeave)) {
-            Flash::error('User Leave not found');
-
-            return redirect(route('leaves.moderation'));
-        }
-
-        $endDate = new Carbon($leave->end_date);
-        $startDate = new Carbon($leave->start_date);
-        $dayCount = $endDate->diff($startDate)->days;
-        $userLeave->leave_used = $userLeave->leave_used-$dayCount;
-        
-        $userLeave->save();
-
-        $leave = Leave::reject($id);
-
-        if ($leave == false) {
-            Flash::error('Reject Leave Fail');
-
-            return redirect(route('leaves.moderation'));
-        }
-
-        $leave = $this->leaveRepository->findWithoutFail($id);
-        $approver = User::where('id',$leave->approval_id)->get()->first();
-        $user = User::where('id',$leave->user_id)->get()->first();
-        //send email
-		Mail::to($user->email)
-                ->queue(new LeaveNotification($leave, $approver, $user, 'rejected'));
-
-        Flash::success('Reject successfully.');
-
-        return redirect(route('leaves.moderation'));
-    }
-
-    private function getCC(CreateLeaveRequest $request)
-	{
-		$user = Auth::user();
-		
-		$consultantPosition = [6,7,8,9,16];
-        $managingConsultantPosition = [4,5];
-        $bod = [1,2,3];;
-
-		if($request->project != null) // Consultant to MC + HRD
-		{
-			$cc = User::whereIn('position',$managingConsultantPosition)
-                ->where('department',$user->department)->get();
-			return $cc->pluck('email')->all()->first();
-		}
-        if(in_array($user->position, $consultantPosition)) // PM to VP+HRD
-        {
-            $cc = User::where('position',3)
-                ->where('department',$user->department)->get();
-            return $cc->pluck('email')->all()->first();
-        }
-
-		if(in_array($user->position, $managingConsultantPosition)) // Managing Consultant to Vice President
-        {
-            return $this->getHRD();
-        }
-
-        if(in_array($user->position, $bod)) // VP, Director auto approve admin
-        {
-            return $this->getHRD();
-        }
-
-		else
-		{
-			return $this->getHRD();
-        }
-    }
 }

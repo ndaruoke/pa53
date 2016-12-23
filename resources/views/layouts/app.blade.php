@@ -99,7 +99,7 @@
 
         <!-- Main Footer -->
         <footer class="main-footer" style="max-height: 100px;text-align: center">
-            <strong>Copyright © 2016 <a href="http://www.metrasys.co.id/">PT Sigma Metrasys Solution </a>.</strong> All rights reserved.
+            <strong>Copyright © 2016-2017 <a href="http://www.metrasys.co.id/">PT Sigma Metrasys Solution </a>.</strong> All rights reserved.
         </footer>
 
     </div>
@@ -159,14 +159,20 @@
     <!-- AdminLTE App -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.3/js/app.min.js"></script>
 
+    <!-- vanilla masker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.1.0/vanilla-masker.min.js"></script>
+
     <!-- page script -->
     <script>
         $(function () {
             //Initialize Select2 Elements
             $(".select2").select2();
         });
+
+        
     </script>
     @yield('scripts')
+
 
     <!-- date -->
     <!-- cdn for modernizr, if you haven't included it already -->

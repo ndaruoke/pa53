@@ -178,7 +178,7 @@
     
     <th></th>
   <th></th>
-    <th>Rp. 1,350,000.00</th>
+    <th>Rp. {{$summary['total']}}</th>
   </tr>
   <tr>
     <th></th>
@@ -208,36 +208,38 @@
             <div class="box-body">
               <table class="table table-hover">
                 <tbody><tr>
-                <th>Sent</th>
                   <th>Proyek</th>
                   <th>Tanggal</th>
-                  <th width="70">Start</th>
-                  <th width="70">End</th>
+                  <th width="75">Start</th>
+                  <th width="75">End</th>
                   <th>Lokasi</th>
-				  <th>Aktifitas</th>
-				  <th>Keterangan</th>
+				          <th>Aktifitas</th>
+				          <th>Keterangan</th>
+                  <th>Cek</th>
                 </tr>
                 @foreach ($timesheet_details as $row=>$detail)
  <tr>
-     <td class="col-md-1">
-           {{ Form::checkbox('timesheet['.$row.'][select]', true, $detail->selected) }}
-			</td>
-                  <td>
-{!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
-				  </td>
-                  <td>{{str_replace(' 00:00:00','',$detail->date)}}{{ Form::hidden('timesheet['.$row.'][date]', str_replace(' 00:00:00','',$detail->date)) }}</td>
-             <td><input type="text" name="timesheet[{{$row}}][start]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->start_time }}" ></td>
-             <td><input type="text" name="timesheet[{{$row}}][end]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->end_time }}" ></td>
+            
+            <td>
+                {!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2', 'disabled']) !!}
+            </td>
+            <td>{{substr($detail->date,0,10)}}{{ Form::hidden('timesheet['.$row.'][date]', str_replace(' 00:00:00','',$detail->date)) }}</td>
+             <td><input type="text" name="timesheet[{{$row}}][start]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->start_time }}" disabled="true"></td>
+             <td><input type="text" name="timesheet[{{$row}}][end]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->end_time }}" disabled="true"></td>
                   
-                  <td>
-{!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, $detail->lokasi, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi']) !!}
-			</td>
-			<td class="col-md-2">
-{!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, $detail->activity, ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')']) !!}				    
-            <input type="text" name="timesheet[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" value="{{$detail->activity_detail}}" style="display:none;">
-			</td>
+            <td>
+                {!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, $detail->lokasi, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi', 'disabled']) !!}
+			      </td>
+			      <td class="col-md-2">
+                {!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, $detail->activity, ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')', 'disabled']) !!}				    
+			    </td>
 
-                  <td></td>
+            <td>
+                <input type="textarea" name="timesheet[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" value="{{$detail->activity_detail}}" style="display:visible;" disabled="true">
+            </td>
+            <td class="col-md-1">
+                {{ Form::checkbox('timesheet['.$row.'][select]', true, $detail->selected) }}
+			      </td>
                 </tr>
 @endforeach
                 </tbody></table>
@@ -262,20 +264,20 @@
                 <th>Proyek</th>
                 <th>Jumlah</th>
                 <th>Keterangan</th>
-                <th><a href="javascript:void(0);" style="font-size:18px;" id="addInsentif" title="Add Insentif"><span class="glyphicon glyphicon-plus"></span></a>
                 </th></tr>
                 @foreach ($timesheet_insentif as $row=>$detail)
                 <tr>
                 <td >
-                {{ Form::date('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control')) }}
+                  {{ Form::date('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled')) }}
                 <td >
-                {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
+                  {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2', 'disabled']) !!}
                 </td>
                 <td >
-                {{ Form::text('insentif['.$row.'][value]', $detail->value, array('class' => 'form-control')) }}
+                  {{ Form::text('insentif['.$row.'][value]', $detail->value, array('class' => 'form-control', 'disabled')) }}
                 <td>
-                {{ Form::text('insentif['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control')) }}
-                </td ><td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>
+                <td>
+                  {{ Form::text('insentif['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control', 'disabled')) }}
+                </td>
                 </tr>
                 @endforeach
                 </table>
@@ -300,20 +302,22 @@
                 <th>Proyek</th>
                 <th>Jumlah</th>
                 <th>Keterangan</th>
-                <th><a href="javascript:void(0);" style="font-size:18px;" id="addTransportasi" title="Add Transportasi"><span class="glyphicon glyphicon-plus"></span></a>
-                 </th></tr>
+                </th></tr>
                 @foreach ($timesheet_transport as $row=>$detail)
                 <tr>
                 <td>
-                {{ Form::date('trans['.$row.'][date]', $detail->date, array('class' => 'form-control')) }}
+                  {{ Form::date('trans['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled')) }}
                 <td>
-                {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
+                  {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','disabled']) !!}
                 </td>
                 <td>
-                {{ Form::text('trans['.$row.'][value]', $detail->value, array('class' => 'form-control')) }}
+                  {{ Form::text('trans['.$row.'][value]', $detail->value, array('class' => 'form-control','disabled')) }}
                 <td>
-                {{ Form::text('trans['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control')) }}
-                </td><td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>
+                  {{ Form::text('trans['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control','disabled')) }}
+                </td>
+                <td>
+                  <a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a>
+                </td>
                 </tr>
                 @endforeach
                 </table>       

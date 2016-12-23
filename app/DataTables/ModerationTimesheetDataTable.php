@@ -37,9 +37,7 @@ class ModerationTimesheetDataTable extends DataTable
                 }
             })
             ->addColumn('action', 'Timesheets.moderation_datatables_actions')
-            ->make(true);
-            
-    
+            ->make(true);    
     }
 
     /**
@@ -63,10 +61,9 @@ class ModerationTimesheetDataTable extends DataTable
      */
     public function html()
     {
-        return $this->builder()
+        $html = $this->builder()
             ->columns($this->getColumns())
             ->addAction(['width' => '10%'])
-            
             ->ajax('')
             ->parameters([
                 'dom' => 'Bfrtip',
@@ -85,9 +82,13 @@ class ModerationTimesheetDataTable extends DataTable
                          ],
                     ],
                     'colvis'
-                ]
-            ])
+                ],
+
+            ])         
             ;
+
+            
+            return $html;
     }
 
     /**
@@ -101,9 +102,9 @@ class ModerationTimesheetDataTable extends DataTable
             'nama' => ['name' => 'name', 'data' => 'users.name'],
             'jumlah_pengajuan_pa' => ['name' => 'total', 'data' => 'total'],
             'jumlah_pengajuan_tunjangan' => ['name' => 'totaltunjangan', 'data' => 'totaltunjangan'],
-            'periode' => ['name' => 'periode', 'data' => 'periode'],
-            'month' => ['name' => 'month', 'data' => 'month'],
-            'year' => ['name' => 'year', 'data' => 'year']
+            'periode' => ['visible' => false,'name' => 'periode', 'data' => 'periode'],
+            'month' => ['visible' => false,'name' => 'month', 'data' => 'month'],
+            'year' => ['visible' => false,'name' => 'year', 'data' => 'year']
         ];
     }
 
