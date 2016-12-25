@@ -25,7 +25,9 @@ class Add_Timesheet extends Controller
     public function index()
     {
         $project = Project::pluck('project_name', 'id')->all();
-        return view('timesheets.add_timesheet',compact('project'));
+        $nonlokal = array('DOMESTIK P. JAWA'=>'DOMESTIK P. JAWA','DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA','INTERNATIONAL'=>'INTERNATIONAL');
+        $bantuan_perumahan = $this->getTunjanganPerumahan();
+        return view('timesheets.add_timesheet',compact('project','nonlokal','bantuan_perumahan'));
     }
 
     public function show($id)
@@ -37,16 +39,20 @@ class Add_Timesheet extends Controller
         $timesheet_details = TimesheetDetail::where('timesheet_id','=',$id)->get();
         $timesheet_insentif = DB::table('timesheet_insentif')->where('timesheet_id','=',$id)->get();
         $timesheet_transport = DB::table('timesheet_transport')->where('timesheet_id','=',$id)->get();
+        $nonlokal = array('DOMESTIK P. JAWA'=>'DOMESTIK P. JAWA','DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA','INTERNATIONAL'=>'INTERNATIONAL');
+        $bantuan_perumahan = $this->getTunjanganPerumahan();
         //return response()->json($timesheet_transport);
         $summary = $this->populateSummary($id);
-        return view('timesheets.edit_timesheet',compact('lokasi','activity','timesheet','project','id','timesheet_details','timesheet_insentif','timesheet_transport','summary'));
+        return view('timesheets.edit_timesheet',compact('lokasi','activity','timesheet','project','id','timesheet_details','timesheet_insentif','timesheet_transport','summary','nonlokal','bantuan_perumahan'));
     }
     
     public function form()
     {   $lokasi = array('JABODETABEK'=>'JABODETABEK','DOMESTIK P. JAWA'=>'DOMESTIK P. JAWA','DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA','INTERNATIONAL'=>'INTERNATIONAL','UNCLAIMABLE'=>'UNCLAIMABLE');
         $activity = array('CUTI'=>'CUTI','LIBUR'=>'LIBUR','IDLE' => 'IDLE','SAKIT' => 'SAKIT','SUPPORT' => 'SUPPORT','IMPLEMENTASI' => 'IMPLEMENTASI','MANAGED OPERATION' => 'MANAGED OPERATION');
         $project = Project::pluck('project_name', 'id')->all();
-        return view('timesheets.add_timesheet',compact('project','lokasi','activity'));
+        $nonlokal = array('DOMESTIK P. JAWA'=>'DOMESTIK P. JAWA','DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA','INTERNATIONAL'=>'INTERNATIONAL');
+        $bantuan_perumahan = $this->getTunjanganPerumahan();
+        return view('timesheets.add_timesheet',compact('project','lokasi','activity','nonlokal','bantuan_perumahan'));
     }
     
     public function create(Request $req)
@@ -114,7 +120,7 @@ class Add_Timesheet extends Controller
             'project_id'=> $value['project_id'],
             'value'=> $value['value'],
             'keterangan'=> $value['desc'],
-        //    'end_time'=> $value['end'],
+            'lokasi'=> $value['lokasi'],
             'timesheet_id'=>  $id,
          //   'project_id'=> $value['project'],
         ];}
@@ -257,8 +263,9 @@ class Add_Timesheet extends Controller
        return $summary ;
     }    
     public function getColumns()
-    {
-        return Auth::user()->id;
+    {   
+    return response()->json( $this->getTunjanganPerumahan());
+       return Auth::user()->id;
        return response()->json( $this->populateSummary());
        // return response()->json(Timesheet::all());
        //return response()->json(DB::select(DB::raw('SELECT id,periode,week, MONTHNAME(STR_TO_DATE(month, "%m")) as month,year FROM `timesheets`')));
@@ -272,4 +279,21 @@ class Add_Timesheet extends Controller
         return view('timesheets.history', compact('html'));
     }
     
+    public function getTunjanganPerumahan(){
+        $bantuan_perumahan = DB::select(DB::raw('SELECT tunjangan_positions.internasional,tunjangan_positions.non_lokal,tunjangan_positions.luar_jawa FROM tunjangan_positions, users WHERE tunjangan_positions.position_id = users.position and tunjangan_positions.tunjangan_id = 1 and users.id = '.Auth::user()->id));
+        if(empty ($bantuan_perumahan)){
+            $bantuan_perumahan['non_lokal'] = 0;
+            $bantuan_perumahan['luar_jawa'] = 0;
+            $bantuan_perumahan['internasional'] = 0;
+                    return $bantuan_perumahan;
+
+        } else {
+            $bantuan_perumaan_daily = array();
+            $bantuan_perumaan_daily['non_lokal'] = $bantuan_perumahan [0]->non_lokal/20;
+            $bantuan_perumaan_daily['luar_jawa'] = $bantuan_perumahan [0]->luar_jawa/20;
+            $bantuan_perumaan_daily['internasional'] = $bantuan_perumahan [0]->internasional/20;
+           return $bantuan_perumaan_daily;
+        }
+    }
+
 }

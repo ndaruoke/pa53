@@ -260,6 +260,7 @@
                 <tr class="tr-header">
                 <th>Tanggal</th>
                 <th>Proyek</th>
+                <th>Lokasi</th>
                 <th>Jumlah</th>
                 <th>Keterangan</th>
                 <th><a href="javascript:void(0);" style="font-size:18px;" id="addInsentif" title="Add Insentif"><span class="glyphicon glyphicon-plus"></span></a>
@@ -271,8 +272,11 @@
                 <td >
                 {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
                 </td>
+                 <td >
+                {!! Form::select('insentif['.$row.'][lokasi]', [''=>'']+$nonlokal, $detail->Lokasi, ['class' => 'form-control ','onchange'=>'onChangeLocation(this,'.$row.')']) !!}
+                </td>
                 <td >
-                {{ Form::text('insentif['.$row.'][value]', $detail->value, array('class' => 'form-control')) }}
+                {{ Form::text('insentif['.$row.'][value]', $detail->value, array('class' => 'form-control','id'=>'insentiv'.$row.'value','readonly'=>'')) }}
                 <td>
                 {{ Form::text('insentif['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control')) }}
                 </td ><td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>
@@ -418,7 +422,15 @@ foreach ($project as $key=>$value){
 
 ?>'+
  '</select></td>'  + 
- '   <td><input type="text" name="insentif['+id+'][value]" class="form-control" ></td>  '  + 
+ '   <td><select class="form-control" name="insentif['+id+'][lokasi]"  onchange="onChangeLocation(this,'+id+')"><option value="" selected="selected"></option>' +
+ '<?php
+foreach ($nonlokal as $key=>$value){
+    echo ' <option value="'.$key.'">'.$value.'</option>';
+}
+
+?>'+
+ '</select></td>'  + 
+ '   <td><input type="text" name="insentif['+id+'][value]"  id="insentiv'+id+'value" class="form-control" ></td>  '  + 
  '   <td><input type="text" name="insentif['+id+'][desc]" class="form-control" ></td>  '  + 
  '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  '  + 
  '   </tr>  '  + 
@@ -453,7 +465,19 @@ $(function(){
          var trIndex = $(this).closest("tr").index();
              $(this).closest("tr").remove();
       });
-});     
+});   
+
+function onChangeLocation(obj,id){
+    //alert(obj.value);
+    if(obj.value === 'DOMESTIK P. JAWA'){
+        $('#insentiv'+id+'value').val({{ $bantuan_perumahan['non_lokal'] }})
+    } else if (obj.value === 'DOMESTIK L. JAWA') {
+        $('#insentiv'+id+'value').val({{ $bantuan_perumahan['luar_jawa'] }})
+    }
+    else if (obj.value === 'INTERNATIONAL') {
+        $('#insentiv'+id+'value').val({{ $bantuan_perumahan['internasional'] }})
+    }   
+}  
 
 
 </script>
