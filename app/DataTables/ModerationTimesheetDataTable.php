@@ -4,9 +4,11 @@ namespace App\DataTables;
 
 use Auth;
 use App\Models\Timesheet;
+use App\Models\ApprovalHistory;
 use Form;
 use Yajra\Datatables\Services\DataTable;
 use Illuminate\Support\Str;
+use DB;
 
 class ModerationTimesheetDataTable extends DataTable
 {
@@ -22,17 +24,7 @@ class ModerationTimesheetDataTable extends DataTable
             ->filter(function ($instance) use ($request) {
                 if (array_key_exists('year', $request)){
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['year'], $request['year']) ? true : false;
-                    });
-                }
-                if (array_key_exists('month', $request)){
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['month'], $request['month']) ? true : false;
-                    });
-                }
-                if (array_key_exists('periode', $request)){
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        return Str::contains($row['periode'], $request['periode']) ? true : false;
+                        return Str::contains($row['approvalstatus'], $request['approvalstatus']) ? true : false;
                     });
                 }
             })
@@ -49,7 +41,16 @@ class ModerationTimesheetDataTable extends DataTable
     {
         $user = Auth::user();
         
-        $timesheets = Timesheet::with(['users'])->where('approval_id', $user->id)->get();
+        $request = $_REQUEST;
+        if(empty($request['approvalStatus']))
+        {
+            $approvalStatus = 0;
+        } else 
+        {
+            $approvalStatus = $request['approvalStatus'];
+        }
+        
+        $timesheets = Timesheet::getapprovalmoderation($user->id, $approvalStatus);
 
         return $this->applyScopes($timesheets);
     }
@@ -66,6 +67,7 @@ class ModerationTimesheetDataTable extends DataTable
             ->addAction(['width' => '10%'])
             ->ajax('')
             ->parameters([
+                'bFilter' => false,
                 'dom' => 'Bfrtip',
                 'scrollX' => true,
                 'buttons' => [
@@ -99,12 +101,9 @@ class ModerationTimesheetDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'nama' => ['name' => 'name', 'data' => 'users.name'],
-            'jumlah_pengajuan_pa' => ['name' => 'total', 'data' => 'total'],
-            'jumlah_pengajuan_tunjangan' => ['name' => 'totaltunjangan', 'data' => 'totaltunjangan'],
-            'periode' => ['visible' => false,'name' => 'periode', 'data' => 'periode'],
-            'month' => ['visible' => false,'name' => 'month', 'data' => 'month'],
-            'year' => ['visible' => false,'name' => 'year', 'data' => 'year']
+            'nama' => ['name' => 'name', 'data' => 'name'],
+            'jumlah_pengajuan_pa' => ['name' => 'count', 'data' => 'count'],
+            'jumlah_pengajuan_tunjangan' => ['name' => 'insentif', 'data' => 'insentif']
         ];
     }
 

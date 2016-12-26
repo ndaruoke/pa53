@@ -8,6 +8,7 @@ use App\DataTables\TimesheetDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateTimesheetRequest;
 use App\Http\Requests\UpdateTimesheetRequest;
+use App\Models\ApprovalHistory;
 use App\Models\Constant;
 use App\Models\Timesheet;
 use App\Models\TimesheetDetail;
@@ -44,7 +45,15 @@ class TimesheetApprovalController extends AppBaseController
     public function moderation(ModerationTimesheetDataTable $moderationTimesheetDataTable)
     {
         $user = Auth::user();
-        return $moderationTimesheetDataTable->render('timesheets.moderation', array('user]'=>$user));
+        if(empty($_REQUEST['approvalStatus']))
+        {
+            $status = 0;
+        } else 
+        {
+            $status = $_REQUEST['approvalStatus'];
+        }
+        $approvalStatus = [''=>''] +Constant::where('category','Moderation')->orderBy('name','asc')->pluck('name', 'value')->all();
+        return $moderationTimesheetDataTable->render('timesheets.moderation', array('user'=>$user,'approvalStatus'=>$approvalStatus, 'status'=>$status));
     }
 
      /**
@@ -74,30 +83,47 @@ class TimesheetApprovalController extends AppBaseController
      *
      * @return Response
      */
-    public function moderationEdit($id)
+    public function moderationEdit(CreateTimesheetRequest $request)
     {
+        $approvalId = $request->approvalId;
+        $userId = $request->userId;
+        $approvalStatus = $request->approvalStatus;
+
         $lokasi = [''=>''] +Constant::where('category','Location')->orderBy('name','asc')->pluck('name', 'value')->all();
         $activity = [''=>''] +Constant::where('category','Activity')->orderBy('name','asc')->pluck('name', 'value')->all();
         $project = Project::pluck('project_name', 'id')->all();
-        $timesheet = Timesheet::where('id','=',$id)->first();
-        $timesheet_details = TimesheetDetail::where('timesheet_id','=',$id)->where('selected','=','1')->get();
-        $timesheet_insentif = DB::table('timesheet_insentif')->where('timesheet_id','=',$id)->get();
-        $timesheet_transport = DB::table('timesheet_transport')->where('timesheet_id','=',$id)->get();
-        $summary = $this->populateSummary($id, $timesheet->user_id, $timesheet_insentif, $timesheet_transport);
+        $timesheets = Timesheet::where('approval_id','=',$approvalId)->where('user_id','=',$userId)->get();
+        $timesheet_details = DB::
+                table('timesheet_details')->
+                join('approval_histories', 'approval_histories.transaction_id', 'timesheet_details.id')->
+                where('approval_histories.approval_id','=',$approvalId)->
+                where('approval_histories.approval_status','=',$approvalStatus)->
+                where('approval_histories.transaction_type','=', 2)->
+                where('selected','=','1')->
+                get();
+        $timesheet_insentif = DB::
+                table('timesheet_insentif')->
+                join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')->
+                where('approval_histories.approval_id','=',$approvalId)->
+                where('approval_histories.approval_status','=',$approvalStatus)->
+                where('approval_histories.transaction_type','=', 3)->
+                get();
+        $timesheet_transport = DB::
+                table('timesheet_transport')->
+                join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')->
+                where('approval_histories.approval_id','=',$approvalId)->
+                where('approval_histories.approval_status','=',$approvalStatus)->
+                where('approval_histories.transaction_type','=', 4)->
+                get();
+        $summary = $this->populateSummary($timesheets, $userId, $timesheet_insentif, $timesheet_transport);
 
-        if (empty($timesheet)) {
+        if (empty($timesheets)) {
             Flash::error('Timesheet not found');
 
             return redirect(route('leaves.moderation'));
         }
 
-        if($timesheet->approval_status == 1 || $timesheet->approval_status == 2) {//approved or rejected
-            Flash::error('Data '.$timesheet->note.' has been approved or rejected');
-
-            return redirect(route('timesheets.moderation'));
-        }
-
-        return view('timesheets.moderation_edit',compact('lokasi','activity','timesheet','project','id','timesheet_details','timesheet_insentif','timesheet_transport','summary'));
+        return view('timesheets.moderation_edit',compact('userId','lokasi','activity','timesheets','project','timesheet_details','timesheet_insentif','timesheet_transport','summary'));
     }
 
     /**
@@ -222,7 +248,7 @@ class TimesheetApprovalController extends AppBaseController
     }
 
 
-    public function populateSummary($timesheet_id, $user_id, $timesheet_insentif, $timesheet_transport){
+    public function populateSummary($timesheets, $user_id, $timesheet_insentif, $timesheet_transport){
          $tunjangans = DB::select(DB::raw('SELECT positions.name,tunjangans.name,lokal,non_lokal,luar_jawa,internasional FROM tunjangan_positions,tunjangans,positions,users WHERE tunjangan_positions.tunjangan_id = tunjangans.id and tunjangan_positions.position_id = positions.id and users.position = positions.id and users.id = '.$user_id));
 
 
@@ -239,13 +265,22 @@ class TimesheetApprovalController extends AppBaseController
         {
             $summary['total'] += $adcost->value;
         }
+        $summary['perumahan']['total'] = $timesheet_insentif->pluck('value')->sum();
+        $summary['perumahan']['count'] = $timesheet_insentif->count();
 
         foreach($timesheet_transport as $transport)
         {
             $summary['total'] += $transport->value;
         }
+        $summary['adcost']['total'] = $timesheet_transport->pluck('value')->sum();
+        $summary['adcost']['count'] = $timesheet_transport->count();
 
-        $mandays = DB::select(DB::raw("SELECT lokasi , count(*)total FROM `timesheet_details` where timesheet_id = ".$timesheet_id." group by lokasi"));
+        $mandays = DB::table('timesheet_details')
+        ->select(DB::raw('count(*) as total, lokasi'))
+        ->whereIn('timesheet_id', $timesheets->pluck('id'))     
+        ->groupBy('lokasi')
+        ->get();
+
         foreach($mandays as $m)
         {
             if($m->lokasi === "JABODETABEK"){

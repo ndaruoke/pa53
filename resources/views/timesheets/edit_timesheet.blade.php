@@ -43,7 +43,6 @@
             <div class="box-header with-border">
               <h3 class="box-title">TIMESHEET SUMMARY</h3>
             </div>
-            <!-- /.box-header -->
             <div class="box-body">
               <table class="summary project">
 <tbody><tr>

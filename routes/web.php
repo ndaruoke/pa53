@@ -62,13 +62,18 @@ Route::get('timesheets/moderation', array('uses' => 'TimesheetApprovalController
 Route::get('timesheets/moderation/show/{id}', array('uses' => 'TimesheetApprovalController@moderationShow',
 'as' => 'timesheets.moderation.show'));
 
+/**
 Route::get('timesheets/moderation/edit/{id}', array('uses' => 'TimesheetApprovalController@moderationEdit',
 'as' => 'timesheets.moderation.edit'));
+**/
 
-Route::get('timesheets/moderation/approve/{id}', array('uses' => 'TimesheetApprovalController@moderationApprove',
+Route::patch('timesheets/moderation/edit', array('uses' => 'TimesheetApprovalController@moderationEdit',
+'as' => 'timesheets.moderation.edit'));
+
+Route::get('timesheets/moderation/approve', array('uses' => 'TimesheetApprovalController@moderationApprove',
 'as' => 'timesheets.moderation.approve'));
 
-Route::get('timesheets/moderation/reject/{id}', array('uses' => 'TimesheetApprovalController@moderationReject',
+Route::get('timesheets/moderation/reject', array('uses' => 'TimesheetApprovalController@moderationReject',
 'as' => 'timesheets.moderation.reject'));
 
 Route::resource('timesheets', 'TimesheetController');

@@ -199,4 +199,21 @@ class User extends Model
         return $this->belongsTo('App\Models\ApprovalHistory');
     }
     
+    public function getApprovalCount($userId)
+    {
+        $result = DB::select( DB::raw("
+            select count(*) 
+                FROM approval_histories ah1 LEFT JOIN approval_histories ah2
+                ON (ah1.transaction_id = ah2.transaction_id AND ah1.sequence_id < ah2.sequence_id)
+                JOIN timesheet_details ON timesheet_details.id = ah1.transaction_id
+                WHERE ah2.transaction_id IS NULL
+                AND ah1.transaction_type = 3
+                AND timesheet_details.approval_id = :userId
+            "), array(
+                'userId' => $userId,
+            )
+        );
+
+        return $result;
+    }
 }

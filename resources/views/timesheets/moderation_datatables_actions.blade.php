@@ -1,13 +1,17 @@
-
+{!! Form::open(['route' => ['timesheets.moderation.edit'], 'method' => 'patch']) !!}
 <div class='btn-group'>
-    <a href="{{ route('timesheets.moderation.show', $id) }}" class='btn btn-default btn-xs'>
-        <i class="glyphicon glyphicon-eye-open"></i>
-    </a>
-    @if( $approval_status != 1 && $approval_status != 2)
-    <a href="{{ route('timesheets.moderation.edit', $id) }}" class='btn btn-default btn-xs'>
-        <i class="glyphicon glyphicon-edit"></i>
-    </a>
+
+    {{ Form::hidden('userId', $user_id) }}
+    {{ Form::hidden('approvalId', $approval_id) }}
+    {{ Form::hidden('approvalStatus', $approval_status) }}
+
+    {!! Form::button('<i class="glyphicon glyphicon-check"></i>', [
+        'type' => 'submit',
+        'class' => 'btn btn-default btn-xs'
+    ]) !!}
     </div>
-    @endif
 </div>
+{!! Form::close() !!}
+
+
 

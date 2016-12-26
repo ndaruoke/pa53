@@ -43,30 +43,31 @@
             <div class="box-header with-border">
               <h3 class="box-title">TIMESHEET SUMMARY</h3>
             </div>
-            <!-- /.box-header -->
             <div class="box-body">
               <table class="summary project">
 <tbody><tr>
     <th>JABODETABEK</th>
+    <th style="width:100px"></th>
     <th style="width:100px">HARI</th>
     <th style="width:100px"></th>
     <th>JUMLAH</th>
   </tr>
   <tr>
     <td>Tarif Insentif</td>
+    <td></td>
     <td rowspan="5">{{$summary['lokal']['count']}} Hari</td>
     <td></td>
     <td>Rp. {{$summary['lokal']['Insentif Project']}}</td>
   </tr>
   <tr>
     <td>Tarif Transport Lokal</td>
-    
+    <td></td>
     <td></td>
     <td>Rp. {{$summary['lokal']['Transport Lokal']}}</td>
   </tr>
   <tr>
     <td>Tarif Insentif Luar Kota</td>
-   
+    <td></td>
     <td></td>
     <td>Rp. {{$summary['lokal']['Transport Luar Kota']}}</td>
   </tr>
@@ -84,19 +85,20 @@
   </tr>
   <tr>
     <td>Tarif Insentif</td>
+    <td></td>
     <td rowspan="5">{{$summary['non_lokal']['count']}} Hari</td>
     <td></td>
     <td>Rp. {{$summary['non_lokal']['Insentif Project']}}</td>
   </tr>
   <tr>
     <td>Tarif Transport Lokal</td>
-    
+    <td></td>
     <td></td>
     <td>Rp. {{$summary['non_lokal']['Transport Lokal']}}</td>
   </tr>
   <tr>
     <td>Tarif Insentif Luar Kota</td>
-   
+   <td></td>
     <td></td>
     <td>Rp. {{$summary['non_lokal']['Transport Luar Kota']}}</td>
   </tr>
@@ -115,19 +117,20 @@
   </tr>
   <tr>
     <td>Tarif Insentif</td>
+    <td></td>
     <td rowspan="5">{{$summary['luar_jawa']['count']}} Hari</td>
     <td></td>
     <td>Rp. {{$summary['luar_jawa']['Insentif Project']}}</td>
   </tr>
   <tr>
     <td>Tarif Transport Lokal</td>
-    
+    <td></td>
     <td></td>
     <td>Rp. {{$summary['luar_jawa']['Transport Lokal']}}</td>
   </tr>
   <tr>
     <td>Tarif Insentif Luar Kota</td>
-   
+    <td></td>
     <td></td>
     <td>Rp. {{$summary['luar_jawa']['Transport Luar Kota']}}</td>
   </tr>
@@ -138,46 +141,51 @@
    
   </tr>
   <tr>
-    <th>LUAR NEGRI</th>
+    <th>LUAR NEGERI</th>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
     <td>Tarif Insentif</td>
+    <td></td>
     <td rowspan="3">{{$summary['internasional']['count']}} Hari</td>
-     <td></td>
-     <td>Rp. {{$summary['internasional']['Insentif Project']}}</td>
+    <td></td>
+    <td>Rp. {{$summary['internasional']['Insentif Project']}}</td>
   </tr>
   <tr>
     <td>Tarif Transport Lokal</td>
-   
     <td></td>
-     <td>Rp. {{$summary['internasional']['Transport Lokal']}}</td>
+    <td></td>
+    <td>Rp. {{$summary['internasional']['Transport Lokal']}}</td>
   </tr>
   <tr>
     <td></td>
-    
     <td></td>
+
     <td></td>
   </tr>
   <tr>
     <td><b>Tunjangan Bantuan Perumahan</b></td>
-   <td></td>
-   <td>Rp. 0.00</td>
-    <td>Rp. 0.00</td>
+    <td></td>
+    <td rowspan="1">{{$summary['perumahan']['count']}} Hari</td>
+     <td></td>
+     <td>Rp. {{$summary['perumahan']['total']}}</td>
+  </tr>
   </tr>
   <tr>
     <td><b>Fasilitas Transport Proyek Konsultasi Luar Kota</b></td>
     <td></td>
-    <td>Rp. 0.00</td>
-    <td>Rp. 0.00</td>
+    <td rowspan="1">{{$summary['adcost']['count']}} Hari</td>
+    <td></td>
+    <td>Rp. {{$summary['adcost']['total']}}</td>
+  </tr>
   </tr>
   <tr>
     <th>TOTAL</th>
-    
     <th></th>
-  <th></th>
+    <th></th>
+    <th></th>
     <th>Rp. {{$summary['total']}}</th>
   </tr>
   <tr>
@@ -185,14 +193,11 @@
     
     <th></th>
   <th></th>
-    <!--<th>$ 0.00</th>-->
   </tr>
   
 </tbody></table>
             </div>
-            <!-- /.box-body -->
           </div>
-          <!-- /.box -->
         </div>
 
 
@@ -204,7 +209,6 @@
             <div class="box-header with-border">
               <h3 class="box-title">Timesheet</h3>
             </div>
-            <!-- /.box-header -->
             <div class="box-body">
               <table class="table table-hover">
                 <tbody><tr>
@@ -238,15 +242,13 @@
                 <input type="textarea" name="timesheet[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" value="{{$detail->activity_detail}}" style="display:visible;" disabled="true">
             </td>
             <td class="col-md-1">
-                {{ Form::checkbox('timesheet['.$row.'][select]', true, $detail->selected) }}
+                {{ Form::checkbox('timesheet['.$row.'][choose]', true, $detail->selected) }}
 			      </td>
                 </tr>
 @endforeach
                 </tbody></table>
             </div>
-            <!-- /.box-body -->
           </div>
-          <!-- /.box -->
         </div>
 
 <div class="clearfix"></div>
@@ -256,7 +258,6 @@
             <div class="box-header with-border">
               <h3 class="box-title">Bantuan Perumahan</h3>
             </div>
-            <!-- /.box-header -->
             <div class="box-body">
               <table  class="table table-hover small-text" id="tb_insentif">
                 <tr class="tr-header">
@@ -278,13 +279,14 @@
                 <td>
                   {{ Form::text('insentif['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control', 'disabled')) }}
                 </td>
+                <td class="col-md-1">
+                  {{ Form::checkbox('insentif['.$row.'][choose]', true) }}
+                </td>
                 </tr>
                 @endforeach
                 </table>
             </div>
-            <!-- /.box-body -->
           </div>
-          <!-- /.box -->
         </div>
 
 <div class="clearfix"></div>
@@ -294,7 +296,6 @@
             <div class="box-header with-border">
               <h3 class="box-title">Transport Proyek Konsultasi Luar Kota</h3>
             </div>
-            <!-- /.box-header -->
             <div class="box-body">
               <table  class="table table-hover small-text" id="tb_trasnportasi">
                 <tr class="tr-header">
@@ -315,30 +316,24 @@
                 <td>
                   {{ Form::text('trans['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control','disabled')) }}
                 </td>
-                <td>
-                  <a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a>
+                <td class="col-md-1">
+                  {{ Form::checkbox('trans['.$row.'][choose]', true) }}
                 </td>
                 </tr>
                 @endforeach
                 </table>       
             </div>
-            <!-- /.box-body -->
           </div>
-          <!-- /.box -->
         </div>
 
 <div class="clearfix"></div>
 
             
-            {{ Form::hidden('edit', $id) }}
-            {{ Form::hidden('month', $timesheet->month) }}
-            {{ Form::hidden('year', $timesheet->year) }}
-            {{ Form::hidden('week', $timesheet->week) }}
-            {{ Form::hidden('period', getListDate($timesheet->year,$timesheet->month,$timesheet->week)['period']) }}
-
+            {{ Form::hidden('edit', $userId) }}
+                        
 <div class="form-group col-sm-12">
     {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
-    {!! Form::submit('Save',['name'=>'action','class' => 'btn btn-primary']) !!}
+    {!! Form::submit('Back',['name'=>'action','class' => 'btn btn-warning']) !!}
 </div>
 <div class="clearfix"></div>
 {!! Form::close() !!}

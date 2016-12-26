@@ -16,7 +16,7 @@
                             <a href="{!! route('timesheets.moderation') !!}" class="btn btn-default">Back</a>
                         </li>
                         <li>
-                            {!! Form::open(['route' => ['timesheets.moderation.approve', $timesheet], 'method' => 'get']) !!}
+                            {!! Form::open(['route' => ['timesheets.moderation.approve'], 'method' => 'get']) !!}
 
                                 {!! Form::button('Approve', [
                                     'type' => 'submit',
@@ -26,7 +26,7 @@
                             {!! Form::close() !!}
                         </li>
                         <li>
-                            {!! Form::open(['route' => ['timesheets.moderation.reject', $timesheet], 'method' => 'get']) !!}
+                            {!! Form::open(['route' => ['timesheets.moderation.reject'], 'method' => 'get']) !!}
 
                                 {!! Form::button('Reject', [
                                     'type' => 'submit',
