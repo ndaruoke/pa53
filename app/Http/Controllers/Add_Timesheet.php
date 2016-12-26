@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Models\Project;
 use App\Models\Timesheet;
 use App\Models\TimesheetDetail;
+use App\Models\TimesheetTransport;
+use App\Models\TimesheetInsentif;
 use Response;
 use DB;
 use Flash;
@@ -37,13 +39,24 @@ class Add_Timesheet extends Controller
         $project = Project::pluck('project_name', 'id')->all();
         $timesheet = Timesheet::where('id','=',$id)->first();
         $timesheet_details = TimesheetDetail::where('timesheet_id','=',$id)->get();
-        $timesheet_insentif = DB::table('timesheet_insentif')->where('timesheet_id','=',$id)->get();
-        $timesheet_transport = DB::table('timesheet_transport')->where('timesheet_id','=',$id)->get();
+        $timesheet_insentif = TimesheetInsentif::where('timesheet_id','=',$id)->get();
+        $sum_timesheet_insentif = 0;
+        foreach($timesheet_insentif as $g)
+        {
+        $sum_timesheet_insentif+= $g->value;
+        }
+        //echo $sum;
+        $timesheet_transport = TimesheetTransport::where('timesheet_id','=',$id)->get();
+        $sum_timesheet_transport = 0;
+        foreach($timesheet_transport as $g)
+        {
+        $sum_timesheet_transport+= $g->value;
+        }
         $nonlokal = array('DOMESTIK P. JAWA'=>'DOMESTIK P. JAWA','DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA','INTERNATIONAL'=>'INTERNATIONAL');
         $bantuan_perumahan = $this->getTunjanganPerumahan();
         //return response()->json($timesheet_transport);
         $summary = $this->populateSummary($id);
-        return view('timesheets.edit_timesheet',compact('lokasi','activity','timesheet','project','id','timesheet_details','timesheet_insentif','timesheet_transport','summary','nonlokal','bantuan_perumahan'));
+        return view('timesheets.edit_timesheet',compact('lokasi','activity','timesheet','project','id','timesheet_details','timesheet_insentif','timesheet_transport','summary','nonlokal','bantuan_perumahan','sum_timesheet_insentif','sum_timesheet_transport'));
     }
     
     public function form()
@@ -164,7 +177,7 @@ class Add_Timesheet extends Controller
             $arr['internasional'][$t->name] = $t->internasional;
         }
 
-        $mandays = DB::select(DB::raw("SELECT lokasi , count(*)total FROM `timesheet_details` where timesheet_id = ".$timesheet_id." group by lokasi"));
+        $mandays = DB::select(DB::raw("SELECT lokasi , count(*)total FROM `timesheet_details` where timesheet_id = ".$timesheet_id." and selected = 1 group by lokasi"));
         foreach($mandays as $m)
         {
             if($m->lokasi === "JABODETABEK"){
@@ -264,7 +277,11 @@ class Add_Timesheet extends Controller
     }    
     public function getColumns()
     {   
-    return response()->json( $this->getTunjanganPerumahan());
+   // return response()->json( $this->getTunjanganPerumahan());
+
+//return response()->json( TimesheetDetail::where('timesheet_id','=',1)->get());
+
+ return response()->json(  $status);
        return Auth::user()->id;
        return response()->json( $this->populateSummary());
        // return response()->json(Timesheet::all());
@@ -295,5 +312,14 @@ class Add_Timesheet extends Controller
            return $bantuan_perumaan_daily;
         }
     }
-
+public function getColor($status){
+        if($status=="Approved"){
+            return 'color:#00a65a';
+        }else if($status=="Rejected"){
+            return 'color:#dd4b39';
+        }
+        else{
+            return 'color:orange';
+        }
+    }
 }

@@ -44,7 +44,7 @@
               <h3 class="box-title">TIMESHEET SUMMARY</h3>
             </div>
             <div class="box-body">
-              <table class="summary project">
+              <table class="summary project table">
 <tbody><tr>
     <th>JABODETABEK</th>
     <th style="width:100px">HARI</th>
@@ -163,21 +163,23 @@
   <tr>
     <td><b>Tunjangan Bantuan Perumahan</b></td>
    <td></td>
-   <td>Rp. 0.00</td>
-    <td>Rp. 0.00</td>
+   <td>Rp. {!! $sum_timesheet_insentif !!}</td>
+    <td>Rp. {!! $sum_timesheet_insentif !!}</td>
   </tr>
   <tr>
     <td><b>Fasilitas Transport Proyek Konsultasi Luar Kota</b></td>
     <td></td>
-    <td>Rp. 0.00</td>
-    <td>Rp. 0.00</td>
+    <td>Rp. {!! $sum_timesheet_transport !!}</td>
+    <td>Rp. {!! $sum_timesheet_transport !!}</td>
   </tr>
   <tr>
     <th>TOTAL</th>
     
     <th></th>
   <th></th>
-    <th>Rp. 1,350,000.00</th>
+    <th>Rp. 
+    {!! $summary['lokal']['Insentif Project'] + $summary['lokal']['Transport Lokal']+ $summary['lokal']['Transport Luar Kota']+$summary['non_lokal']['Insentif Project']+$summary['non_lokal']['Transport Lokal']+$summary['non_lokal']['Transport Luar Kota']+$summary['luar_jawa']['Insentif Project']+$summary['luar_jawa']['Transport Lokal']+$summary['luar_jawa']['Transport Luar Kota']+$summary['internasional']['Insentif Project']+$summary['internasional']['Transport Lokal']+$sum_timesheet_insentif + $sum_timesheet_transport !!}
+    </th>
   </tr>
   <tr>
     <th></th>
@@ -214,7 +216,7 @@
                   <th width="70">End</th>
                   <th>Lokasi</th>
 				  <th>Aktifitas</th>
-				  <th>Keterangan</th>
+				  <th>Approval</th>
                 </tr>
                 @foreach ($timesheet_details as $row=>$detail)
  <tr>
@@ -236,7 +238,7 @@
             <input type="text" name="timesheet[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" value="{{$detail->activity_detail}}" style="display:none;">
 			</td>
 
-                  <td></td>
+                  <td>{!! $detail->status !!}</td>
                 </tr>
 @endforeach
                 </tbody></table>
@@ -262,6 +264,7 @@
                 <th>Lokasi</th>
                 <th>Jumlah</th>
                 <th>Keterangan</th>
+                <th>Approval</th>
                 <th><a href="javascript:void(0);" style="font-size:18px;" id="addInsentif" title="Add Insentif"><span class="glyphicon glyphicon-plus"></span></a>
                 </th></tr>
                 @foreach ($timesheet_insentif as $row=>$detail)
@@ -278,7 +281,9 @@
                 {{ Form::text('insentif['.$row.'][value]', $detail->value, array('class' => 'form-control','id'=>'insentiv'.$row.'value','readonly'=>'')) }}
                 <td>
                 {{ Form::text('insentif['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control')) }}
-                </td ><td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>
+                </td >
+                <td>{!!$detail->approval!!}</td>
+                <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>
                 </tr>
                 @endforeach
                 </table>
@@ -303,6 +308,7 @@
                 <th>Proyek</th>
                 <th>Jumlah</th>
                 <th>Keterangan</th>
+                <th>Approval</th>
                 <th><a href="javascript:void(0);" style="font-size:18px;" id="addTransportasi" title="Add Transportasi"><span class="glyphicon glyphicon-plus"></span></a>
                  </th></tr>
                 @foreach ($timesheet_transport as $row=>$detail)
@@ -316,7 +322,9 @@
                 {{ Form::text('trans['.$row.'][value]', $detail->value, array('class' => 'form-control')) }}
                 <td>
                 {{ Form::text('trans['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control')) }}
-                </td><td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>
+                </td>
+                <td>{!!$detail->approval!!}</td>
+                <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>
                 </tr>
                 @endforeach
                 </table>       
@@ -403,7 +411,7 @@ foreach ($project as $key=>$value){
 ?>'+
  '</select></td>'  + 
  '   <td><input type="text" name="trans['+id+'][value]" class="form-control"  ></td>  '  + 
- '   <td><input type="text" name="trans['+id+'][desc]" class="form-control"  ></td>  '  + 
+ '   <td><input type="text" name="trans['+id+'][desc]" class="form-control"  ></td><td></td>  '  + 
  '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  '  + 
  '   </tr>  '  + 
  '    ' ; 
@@ -430,7 +438,7 @@ foreach ($nonlokal as $key=>$value){
 ?>'+
  '</select></td>'  + 
  '   <td><input type="text" name="insentif['+id+'][value]"  id="insentiv'+id+'value" class="form-control" ></td>  '  + 
- '   <td><input type="text" name="insentif['+id+'][desc]" class="form-control" ></td>  '  + 
+ '   <td><input type="text" name="insentif['+id+'][desc]" class="form-control" ></td><td></td>  '  + 
  '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  '  + 
  '   </tr>  '  + 
  '    ' ; 

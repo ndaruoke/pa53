@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use DB;
 /**
  * @SWG\Definition(
  *      definition="TimesheetInsentif",
@@ -82,6 +82,7 @@ class TimesheetInsentif extends Model
         'status'
     ];
 
+
     /**
      * The attributes that should be casted to native types.
      *
@@ -113,4 +114,75 @@ class TimesheetInsentif extends Model
     {
         return $this->hasOne('App\Models\Timesheet');
     }    
+
+      protected $appends = ['approval'];
+
+    public function getApprovalAttribute()
+	{
+        $approval_ts = DB::select(DB::raw('select sequence_id,
+CASE 
+WHEN sequence_id=0 THEN "PM"
+WHEN sequence_id=1 THEN "PMO"
+WHEN sequence_id=2 THEN "Finance"
+END approval, 
+approval_id
+,users.name,note ,approval_status, IF(approval_status=0, "Approved", "Rejected")status
+from approval_histories,users where transaction_type = 3  
+and transaction_id = '.$this->id.'
+and users.id = approval_histories.approval_id order by sequence_id'));
+
+$approval_ts = json_decode(json_encode($approval_ts), True);
+//return response()->json( $approval_ts);
+ 
+
+if(!isset($approval_ts[0]['sequence_id'])){
+    $newdata =  array (
+      'sequence_id' => '0',
+      'approval_id' => '',
+      'approval' => 'PM',
+      'name' => 'test',
+      'approval_status' => 3,
+      'status' => 'Waiting'
+    );
+    array_push($approval_ts,$newdata);
+}
+if(!isset($approval_ts[1]['sequence_id'])){
+    $newdata =  array (
+      'sequence_id' => '1',
+      'approval_id' => '',
+      'approval' => 'PMO',
+      'name' => 'test',
+      'approval_status' => 3,
+      'status' => 'Waiting'
+    );
+    array_push($approval_ts,$newdata);
+}
+if(!isset($approval_ts[2]['sequence_id'])){
+   $newdata =  array (
+      'sequence_id' => '2',
+      'approval_id' => '',
+      'approval' => 'Finance',
+      'name' => 'test',
+      'approval_status' => 3,
+      'status' => 'Waiting'
+    );
+    array_push($approval_ts,$newdata);
+}
+ $status = '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="'.$this->getColor($approval_ts[0]['status']).'" data-original-title="'.$approval_ts[0]['approval'].' '.$approval_ts[0]['status'].'"></i>';
+ $status .= '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="'.$this->getColor($approval_ts[1]['status']).'" data-original-title="'.$approval_ts[1]['approval'].' '.$approval_ts[1]['status'].'"></i>';
+ $status .= '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="'.$this->getColor($approval_ts[2]['status']).'" data-original-title="'.$approval_ts[2]['approval'].' '.$approval_ts[2]['status'].'"></i>';
+
+ return $status;
+	}
+
+    public function getColor($status){
+        if($status=="Approved"){
+            return 'color:#00a65a';
+        }else if($status=="Rejected"){
+            return 'color:#dd4b39';
+        }
+        else{
+            return 'color:orange';
+        }
+    }
 }
