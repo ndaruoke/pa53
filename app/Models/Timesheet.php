@@ -182,9 +182,9 @@ class Timesheet extends Model
         return $this->hasMany('App\Models\TimesheetTransport');
     }
 
-    public static function getapprovalmoderation($approvalId, $approvalStatus)
+    public static function getapprovalmoderation($approval, $approvalStatus)
     {
-        $result = Timesheet::getwaitingname($approvalId, $approvalStatus);
+        $result = Timesheet::getwaitingname($approval, $approvalStatus);
 
         foreach($result as $r)
         {
@@ -195,15 +195,18 @@ class Timesheet extends Model
         return $result;
     }
 
-    public static function getwaitingname($approvalId, $approvalStatus)
+    public static function getwaitingname($approval, $approvalStatus)
     {
         $result = DB::table('timesheet_details')
             ->select('approval_histories.user_id','users.name', 'approval_histories.approval_id', 'approval_histories.approval_status')
             ->join('approval_histories','approval_histories.transaction_id','timesheet_details.id')
             ->join('users','users.id','approval_histories.user_id')
-            ->where('approval_histories.approval_id','=',$approvalId)
             ->where('approval_histories.approval_status','=',$approvalStatus)
             ->where('transaction_type','=', 2)
+            ->where(function ($query) use($approval){
+                    $query->where('approval_histories.approval_id','=',$approval->id)
+                            ->orWhere('approval_histories.group_approval_id','=', $approval->role);
+                })
             ->groupBy('user_id')
             ->get();
    

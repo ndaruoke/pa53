@@ -50,7 +50,7 @@ class ModerationTimesheetDataTable extends DataTable
             $approvalStatus = $request['approvalStatus'];
         }
         
-        $timesheets = Timesheet::getapprovalmoderation($user->id, $approvalStatus);
+        $timesheets = Timesheet::getapprovalmoderation($user, $approvalStatus);
 
         return $this->applyScopes($timesheets);
     }
