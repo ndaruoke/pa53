@@ -28,7 +28,7 @@ class ModerationTimesheetDataTable extends DataTable
                     });
                 }
             })
-            ->addColumn('action', 'Timesheets.moderation_datatables_actions')
+            ->addColumn('action', 'timesheets.moderation_datatables_actions')
             ->make(true);    
     }
 
