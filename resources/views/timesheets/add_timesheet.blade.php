@@ -61,9 +61,9 @@
 <hr>
     <?php function getListDate($y,$m,$w){
 	if($w>2){
-	$period = 1;
-	} else {
 	$period = 2;
+	} else {
+	$period = 1;
 	}
 	
 	$totalDay = cal_days_in_month(CAL_GREGORIAN,$m,$y);
