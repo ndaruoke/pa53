@@ -31,30 +31,26 @@
 ?>
 
 
-        <div class="clearfix"></div>
-
-        
- {!! Form::open(['route' => 'add_timesheet.create','id'=>'create_timesheet']) !!}
+        <div class="clearfix"></div>   
+ {!! Form::open(['route' => ['timesheets.moderation.update'], 'method' => 'patch']) !!}   
 
         <div class="clearfix"></div>
 
 <div class="col-md-12">
           <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title">TIMESHEET SUMMARY</h3>
+              <h3 class="box-title">TIMESHEET APPROVAL SUMMARY</h3>
             </div>
             <div class="box-body">
-              <table class="summary project">
+              <table class="table summary project">
 <tbody><tr>
     <th>JABODETABEK</th>
-    <th style="width:100px"></th>
     <th style="width:100px">HARI</th>
     <th style="width:100px"></th>
     <th>JUMLAH</th>
   </tr>
   <tr>
     <td>Tarif Insentif</td>
-    <td></td>
     <td rowspan="5">{{$summary['lokal']['count']}} Hari</td>
     <td></td>
     <td>Rp. {{$summary['lokal']['Insentif Project']}}</td>
@@ -62,12 +58,10 @@
   <tr>
     <td>Tarif Transport Lokal</td>
     <td></td>
-    <td></td>
     <td>Rp. {{$summary['lokal']['Transport Lokal']}}</td>
   </tr>
   <tr>
     <td>Tarif Insentif Luar Kota</td>
-    <td></td>
     <td></td>
     <td>Rp. {{$summary['lokal']['Transport Luar Kota']}}</td>
   </tr>
@@ -85,7 +79,6 @@
   </tr>
   <tr>
     <td>Tarif Insentif</td>
-    <td></td>
     <td rowspan="5">{{$summary['non_lokal']['count']}} Hari</td>
     <td></td>
     <td>Rp. {{$summary['non_lokal']['Insentif Project']}}</td>
@@ -93,12 +86,10 @@
   <tr>
     <td>Tarif Transport Lokal</td>
     <td></td>
-    <td></td>
     <td>Rp. {{$summary['non_lokal']['Transport Lokal']}}</td>
   </tr>
   <tr>
     <td>Tarif Insentif Luar Kota</td>
-   <td></td>
     <td></td>
     <td>Rp. {{$summary['non_lokal']['Transport Luar Kota']}}</td>
   </tr>
@@ -117,7 +108,6 @@
   </tr>
   <tr>
     <td>Tarif Insentif</td>
-    <td></td>
     <td rowspan="5">{{$summary['luar_jawa']['count']}} Hari</td>
     <td></td>
     <td>Rp. {{$summary['luar_jawa']['Insentif Project']}}</td>
@@ -125,12 +115,10 @@
   <tr>
     <td>Tarif Transport Lokal</td>
     <td></td>
-    <td></td>
     <td>Rp. {{$summary['luar_jawa']['Transport Lokal']}}</td>
   </tr>
   <tr>
     <td>Tarif Insentif Luar Kota</td>
-    <td></td>
     <td></td>
     <td>Rp. {{$summary['luar_jawa']['Transport Luar Kota']}}</td>
   </tr>
@@ -148,14 +136,12 @@
   </tr>
   <tr>
     <td>Tarif Insentif</td>
-    <td></td>
     <td rowspan="3">{{$summary['internasional']['count']}} Hari</td>
     <td></td>
     <td>Rp. {{$summary['internasional']['Insentif Project']}}</td>
   </tr>
   <tr>
     <td>Tarif Transport Lokal</td>
-    <td></td>
     <td></td>
     <td>Rp. {{$summary['internasional']['Transport Lokal']}}</td>
   </tr>
@@ -167,15 +153,15 @@
   </tr>
   <tr>
     <td><b>Tunjangan Bantuan Perumahan</b></td>
-    <td></td>
+
     <td rowspan="1">{{$summary['perumahan']['count']}} Hari</td>
-     <td></td>
+    <td></td>
      <td>Rp. {{$summary['perumahan']['total']}}</td>
   </tr>
   </tr>
   <tr>
     <td><b>Fasilitas Transport Proyek Konsultasi Luar Kota</b></td>
-    <td></td>
+
     <td rowspan="1">{{$summary['adcost']['count']}} Hari</td>
     <td></td>
     <td>Rp. {{$summary['adcost']['total']}}</td>
@@ -183,7 +169,6 @@
   </tr>
   <tr>
     <th>TOTAL</th>
-    <th></th>
     <th></th>
     <th></th>
     <th>Rp. {{$summary['total']}}</th>
@@ -225,26 +210,27 @@
  <tr>
             
             <td>
-                {!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2', 'disabled']) !!}
+                {!! Form::select('timesheetdetail['.$row.'][project]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2', 'disabled']) !!}
             </td>
-            <td>{{substr($detail->date,0,10)}}{{ Form::hidden('timesheet['.$row.'][date]', str_replace(' 00:00:00','',$detail->date)) }}</td>
-             <td><input type="text" name="timesheet[{{$row}}][start]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->start_time }}" disabled="true"></td>
-             <td><input type="text" name="timesheet[{{$row}}][end]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->end_time }}" disabled="true"></td>
+            <td>{{substr($detail->date,0,10)}}{{ Form::hidden('timesheetdetail['.$row.'][date]', str_replace(' 00:00:00','',$detail->date)) }}</td>
+             <td><input type="text" name="timesheetdetail[{{$row}}][start]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->start_time }}" disabled="true"></td>
+             <td><input type="text" name="timesheetdetail[{{$row}}][end]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->end_time }}" disabled="true"></td>
                   
             <td>
-                {!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, $detail->lokasi, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi', 'disabled']) !!}
+                {!! Form::select('timesheetdetail['.$row.'][lokasi]', [''=>'']+$lokasi, $detail->lokasi, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi', 'disabled']) !!}
 			      </td>
 			      <td class="col-md-2">
-                {!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, $detail->activity, ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')', 'disabled']) !!}				    
-			    </td>
+                {!! Form::select('timesheetdetail['.$row.'][activity]', [''=>'']+$activity, $detail->activity, ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')', 'disabled']) !!}				    
+			      </td>
 
             <td>
-                <input type="textarea" name="timesheet[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" value="{{$detail->activity_detail}}" style="display:visible;" disabled="true">
+                <input type="textarea" name="timesheetdetail[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" value="{{$detail->activity_detail}}" style="display:visible;" disabled="true">
             </td>
             <td class="col-md-1">
-                {{ Form::checkbox('timesheet['.$row.'][choose]', true, $detail->selected) }}
+                {{ Form::checkbox('timesheetdetail['.$row.'][choose]', true) }}
 			      </td>
-                </tr>
+                {{ Form::hidden('timesheetdetail['.$row.'][transaction_id]', $detail->transaction_id) }}
+          </tr>
 @endforeach
                 </tbody></table>
             </div>
@@ -269,7 +255,7 @@
                 @foreach ($timesheet_insentif as $row=>$detail)
                 <tr>
                 <td >
-                  {{ Form::date('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled')) }}
+                  {{ Form::text('insentif['.$row.'][date]', substr($detail->date,0,10), array('class' => 'form-control','disabled')) }}
                 <td >
                   {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2', 'disabled']) !!}
                 </td>
@@ -282,6 +268,7 @@
                 <td class="col-md-1">
                   {{ Form::checkbox('insentif['.$row.'][choose]', true) }}
                 </td>
+                  {{ Form::hidden('insentif['.$row.'][transaction_id]', $detail->transaction_id) }}
                 </tr>
                 @endforeach
                 </table>
@@ -307,7 +294,7 @@
                 @foreach ($timesheet_transport as $row=>$detail)
                 <tr>
                 <td>
-                  {{ Form::date('trans['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled')) }}
+                  {{ Form::text('trans['.$row.'][date]', substr($detail->date,0,10), array('class' => 'form-control','disabled')) }}
                 <td>
                   {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','disabled']) !!}
                 </td>
@@ -319,6 +306,7 @@
                 <td class="col-md-1">
                   {{ Form::checkbox('trans['.$row.'][choose]', true) }}
                 </td>
+                {{ Form::hidden('trans['.$row.'][transaction_id]', $detail->transaction_id) }}
                 </tr>
                 @endforeach
                 </table>       
@@ -328,12 +316,18 @@
 
 <div class="clearfix"></div>
 
-            
-            {{ Form::hidden('edit', $userId) }}
+
+
+{{ Form::hidden('userId', $userId) }}
                         
 <div class="form-group col-sm-12">
+    {!! Form::select('moderation', 
+      [1 => 'Approve', 2 => 'Reject'], 
+      null,
+      ['class' => 'form-control select2']) 
+    !!}
     {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
-    {!! Form::submit('Back',['name'=>'action','class' => 'btn btn-warning']) !!}
+    <a href="{!! route('timesheets.moderation') !!}" class="btn btn-success">Back</a>
 </div>
 <div class="clearfix"></div>
 {!! Form::close() !!}
@@ -342,122 +336,7 @@
     </div>
 
     
-    @section('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
-    <script>
-    $(document).ready(function(){
-        for (i = 0; i < 7; i++) { 
-    if(($('#select2-timesheet'+i+'activity-container').text() === 'IMPLEMENTASI') || ($('#select2-timesheet'+i+'activity-container').text() === 'MANAGED OPERATION')){
-         $('#timesheet'+i+'activity_other').show();
-    } else{}
-}
-        $('.content').find('.select2-container--default').removeAttr("style");
-        $('.content').find('.select2-container--default').css('width','100%');
-    })
     
-function onChangeActivity(id){
-    setTimeout(function() {
-  var selected = $("[id*=select2-timesheet"+id+"activity]").text();
-  if(selected ==='SUPPORT'){
-      $('#timesheet'+id+'lokasi').val("UNCLAIMABLE").trigger("change");
-      $('#timesheet'+id+'lokasi').prop("disabled", true);
-  } 
-  else if(selected ==='IMPLEMENTASI'){
-      $('#timesheet'+id+'activity_other').show();
-    //  $('#timesheet'+id+'lokasi').val("").trigger("change");
-      $('#timesheet'+id+'lokasi').prop("disabled", false);
-  } 
-
-   else if(selected ==='MANAGED OPERATION'){
-      $('#timesheet'+id+'activity_other').show();
-    //  $('#timesheet'+id+'lokasi').val("").trigger("change");
-      $('#timesheet'+id+'lokasi').prop("disabled", false);
-  }
-  else {
-      $('#timesheet'+id+'activity_other').hide();
-  //    $('#timesheet'+id+'lokasi').val("").trigger("change");
-      $('#timesheet'+id+'lokasi').prop("disabled", false);
-  }
-  
-}, 50);
-    
-}
-  $(".timepicker").timepicker({
-      showInputs: false,
-      showMeridian : false
-    });
-
-    function getRowTransport(id){
-         var row =  '<tr>'  + 
- '   <td><input type="date" name="trans['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  '  + 
- '   <td><select class="form-control" name="trans['+id+'][project_id]"  ><option value="" selected="selected"></option>' +
- '<?php
-foreach ($project as $key=>$value){
-    echo ' <option value="'.$key.'">'.$value.'</option>';
-}
-
-?>'+
- '</select></td>'  + 
- '   <td><input type="text" name="trans['+id+'][value]" class="form-control"  ></td>  '  + 
- '   <td><input type="text" name="trans['+id+'][desc]" class="form-control"  ></td>  '  + 
- '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  '  + 
- '   </tr>  '  + 
- '    ' ; 
-        return row;
-    }
-
-    function getRowInsentif(id){
-         var row =  '<tr>'  + 
- '   <td><input type="date" name="insentif['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control"  ></td>  '  + 
- '   <td><select class="form-control" name="insentif['+id+'][project_id]"><option value="" selected="selected"  ></option>' +
- '<?php
-foreach ($project as $key=>$value){
-    echo ' <option value="'.$key.'">'.$value.'</option>';
-}
-
-?>'+
- '</select></td>'  + 
- '   <td><input type="text" name="insentif['+id+'][value]" class="form-control" ></td>  '  + 
- '   <td><input type="text" name="insentif['+id+'][desc]" class="form-control" ></td>  '  + 
- '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  '  + 
- '   </tr>  '  + 
- '    ' ; 
-        return row;
-    }
-
-$(function(){
-   var id={!! count($timesheet_transport) !!};
-    $('#addTransportasi').on('click', function() {
-            //  var data = row.appendTo("#tb_trasnportasi");
-             // data.find("input").val('');
-            // $("#tb_trasnportasi").append(row);
-             $(getRowTransport(id)).appendTo("#tb_trasnportasi");
-             id++;
-     });
-     $(document).on('click', '.remove', function() {
-         var trIndex = $(this).closest("tr").index();
-             $(this).closest("tr").remove();
-      });
-});      
-
-$(function(){
-    var id={!! count($timesheet_insentif) !!};
-    $('#addInsentif').on('click', function() {
-            //   var data = $("#tb_copy tr:eq(1)").clone(true).appendTo("#tb_insentif");
-            //   data.find("input").val('');
-             $(getRowInsentif(id)).appendTo("#tb_insentif");
-             id++;
-     });
-     $(document).on('click', '.remove', function() {
-         var trIndex = $(this).closest("tr").index();
-             $(this).closest("tr").remove();
-      });
-});     
-
-
-</script>
-
-@endsection
 @endsection
 
 

@@ -10,6 +10,7 @@ use App\Models\Timesheet;
 use App\Models\TimesheetDetail;
 use App\Models\TimesheetTransport;
 use App\Models\TimesheetInsentif;
+use App\Repositories\ApprovalHistoryRepository;
 use Response;
 use DB;
 use Flash;
@@ -19,9 +20,14 @@ use Yajra\Datatables\Facades\Datatables;
 
 class Add_Timesheet extends Controller
 {
-    public function __construct()
+
+    /** @var  ApprovalHistoryRepository */
+    private $approvalHistoryRepository;
+
+    public function __construct(ApprovalHistoryRepository $approvalHistoryRepo)
     {
         $this->middleware('auth');
+        $this->approvalHistoryRepository = $approvalHistoryRepo;
     }
     
     public function index()
@@ -144,8 +150,11 @@ class Add_Timesheet extends Controller
         DB::table('timesheet_insentif')->insert($ins);
         }
         
-        
-        
+        //create approval history
+        if($action == 'Terkirim'){
+            $this->createApprovalHistory($id);
+        }
+
         Flash::success('Timesheet updated successfully.');  
 //        return $deleted.$deleted1.$deleted2;                 
         return redirect(route('timesheets.index'));
@@ -316,7 +325,8 @@ class Add_Timesheet extends Controller
            return $bantuan_perumaan_daily;
         }
     }
-public function getColor($status){
+
+    public function getColor($status){
         if($status=="Approved"){
             return 'color:#00a65a';
         }else if($status=="Rejected"){
@@ -325,5 +335,79 @@ public function getColor($status){
         else{
             return 'color:orange';
         }
+    }
+
+    public function createApprovalHistory($timesheetId)
+    {
+        $timesheetDetail = DB::table('timesheet_details')
+            ->where('timesheet_id','=',$timesheetId)
+            ->where('selected','=','1')->get();
+
+        $timesheetInsentif = DB::table('timesheet_insentif')
+            ->where('timesheet_id','=',$timesheetId)
+            ->get();
+
+        $timesheetTransport = DB::table('timesheet_transport')
+            ->where('timesheet_id','=',$timesheetId)
+            ->get();  
+
+        $user = Auth::user()->id;
+
+        foreach($timesheetDetail as $td)   
+        {
+            $project = DB::table('projects')
+                ->where('id','=',$td->project_id)->first();
+
+            $saveDetail = DB::table('approval_histories')
+                ->insertGetId( array(
+                'date' => $td->date,
+                'note' => $td->activity,
+                'sequence_id' => 0,
+                'transaction_id' => $td->id,
+                'transaction_type' => 2,
+                'approval_status' => 0,
+                'user_id' => $user,
+                'approval_id' => $project->pm_user_id,
+                'group_approval_id' => 0
+                ));
+        }
+
+        foreach($timesheetInsentif as $ti)   
+        {
+            $project = DB::table('projects')
+                ->where('id','=',$ti->project_id)->first();
+
+            $saveInsentif = DB::table('approval_histories')
+                ->insertGetId( array(
+                'date' => $ti->date,
+                'note' => $ti->keterangan,
+                'sequence_id' => 0,
+                'transaction_id' => $ti->id,
+                'transaction_type' => 4,
+                'approval_status' => 0,
+                'user_id' => $user,
+                'approval_id' => $project->pm_user_id,
+                'group_approval_id' => 0
+             ));
+        }
+
+        foreach($timesheetTransport as $tt)   
+        {
+            $project = DB::table('projects')
+                ->where('id','=',$tt->project_id)->first();
+
+            $saveTransport = DB::table('approval_histories')
+            ->insertGetId( array(
+                'date' => $tt->date,
+                'note' => $tt->keterangan,
+                'sequence_id' => 0,
+                'transaction_id' => $tt->id,
+                'transaction_type' => 3,
+                'approval_status' => 0,
+                'user_id' => $user,
+                'approval_id' => $project->pm_user_id,
+                'group_approval_id' => 0
+             ));
+        }       
     }
 }

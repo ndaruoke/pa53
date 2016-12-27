@@ -70,10 +70,10 @@ Route::get('timesheets/moderation/edit/{id}', array('uses' => 'TimesheetApproval
 Route::patch('timesheets/moderation/edit', array('uses' => 'TimesheetApprovalController@moderationEdit',
 'as' => 'timesheets.moderation.edit'));
 
-Route::get('timesheets/moderation/approve', array('uses' => 'TimesheetApprovalController@moderationApprove',
-'as' => 'timesheets.moderation.approve'));
+Route::patch('timesheets/moderation/update', array('uses' => 'TimesheetApprovalController@moderationUpdate',
+'as' => 'timesheets.moderation.update'));
 
-Route::get('timesheets/moderation/reject', array('uses' => 'TimesheetApprovalController@moderationReject',
+Route::patch('timesheets/moderation/reject', array('uses' => 'TimesheetApprovalController@moderationReject',
 'as' => 'timesheets.moderation.reject'));
 
 Route::resource('timesheets', 'TimesheetController');

@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
+use Hootlex\Moderation\Moderatable;
 
 /**
  * @SWG\Definition(
@@ -70,6 +71,8 @@ class ApprovalHistory extends Model
 
     use Auditable;
 
+    use Moderatable;
+    
     public $table = 'approval_histories';
     
 
@@ -83,7 +86,8 @@ class ApprovalHistory extends Model
         'transaction_id',
         'transaction_type',
         'user_id',
-        'approval_id'
+        'approval_id',
+        'group_approval_id'
     ];
 
     /**
@@ -97,6 +101,7 @@ class ApprovalHistory extends Model
         'transaction_id' => 'integer',
         'user_id' => 'integer',
         'approval_id' => 'integer',
+        'group_approval_id' => 'integer',
         'transaction_type' => 'integer'
     ];
 
@@ -110,8 +115,7 @@ class ApprovalHistory extends Model
         'sequence_id' => 'required',
         'transaction_id' => 'required',
         'transaction_type' => 'required',
-        'user_id' => 'required',
-        'approval_id' => 'required'
+        'user_id' => 'required'
     ];
 
     public function timesheets()
