@@ -341,6 +341,7 @@ class Add_Timesheet extends Controller
     {
         $timesheetDetail = DB::table('timesheet_details')
             ->where('timesheet_id','=',$timesheetId)
+            ->where('approval_status','=', 1)
             ->where('selected','=','1')->get();
 
         $timesheetInsentif = DB::table('timesheet_insentif')
