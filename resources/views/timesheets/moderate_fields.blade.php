@@ -40,6 +40,9 @@
           <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title">TIMESHEET APPROVAL SUMMARY</h3>
+              <td></td>
+              </br>
+              <h2 class="box-title">{{$user['name']}}</h2>
             </div>
             <div class="box-body">
               <table class="table summary project">

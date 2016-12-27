@@ -90,6 +90,9 @@ class TimesheetApprovalController extends AppBaseController
         $userId = $request->userId;
         $approvalStatus = $request->approvalStatus;
 
+        $user = User::where('id','=', $userId)->select('id')->first();
+        $approval = User::where('id','=', $approvalId)->select('id')->first();
+
         $lokasi = [''=>''] +Constant::where('category','Location')->orderBy('name','asc')->pluck('name', 'value')->all();
         $activity = [''=>''] +Constant::where('category','Activity')->orderBy('name','asc')->pluck('name', 'value')->all();
         $project = Project::pluck('project_name', 'id')->all();
@@ -116,7 +119,7 @@ class TimesheetApprovalController extends AppBaseController
                 where('approval_histories.approval_status','=',$approvalStatus)->
                 where('approval_histories.transaction_type','=', 4)->
                 get();
-        $summary = $this->populateSummary($timesheets, $userId, $timesheet_insentif, $timesheet_transport);
+        $summary = $this->populateSummary($timesheets, $user, $approval, $approvalStatus, $timesheet_insentif, $timesheet_transport);
 
         if (empty($timesheets)) {
             Flash::error('Timesheet not found');
@@ -124,7 +127,7 @@ class TimesheetApprovalController extends AppBaseController
             return redirect(route('leaves.moderation'));
         }
 
-        return view('timesheets.moderation_edit',compact('userId','lokasi','activity','timesheets','project','timesheet_details','timesheet_insentif','timesheet_transport','summary'));
+        return view('timesheets.moderation_edit',compact('user','userId','lokasi','activity','timesheets','project','timesheet_details','timesheet_insentif','timesheet_transport','summary'));
     }
 
     /**
@@ -382,9 +385,8 @@ class TimesheetApprovalController extends AppBaseController
     }
 
 
-    public function populateSummary($timesheets, $user_id, $timesheet_insentif, $timesheet_transport){
-         $tunjangans = DB::select(DB::raw('SELECT positions.name,tunjangans.name,lokal,non_lokal,luar_jawa,internasional FROM tunjangan_positions,tunjangans,positions,users WHERE tunjangan_positions.tunjangan_id = tunjangans.id and tunjangan_positions.position_id = positions.id and users.position = positions.id and users.id = '.$user_id));
-
+    public function populateSummary($timesheets, $user, $approval, $approvalStatus,  $timesheet_insentif, $timesheet_transport){
+         $tunjangans = DB::select(DB::raw('SELECT positions.name,tunjangans.name,lokal,non_lokal,luar_jawa,internasional FROM tunjangan_positions,tunjangans,positions,users WHERE tunjangan_positions.tunjangan_id = tunjangans.id and tunjangan_positions.position_id = positions.id and users.position = positions.id and users.id = '.$user->id));
 
         foreach ($tunjangans as $t){
             $arr['lokal'][$t->name] = $t->lokal;
@@ -409,11 +411,24 @@ class TimesheetApprovalController extends AppBaseController
         $summary['adcost']['total'] = $timesheet_transport->pluck('value')->sum();
         $summary['adcost']['count'] = $timesheet_transport->count();
 
+        /**
         $mandays = DB::table('timesheet_details')
+        ->join('approval_histories','approval_histories.transaction_id','timesheet_details.timesheet_id')
         ->select(DB::raw('count(*) as total, lokasi'))
-        ->whereIn('timesheet_id', $timesheets->pluck('id'))     
+        ->where('user_id', '=',$user['id'])    
+        ->where('approval_histories.approval_status','=',$approvalStatus)
+        ->where('transaction_type','=', 2)
+        ->where(function ($query) use($approval){
+                $query->where('approval_histories.approval_id','=',$approval->id)
+                        ->orWhere('approval_histories.group_approval_id','=', $approval->role);
+             })
         ->groupBy('lokasi')
         ->get();
+        **/
+        $mandays = DB::select(DB::raw("SELECT lokasi , count(*)total FROM `timesheet_details` 
+        JOIN timesheets ON timesheets.id = timesheet_details.timesheet_id
+        where user_id = ".$user['id']." and selected = 1 group by lokasi"));
+
 
         foreach($mandays as $m)
         {

@@ -188,7 +188,7 @@ class Timesheet extends Model
 
         foreach($result as $r)
         {
-            $r->count = Timesheet::getapprovalcount($r->user_id, $r->approval_id, $approvalStatus);
+            $r->count = Timesheet::getapprovalcount($r->user_id, $approval, $approvalStatus);
             $r->insentif = Timesheet::gettotaltunjangan($r->user_id, $r->approval_id, $approvalStatus);
         }
         
@@ -215,20 +215,19 @@ class Timesheet extends Model
 
     
 
-    public static function getapprovalcount($userId, $approvalId, $approvalStatus)
+    public static function getapprovalcount($userId, $approval, $approvalStatus)
     {
         $result = DB::select( DB::raw("
             select count(*) AS count_approval
-                FROM approval_histories ah1 LEFT JOIN approval_histories ah2
-                ON (ah1.transaction_id = ah2.transaction_id AND ah1.sequence_id < ah2.sequence_id)
+                FROM approval_histories ah1
                 JOIN timesheet_details ON timesheet_details.id = ah1.transaction_id
-                WHERE ah2.transaction_id IS NULL
-                AND ah1.transaction_type = 2 
+                WHERE ah1.transaction_type = 2 
                 AND ah1.approval_status = :approvalStatus
-                AND ah1.approval_id = :approvalId
+                AND (ah1.approval_id = :approvalId or ah1.group_approval_id = :roleId)
                 AND ah1.user_id = :userId
             "), array(
-                'approvalId' => $approvalId,
+                'roleId' => $approval->role,
+                'approvalId' => $approval->id,
                 'userId' => $userId,
                 'approvalStatus' => $approvalStatus
             )

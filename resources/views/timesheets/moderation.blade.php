@@ -6,7 +6,7 @@
         <h1 class="pull-left">Timesheet Approval</h1>
         <br/><br/>
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="small-box bg-red pull-left">
+            <div class="small-box bg-yellow pull-left">
                 <div class="inner">
                     <h3>{{$count->timesheetpending}}</h3>
                     <p>Pending Request</p>
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="small-box bg-blue pull-left">
+            <div class="small-box bg-red pull-left">
                 <div class="inner">
                     <h3>{{$count->timesheetrejected}}</h3>
                     <p>Rejected Request</p>
