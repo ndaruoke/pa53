@@ -29,7 +29,7 @@
 
             <!-- Logo -->
             <a href="#" class="logo">
-                <b>PA Online</b>
+                <b>Timesheet Management</b>
             </a>
 
             <!-- Header Navbar -->
