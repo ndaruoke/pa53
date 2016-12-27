@@ -72,6 +72,7 @@ class Add_Timesheet extends Controller
     {
         //return response()->json($req);
         $action = $req->action == 'Save' ? 'Disimpan' : 'Terkirim';
+        $approval_status = $req->action == 'Save' ? '0' : '1';
         if(isset($req->edit)){
          //   return 'hoya';
             $deleted = DB::table('timesheets')->where('id', $req->edit)->delete();
@@ -110,8 +111,11 @@ class Add_Timesheet extends Controller
             'timesheet_id'=>  $id,
             'project_id'=> $value['project'],
             'selected' => isset($value['select']) ? 1 : 0,
-            'activity_detail' => $value['activity_other']
-        ];}
+            'activity_detail' => $value['activity_other'],
+            'approval_status' => $approval_status
+        ]    + (isset($value['id']) ? array('id' => $value['id']) : array());
+        }
+        //return response()->json($timesheets);
         $details = DB::table('timesheet_details')->insert($timesheets);
         if($req->trans!=null) {
         foreach ($req->trans as $key => $value) {
@@ -123,7 +127,7 @@ class Add_Timesheet extends Controller
         //    'end_time'=> $value['end'],
             'timesheet_id'=>  $id,
          //   'project_id'=> $value['project'],
-        ];}
+        ]+ (isset($value['id']) ? array('id' => $value['id']) : array());}
         DB::table('timesheet_transport')->insert($trans);
         }
         if($req->insentif!=null) {
@@ -136,7 +140,7 @@ class Add_Timesheet extends Controller
             'lokasi'=> $value['lokasi'],
             'timesheet_id'=>  $id,
          //   'project_id'=> $value['project'],
-        ];}
+        ]+ (isset($value['id']) ? array('id' => $value['id']) : array());}
         DB::table('timesheet_insentif')->insert($ins);
         }
         

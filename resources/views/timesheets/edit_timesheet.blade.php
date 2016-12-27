@@ -218,8 +218,37 @@
 				  <th>Aktifitas</th>
 				  <th>Approval</th>
                 </tr>
-                @foreach ($timesheet_details as $row=>$detail)
- <tr>
+ @foreach ($timesheet_details as $row=>$detail)
+        @if($detail->approval_status == 1 && $detail->selected==1)
+         <tr>
+ {{ Form::hidden('timesheet['.$row.'][id]', $detail->id) }}
+     <td class="col-md-1">
+     {{ Form::checkbox('timesheet['.$row.'][select]', true, $detail->selected,['disabled'=>'']) }}
+     {{ Form::hidden('timesheet['.$row.'][select]',  $detail->selected) }}
+			</td>
+      <td>
+{!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control ','disabled'=>'disabled']) !!}
+{!! Form::hidden('timesheet['.$row.'][project]', $detail->project_id) !!}
+      </td>
+             <td>{{str_replace(' 00:00:00','',$detail->date)}}{{ Form::hidden('timesheet['.$row.'][date]', str_replace(' 00:00:00','',$detail->date)) }}</td>
+             <td><input type="text" name="timesheet[{{$row}}][start]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->start_time }}" readonly></td>
+             <td><input type="text" name="timesheet[{{$row}}][end]" class="form-control timepicker" placeholder="00:00" value="{{ $detail->end_time }}" readonly></td>
+                  
+                  <td>
+{!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, $detail->lokasi, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi','disabled'=>'']) !!}
+{!! Form::hidden('timesheet['.$row.'][lokasi]',$detail->lokasi) !!}
+			</td>
+			<td class="col-md-2">
+{!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, $detail->activity, ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')','disabled'=>'']) !!}				    
+{!! Form::hidden('timesheet['.$row.'][activity]', $detail->activity) !!}				    
+       <input type="text" name="timesheet[{{$row}}][activity_other]" class="form-control" id="timesheet{{$row}}activity_other" value="{{$detail->activity_detail}}" style="display:none;" readonly>
+			</td>
+
+                  <td>{!! $detail->status !!}</td>
+                </tr>
+        @else
+         <tr>
+ {{ Form::hidden('timesheet['.$row.'][id]', $detail->id) }}
      <td class="col-md-1">
            {{ Form::checkbox('timesheet['.$row.'][select]', true, $detail->selected) }}
 			</td>
@@ -240,6 +269,8 @@
 
                   <td>{!! $detail->status !!}</td>
                 </tr>
+        @endif
+            
 @endforeach
                 </tbody></table>
             </div>
@@ -269,7 +300,9 @@
                 </th></tr>
                 @foreach ($timesheet_insentif as $row=>$detail)
                 <tr>
+                
                 <td >
+                {{ Form::hidden('insentif['.$row.'][id]', $detail->id) }}
                 {{ Form::date('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control')) }}
                 <td >
                 {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
@@ -314,6 +347,7 @@
                 @foreach ($timesheet_transport as $row=>$detail)
                 <tr>
                 <td>
+                {{ Form::hidden('trans['.$row.'][id]', $detail->id) }}
                 {{ Form::date('trans['.$row.'][date]', $detail->date, array('class' => 'form-control')) }}
                 <td>
                 {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
@@ -401,7 +435,7 @@ function onChangeActivity(id){
 
     function getRowTransport(id){
          var row =  '<tr>'  + 
- '   <td><input type="date" name="trans['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  '  + 
+ '   <td><input name="trans['+id+'][id]" type="hidden" value="'+id+'"><input type="date" name="trans['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  '  + 
  '   <td><select class="form-control" name="trans['+id+'][project_id]"  ><option value="" selected="selected"></option>' +
  '<?php
 foreach ($project as $key=>$value){
@@ -420,7 +454,7 @@ foreach ($project as $key=>$value){
 
     function getRowInsentif(id){
          var row =  '<tr>'  + 
- '   <td><input type="date" name="insentif['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control"  ></td>  '  + 
+ '   <td><input name="insentif['+id+'][id]" type="hidden" value="'+id+'"><input type="date" name="insentif['+id+'][date]" value="{!!date("Y-m-d")!!}" class="form-control"  ></td>  '  + 
  '   <td><select class="form-control" name="insentif['+id+'][project_id]"><option value="" selected="selected"  ></option>' +
  '<?php
 foreach ($project as $key=>$value){
