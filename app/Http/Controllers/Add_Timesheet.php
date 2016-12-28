@@ -64,9 +64,27 @@ class Add_Timesheet extends Controller
         $summary = $this->populateSummary($id);
         return view('timesheets.edit_timesheet',compact('lokasi','activity','timesheet','project','id','timesheet_details','timesheet_insentif','timesheet_transport','summary','nonlokal','bantuan_perumahan','sum_timesheet_insentif','sum_timesheet_transport'));
     }
+
+    public function queryTimesheetId($week,$month,$year){
+        $timesheets = DB::table('timesheets')
+        ->where('week', $week)
+        ->where('month', $month)
+        ->where('year', $year)->get();
+        if(count($timesheets)>0){
+            return $timesheets[0]->id;
+        } else {
+            return '';
+        }     
+    }
     
-    public function form()
-    {   $lokasi = array('JABODETABEK'=>'JABODETABEK','DOMESTIK P. JAWA'=>'DOMESTIK P. JAWA','DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA','INTERNATIONAL'=>'INTERNATIONAL','UNCLAIMABLE'=>'UNCLAIMABLE');
+    public function form(Request $req)
+    {  
+        $ts = $this->queryTimesheetId($req->week,$req->month,$req->year);
+        if ($ts != ''){
+            return redirect()->route('add_timesheet.show', ['id' => $ts]);
+        }
+
+        $lokasi = array('JABODETABEK'=>'JABODETABEK','DOMESTIK P. JAWA'=>'DOMESTIK P. JAWA','DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA','INTERNATIONAL'=>'INTERNATIONAL','UNCLAIMABLE'=>'UNCLAIMABLE');
         $activity = array('CUTI'=>'CUTI','LIBUR'=>'LIBUR','IDLE' => 'IDLE','SAKIT' => 'SAKIT','SUPPORT' => 'SUPPORT','IMPLEMENTASI' => 'IMPLEMENTASI','MANAGED OPERATION' => 'MANAGED OPERATION');
         $project = Project::pluck('project_name', 'id')->all();
         $nonlokal = array('DOMESTIK P. JAWA'=>'DOMESTIK P. JAWA','DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA','INTERNATIONAL'=>'INTERNATIONAL');
@@ -294,7 +312,7 @@ class Add_Timesheet extends Controller
 
 //return response()->json( TimesheetDetail::where('timesheet_id','=',1)->get());
 
- return response()->json(  $status);
+ return response()->json(  Timesheet::where('user_id','=',Auth::user()->id)->get());
        return Auth::user()->id;
        return response()->json( $this->populateSummary());
        // return response()->json(Timesheet::all());

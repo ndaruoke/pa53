@@ -27,7 +27,7 @@ class TimesheetDataTable extends DataTable
      */
     public function query()
     {
-        $timesheets = Timesheet::query();
+        $timesheets = Timesheet::where('user_id','=',Auth::user()->id)->get();
 
         return $this->applyScopes($timesheets);
     }
