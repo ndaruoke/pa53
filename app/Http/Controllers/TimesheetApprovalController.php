@@ -397,17 +397,27 @@ class TimesheetApprovalController extends AppBaseController
 
         $summary['total'] = 0;
 
-        foreach($timesheet_insentif as $adcost)
+        //TODO without insentif
+        if(!empty(timesheet_insentif))
         {
-            $summary['total'] += $adcost->value;
+            foreach($timesheet_insentif as $adcost)
+            {
+                $summary['total'] += $adcost->value;
+            }
         }
+        
         $summary['perumahan']['total'] = $timesheet_insentif->pluck('value')->sum();
         $summary['perumahan']['count'] = $timesheet_insentif->count();
 
-        foreach($timesheet_transport as $transport)
+        //TODO without transport
+        if(!empty($timesheet_transport))
         {
-            $summary['total'] += $transport->value;
+            foreach($timesheet_transport as $transport)
+            {
+                $summary['total'] += $transport->value;
+            }
         }
+        
         $summary['adcost']['total'] = $timesheet_transport->pluck('value')->sum();
         $summary['adcost']['count'] = $timesheet_transport->count();
 

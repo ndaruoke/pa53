@@ -29,10 +29,18 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+<style>
+    .login-page, .register-page {
+    background: url("{{ URL::asset('image/bg.jpg') }}") no-repeat center center fixed;
+    background-size: cover;
+}
+</style>
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
+<body class="hold-transition login-page" >
+<!--
+<img style="-webkit-user-select: none; display: block; margin: auto; cursor: zoom-in;" src="{{ URL::asset('image/bg.jpg') }}" width="780" height="435">
+-->
+<div class="login-box" style="opacity:0.75;">
     <div class="login-logo">
         <a href="{{ url('/home') }}"><b>Timesheet Management Metrasys</b></a>
     </div>

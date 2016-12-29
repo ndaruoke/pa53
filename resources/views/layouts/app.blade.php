@@ -29,7 +29,7 @@
 
             <!-- Logo -->
             <a href="#" class="logo">
-                <b>Timesheet Management</b>
+                <b>Timesheet Mgmt</b>
             </a>
 
             <!-- Header Navbar -->
