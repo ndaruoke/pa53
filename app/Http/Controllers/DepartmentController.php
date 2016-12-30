@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\DepartmentDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
 use App\Repositories\DepartmentRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
 
 class DepartmentController extends AppBaseController
@@ -104,7 +102,7 @@ class DepartmentController extends AppBaseController
     /**
      * Update the specified Department in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateDepartmentRequest $request
      *
      * @return Response

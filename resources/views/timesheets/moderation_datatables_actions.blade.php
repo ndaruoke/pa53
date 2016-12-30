@@ -9,7 +9,7 @@
         'type' => 'submit',
         'class' => 'btn btn-default btn-xs'
     ]) !!}
-    </div>
+</div>
 </div>
 {!! Form::close() !!}
 

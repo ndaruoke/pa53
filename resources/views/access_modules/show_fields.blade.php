@@ -19,11 +19,11 @@
 <!-- Status Field -->
 <div class="form-group">
     {!! Form::label('status', 'Status:') !!}
-<<<<<<< HEAD:resources/views/access_modules/show_fields.blade.php
+    <<<<<<< HEAD:resources/views/access_modules/show_fields.blade.php
     <p>{!! $accessModule->status !!}</p>
-=======
+    =======
     <p>{!! $position->status == 1 ? "Active" : "Inactive" !!}</p>
->>>>>>> origin/master:resources/views/positions/show_fields.blade.php
+    >>>>>>> origin/master:resources/views/positions/show_fields.blade.php
 </div>
 
 <!-- Created At Field -->

@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Eloquent as Model;
+use Hootlex\Moderation\Moderatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
-use Hootlex\Moderation\Moderatable;
 
 /**
  * @SWG\Definition(
@@ -34,13 +34,13 @@ use Hootlex\Moderation\Moderatable;
  *          type="integer",
  *          format="int32"
  *      ),
-  *      @SWG\Property(
+ *      @SWG\Property(
  *          property="user_id",
  *          description="user_id",
  *          type="integer",
  *          format="int32"
  *      ),
-*      @SWG\Property(
+ *      @SWG\Property(
  *          property="approval_id",
  *          description="approval_id",
  *          type="integer",
@@ -72,13 +72,20 @@ class ApprovalHistory extends Model
     use Auditable;
 
     use Moderatable;
-    
+
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'note' => 'required',
+        'sequence_id' => 'required',
+        'transaction_id' => 'required',
+        'transaction_type' => 'required',
+        'user_id' => 'required'
+    ];
     public $table = 'approval_histories';
-    
-
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
         'date',
         'note',
@@ -89,7 +96,7 @@ class ApprovalHistory extends Model
         'approval_id',
         'group_approval_id'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -105,47 +112,34 @@ class ApprovalHistory extends Model
         'transaction_type' => 'integer'
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'note' => 'required',
-        'sequence_id' => 'required',
-        'transaction_id' => 'required',
-        'transaction_type' => 'required',
-        'user_id' => 'required'
-    ];
-
     public function timesheets()
     {
-        return $this->hasOne('App\Models\Timesheet', 'id','transaction_id');
+        return $this->hasOne('App\Models\Timesheet', 'id', 'transaction_id');
     }
 
     public function leaves()
     {
-        return $this->hasOne('App\Models\Leave', 'id','transaction_id');
+        return $this->hasOne('App\Models\Leave', 'id', 'transaction_id');
     }
 
     public function users()
     {
-        return $this->hasOne('App\Models\User', 'id','user_id');
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
 
     public function approvers()
     {
-        return $this->hasOne('App\Models\User', 'id','approval_id');
+        return $this->hasOne('App\Models\User', 'id', 'approval_id');
     }
 
     public function approvalstatuses()
     {
-        return $this->hasOne('App\Models\Constant', 'value','approval_status')->where('category', '=','Moderation');
+        return $this->hasOne('App\Models\Constant', 'value', 'approval_status')->where('category', '=', 'Moderation');
     }
 
     public function transactiontypes()
     {
-        return $this->hasOne('App\Models\Constant', 'value','transaction_type')->where('category', '=','TransactionType');
+        return $this->hasOne('App\Models\Constant', 'value', 'transaction_type')->where('category', '=', 'TransactionType');
     }
 
     public function getDateAttribute($date)
@@ -154,5 +148,5 @@ class ApprovalHistory extends Model
         return $cDate;
     }
 
-    
+
 }

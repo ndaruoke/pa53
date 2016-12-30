@@ -3,7 +3,6 @@
 namespace App\DataTables;
 
 use App\Models\User;
-use App\Models\Role;
 use Form;
 use Yajra\Datatables\Services\DataTable;
 
@@ -28,7 +27,7 @@ class UserDataTable extends DataTable
      */
     public function query()
     {
-        $users = User::with(['roles','positions','departments'])->get();
+        $users = User::with(['roles', 'positions', 'departments'])->get();
         return $this->applyScopes($users);
     }
 
@@ -51,13 +50,13 @@ class UserDataTable extends DataTable
                     'reset',
                     'reload',
                     [
-                         'extend'  => 'collection',
-                         'text'    => '<i class="fa fa-download"></i> Export',
-                         'buttons' => [
-                             'csv',
+                        'extend' => 'collection',
+                        'text' => '<i class="fa fa-download"></i> Export',
+                        'buttons' => [
+                            'csv',
 
-                             'pdf',
-                         ],
+                            'pdf',
+                        ],
                     ],
                     'colvis'
                 ]
@@ -74,11 +73,11 @@ class UserDataTable extends DataTable
         return [
             'nik' => ['name' => 'nik', 'data' => 'nik'],
             /**
-            'email' => ['name' => 'email', 'data' => 'email'],
-            'nama_rekening' => ['name' => 'nama_rekening', 'data' => 'nama_rekening'],
-            'rekening' => ['name' => 'rekening', 'data' => 'rekening'],
-            'bank' => ['name' => 'bank', 'data' => 'bank'],
-            'cabang' => ['name' => 'cabang', 'data' => 'cabang'],
+             * 'email' => ['name' => 'email', 'data' => 'email'],
+             * 'nama_rekening' => ['name' => 'nama_rekening', 'data' => 'nama_rekening'],
+             * 'rekening' => ['name' => 'rekening', 'data' => 'rekening'],
+             * 'bank' => ['name' => 'bank', 'data' => 'bank'],
+             * 'cabang' => ['name' => 'cabang', 'data' => 'cabang'],
              * **/
             'name' => ['name' => 'name', 'data' => 'name'],
             'role' => ['name' => 'roles.name', 'data' => 'roles.name'],

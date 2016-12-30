@@ -58,19 +58,25 @@ class Position extends Model
 
     use Auditable;
 
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'name' => 'required',
+        'description' => 'required',
+        'hierarchy' => 'required',
+        'status' => 'required'
+    ];
     public $table = 'positions';
-    
-
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
         'name',
         'description',
         'hierarchy',
         'status'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -83,18 +89,6 @@ class Position extends Model
         'status' => 'integer'
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'name' => 'required',
-        'description' => 'required',
-        'hierarchy' => 'required',
-        'status' => 'required'
-    ];
-
     public function user()
     {
         return $this->belongsTo('App\Models\User');
@@ -105,13 +99,13 @@ class Position extends Model
         return $this->belongsTo('App\Models\TunjanganPosition');
     }
 
-        public function sequence()
+    public function sequence()
     {
         return $this->belongsTo('App\Models\Sequence');
     }
 
     public function statuses()
     {
-        return $this->hasOne('App\Models\Constant', 'value','status')->where('category', '=','Status');
+        return $this->hasOne('App\Models\Constant', 'value', 'status')->where('category', '=', 'Status');
     }
 }

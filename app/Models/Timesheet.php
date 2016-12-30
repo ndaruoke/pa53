@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use DB;
 use Eloquent as Model;
+use Hootlex\Moderation\Moderatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
-use Hootlex\Moderation\Moderatable;
-use DB;
 
 /**
  * @SWG\Definition(
@@ -70,24 +70,27 @@ class Timesheet extends Model
 
     use Moderatable;
 
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+
+    ];
     public $table = 'timesheets';
-    
-
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
-		'id',
-		'month',
-		'week',
-		'year',
+        'id',
+        'month',
+        'week',
+        'year',
         'user_id',
         'periode',
         'approval_id',
         'approval_status',
-		'moderated_at'
+        'moderated_at'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -98,27 +101,36 @@ class Timesheet extends Model
         'approval_id' => 'integer',
         'approval_status' => 'integer'
     ];
+    protected $appends = ['total', 'monthname', 'status', 'link', 'approval'];
 
-	protected $appends = ['total','monthname','status','link','approval'];
-
-
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        
-    ];
-
-    public function users()
+    public static function getapprovalmoderation($approval, $approvalStatus)
     {
-        return $this->hasOne('App\Models\User', 'id','user_id');
+        $result = Timesheet::getwaitingname($approval, $approvalStatus);
+
+        foreach ($result as $r) {
+            $r->count = Timesheet::getapprovalcount($r->user_id, $approval, $approvalStatus);
+            $r->insentif = Timesheet::gettotaltunjangan($r->user_id, $r->approval_id, $approvalStatus);
+        }
+
+        return $result;
     }
 
-    public function approvalHistory()
+    public static function getwaitingname($approval, $approvalStatus)
     {
-        return $this->belongsTo('App\Models\ApprovalHistory');
+        $result = DB::table('timesheet_details')
+            ->select('approval_histories.user_id', 'users.name', 'approval_histories.approval_id', 'approval_histories.approval_status')
+            ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_details.id')
+            ->join('users', 'users.id', 'approval_histories.user_id')
+            ->where('approval_histories.approval_status', '=', $approvalStatus)
+            ->where('transaction_type', '=', 2)
+            ->where(function ($query) use ($approval) {
+                $query->where('approval_histories.approval_id', '=', $approval->id)
+                    ->orWhere('approval_histories.group_approval_id', '=', $approval->role);
+            })
+            ->groupBy('user_id')
+            ->get();
+
+        return $result;
     }
 
     // public function getPeriodeAttribute($date)
@@ -127,45 +139,111 @@ class Timesheet extends Model
     //     return $cDate;
     // }
 
-	public function getTotalAttribute()
-	{
-		return DB::table('timesheet_details')->where('timesheet_id','=',$this->id)->count();
-	}
+    public static function getapprovalcount($userId, $approval, $approvalStatus)
+    {
+        $result = DB::select(DB::raw("
+            select count(*) AS count_approval
+                FROM approval_histories ah1
+                JOIN timesheet_details ON timesheet_details.id = ah1.transaction_id
+                WHERE ah1.transaction_type = 2 
+                AND ah1.approval_status = :approvalStatus
+                AND (ah1.approval_id = :approvalId or ah1.group_approval_id = :roleId)
+                AND ah1.user_id = :userId
+            "), array(
+                'roleId' => $approval->role,
+                'approvalId' => $approval->id,
+                'userId' => $userId,
+                'approvalStatus' => $approvalStatus
+            )
+        );
+        if (!isset($result)) {
+            return 0;
+        } else {
+            return $result[0]->count_approval;
+        }
+    }
 
-	public function getMonthnameAttribute()
-	{
-		return date("F", mktime(0, 0, 0, $this->month, 10));	
-	}
+    public static function gettotaltunjangan($userId, $approvalId, $approvalStatus)
+    {
+        return Timesheet::getTotalInsentif($userId, $approvalId, $approvalStatus) +
+            Timesheet::getTotalTransport($userId, $approvalId, $approvalStatus);
+    }
 
-	public function getStatusAttribute()
-	{
-		return $this->action;
-	}
+    public static function getTotalInsentif($userId, $approvalId, $approvalStatus)
+    {
+        $insentif = DB::table('timesheet_insentif')
+            ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')
+            ->where('approval_histories.approval_id', '=', $approvalId)
+            ->where('approval_histories.user_id', '=', $userId)
+            ->where('approval_histories.approval_status', '=', $approvalStatus)
+            ->whereIn('transaction_type', [2, 4])//insentif dan bantuan perumahan
+            ->pluck('timesheet_insentif.value')->sum();
 
-	public function getLinkAttribute()
-	{
-		return '<a href="timesheet/show/'.$this->id.'" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-eye-open"></i>';	
-	}
+        return $insentif;
+    }
+
+    public static function getTotalTransport($userId, $approvalId, $approvalStatus)
+    {
+        $transport = DB::table('timesheet_transport')
+            ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')
+            ->where('approval_histories.approval_id', '=', $approvalId)
+            ->where('approval_histories.user_id', '=', $userId)
+            ->where('approval_histories.approval_status', '=', $approvalStatus)
+            ->where('transaction_type', '=', 3)//adcost
+            ->pluck('timesheet_transport.value')->sum();
+
+        return $transport;
+    }
+
+    public function users()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
+    }
+
+    public function approvalHistory()
+    {
+        return $this->belongsTo('App\Models\ApprovalHistory');
+    }
+
+    public function getTotalAttribute()
+    {
+        return DB::table('timesheet_details')->where('timesheet_id', '=', $this->id)->count();
+    }
+
+    public function getMonthnameAttribute()
+    {
+        return date("F", mktime(0, 0, 0, $this->month, 10));
+    }
+
+    public function getStatusAttribute()
+    {
+        return $this->action;
+    }
+
+    public function getLinkAttribute()
+    {
+        return '<a href="timesheet/show/' . $this->id . '" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-eye-open"></i>';
+    }
 
     public function getApprovalAttribute()
-	{
-		 $liststatus = DB::select(DB::raw("select if(approval_histories.approval_status = 0,'approved','rejected')status , count(approval_histories.approval_status)total from timesheet_details, approval_histories where timesheet_details.id = approval_histories.transaction_id and timesheet_details.timesheet_id = ".$this->id." and approval_histories.transaction_type = 12  group by status"));
-         $statuses = '';
-         foreach($liststatus as $status){
-             if($status->status==='approved'){
-               //  
-                $statuses = $statuses.' '.'<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="color:#00a65a" data-original-title="'.$status->status.' ('.$status->total.')"></i>';
-             } else {
-                 $statuses = $statuses.' '.'<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="color:#dd4b39" data-original-title="'.$status->status.' ('.$status->total.')"></i>';
-             }
-             
-         }
-         if ( $statuses === ''){
-             // 'waiting';
-             $statuses = '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="color:#f39c12" data-original-title="Verivikasi"></i>';
-         }
-         return $statuses;
-	}
+    {
+        $liststatus = DB::select(DB::raw("select if(approval_histories.approval_status = 0,'approved','rejected')status , count(approval_histories.approval_status)total from timesheet_details, approval_histories where timesheet_details.id = approval_histories.transaction_id and timesheet_details.timesheet_id = " . $this->id . " and approval_histories.transaction_type = 12  group by status"));
+        $statuses = '';
+        foreach ($liststatus as $status) {
+            if ($status->status === 'approved') {
+                //
+                $statuses = $statuses . ' ' . '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="color:#00a65a" data-original-title="' . $status->status . ' (' . $status->total . ')"></i>';
+            } else {
+                $statuses = $statuses . ' ' . '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="color:#dd4b39" data-original-title="' . $status->status . ' (' . $status->total . ')"></i>';
+            }
+
+        }
+        if ($statuses === '') {
+            // 'waiting';
+            $statuses = '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="color:#f39c12" data-original-title="Verivikasi"></i>';
+        }
+        return $statuses;
+    }
 
     public function timesheetdetails()
     {
@@ -181,94 +259,4 @@ class Timesheet extends Model
     {
         return $this->hasMany('App\Models\TimesheetTransport');
     }
-
-    public static function getapprovalmoderation($approval, $approvalStatus)
-    {
-        $result = Timesheet::getwaitingname($approval, $approvalStatus);
-
-        foreach($result as $r)
-        {
-            $r->count = Timesheet::getapprovalcount($r->user_id, $approval, $approvalStatus);
-            $r->insentif = Timesheet::gettotaltunjangan($r->user_id, $r->approval_id, $approvalStatus);
-        }
-        
-        return $result;
-    }
-
-    public static function getwaitingname($approval, $approvalStatus)
-    {
-        $result = DB::table('timesheet_details')
-            ->select('approval_histories.user_id','users.name', 'approval_histories.approval_id', 'approval_histories.approval_status')
-            ->join('approval_histories','approval_histories.transaction_id','timesheet_details.id')
-            ->join('users','users.id','approval_histories.user_id')
-            ->where('approval_histories.approval_status','=',$approvalStatus)
-            ->where('transaction_type','=', 2)
-            ->where(function ($query) use($approval){
-                    $query->where('approval_histories.approval_id','=',$approval->id)
-                            ->orWhere('approval_histories.group_approval_id','=', $approval->role);
-                })
-            ->groupBy('user_id')
-            ->get();
-   
-        return $result;
-    }
-
-    
-
-    public static function getapprovalcount($userId, $approval, $approvalStatus)
-    {
-        $result = DB::select( DB::raw("
-            select count(*) AS count_approval
-                FROM approval_histories ah1
-                JOIN timesheet_details ON timesheet_details.id = ah1.transaction_id
-                WHERE ah1.transaction_type = 2 
-                AND ah1.approval_status = :approvalStatus
-                AND (ah1.approval_id = :approvalId or ah1.group_approval_id = :roleId)
-                AND ah1.user_id = :userId
-            "), array(
-                'roleId' => $approval->role,
-                'approvalId' => $approval->id,
-                'userId' => $userId,
-                'approvalStatus' => $approvalStatus
-            )
-        );
-        if(!isset($result))
-        {
-            return 0;
-        } else {
-            return $result[0]->count_approval;
-        }
-    }
-
-    public static function gettotaltunjangan($userId, $approvalId, $approvalStatus)
-    {
-        return  Timesheet::getTotalInsentif($userId, $approvalId, $approvalStatus) + 
-                Timesheet::getTotalTransport($userId, $approvalId, $approvalStatus);
-    }
-
-    public static function getTotalInsentif($userId, $approvalId, $approvalStatus)
-	{
-        $insentif = DB::table('timesheet_insentif')
-                    ->join('approval_histories','approval_histories.transaction_id','timesheet_insentif.id')
-                    ->where('approval_histories.approval_id','=',$approvalId)
-                    ->where('approval_histories.user_id','=',$userId)
-                    ->where('approval_histories.approval_status','=',$approvalStatus)
-                    ->whereIn('transaction_type',[2,4]) //insentif dan bantuan perumahan
-                    ->pluck('timesheet_insentif.value')->sum();
-
-        return $insentif;
-	}
-
-    public static function getTotalTransport($userId, $approvalId, $approvalStatus)
-	{
-		$transport = DB::table('timesheet_transport')
-                    ->join('approval_histories','approval_histories.transaction_id','timesheet_transport.id')
-                    ->where('approval_histories.approval_id','=',$approvalId)
-                    ->where('approval_histories.user_id','=',$userId)
-                    ->where('approval_histories.approval_status','=',$approvalStatus)
-                    ->where('transaction_type','=',3) //adcost
-                    ->pluck('timesheet_transport.value')->sum();
-
-        return $transport;
-	} 
 }

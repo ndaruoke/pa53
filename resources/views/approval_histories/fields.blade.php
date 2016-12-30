@@ -17,20 +17,20 @@
 </div>
 
 @if( ! empty($timesheets))
-<!-- Timesheet Id Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('transaction_id', 'Timesheet Periode:') !!}
-    {!! Form::select('transaction_id', $timesheets, null, ['class' => 'form-control select2']) !!}
-</div>
+    <!-- Timesheet Id Field -->
+    <div class="form-group col-sm-6">
+        {!! Form::label('transaction_id', 'Timesheet Periode:') !!}
+        {!! Form::select('transaction_id', $timesheets, null, ['class' => 'form-control select2']) !!}
+    </div>
 @endif
 
 @if( ! empty($leaves))
-<!-- Leave Id Field -->
-<div class="form-group col-sm-6">
+    <!-- Leave Id Field -->
+    <div class="form-group col-sm-6">
     {!! Form::label('transaction_id', 'Leave Note:') !!}
     {!! Form::select('transaction_id', $leaves, null, ['class' => 'form-control select2']) !!}
     <!--    {!! Form::text('timesheet_id', null, ['class' => 'form-control']) !!} -->
-</div>
+    </div>
 @endif
 
 <!-- Transaction Type Field -->

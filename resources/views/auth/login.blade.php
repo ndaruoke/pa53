@@ -29,14 +29,14 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-<style>
-    .login-page, .register-page {
-    background: url("{{ URL::asset('image/bg.jpg') }}") no-repeat center center fixed;
-    background-size: cover;
-}
-</style>
+    <style>
+        .login-page, .register-page {
+            background: url("{{ URL::asset('image/bg.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
 </head>
-<body class="hold-transition login-page" >
+<body class="hold-transition login-page">
 <!--
 <img style="-webkit-user-select: none; display: block; margin: auto; cursor: zoom-in;" src="{{ URL::asset('image/bg.jpg') }}" width="780" height="435">
 -->
@@ -89,7 +89,7 @@
         </form>
 
         <a href="{{ url('/password/reset') }}">I forgot my password</a><br>
-     <!--   <a href="{{ url('/register') }}" class="text-center">Register a new membership</a> -->
+    <!--   <a href="{{ url('/register') }}" class="text-center">Register a new membership</a> -->
 
     </div>
     <!-- /.login-box-body -->

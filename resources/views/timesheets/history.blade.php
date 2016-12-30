@@ -13,19 +13,19 @@
         <div class="clearfix"></div>
         <div class="box box-primary">
             <div class="box-body">
-                       {!! $html->table() !!}
+                {!! $html->table() !!}
 
 
-@section('css')
-    @include('layouts.datatables_css')
-@endsection
+                @section('css')
+                    @include('layouts.datatables_css')
+                @endsection
 
 
-@section('scripts')
-//test
-    @include('layouts.datatables_js')
-    {!! $html->scripts() !!}
-@endsection
+                @section('scripts')
+                    //test
+                    @include('layouts.datatables_js')
+                    {!! $html->scripts() !!}
+                @endsection
             </div>
         </div>
     </div>

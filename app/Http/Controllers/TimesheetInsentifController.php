@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\TimesheetInsentifDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateTimesheetInsentifRequest;
 use App\Http\Requests\UpdateTimesheetInsentifRequest;
 use App\Repositories\TimesheetInsentifRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
 
 class TimesheetInsentifController extends AppBaseController
@@ -103,7 +101,7 @@ class TimesheetInsentifController extends AppBaseController
     /**
      * Update the specified TimesheetInsentif in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateTimesheetInsentifRequest $request
      *
      * @return Response

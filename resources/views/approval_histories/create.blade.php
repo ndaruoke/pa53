@@ -14,7 +14,7 @@
                 <div class="row">
                     {!! Form::open(['route' => 'approvalHistories.store']) !!}
 
-                        @include('approval_histories.fields')
+                    @include('approval_histories.fields')
 
                     {!! Form::close() !!}
                 </div>

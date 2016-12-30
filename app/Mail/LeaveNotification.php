@@ -2,34 +2,32 @@
 
 namespace App\Mail;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Http\Requests\CreateLeaveRequest;
-use Carbon\Carbon;
-use Illuminate\Routing\UrlGenerator;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use App\Models\Constant;
 use App\Models\Leave;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
 
 class LeaveNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
-	
-	/**
+
+    /**
      * The request instance.
      *
      * @var CreateLeaveRequest
      */
-	public $request;
-	public $user;
-	public $startDate;
-	public $endDate;
-	public $dayCount;
-	public $url;
-	public $approver;
+    public $request;
+    public $user;
+    public $startDate;
+    public $endDate;
+    public $dayCount;
+    public $url;
+    public $approver;
     public $type;
     public $notification;
 
@@ -41,18 +39,18 @@ class LeaveNotification extends Mailable implements ShouldQueue
     public function __construct(Leave $request, User $approver, User $submitter, string $type)
     {
         $this->request = $request;
-		Carbon::setLocale('id');
+        Carbon::setLocale('id');
         $start = new Carbon($request['start_date']);
         $end = new Carbon($request['end_date']);
-		$this->startDate = $start->format('d M Y');
-		$this->endDate = $end->format('d M Y');
-		$this->dayCount = $end->diff($start)->days;
-		$this->url = url()->to('/');
-		$this->user = $submitter;
-		$this->approver = $approver;
+        $this->startDate = $start->format('d M Y');
+        $this->endDate = $end->format('d M Y');
+        $this->dayCount = $end->diff($start)->days;
+        $this->url = url()->to('/');
+        $this->user = $submitter;
+        $this->approver = $approver;
         $this->notification = $type;
 
-        $constant = Constant::where('category','Cuti')->where('value',$request['type'])->get();
+        $constant = Constant::where('category', 'Cuti')->where('value', $request['type'])->get();
         $this->type = $constant->first()->name;
     }
 

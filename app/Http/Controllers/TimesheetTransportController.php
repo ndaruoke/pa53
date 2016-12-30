@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\TimesheetTransportDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateTimesheetTransportRequest;
 use App\Http\Requests\UpdateTimesheetTransportRequest;
 use App\Repositories\TimesheetTransportRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
 
 class TimesheetTransportController extends AppBaseController
@@ -103,7 +101,7 @@ class TimesheetTransportController extends AppBaseController
     /**
      * Update the specified TimesheetTransport in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateTimesheetTransportRequest $request
      *
      * @return Response

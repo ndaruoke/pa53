@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\TimesheetDetailDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateTimesheetDetailRequest;
 use App\Http\Requests\UpdateTimesheetDetailRequest;
 use App\Repositories\TimesheetDetailRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
 
 class TimesheetDetailController extends AppBaseController
@@ -104,7 +102,7 @@ class TimesheetDetailController extends AppBaseController
     /**
      * Update the specified TimesheetDetail in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateTimesheetDetailRequest $request
      *
      * @return Response

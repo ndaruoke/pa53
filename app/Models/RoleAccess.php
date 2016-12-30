@@ -48,17 +48,21 @@ class RoleAccess extends Model
 
     use Auditable;
 
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'role_id' => 'required',
+        'module_id' => 'required'
+    ];
     public $table = 'role_accesses';
-    
-
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
         'role_id',
         'module_id'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -69,15 +73,5 @@ class RoleAccess extends Model
         'module_id' => 'integer'
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'role_id' => 'required',
-        'module_id' => 'required'
-    ];
 
-    
 }

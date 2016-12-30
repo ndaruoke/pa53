@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\UserLeave;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserLeaveRequest extends FormRequest
 {

@@ -5,19 +5,19 @@
         <h1>
             Position
         </h1>
-   </section>
-   <div class="content">
-       @include('adminlte-templates::common.errors')
-       <div class="box box-primary">
-           <div class="box-body">
-               <div class="row">
-                   {!! Form::model($position, ['route' => ['positions.update', $position->id], 'method' => 'patch']) !!}
+    </section>
+    <div class="content">
+        @include('adminlte-templates::common.errors')
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    {!! Form::model($position, ['route' => ['positions.update', $position->id], 'method' => 'patch']) !!}
 
-                        @include('positions.fields')
+                    @include('positions.fields')
 
-                   {!! Form::close() !!}
-               </div>
-           </div>
-       </div>
-   </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

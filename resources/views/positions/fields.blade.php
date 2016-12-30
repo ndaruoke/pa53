@@ -22,10 +22,11 @@
     {!! Form::select('status', $statuses, null, ['class' => 'form-control select2']) !!}
 </div>
 
- @if (isset($position))
-<div class="form-group col-sm-12">
-    <a href="{{ url('/tunjanganPositions?search=')}}{!!$position->id.'&searchFields=position_id:='!!}">Tunjangan Detail</a>
-</div>
+@if (isset($position))
+    <div class="form-group col-sm-12">
+        <a href="{{ url('/tunjanganPositions?search=')}}{!!$position->id.'&searchFields=position_id:='!!}">Tunjangan
+            Detail</a>
+    </div>
 @endif
 
 <!-- Submit Field -->

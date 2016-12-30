@@ -14,7 +14,7 @@
                 <div class="row">
                     {!! Form::open(['route' => 'roleAccesses.store']) !!}
 
-                        @include('role_accesses.fields')
+                    @include('role_accesses.fields')
 
                     {!! Form::close() !!}
                 </div>

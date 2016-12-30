@@ -14,7 +14,7 @@
                 <div class="row">
                     {!! Form::open(['id'=>'project_form', 'route' => 'projects.store']) !!}
 
-                        @include('projects.fields')
+                    @include('projects.fields')
 
                     {!! Form::close() !!}
                 </div>
@@ -28,8 +28,8 @@
 @section('scripts')
     <script type="text/javascript" src="{{ URL::asset('js/multiselect.min.js') }}"></script>
     <script type="text/javascript">
-    
-        $(document).ready(function($){
+
+        $(document).ready(function ($) {
             VMasker(document.querySelector("#budgetid")).maskMoney({
                 // Decimal precision -> "90"
                 precision: 0,
@@ -39,37 +39,37 @@
                 delimiter: '.',
                 // Money unit -> "R$ 12.345.678,90"
                 unit: 'Rp'
-                });
+            });
         });
 
-        $("#project_form").submit(function($){
+        $("#project_form").submit(function ($) {
             VMasker(document.querySelector("#budgetid")).unMask();
         });
 
-        jQuery(document).ready(function($) {
+        jQuery(document).ready(function ($) {
             //remove duplicates
             var origin = new Array();
-            $('#search option').each(function(){
-                origin.push({'text':this.text,'value':this.value});
+            $('#search option').each(function () {
+                origin.push({'text': this.text, 'value': this.value});
             });
 
             var toRemove = new Array();
-            $('#search_to option').each(function(){
-                toRemove.push({'text':this.text,'value':this.value});
+            $('#search_to option').each(function () {
+                toRemove.push({'text': this.text, 'value': this.value});
             });
 
             //alert(JSON.stringify(toRemove));
 
-            for( var i=origin.length - 1; i>=0; i--){
-                for( var j=0; j<toRemove.length; j++){
-                    if(origin[i] && (origin[i].text === toRemove[j].text)){
+            for (var i = origin.length - 1; i >= 0; i--) {
+                for (var j = 0; j < toRemove.length; j++) {
+                    if (origin[i] && (origin[i].text === toRemove[j].text)) {
                         origin.splice(i, 1);
                     }
                 }
             }
             var options = $("#search");
             options.empty()
-            $.each(origin, function() {
+            $.each(origin, function () {
                 options.append(new Option(this.text, this.value));
             });
             //remove duplicates
@@ -79,7 +79,9 @@
                 search: {
                     left: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
                     right: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
-                    afterMoveToRight: function() { alert(''); },
+                    afterMoveToRight: function () {
+                        alert('');
+                    },
                 }
             });
             $('#search2').multiselect({
@@ -87,7 +89,9 @@
                 search: {
                     left: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
                     right: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
-                    afterMoveToRight: function() { alert(''); },
+                    afterMoveToRight: function () {
+                        alert('');
+                    },
                 },
                 rightAll: '#search_rightAll2',
                 rightSelected: '#search_rightSelected2',

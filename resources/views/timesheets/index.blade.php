@@ -17,7 +17,7 @@
         <div class="clearfix"></div>
         <div class="box box-primary">
             <div class="box-body">
-                    @include('timesheets.table')
+                @include('timesheets.table')
             </div>
         </div>
     </div>

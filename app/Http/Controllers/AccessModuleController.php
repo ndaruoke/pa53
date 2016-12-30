@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\AccessModuleDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateAccessModuleRequest;
 use App\Http\Requests\UpdateAccessModuleRequest;
 use App\Repositories\AccessModuleRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
 
 class AccessModuleController extends AppBaseController
@@ -104,7 +102,7 @@ class AccessModuleController extends AppBaseController
     /**
      * Update the specified AccessModule in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateAccessModuleRequest $request
      *
      * @return Response

@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\TunjanganDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateTunjanganRequest;
 use App\Http\Requests\UpdateTunjanganRequest;
 use App\Repositories\TunjanganRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
 
 class TunjanganController extends AppBaseController
@@ -104,7 +102,7 @@ class TunjanganController extends AppBaseController
     /**
      * Update the specified Tunjangan in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateTunjanganRequest $request
      *
      * @return Response

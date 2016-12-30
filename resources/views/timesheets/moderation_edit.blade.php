@@ -18,21 +18,21 @@
                         <li>
                             {!! Form::open(['route' => ['timesheets.moderation.update'], 'method' => 'get']) !!}
 
-                                {!! Form::button('Approve', [
-                                    'type' => 'submit',
-                                    'class' => 'btn btn-success',
-                                    'onclick' => "return confirm('Are you sure to approve?')"
-                                ]) !!}
+                            {!! Form::button('Approve', [
+                                'type' => 'submit',
+                                'class' => 'btn btn-success',
+                                'onclick' => "return confirm('Are you sure to approve?')"
+                            ]) !!}
                             {!! Form::close() !!}
                         </li>
                         <li>
                             {!! Form::open(['route' => ['timesheets.moderation.reject'], 'method' => 'get']) !!}
 
-                                {!! Form::button('Reject', [
-                                    'type' => 'submit',
-                                    'class' => 'btn btn-warning',
-                                    'onclick' => "return confirm('Are you sure to reject?')"
-                                ]) !!}
+                            {!! Form::button('Reject', [
+                                'type' => 'submit',
+                                'class' => 'btn btn-warning',
+                                'onclick' => "return confirm('Are you sure to reject?')"
+                            ]) !!}
                             {!! Form::close() !!}
                         </li>
                     </ul>

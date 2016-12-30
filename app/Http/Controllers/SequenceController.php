@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\SequenceDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateSequenceRequest;
 use App\Http\Requests\UpdateSequenceRequest;
+use App\Models\Role;
+use App\Models\User;
 use App\Repositories\SequenceRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
-use App\Models\User;
-use App\Models\Role;
 
 class SequenceController extends AppBaseController
 {
@@ -42,10 +40,10 @@ class SequenceController extends AppBaseController
      */
     public function create()
     {
-        $roles = [''=>''] +Role::pluck('name', 'id')->all();
-        $users = [''=>''] +User::pluck('name', 'id')->all();
-        $transactiontypes = [''=>''] +Constant::where('category','TransactionType')->orderBy('name','asc')->pluck('name', 'value')->all();
-        return view('sequences.create',compact('roles','users','transactiontypes'));
+        $roles = ['' => ''] + Role::pluck('name', 'id')->all();
+        $users = ['' => ''] + User::pluck('name', 'id')->all();
+        $transactiontypes = ['' => ''] + Constant::where('category', 'TransactionType')->orderBy('name', 'asc')->pluck('name', 'value')->all();
+        return view('sequences.create', compact('roles', 'users', 'transactiontypes'));
     }
 
     /**
@@ -102,17 +100,17 @@ class SequenceController extends AppBaseController
 
             return redirect(route('sequences.index'));
         }
-        $roles = [''=>''] +Role::pluck('name', 'id')->all();
-        $users = [''=>''] +User::pluck('name', 'id')->all();
-        $transactiontypes = [''=>''] +Constant::where('category','TransactionType')->orderBy('name','asc')->pluck('name', 'value')->all();
-        return view('sequences.edit',compact('sequence','roles','users', 'transactiontypes'));
+        $roles = ['' => ''] + Role::pluck('name', 'id')->all();
+        $users = ['' => ''] + User::pluck('name', 'id')->all();
+        $transactiontypes = ['' => ''] + Constant::where('category', 'TransactionType')->orderBy('name', 'asc')->pluck('name', 'value')->all();
+        return view('sequences.edit', compact('sequence', 'roles', 'users', 'transactiontypes'));
         //return view('sequences.edit')->with('sequence', $sequence);
     }
 
     /**
      * Update the specified Sequence in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateSequenceRequest $request
      *
      * @return Response

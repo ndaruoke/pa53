@@ -3,17 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\ApprovalHistoryDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateApprovalHistoryRequest;
 use App\Http\Requests\UpdateApprovalHistoryRequest;
-use App\Repositories\ApprovalHistoryRepository;
-use Flash;
-use App\Http\Controllers\AppBaseController;
-use Response;
+use App\Models\Constant;
+use App\Models\Leave;
 use App\Models\Timesheet;
 use App\Models\User;
-use App\Models\Leave;
-use App\Models\Constant;
+use App\Repositories\ApprovalHistoryRepository;
+use Flash;
+use Response;
 
 class ApprovalHistoryController extends AppBaseController
 {
@@ -44,13 +42,13 @@ class ApprovalHistoryController extends AppBaseController
      */
     public function create()
     {
-        $timesheets = [''=>''] +Timesheet::pluck('periode', 'id')->all();
-        $leaves = [''=>''] +Leave::pluck('note', 'id')->all();
-        $users = [''=>''] +User::pluck('name', 'id')->all();
-        $approver = [''=>''] +User::pluck('name', 'id')->all();
-        $approvalstatuses = [''=>''] +Constant::where('category','Moderation')->orderBy('name','asc')->pluck('name', 'value')->all();
-        $transactiontypes = [''=>''] +Constant::where('category','TransactionType')->orderBy('name','asc')->pluck('name', 'value')->all();
-        return view('approval_histories.create',compact('timesheets','leaves','users','approvers','approvalstatuses','transactiontypes'));
+        $timesheets = ['' => ''] + Timesheet::pluck('periode', 'id')->all();
+        $leaves = ['' => ''] + Leave::pluck('note', 'id')->all();
+        $users = ['' => ''] + User::pluck('name', 'id')->all();
+        $approver = ['' => ''] + User::pluck('name', 'id')->all();
+        $approvalstatuses = ['' => ''] + Constant::where('category', 'Moderation')->orderBy('name', 'asc')->pluck('name', 'value')->all();
+        $transactiontypes = ['' => ''] + Constant::where('category', 'TransactionType')->orderBy('name', 'asc')->pluck('name', 'value')->all();
+        return view('approval_histories.create', compact('timesheets', 'leaves', 'users', 'approvers', 'approvalstatuses', 'transactiontypes'));
     }
 
     /**
@@ -107,19 +105,19 @@ class ApprovalHistoryController extends AppBaseController
 
             return redirect(route('approvalHistories.index'));
         }
-        $timesheets = array_filter([''=>''] +Timesheet::pluck('periode', 'id')->all());
-        $leaves = array_filter([''=>''] +Leave::pluck('note', 'id')->all());
-        $users = [''=>''] +User::pluck('name', 'id')->all();
-        $approver = [''=>''] +User::pluck('name', 'id')->all();
-        $approvalstatuses = [''=>''] +Constant::where('category','Moderation')->orderBy('name','asc')->pluck('name', 'value')->all();
-        $transactiontypes = [''=>''] +Constant::where('category','TransactionType')->orderBy('name','asc')->pluck('name', 'value')->all();
-        return view('approval_histories.edit',compact('approvalHistory','timesheets','leaves','users','approvers','approvalstatuses','transactiontypes'));
+        $timesheets = array_filter(['' => ''] + Timesheet::pluck('periode', 'id')->all());
+        $leaves = array_filter(['' => ''] + Leave::pluck('note', 'id')->all());
+        $users = ['' => ''] + User::pluck('name', 'id')->all();
+        $approver = ['' => ''] + User::pluck('name', 'id')->all();
+        $approvalstatuses = ['' => ''] + Constant::where('category', 'Moderation')->orderBy('name', 'asc')->pluck('name', 'value')->all();
+        $transactiontypes = ['' => ''] + Constant::where('category', 'TransactionType')->orderBy('name', 'asc')->pluck('name', 'value')->all();
+        return view('approval_histories.edit', compact('approvalHistory', 'timesheets', 'leaves', 'users', 'approvers', 'approvalstatuses', 'transactiontypes'));
     }
 
     /**
      * Update the specified ApprovalHistory in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateApprovalHistoryRequest $request
      *
      * @return Response

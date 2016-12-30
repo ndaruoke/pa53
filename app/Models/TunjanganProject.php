@@ -42,16 +42,19 @@ class TunjanganProject extends Model
 
     use Auditable;
 
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'project_id' => 'required'
+    ];
     public $table = 'tunjangan_projects';
-    
-
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
         'project_id'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -61,22 +64,13 @@ class TunjanganProject extends Model
         'project_id' => 'integer'
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'project_id' => 'required'
-    ];
-
     public function projects()
     {
-        return $this->hasOne('App\Models\Project', 'id','project_id');
+        return $this->hasOne('App\Models\Project', 'id', 'project_id');
     }
 
     public function tunjangans()
     {
-        return $this->hasOne('App\Models\Tunjangan', 'id','tunjangan_id');
+        return $this->hasOne('App\Models\Tunjangan', 'id', 'tunjangan_id');
     }
 }

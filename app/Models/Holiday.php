@@ -47,26 +47,6 @@ class Holiday extends Model
 
     use Auditable;
 
-    public $table = 'holidays';
-    
-
-    protected $dates = ['deleted_at'];
-
-
-    public $fillable = [
-        'name',
-        'date'
-    ];
-
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'name' => 'string'
-    ];
-
     /**
      * Validation rules
      *
@@ -75,6 +55,20 @@ class Holiday extends Model
     public static $rules = [
         'name' => 'required',
         'date' => 'required'
+    ];
+    public $table = 'holidays';
+    public $fillable = [
+        'name',
+        'date'
+    ];
+    protected $dates = ['deleted_at'];
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'name' => 'string'
     ];
 
     public function getDateAttribute($date)

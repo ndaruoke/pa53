@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\ProjectMemberDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateProjectMemberRequest;
 use App\Http\Requests\UpdateProjectMemberRequest;
+use App\Models\Project;
+use App\Models\User;
 use App\Repositories\ProjectMemberRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
-use App\Models\User;
-use App\Models\Project;
 
 class ProjectMemberController extends AppBaseController
 {
@@ -42,9 +40,9 @@ class ProjectMemberController extends AppBaseController
      */
     public function create()
     {
-        $user = [''=>''] +User::pluck('name', 'id')->all();
-        $project = [''=>''] +Project::pluck('project_name', 'id')->all();
-        return view('project_members.create',compact('user','project'));
+        $user = ['' => ''] + User::pluck('name', 'id')->all();
+        $project = ['' => ''] + Project::pluck('project_name', 'id')->all();
+        return view('project_members.create', compact('user', 'project'));
     }
 
     /**
@@ -102,15 +100,15 @@ class ProjectMemberController extends AppBaseController
             return redirect(route('projectMembers.index'));
         }
 
-        $user = [''=>''] +User::pluck('name', 'id')->all();
-        $project = [''=>''] +Project::pluck('project_name', 'id')->all();
-        return view('project_members.edit',compact('user','project'));
+        $user = ['' => ''] + User::pluck('name', 'id')->all();
+        $project = ['' => ''] + Project::pluck('project_name', 'id')->all();
+        return view('project_members.edit', compact('user', 'project'));
     }
 
     /**
      * Update the specified ProjectMember in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateProjectMemberRequest $request
      *
      * @return Response

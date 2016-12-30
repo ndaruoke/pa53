@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Eloquent as Model;
+use Hootlex\Moderation\Moderatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
-use Hootlex\Moderation\Moderatable;
 
 /**
  * @SWG\Definition(
@@ -94,38 +94,8 @@ class Leave extends Model
     use SoftDeletes;
 
     use Auditable;
-	
-	use Moderatable;
 
-    public $table = 'leaves';
-
-
-    protected $dates = ['deleted_at'];
-
-
-    public $fillable = [
-        'start_date',
-        'end_date',
-        'note',
-        'user_id',
-        'approval_id',
-        'type',
-        'status',
-		'approval_status',
-		'moderated_at'
-    ];
-
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'user_id' => 'integer',
-        'approval_id' => 'integer',
-        'status' => 'integer',
-		'approval_status' => 'integer',
-    ];
+    use Moderatable;
 
     /**
      * Validation rules
@@ -137,35 +107,59 @@ class Leave extends Model
         'end_date' => 'required',
         'note' => 'required'
         /**,
-        'user_id' => 'required',
-        'approval_id' => 'required',
-        'status' => 'required'
-        **/
+         * 'user_id' => 'required',
+         * 'approval_id' => 'required',
+         * 'status' => 'required'
+         **/
+    ];
+    public $table = 'leaves';
+    public $fillable = [
+        'start_date',
+        'end_date',
+        'note',
+        'user_id',
+        'approval_id',
+        'type',
+        'status',
+        'approval_status',
+        'moderated_at'
+    ];
+    protected $dates = ['deleted_at'];
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'user_id' => 'integer',
+        'approval_id' => 'integer',
+        'status' => 'integer',
+        'approval_status' => 'integer',
     ];
 
     public function users()
     {
-        return $this->hasOne('App\Models\User', 'id','user_id');
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
 
     public function approvals()
     {
-        return $this->hasOne('App\Models\User', 'id','approval_id');
+        return $this->hasOne('App\Models\User', 'id', 'approval_id');
     }
-	
-	public function approvalstat()
+
+    public function approvalstat()
     {
-        return $this->hasOne('App\Models\Constant', 'value','approval_status')->where('category', '=','Moderation');
+        return $this->hasOne('App\Models\Constant', 'value', 'approval_status')->where('category', '=', 'Moderation');
     }
 
     public function statuses()
     {
-        return $this->hasOne('App\Models\Constant', 'value','status')->where('category', '=','Status');
+        return $this->hasOne('App\Models\Constant', 'value', 'status')->where('category', '=', 'Status');
     }
 
     public function types()
     {
-        return $this->hasOne('App\Models\Constant', 'value','type')->where('category', '=','Cuti');
+        return $this->hasOne('App\Models\Constant', 'value', 'type')->where('category', '=', 'Cuti');
     }
 
     public function getStartDateAttribute($date)

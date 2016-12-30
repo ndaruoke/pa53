@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\RoleAccessDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateRoleAccessRequest;
 use App\Http\Requests\UpdateRoleAccessRequest;
+use App\Models\Constant;
 use App\Repositories\RoleAccessRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
-use App\Models\Constant;
 
 class RoleAccessController extends AppBaseController
 {
@@ -41,8 +39,8 @@ class RoleAccessController extends AppBaseController
      */
     public function create()
     {
-        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
-        return view('role_accesses.create',compact('statuses'));
+        $statuses = ['' => ''] + Constant::where('category', 'Status')->orderBy('name', 'asc')->pluck('name', 'id')->all();
+        return view('role_accesses.create', compact('statuses'));
     }
 
     /**
@@ -100,14 +98,14 @@ class RoleAccessController extends AppBaseController
             return redirect(route('roleAccesses.index'));
         }
 
-        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
-        return view('role_accesses.edit',compact('roleAccess','statuses'));
+        $statuses = ['' => ''] + Constant::where('category', 'Status')->orderBy('name', 'asc')->pluck('name', 'id')->all();
+        return view('role_accesses.edit', compact('roleAccess', 'statuses'));
     }
 
     /**
      * Update the specified RoleAccess in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateRoleAccessRequest $request
      *
      * @return Response

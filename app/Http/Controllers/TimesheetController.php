@@ -2,23 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\ModerationTimesheetDataTable;
-use App\DataTables\TimesheetDetailDataTable;
 use App\DataTables\TimesheetDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateTimesheetRequest;
 use App\Http\Requests\UpdateTimesheetRequest;
-use App\Models\Timesheet;
-use App\Models\TimesheetDetail;
 use App\Models\User;
-use App\Models\Project;
-use App\Models\UserLeave;
-use App\Repositories\TimesheetRepository;
 use App\Repositories\TimesheetDetailRepository;
-use Flash;
-use App\Http\Controllers\AppBaseController;
-use Response;
+use App\Repositories\TimesheetRepository;
 use Auth;
+use Flash;
+use Response;
 
 class TimesheetController extends AppBaseController
 {
@@ -52,8 +44,8 @@ class TimesheetController extends AppBaseController
     public function create()
     {
         $timesheetDetails = $this->timesheetDetailRepository->all();
-        $users = [''=>''] +User::pluck('name', 'id')->all();
-        return view('timesheets.create',compact('timesheetDetails', users));
+        $users = ['' => ''] + User::pluck('name', 'id')->all();
+        return view('timesheets.create', compact('timesheetDetails', users));
     }
 
     /**
@@ -110,15 +102,15 @@ class TimesheetController extends AppBaseController
 
             return redirect(route('timesheets.index'));
         }
-        $users = [''=>''] +User::pluck('name', 'id')->all();
-        $timesheetDetails = $this->timesheetDetailRepository->whereIn('timesheet_id',$id);
-        return view('timesheets.edit',compact('$timesheet','users', 'timesheetDetails'));
+        $users = ['' => ''] + User::pluck('name', 'id')->all();
+        $timesheetDetails = $this->timesheetDetailRepository->whereIn('timesheet_id', $id);
+        return view('timesheets.edit', compact('$timesheet', 'users', 'timesheetDetails'));
     }
 
     /**
      * Update the specified Timesheet in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateTimesheetRequest $request
      *
      * @return Response

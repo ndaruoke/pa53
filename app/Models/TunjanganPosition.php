@@ -72,12 +72,20 @@ class TunjanganPosition extends Model
 
     use Auditable;
 
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'tunjangan_id' => 'required',
+        'position_id' => 'required',
+        'lokal' => 'required',
+        'non_lokal' => 'required',
+        'luar_jawa' => 'required',
+        'internasional' => 'required'
+    ];
     public $table = 'tunjangan_positions';
-    
-
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
         'tunjangan_id',
         'position_id',
@@ -86,7 +94,7 @@ class TunjanganPosition extends Model
         'luar_jawa',
         'internasional'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -101,29 +109,15 @@ class TunjanganPosition extends Model
         'internasional' => 'double'
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'tunjangan_id' => 'required',
-        'position_id' => 'required',
-        'lokal' => 'required',
-        'non_lokal' => 'required',
-        'luar_jawa' => 'required',
-        'internasional' => 'required'
-    ];
-
     public function positions()
     {
-        return $this->hasOne('App\Models\Position', 'id','position_id');
+        return $this->hasOne('App\Models\Position', 'id', 'position_id');
     }
 
 
     public function tunjangans()
     {
-        return $this->hasOne('App\Models\Tunjangan', 'id','tunjangan_id');
+        return $this->hasOne('App\Models\Tunjangan', 'id', 'tunjangan_id');
     }
 
 }

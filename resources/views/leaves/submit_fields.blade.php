@@ -12,16 +12,16 @@
 
 <!-- Type Field -->
 <div class="form-group col-sm-6">
-{!! Form::label('type', 'Type:') !!}
+    {!! Form::label('type', 'Type:') !!}
     {!! Form::select('type', $types, null, ['class' => 'form-control select2']) !!}
 </div>
 
 @if( ! empty($projects))
-<!-- Project Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('project', 'Project:') !!}
-    {!! Form::select('project', $projects, null, ['class' => 'form-control select2']) !!}
-</div>
+    <!-- Project Field -->
+    <div class="form-group col-sm-6">
+        {!! Form::label('project', 'Project:') !!}
+        {!! Form::select('project', $projects, null, ['class' => 'form-control select2']) !!}
+    </div>
 @endif
 
 <!-- Note Field -->

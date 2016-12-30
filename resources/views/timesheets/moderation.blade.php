@@ -51,21 +51,21 @@
         <div class="box box-primary">
 
 
-    <form id="search-form">
+            <form id="search-form">
 
-        <div class="box-body">
-              <div class="input-group input-group-sm">
+                <div class="box-body">
+                    <div class="input-group input-group-sm">
                 <span class="input-group-btn">
                     <button type="reset" class="btn" disabled="disabled">Timesheet</button>
                 </span>
-                {!! Form::select('approvalStatus', $approvalStatus, $status, ['class' => 'form-control select2']) !!}
-                <span class="input-group-btn">
+                        {!! Form::select('approvalStatus', $approvalStatus, $status, ['class' => 'form-control select2']) !!}
+                        <span class="input-group-btn">
                     <button type="submit" class="btn btn-info btn-flat">Tampilkan</button>
                 </span>
-              </div>
-            </div>
-          
-        </form>
+                    </div>
+                </div>
+
+            </form>
 
 
             <div class="box-body">
@@ -77,7 +77,7 @@
 
 @section('scripts')
     <script type="text/javascript">
-        jQuery(document).ready(function($) {
+        jQuery(document).ready(function ($) {
 
             //$('.approvalstatus option[value=val2]').attr('selected','selected');
         });

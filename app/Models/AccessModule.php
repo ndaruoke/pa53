@@ -52,18 +52,23 @@ class AccessModule extends Model
 
     use Auditable;
 
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'name' => 'required',
+        'description' => 'required',
+        'status' => 'required'
+    ];
     public $table = 'access_modules';
-    
-
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
         'name',
         'description',
         'status'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -75,16 +80,5 @@ class AccessModule extends Model
         'status' => 'integer'
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'name' => 'required',
-        'description' => 'required',
-        'status' => 'required'
-    ];
 
-    
 }

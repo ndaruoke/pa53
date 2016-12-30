@@ -23,19 +23,19 @@
 </div>
 
 @if( ! empty($approvalHistory->timesheets))
-<!-- Timesheet Id Field -->
-<div class="form-group">
-    {!! Form::label('transaction_id', 'Timesheet:') !!}
-    <p>{!! $approvalHistory->timesheets->periode !!}</p>
-</div>
+    <!-- Timesheet Id Field -->
+    <div class="form-group">
+        {!! Form::label('transaction_id', 'Timesheet:') !!}
+        <p>{!! $approvalHistory->timesheets->periode !!}</p>
+    </div>
 @endif
 
 @if( ! empty($approvalHistory->leaves))
-<!-- Timesheet Id Field -->
-<div class="form-group">
-    {!! Form::label('transaction_id', 'Leave:') !!}
-    <p>{!! $approvalHistory->leaves->name !!}</p>
-</div>
+    <!-- Timesheet Id Field -->
+    <div class="form-group">
+        {!! Form::label('transaction_id', 'Leave:') !!}
+        <p>{!! $approvalHistory->leaves->name !!}</p>
+    </div>
 @endif
 
 <!-- Approval Status Field -->

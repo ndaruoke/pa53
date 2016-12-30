@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\AccessModule;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateAccessModuleRequest extends FormRequest
 {

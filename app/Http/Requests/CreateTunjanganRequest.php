@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Tunjangan;
+use Illuminate\Foundation\Http\FormRequest;
 
 class CreateTunjanganRequest extends FormRequest
 {

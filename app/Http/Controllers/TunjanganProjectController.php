@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\TunjanganProjectDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateTunjanganProjectRequest;
 use App\Http\Requests\UpdateTunjanganProjectRequest;
+use App\Models\Project;
 use App\Repositories\TunjanganProjectRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
-use App\Models\Project;
 
 class TunjanganProjectController extends AppBaseController
 {
@@ -41,8 +39,8 @@ class TunjanganProjectController extends AppBaseController
      */
     public function create()
     {
-        $projects = [''=>''] +Project::pluck('name', 'id')->all();
-        return view('tunjangan_projects.create',compact('projects'));
+        $projects = ['' => ''] + Project::pluck('name', 'id')->all();
+        return view('tunjangan_projects.create', compact('projects'));
     }
 
     /**
@@ -100,14 +98,14 @@ class TunjanganProjectController extends AppBaseController
             return redirect(route('tunjanganProjects.index'));
         }
 
-        $projects = [''=>''] +Project::pluck('name', 'id')->all();
-        return view('tunjangan_projects.edit',compact('tunjanganProject','projects'));
+        $projects = ['' => ''] + Project::pluck('name', 'id')->all();
+        return view('tunjangan_projects.edit', compact('tunjanganProject', 'projects'));
     }
 
     /**
      * Update the specified TunjanganProject in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateTunjanganProjectRequest $request
      *
      * @return Response

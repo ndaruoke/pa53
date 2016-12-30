@@ -14,7 +14,7 @@
                 <div class="row">
                     {!! Form::open(['route' => 'accessModules.store']) !!}
 
-                        @include('access_modules.fields')
+                    @include('access_modules.fields')
 
                     {!! Form::close() !!}
                 </div>

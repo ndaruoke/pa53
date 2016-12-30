@@ -73,12 +73,15 @@ class Audit extends Model
 {
     use SoftDeletes;
 
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+
+    ];
     public $table = 'audits';
-    
-
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
         'type',
         'auditable_id',
@@ -89,7 +92,7 @@ class Audit extends Model
         'route',
         'ip_address'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -107,19 +110,10 @@ class Audit extends Model
         'ip_address' => 'string'
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        
-    ];
-
     public function user()
     {
-        return $this->hasOne('App\Models\User', 'id','user_id');
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
 
-    
+
 }

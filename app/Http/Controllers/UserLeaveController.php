@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\UserLeaveDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateUserLeaveRequest;
 use App\Http\Requests\UpdateUserLeaveRequest;
 use App\Models\Constant;
+use App\Models\User;
 use App\Repositories\UserLeaveRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
-use App\Models\User;
 
 class UserLeaveController extends AppBaseController
 {
@@ -42,9 +40,9 @@ class UserLeaveController extends AppBaseController
      */
     public function create()
     {
-        $users = [''=>''] +User::pluck('name', 'id')->all();
-        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
-        return view('user_leaves.create',compact('users','statuses'));
+        $users = ['' => ''] + User::pluck('name', 'id')->all();
+        $statuses = ['' => ''] + Constant::where('category', 'Status')->orderBy('name', 'asc')->pluck('name', 'id')->all();
+        return view('user_leaves.create', compact('users', 'statuses'));
     }
 
     /**
@@ -102,15 +100,15 @@ class UserLeaveController extends AppBaseController
             return redirect(route('userLeaves.index'));
         }
 
-        $users = [''=>''] +User::pluck('name', 'id')->all();
-        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
-        return view('user_leaves.edit',compact('userLeave','users','statuses'));
+        $users = ['' => ''] + User::pluck('name', 'id')->all();
+        $statuses = ['' => ''] + Constant::where('category', 'Status')->orderBy('name', 'asc')->pluck('name', 'id')->all();
+        return view('user_leaves.edit', compact('userLeave', 'users', 'statuses'));
     }
 
     /**
      * Update the specified UserLeave in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateUserLeaveRequest $request
      *
      * @return Response

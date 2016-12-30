@@ -3,20 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\UserDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Repositories\UserRepository;
-use Flash;
-use App\Http\Controllers\AppBaseController;
-use Response;
-use App\Models\User;
-use App\Models\Role;
 use App\Models\Department;
 use App\Models\Position;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Role;
+use App\Repositories\UserRepository;
 use Auth;
+use Flash;
+use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
+use Response;
 
 class UserController extends AppBaseController
 {
@@ -47,10 +44,10 @@ class UserController extends AppBaseController
      */
     public function create()
     {
-        $roles = [''=>''] +Role::pluck('name', 'id')->all();
-        $departments = [''=>''] +Department::pluck('name', 'id')->all();
-        $positions = [''=>''] +Position::pluck('name', 'id')->all();
-            return view('users.create',compact('roles','departments','positions'));
+        $roles = ['' => ''] + Role::pluck('name', 'id')->all();
+        $departments = ['' => ''] + Department::pluck('name', 'id')->all();
+        $positions = ['' => ''] + Position::pluck('name', 'id')->all();
+        return view('users.create', compact('roles', 'departments', 'positions'));
     }
 
     /**
@@ -65,7 +62,7 @@ class UserController extends AppBaseController
         if (!empty($request['password'])) {
             $request['password'] = bcrypt($request['password']);
         }
-        
+
         $input = $request->all();
 
         $user = $this->userRepository->create($input);
@@ -111,10 +108,10 @@ class UserController extends AppBaseController
 
             return redirect(route('users.index'));
         }
-        $roles = [''=>''] +Role::pluck('name', 'id')->all();
-        $departments = [''=>''] +Department::pluck('name', 'id')->all();
-        $positions = [''=>''] +Position::pluck('name', 'id')->all();
-        return view('users.edit',compact('user','roles','departments','positions'));
+        $roles = ['' => ''] + Role::pluck('name', 'id')->all();
+        $departments = ['' => ''] + Department::pluck('name', 'id')->all();
+        $positions = ['' => ''] + Position::pluck('name', 'id')->all();
+        return view('users.edit', compact('user', 'roles', 'departments', 'positions'));
         //return view('users.edit')->with('user', $user);
     }
 
@@ -135,14 +132,14 @@ class UserController extends AppBaseController
             return redirect(route('users.index'));
         }
 
-        return view('users.change_password',compact('user'));
+        return view('users.change_password', compact('user'));
         //return view('users.edit')->with('user', $user);
     }
 
     /**
      * Update the specified User in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateUserRequest $request
      *
      * @return Response
@@ -159,7 +156,7 @@ class UserController extends AppBaseController
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $filename  = time() . '.' . $image->getClientOriginalExtension();
+            $filename = time() . '.' . $image->getClientOriginalExtension();
 
             $path = public_path('profilepics/' . $filename);
 
@@ -169,14 +166,12 @@ class UserController extends AppBaseController
         }
 
         if (!empty($request['password'])) {
-            if(empty($request['confirm_password'])) 
-            {
+            if (empty($request['confirm_password'])) {
                 Flash::error('Confirm password must be filled');
                 return redirect()->back();
             }
 
-            if($request['confirm_password'] != $request['password']) 
-            {
+            if ($request['confirm_password'] != $request['password']) {
                 Flash::error('Password not same');
                 return redirect()->back();
             }
@@ -229,10 +224,10 @@ class UserController extends AppBaseController
 
             return redirect(route('users.index'));
         }
-        $roles = [''=>''] +Role::pluck('name', 'id')->all();
-        $departments = [''=>''] +Department::pluck('name', 'id')->all();
-        $positions = [''=>''] +Position::pluck('name', 'id')->all();
-        return view('users.profile',compact('user','roles','departments','positions'));
+        $roles = ['' => ''] + Role::pluck('name', 'id')->all();
+        $departments = ['' => ''] + Department::pluck('name', 'id')->all();
+        $positions = ['' => ''] + Position::pluck('name', 'id')->all();
+        return view('users.profile', compact('user', 'roles', 'departments', 'positions'));
     }
 
     /*
@@ -255,7 +250,7 @@ class UserController extends AppBaseController
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $filename  = time() . '.' . $image->getClientOriginalExtension();
+            $filename = time() . '.' . $image->getClientOriginalExtension();
 
             $path = public_path('profilepics/' . $filename);
 
@@ -265,14 +260,12 @@ class UserController extends AppBaseController
         }
 
         if (!empty($request['password'])) {
-            if(empty($request['confirm_password'])) 
-            {
+            if (empty($request['confirm_password'])) {
                 Flash::error('Confirm password must be filled');
                 return redirect()->back();
             }
 
-            if($request['confirm_password'] != $request['password']) 
-            {
+            if ($request['confirm_password'] != $request['password']) {
                 Flash::error('Password not same');
                 return redirect()->back();
             }

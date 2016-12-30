@@ -10,9 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.3/css/AdminLTE.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.3/css/skins/_all-skins.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css">
-
-    
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css">
 
 
     <!-- Ionicons -->
@@ -49,9 +48,10 @@
                                 @if(!empty(Auth::user()->image))
                                     {{ Html::image('profilepics/'.Auth::user()->image, 'User Image', array('class' => 'img-circle', 'width' => '20pc')) }}
                                 @else
-                                    <i class="img-circle icon ion-person" style="font-size: 15px; color: antiquewhite"></i>
+                                    <i class="img-circle icon ion-person"
+                                       style="font-size: 15px; color: antiquewhite"></i>
                             @endif
-                                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                            <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                 <span class="hidden-xs">{!! Auth::user()->name !!}</span>
                             </a>
                             <ul class="dropdown-menu">
@@ -60,7 +60,8 @@
                                     @if(!empty(Auth::user()->image))
                                         {{ Html::image('profilepics/'.Auth::user()->image, 'User Image', array('class' => 'img-circle')) }}
                                     @else
-                                        <i class="img-circle icon ion-person" style="font-size: 55px; color: antiquewhite"></i>
+                                        <i class="img-circle icon ion-person"
+                                           style="font-size: 55px; color: antiquewhite"></i>
                                     @endif
 
                                     <p>
@@ -71,14 +72,16 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="{{ route('users.profile') }}" class="btn btn-default btn-flat">Profile</a>
+                                        <a href="{{ route('users.profile') }}"
+                                           class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="{!! url('/logout') !!}" class="btn btn-default btn-flat"
-                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             Sign out
                                         </a>
-                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST"
+                                              style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </div>
@@ -91,15 +94,16 @@
         </header>
 
         <!-- Left side column. contains the logo and sidebar -->
-        @include('layouts.sidebar')
-        <!-- Content Wrapper. Contains page content -->
+    @include('layouts.sidebar')
+    <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             @yield('content')
         </div>
 
         <!-- Main Footer -->
         <footer class="main-footer" style="max-height: 100px;text-align: center">
-            <strong>Copyright © 2016-2017 <a href="http://www.metrasys.co.id/">PT Sigma Metrasys Solution </a>.</strong> All rights reserved.
+            <strong>Copyright © 2016-2017 <a href="http://www.metrasys.co.id/">PT Sigma Metrasys Solution </a>.</strong>
+            All rights reserved.
         </footer>
 
     </div>
@@ -148,41 +152,41 @@
             </div>
         </div>
     </div>
-    @endif
+@endif
 
-    <!-- jQuery 2.1.4 -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
+<!-- jQuery 2.1.4 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
 
-    <!-- AdminLTE App -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.3/js/app.min.js"></script>
+<!-- AdminLTE App -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.3/js/app.min.js"></script>
 
-    <!-- vanilla masker -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.1.0/vanilla-masker.min.js"></script>
+<!-- vanilla masker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.1.0/vanilla-masker.min.js"></script>
 
-    <!-- page script -->
-    <script>
-        $(function () {
-            //Initialize Select2 Elements
-            $(".select2").select2();
-        });
-
-        
-    </script>
-    @yield('scripts')
+<!-- page script -->
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $(".select2").select2();
+    });
 
 
-    <!-- date -->
-    <!-- polyfiller file to detect and load polyfills -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webshim/1.16.0/dev/polyfiller.js"></script>
-    <script>
-        webshims.setOptions('waitReady', false);
-        webshims.setOptions('forms-ext', {types: 'date'});
-        webshims.polyfill('forms forms-ext');
-    </script>
+</script>
+@yield('scripts')
 
-    
+
+<!-- date -->
+<!-- polyfiller file to detect and load polyfills -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webshim/1.16.0/dev/polyfiller.js"></script>
+<script>
+    webshims.setOptions('waitReady', false);
+    webshims.setOptions('forms-ext', {types: 'date'});
+    webshims.polyfill('forms forms-ext');
+</script>
+
+
 </body>
 </html>

@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\PositionDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreatePositionRequest;
 use App\Http\Requests\UpdatePositionRequest;
+use App\Models\Constant;
 use App\Repositories\PositionRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
-use App\Models\Constant;
 
 class PositionController extends AppBaseController
 {
@@ -41,8 +39,8 @@ class PositionController extends AppBaseController
      */
     public function create()
     {
-        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
-        return view('positions.create',compact('statuses'));
+        $statuses = ['' => ''] + Constant::where('category', 'Status')->orderBy('name', 'asc')->pluck('name', 'id')->all();
+        return view('positions.create', compact('statuses'));
     }
 
     /**
@@ -100,14 +98,14 @@ class PositionController extends AppBaseController
             return redirect(route('positions.index'));
         }
 
-        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
-        return view('positions.edit',compact('position','statuses'));
+        $statuses = ['' => ''] + Constant::where('category', 'Status')->orderBy('name', 'asc')->pluck('name', 'id')->all();
+        return view('positions.edit', compact('position', 'statuses'));
     }
 
     /**
      * Update the specified Position in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdatePositionRequest $request
      *
      * @return Response

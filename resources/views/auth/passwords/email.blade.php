@@ -29,54 +29,55 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-<style>
-    .login-page, .register-page {
-    background: url("{{ URL::asset('image/bg.jpg') }}") no-repeat center center fixed;
-    background-size: cover;
-}
-</style>
+    <style>
+        .login-page, .register-page {
+            background: url("{{ URL::asset('image/bg.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
 </head>
 <body class="hold-transition login-page">
-<div class="login-box style="opacity:0.75;">
-    <div class="login-logo">
-        <a href="{{ url('/home') }}"><b>PA Online </b>Metrasys</a>
-    </div>
+<div class="login-box style=" opacity:0.75;
+">
+<div class="login-logo">
+    <a href="{{ url('/home') }}"><b>PA Online </b>Metrasys</a>
+</div>
 
-    <!-- /.login-logo -->
-    <div class="login-box-body">
-        <p class="login-box-msg">Enter Email to reset password</p>
+<!-- /.login-logo -->
+<div class="login-box-body">
+    <p class="login-box-msg">Enter Email to reset password</p>
 
-        @if (session('status'))
-            <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-        @endif
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
 
-        <form method="post" action="{{ url('/password/email') }}">
-            {!! csrf_field() !!}
+    <form method="post" action="{{ url('/password/email') }}">
+        {!! csrf_field() !!}
 
-            <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
-                <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                @if ($errors->has('email'))
-                    <span class="help-block">
+        <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
+            <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Email">
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            @if ($errors->has('email'))
+                <span class="help-block">
                     <strong>{{ $errors->first('email') }}</strong>
                 </span>
-                @endif
+            @endif
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary pull-right">
+                    <i class="fa fa-btn fa-envelope"></i> Send Password Reset Link
+                </button>
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary pull-right">
-                        <i class="fa fa-btn fa-envelope"></i> Send Password Reset Link
-                    </button>
-                </div>
-            </div>
+    </form>
 
-        </form>
-
-    </div>
-    <!-- /.login-box-body -->
+</div>
+<!-- /.login-box-body -->
 </div>
 <!-- /.login-box -->
 

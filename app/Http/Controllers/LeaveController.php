@@ -2,32 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\DataTables\LeaveDataTable;
-use App\DataTables\SubmitLeaveDataTable;
 use App\DataTables\ModerationLeaveDataTable;
-use App\Http\Requests;
+use App\DataTables\SubmitLeaveDataTable;
 use App\Http\Requests\CreateLeaveRequest;
 use App\Http\Requests\UpdateLeaveRequest;
-use App\Repositories\LeaveRepository;
-use App\Repositories\UserLeaveRepository;
-use App\Repositories\ApprovalHistoryRepository;
-use Flash;
-use App\Http\Controllers\AppBaseController;
-use Response;
-use App\Models\User;
-use App\Models\Leave;
-use App\Models\UserLeave;
+use App\Mail\LeaveNotification;
+use App\Mail\LeaveSubmission;
 use App\Models\Constant;
+use App\Models\Leave;
 use App\Models\Project;
 use App\Models\ProjectMember;
-
+use App\Models\User;
+use App\Models\UserLeave;
+use App\Repositories\ApprovalHistoryRepository;
+use App\Repositories\LeaveRepository;
+use App\Repositories\UserLeaveRepository;
+use Auth;
 use Carbon\Carbon;
-use App\Mail\LeaveSubmission;
-use App\Mail\LeaveNotification;
+use Flash;
 use Illuminate\Support\Facades\Mail;
-
 use Log;
+use Response;
 
 class LeaveController extends AppBaseController
 {
@@ -65,10 +61,10 @@ class LeaveController extends AppBaseController
      */
     public function create()
     {
-        $users = [''=>''] +User::whereIn('position',[1,2,3])  //Presdir,Director,VP
-					->pluck('name', 'id')->all();
-        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
-        return view('leaves.create',compact('users','statuses'));
+        $users = ['' => ''] + User::whereIn('position', [1, 2, 3])//Presdir,Director,VP
+            ->pluck('name', 'id')->all();
+        $statuses = ['' => ''] + Constant::where('category', 'Status')->orderBy('name', 'asc')->pluck('name', 'id')->all();
+        return view('leaves.create', compact('users', 'statuses'));
     }
 
     /**
@@ -130,16 +126,16 @@ class LeaveController extends AppBaseController
 
             return redirect(route('leaves.index'));
         }
-        $users = [''=>''] +User::pluck('name', 'id')->all();
-        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
-        return view('leaves.edit',compact('leave','users','statuses'));
+        $users = ['' => ''] + User::pluck('name', 'id')->all();
+        $statuses = ['' => ''] + Constant::where('category', 'Status')->orderBy('name', 'asc')->pluck('name', 'id')->all();
+        return view('leaves.edit', compact('leave', 'users', 'statuses'));
         //return view('leaves.edit')->with('leave', $leave);
     }
 
     /**
      * Update the specified Leave in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateLeaveRequest $request
      *
      * @return Response
@@ -199,8 +195,8 @@ class LeaveController extends AppBaseController
     public function submission(SubmitLeaveDataTable $submitLeaveDataTable)
     {
         $user = Auth::user();
-        $userLeave = UserLeave::where('user_id',$user->id)->first();
-        return $submitLeaveDataTable->render('leaves.submit', array('userLeave'=>$userLeave));
+        $userLeave = UserLeave::where('user_id', $user->id)->first();
+        return $submitLeaveDataTable->render('leaves.submit', array('userLeave' => $userLeave));
     }
 
     /**
@@ -210,21 +206,36 @@ class LeaveController extends AppBaseController
      */
     public function submissionCreate()
     {
-        $users = [''=>''] +User::pluck('name', 'id')->all();
-        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'value')->all();
-        $types = [''=>''] +Constant::where('category','Cuti')->orderBy('name','asc')->pluck('name', 'value')->all();
-		$projects = $this->getProject();
+        $users = ['' => ''] + User::pluck('name', 'id')->all();
+        $statuses = ['' => ''] + Constant::where('category', 'Status')->orderBy('name', 'asc')->pluck('name', 'value')->all();
+        $types = ['' => ''] + Constant::where('category', 'Cuti')->orderBy('name', 'asc')->pluck('name', 'value')->all();
+        $projects = $this->getProject();
 
-		if($projects!=null){
-			$projects = [''=>''] +$projects->pluck('project_name', 'id')->all();
-			return view('leaves.submit_create',compact('users','statuses','types','projects'));
-		}
-		else 
-		{
-			return view('leaves.submit_create',compact('users','statuses','types'));
-		}
-        
+        if ($projects != null) {
+            $projects = ['' => ''] + $projects->pluck('project_name', 'id')->all();
+            return view('leaves.submit_create', compact('users', 'statuses', 'types', 'projects'));
+        } else {
+            return view('leaves.submit_create', compact('users', 'statuses', 'types'));
+        }
+
     }
+
+    public function getProject()
+    {
+        $user = Auth::user();
+
+        $projectMember = ProjectMember::where('user_id', $user->id)->where('deleted_at', null)->get();
+
+        if (count($projectMember)) {
+            $project = Project::whereIn('id', $projectMember->pluck('id')->where('deleted_at', null))->get();
+            return $project;
+        } else {
+            return null;
+        }
+
+    }
+
+    //TODO make flexible in table
 
     /**
      * Store a newly created Leave in storage.
@@ -242,7 +253,7 @@ class LeaveController extends AppBaseController
 
         $user = Auth::user();
         $approver = $this->getApprover($request);
-        
+
         if (empty($approver)) {
             Flash::error('Approver not found');
 
@@ -251,7 +262,7 @@ class LeaveController extends AppBaseController
 
         $request->merge(array('status' => 1));
         $request->merge(array('user_id' => $user->id));
-         
+
         $request->merge(array('approval_id' => $approver->id));
 
         $input = $request->all();
@@ -265,89 +276,122 @@ class LeaveController extends AppBaseController
         $endDate = new Carbon($request->end_date);
         $dayCount = $endDate->diff($startDate)->days;
 
-        $userLeave = UserLeave::where('user_id','=',$user->id)->get()->first();
+        $userLeave = UserLeave::where('user_id', '=', $user->id)->get()->first();
 
-        $userLeave->leave_used += $dayCount+1;
+        $userLeave->leave_used += $dayCount + 1;
         $input = $userLeave->toArray();
 
         $userLeave = $this->userLeaveRepository->update($input, $userLeave->id);
-		
+
         $cc = $this->getCC($request);
 
-		//send email
-		Mail::to($approver->email)
-                ->cc($cc)
-                ->queue(new LeaveSubmission($request->all(), $approver));
+        //send email
+        Mail::to($approver->email)
+            ->cc($cc)
+            ->queue(new LeaveSubmission($request->all(), $approver));
 
         Flash::success('Leave saved successfully.');
 
         return redirect(route('leaves.submission'));
     }
-	
-    //TODO make flexible in table
-	private function getApprover(CreateLeaveRequest $request)
-	{
-		$user = Auth::user();
-		
-		$consultantPosition = [6,7,8,9,16];
-        $managingConsultantPosition = [4,5];
-        $bod = [1,2,3];
 
-		if($request->project != null) // consultant to PM
-		{
-			$project = Project::where('id', $request->project)->get();
-            $approver = User::where('id',$project->first()->pm_user_id)
+    private function getApprover(CreateLeaveRequest $request)
+    {
+        $user = Auth::user();
+
+        $consultantPosition = [6, 7, 8, 9, 16];
+        $managingConsultantPosition = [4, 5];
+        $bod = [1, 2, 3];
+
+        if ($request->project != null) // consultant to PM
+        {
+            $project = Project::where('id', $request->project)->get();
+            $approver = User::where('id', $project->first()->pm_user_id)
                 ->get();
-			return $approver->first();
-		}
-        if(in_array($user->position, $consultantPosition)) // PM to Managing Consultant
+            return $approver->first();
+        }
+        if (in_array($user->position, $consultantPosition)) // PM to Managing Consultant
         {
-            $approver = User::whereIn('position',$managingConsultantPosition)
-                ->where('department',$user->department)->get();
+            $approver = User::whereIn('position', $managingConsultantPosition)
+                ->where('department', $user->department)->get();
             return $approver->first();
         }
 
-		if(in_array($user->position, $managingConsultantPosition)) // Managing Consultant to Vice President
+        if (in_array($user->position, $managingConsultantPosition)) // Managing Consultant to Vice President
         {
-            $approver = User::where('position',3)
-                ->where('department',$user->department)->get();
+            $approver = User::where('position', 3)
+                ->where('department', $user->department)->get();
             return $approver->first();
         }
 
-        if(in_array($user->position, $bod)) // VP, Director auto approve admin
+        if (in_array($user->position, $bod)) // VP, Director auto approve admin
         {
             return $user;
+        } else {
+            return $user->id;
+        }
+    }
+
+    private function createFromLeave(Leave $leave)
+    {
+        return array(
+            'date' => Carbon::now(),
+            'note' => $leave->note,
+            'sequence_id' => 0,
+            'transaction_id' => $leave->id,
+            'transaction_type' => 0, //leave
+            'approval_status' => $leave->approval_status,
+            'user_id' => $leave->user_id,
+            'approval_id' => $leave->approval_id
+        );
+    }
+
+    private function getCC(CreateLeaveRequest $request)
+    {
+        $user = Auth::user();
+
+        $consultantPosition = [6, 7, 8, 9, 16];
+        $managingConsultantPosition = [4, 5];
+        $bod = [1, 2, 3];;
+
+        if ($request->project != null) // Consultant to MC + HRD
+        {
+            $cc = User::whereIn('position', $managingConsultantPosition)
+                ->where('department', $user->department)->get();
+            return $cc->pluck('email')->all()->first();
+        }
+        if (in_array($user->position, $consultantPosition)) // PM to VP+HRD
+        {
+            $cc = User::where('position', 3)
+                ->where('department', $user->department)->get();
+            return $cc->pluck('email')->all()->first();
         }
 
-		else
-		{
-			return $user->id;
-		}
-	}
+        if (in_array($user->position, $managingConsultantPosition)) // Managing Consultant to Vice President
+        {
+            return $this->getHRD();
+        }
 
-    
+        if (in_array($user->position, $bod)) // VP, Director auto approve admin
+        {
+            return $this->getHRD();
+        } else {
+            return $this->getHRD();
+        }
+    }
 
-	public function getProject()
-	{
-		$user = Auth::user();
-				
-		$projectMember = ProjectMember::where('user_id', $user->id)->where('deleted_at', null)->get();
+    private function getHRD()
+    {
+        $hrd = [17];
 
-		if (count($projectMember)) {
-			$project = Project::whereIn('id', $projectMember->pluck('id')->where('deleted_at', null))->get();
-			return $project;
-		}
-		else 
-		{
-			return null;
-		}
-		
-	}
+        $cc = User::whereIn('position', $hrd)->get();
+        return $cc->pluck('email')->all();
+    }
 
     /**
      * Update the specified Leave in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateLeaveRequest $request
      *
      * @return Response
@@ -394,7 +438,7 @@ class LeaveController extends AppBaseController
 
     }
 
-        /**
+    /**
      * Display a listing of the Leave.
      *
      * @param LeaveDataTable $leaveDataTable
@@ -403,11 +447,11 @@ class LeaveController extends AppBaseController
     public function moderation(ModerationLeaveDataTable $moderationLeaveDataTable)
     {
         $user = Auth::user();
-        $userLeave = UserLeave::where('user_id',$user->id)->first();
-        return $moderationLeaveDataTable->render('leaves.moderation', array('userLeave'=>$userLeave));
+        $userLeave = UserLeave::where('user_id', $user->id)->first();
+        return $moderationLeaveDataTable->render('leaves.moderation', array('userLeave' => $userLeave));
     }
 
-        /**
+    /**
      * Display the specified Leave.
      *
      * @param  int $id
@@ -428,7 +472,7 @@ class LeaveController extends AppBaseController
 
     }
 
-            /**
+    /**
      * Display the specified Leave.
      *
      * @param  int $id
@@ -445,8 +489,8 @@ class LeaveController extends AppBaseController
             return redirect(route('leaves.moderation'));
         }
 
-        if($leave->approval_status == 1 || $leave->approval_status == 2) {//approved or rejected
-            Flash::error('Data '.$leave->note.' has been approved or rejected');
+        if ($leave->approval_status == 1 || $leave->approval_status == 2) {//approved or rejected
+            Flash::error('Data ' . $leave->note . ' has been approved or rejected');
 
             return redirect(route('leaves.moderation'));
         }
@@ -474,21 +518,19 @@ class LeaveController extends AppBaseController
         }
 
         $leave = $this->leaveRepository->findWithoutFail($id);
-        $cc = $this->getHRD(); 
-        $approver = User::where('id',$leave->approval_id)->get()->first();
-        $user = User::where('id',$leave->user_id)->get()->first();
+        $cc = $this->getHRD();
+        $approver = User::where('id', $leave->approval_id)->get()->first();
+        $user = User::where('id', $leave->user_id)->get()->first();
 
         //send email
-		Mail::to($user->email)
-                ->cc($cc)
-                ->queue(new LeaveNotification($leave, $approver, $user, 'approved'));
+        Mail::to($user->email)
+            ->cc($cc)
+            ->queue(new LeaveNotification($leave, $approver, $user, 'approved'));
 
         Flash::success('Approve successfully.');
 
         return redirect(route('leaves.moderation'));
     }
-
-
 
     /**
      * Reject Leave in storage.
@@ -505,7 +547,7 @@ class LeaveController extends AppBaseController
 
             return redirect(route('leaves.moderation'));
         }
-        $userLeave = $this->userLeaveRepository->findByField('user_id',$leave->user_id)->first();
+        $userLeave = $this->userLeaveRepository->findByField('user_id', $leave->user_id)->first();
         if (empty($userLeave)) {
             Flash::error('User Leave not found');
 
@@ -515,8 +557,8 @@ class LeaveController extends AppBaseController
         $endDate = new Carbon($leave->end_date);
         $startDate = new Carbon($leave->start_date);
         $dayCount = $endDate->diff($startDate)->days;
-        $userLeave->leave_used = $userLeave->leave_used-$dayCount;
-        
+        $userLeave->leave_used = $userLeave->leave_used - $dayCount;
+
         $userLeave->save();
 
         $leave = Leave::reject($id);
@@ -528,73 +570,14 @@ class LeaveController extends AppBaseController
         }
 
         $leave = $this->leaveRepository->findWithoutFail($id);
-        $approver = User::where('id',$leave->approval_id)->get()->first();
-        $user = User::where('id',$leave->user_id)->get()->first();
+        $approver = User::where('id', $leave->approval_id)->get()->first();
+        $user = User::where('id', $leave->user_id)->get()->first();
         //send email
-		Mail::to($user->email)
-                ->queue(new LeaveNotification($leave, $approver, $user, 'rejected'));
+        Mail::to($user->email)
+            ->queue(new LeaveNotification($leave, $approver, $user, 'rejected'));
 
         Flash::success('Reject successfully.');
 
         return redirect(route('leaves.moderation'));
-    }
-
-    private function getCC(CreateLeaveRequest $request)
-	{
-		$user = Auth::user();
-		
-		$consultantPosition = [6,7,8,9,16];
-        $managingConsultantPosition = [4,5];
-        $bod = [1,2,3];;
-
-		if($request->project != null) // Consultant to MC + HRD
-		{
-			$cc = User::whereIn('position',$managingConsultantPosition)
-                ->where('department',$user->department)->get();
-			return $cc->pluck('email')->all()->first();
-		}
-        if(in_array($user->position, $consultantPosition)) // PM to VP+HRD
-        {
-            $cc = User::where('position',3)
-                ->where('department',$user->department)->get();
-            return $cc->pluck('email')->all()->first();
-        }
-
-		if(in_array($user->position, $managingConsultantPosition)) // Managing Consultant to Vice President
-        {
-            return $this->getHRD();
-        }
-
-        if(in_array($user->position, $bod)) // VP, Director auto approve admin
-        {
-            return $this->getHRD();
-        }
-
-		else
-		{
-			return $this->getHRD();
-        }
-    }
-
-    private function getHRD()
-	{
-        $hrd = [17];
-
-        $cc = User::whereIn('position',$hrd)->get();
-        return $cc->pluck('email')->all(); 
-    }
-
-    private function createFromLeave(Leave $leave)
-    {
-        return array(
-                    'date' => Carbon::now(),
-                    'note' => $leave->note,
-                    'sequence_id' => 0,
-                    'transaction_id' => $leave->id,
-                    'transaction_type' => 0, //leave
-                    'approval_status' => $leave->approval_status,
-                    'user_id' => $leave->user_id,
-                    'approval_id' => $leave->approval_id
-                 );
     }
 }

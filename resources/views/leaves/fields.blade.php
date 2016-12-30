@@ -25,9 +25,9 @@
 
 <!-- Approval Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('approval_id', 'Approver:') !!}
-    {!! Form::select('approval_id', $users, null, ['class' => 'form-control select2']) !!}
-    <!-- {!! Form::text('approval_id', null, ['class' => 'form-control']) !!} -->
+{!! Form::label('approval_id', 'Approver:') !!}
+{!! Form::select('approval_id', $users, null, ['class' => 'form-control select2']) !!}
+<!-- {!! Form::text('approval_id', null, ['class' => 'form-control']) !!} -->
 </div>
 
 <!-- Status Field -->

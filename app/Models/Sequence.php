@@ -54,19 +54,24 @@ class Sequence extends Model
 
     use Auditable;
 
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'level' => 'required',
+        'role_id' => 'required',
+        'user_id' => 'required'
+    ];
     public $table = 'sequences';
-    
-
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
         'level',
         'date',
         'role_id',
         'user_id'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -80,34 +85,23 @@ class Sequence extends Model
         'transaction_type' => 'integer'
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'level' => 'required',
-        'role_id' => 'required',
-        'user_id' => 'required'
-    ];
-
     public function roles()
     {
-        return $this->hasOne('App\Models\Roles', 'id','role_id');
+        return $this->hasOne('App\Models\Roles', 'id', 'role_id');
     }
 
     public function users()
     {
-        return $this->hasOne('App\Models\Users', 'id','user_id');
+        return $this->hasOne('App\Models\Users', 'id', 'user_id');
     }
 
     public function userPositions()
     {
-        return $this->hasOne('App\Models\Position', 'id','position_id');
+        return $this->hasOne('App\Models\Position', 'id', 'position_id');
     }
 
     public function transactiontypes()
     {
-        return $this->hasOne('App\Models\Constant', 'value','transaction_type')->where('category', '=','TransactionType');
+        return $this->hasOne('App\Models\Constant', 'value', 'transaction_type')->where('category', '=', 'TransactionType');
     }
 }

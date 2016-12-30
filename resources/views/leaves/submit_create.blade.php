@@ -14,7 +14,7 @@
                 <div class="row">
                     {!! Form::open(['route' => 'leaves.submission.store']) !!}
 
-                        @include('leaves.submit_fields')
+                    @include('leaves.submit_fields')
 
                     {!! Form::close() !!}
                 </div>

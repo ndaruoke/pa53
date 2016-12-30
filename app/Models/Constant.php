@@ -57,30 +57,6 @@ class Constant extends Model
 
     use Auditable;
 
-    public $table = 'constants';
-    
-    protected $dates = ['deleted_at'];
-
-
-    public $fillable = [
-        'name',
-        'category',
-        'status',
-        'value'
-    ];
-
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'name' => 'string',
-        'category' => 'string',
-        'status' => 'integer',
-        'value' => 'string'
-    ];
-
     /**
      * Validation rules
      *
@@ -91,6 +67,25 @@ class Constant extends Model
         'category' => 'required',
         'status' => 'required',
         'value' => 'required'
+    ];
+    public $table = 'constants';
+    public $fillable = [
+        'name',
+        'category',
+        'status',
+        'value'
+    ];
+    protected $dates = ['deleted_at'];
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'name' => 'string',
+        'category' => 'string',
+        'status' => 'integer',
+        'value' => 'string'
     ];
 
     public function leave()

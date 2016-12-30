@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\RoleDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
+use App\Models\Constant;
 use App\Repositories\RoleRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
-use App\Models\Constant;
 
 class RoleController extends AppBaseController
 {
@@ -41,8 +39,8 @@ class RoleController extends AppBaseController
      */
     public function create()
     {
-        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
-        return view('roles.create',compact('statuses'));
+        $statuses = ['' => ''] + Constant::where('category', 'Status')->orderBy('name', 'asc')->pluck('name', 'id')->all();
+        return view('roles.create', compact('statuses'));
     }
 
     /**
@@ -100,14 +98,14 @@ class RoleController extends AppBaseController
             return redirect(route('roles.index'));
         }
 
-        $statuses = [''=>''] +Constant::where('category','Status')->orderBy('name','asc')->pluck('name', 'id')->all();
-        return view('roles.edit',compact('role','statuses'));
+        $statuses = ['' => ''] + Constant::where('category', 'Status')->orderBy('name', 'asc')->pluck('name', 'id')->all();
+        return view('roles.edit', compact('role', 'statuses'));
     }
 
     /**
      * Update the specified Role in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateRoleRequest $request
      *
      * @return Response

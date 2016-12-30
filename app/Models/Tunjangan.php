@@ -41,16 +41,19 @@ class Tunjangan extends Model
 
     use Auditable;
 
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'name' => 'required'
+    ];
     public $table = 'tunjangans';
-    
-
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
         'name'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -60,19 +63,10 @@ class Tunjangan extends Model
         'name' => 'string'
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'name' => 'required'
-    ];
-
     public function tunjanganPosition()
     {
         return $this->belongsTo('App\Models\TunjanganPosition');
     }
 
-    
+
 }

@@ -18,21 +18,21 @@
                         <li>
                             {!! Form::open(['route' => ['leaves.moderation.approve', $leave->id], 'method' => 'get']) !!}
 
-                                {!! Form::button('Approve', [
-                                    'type' => 'submit',
-                                    'class' => 'btn btn-success',
-                                    'onclick' => "return confirm('Are you sure to approve?')"
-                                ]) !!}
+                            {!! Form::button('Approve', [
+                                'type' => 'submit',
+                                'class' => 'btn btn-success',
+                                'onclick' => "return confirm('Are you sure to approve?')"
+                            ]) !!}
                             {!! Form::close() !!}
                         </li>
                         <li>
                             {!! Form::open(['route' => ['leaves.moderation.reject', $leave->id], 'method' => 'get']) !!}
 
-                                {!! Form::button('Reject', [
-                                    'type' => 'submit',
-                                    'class' => 'btn btn-warning',
-                                    'onclick' => "return confirm('Are you sure to reject?')"
-                                ]) !!}
+                            {!! Form::button('Reject', [
+                                'type' => 'submit',
+                                'class' => 'btn btn-warning',
+                                'onclick' => "return confirm('Are you sure to reject?')"
+                            ]) !!}
                             {!! Form::close() !!}
                         </li>
                     </ul>

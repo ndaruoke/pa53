@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\ConstantDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateConstantRequest;
 use App\Http\Requests\UpdateConstantRequest;
 use App\Repositories\ConstantRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
 
 class ConstantController extends AppBaseController
@@ -104,7 +102,7 @@ class ConstantController extends AppBaseController
     /**
      * Update the specified Constant in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateConstantRequest $request
      *
      * @return Response

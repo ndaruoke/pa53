@@ -75,12 +75,23 @@ class Project extends Model
 
     use Auditable;
 
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'project_name' => 'required',
+
+        //  'tunjangan_list' => 'required',
+        //	'department_id' => 'required',
+        //
+        'budget' => 'required',
+        'code' => 'required',
+        'claimable' => 'required',
+        'pm_user_id' => 'required'
+    ];
     public $table = 'projects';
-    
-
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
         'project_name',
         'tunjangan_list',
@@ -91,7 +102,7 @@ class Project extends Model
         'pm_user_id',
         'effort_type'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -108,31 +119,14 @@ class Project extends Model
         'effort_type' => 'decimal'
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'project_name' => 'required',
-		
-      //  'tunjangan_list' => 'required',
-	//	'department_id' => 'required',
-	//	
-        'budget' => 'required',
-        'code' => 'required',
-        'claimable' => 'required',
-         'pm_user_id' => 'required'
-    ];
-
     public function departments()
     {
-        return $this->hasOne('App\Models\Department', 'id','department_id');
+        return $this->hasOne('App\Models\Department', 'id', 'department_id');
     }
 
     public function users()
     {
-        return $this->hasOne('App\Models\User', 'id','pm_user_id');
+        return $this->hasOne('App\Models\User', 'id', 'pm_user_id');
     }
 
     public function tunjanganProject()
@@ -142,7 +136,7 @@ class Project extends Model
 
     public function efforttypes()
     {
-        return $this->hasOne('App\Models\Constant', 'value','effort_type')->where('category', '=','EffortType');
+        return $this->hasOne('App\Models\Constant', 'value', 'effort_type')->where('category', '=', 'EffortType');
     }
-    
+
 }

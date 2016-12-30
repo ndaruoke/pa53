@@ -46,27 +46,6 @@ class Department extends Model
 
     use Auditable;
 
-    public $table = 'departments';
-    
-
-    protected $dates = ['deleted_at'];
-
-
-    public $fillable = [
-        'name',
-        'note'
-    ];
-
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'name' => 'string',
-        'note' => 'string'
-    ];
-
     /**
      * Validation rules
      *
@@ -75,6 +54,21 @@ class Department extends Model
     public static $rules = [
         'name' => 'required',
         'note' => 'required'
+    ];
+    public $table = 'departments';
+    public $fillable = [
+        'name',
+        'note'
+    ];
+    protected $dates = ['deleted_at'];
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'name' => 'string',
+        'note' => 'string'
     ];
 
     public function user()

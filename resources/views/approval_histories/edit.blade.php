@@ -5,19 +5,19 @@
         <h1>
             Approval History
         </h1>
-   </section>
-   <div class="content">
-       @include('adminlte-templates::common.errors')
-       <div class="box box-primary">
-           <div class="box-body">
-               <div class="row">
-                   {!! Form::model($approvalHistory, ['route' => ['approvalHistories.update', $approvalHistory->id], 'method' => 'patch']) !!}
+    </section>
+    <div class="content">
+        @include('adminlte-templates::common.errors')
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    {!! Form::model($approvalHistory, ['route' => ['approvalHistories.update', $approvalHistory->id], 'method' => 'patch']) !!}
 
-                        @include('approval_histories.fields')
+                    @include('approval_histories.fields')
 
-                   {!! Form::close() !!}
-               </div>
-           </div>
-       </div>
-   </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

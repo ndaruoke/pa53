@@ -5,19 +5,19 @@
         <h1>
             Timesheet
         </h1>
-   </section>
-   <div class="content">
-       @include('adminlte-templates::common.errors')
-       <div class="box box-primary">
-           <div class="box-body">
-               <div class="row">
-                   {!! Form::model($timesheet, ['route' => ['timesheets.update', $timesheet->id], 'method' => 'patch']) !!}
+    </section>
+    <div class="content">
+        @include('adminlte-templates::common.errors')
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    {!! Form::model($timesheet, ['route' => ['timesheets.update', $timesheet->id], 'method' => 'patch']) !!}
 
-                        @include('timesheets.fields')
+                    @include('timesheets.fields')
 
-                   {!! Form::close() !!}
-               </div>
-           </div>
-       </div>
-   </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

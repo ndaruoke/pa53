@@ -48,17 +48,21 @@ class ProjectMember extends Model
 
     use Auditable;
 
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'user_id' => 'required',
+        'project_id' => 'required'
+    ];
     public $table = 'project_members';
-    
-
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
         'user_id',
         'project_id'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -69,19 +73,9 @@ class ProjectMember extends Model
         'project_id' => 'integer'
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'user_id' => 'required',
-        'project_id' => 'required'
-    ];
-
-	public function users()
+    public function users()
     {
-        return $this->hasOne('App\Models\User', 'id','user_id');
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
-    
+
 }

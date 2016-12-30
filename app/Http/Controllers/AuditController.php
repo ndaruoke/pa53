@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\AuditDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateAuditRequest;
 use App\Http\Requests\UpdateAuditRequest;
 use App\Repositories\AuditRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
 use Response;
 
 class AuditController extends AppBaseController
@@ -104,7 +102,7 @@ class AuditController extends AppBaseController
     /**
      * Update the specified Audit in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateAuditRequest $request
      *
      * @return Response

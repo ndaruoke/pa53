@@ -3,22 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\ProjectDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Constant;
+use App\Models\Department;
+use App\Models\ProjectMember;
+use App\Models\Tunjangan;
+use App\Models\TunjanganProject;
+use App\Models\User;
 use App\Repositories\ProjectRepository;
 use App\Repositories\UserRepository;
-use Flash;
-use App\Http\Controllers\AppBaseController;
-use Response;
-use App\Models\Tunjangan;
-use App\Models\User;
-use App\Models\Project;
-use App\Models\Department;
-use App\Models\TunjanganProject;
-use App\Models\ProjectMember;
-use App\Models\Constant;
 use DB;
+use Flash;
+use Response;
 
 class ProjectController extends AppBaseController
 {
@@ -53,8 +50,8 @@ class ProjectController extends AppBaseController
         $tunjangan = Tunjangan::pluck('name', 'id')->all();
         $user = User::pluck('name', 'id')->all();
         $department = Department::pluck('name', 'id')->all();
-        $efforttypes = [''=>''] +Constant::where('category','EffortType')->orderBy('name','asc')->pluck('name', 'value')->all();
-        return view('projects.create',compact('tunjangan','user','department','efforttypes'));
+        $efforttypes = ['' => ''] + Constant::where('category', 'EffortType')->orderBy('name', 'asc')->pluck('name', 'value')->all();
+        return view('projects.create', compact('tunjangan', 'user', 'department', 'efforttypes'));
     }
 
     /**
@@ -71,7 +68,7 @@ class ProjectController extends AppBaseController
 
         $project = $this->projectRepository->create($input);
         //$project = Project::create($input);
-        if($request->member!=null){
+        if ($request->member != null) {
             $insert = array();
             foreach ($request->member as $m) {
                 $insert[] = [
@@ -82,7 +79,7 @@ class ProjectController extends AppBaseController
         }
         DB::table('project_members')->insert($insert);
 
-        if($request->tunjangan!=null){
+        if ($request->tunjangan != null) {
             $insert = array();
             foreach ($request->tunjangan as $m) {
                 $insert[] = [
@@ -130,7 +127,7 @@ class ProjectController extends AppBaseController
         $project = $this->projectRepository->findWithoutFail($id);
 
         if (empty($project)) {
-            Flash::error('Project not found');  
+            Flash::error('Project not found');
 
             return redirect(route('projects.index'));
         }
@@ -138,17 +135,17 @@ class ProjectController extends AppBaseController
         $tunjangan = Tunjangan::pluck('name', 'id')->all();
         $user = User::pluck('name', 'id')->all();
 
-        $selected_tunjangan = TunjanganProject::where('project_id','=',$id)->with('tunjangans')->get();
-        $selected_member = ProjectMember::where('project_id','=',$id)->with('users')->get();
+        $selected_tunjangan = TunjanganProject::where('project_id', '=', $id)->with('tunjangans')->get();
+        $selected_member = ProjectMember::where('project_id', '=', $id)->with('users')->get();
         $department = Department::pluck('name', 'id')->all();
-        $efforttypes = [''=>''] +Constant::where('category','EffortType')->orderBy('name','asc')->pluck('name', 'value')->all();
-        return view('projects.edit',compact('project','tunjangan','user','department','selected_tunjangan','selected_member','efforttypes'));
+        $efforttypes = ['' => ''] + Constant::where('category', 'EffortType')->orderBy('name', 'asc')->pluck('name', 'value')->all();
+        return view('projects.edit', compact('project', 'tunjangan', 'user', 'department', 'selected_tunjangan', 'selected_member', 'efforttypes'));
     }
 
     /**
      * Update the specified Project in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateProjectRequest $request
      *
      * @return Response
@@ -166,7 +163,7 @@ class ProjectController extends AppBaseController
         $project = $this->projectRepository->update($request->all(), $id);
 
         // Update member n tunjangan Project
-        if($request->member!=null){
+        if ($request->member != null) {
             //delete previous data to prevent duplicate
             DB::table('project_members')->where('project_id', $id)->delete();
             $insert = array();
@@ -180,7 +177,7 @@ class ProjectController extends AppBaseController
         }
 
 
-        if($request->tunjangan!=null){
+        if ($request->tunjangan != null) {
             //delete previous data to prevent duplicate
             DB::table('tunjangan_projects')->where('project_id', $id)->delete();
             $insert = array();

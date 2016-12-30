@@ -66,32 +66,6 @@ class UserLeave extends Model
 
     use Auditable;
 
-    public $table = 'user_leaves';
-    
-
-    protected $dates = ['deleted_at'];
-
-
-    public $fillable = [
-        'user_id',
-        'leave_count',
-        'leave_used',
-        'expire_date',
-        'status'
-    ];
-
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'user_id' => 'integer',
-        'leave_count' => 'integer',
-        'leave_used' => 'integer',
-        'status' => 'integer'
-    ];
-
     /**
      * Validation rules
      *
@@ -104,15 +78,35 @@ class UserLeave extends Model
         'expire_date' => 'required',
         'status' => 'required'
     ];
+    public $table = 'user_leaves';
+    public $fillable = [
+        'user_id',
+        'leave_count',
+        'leave_used',
+        'expire_date',
+        'status'
+    ];
+    protected $dates = ['deleted_at'];
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'user_id' => 'integer',
+        'leave_count' => 'integer',
+        'leave_used' => 'integer',
+        'status' => 'integer'
+    ];
 
     public function users()
     {
-        return $this->hasOne('App\Models\User', 'id','user_id');
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
 
     public function statuses()
     {
-        return $this->hasOne('App\Models\Constant', 'value','status')->where('category', '=','Status');
+        return $this->hasOne('App\Models\Constant', 'value', 'status')->where('category', '=', 'Status');
     }
 
     public function getExpireDateAttribute($date)

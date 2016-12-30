@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\TunjanganPositionDataTable;
-use App\Http\Requests;
 use App\Http\Requests\CreateTunjanganPositionRequest;
 use App\Http\Requests\UpdateTunjanganPositionRequest;
+use App\Models\Position;
+use App\Models\Tunjangan;
 use App\Repositories\TunjanganPositionRepository;
 use Flash;
-use App\Http\Controllers\AppBaseController;
-use Response;
-use App\Models\Tunjangan;
-use App\Models\Position;
 use Illuminate\Http\Request;
+use Response;
 
 class TunjanganPositionController extends AppBaseController
 {
@@ -43,20 +41,20 @@ class TunjanganPositionController extends AppBaseController
      */
     public function create(Request $req)
     {
-        $positions = [''=>''] +Position::pluck('name', 'id')->all();
-        $tunjangans = [''=>''] +Tunjangan::pluck('name', 'id')->all();
-        if($req->input('position_id')) {
-          //  $this->tunjanganRoleRepository->pushCriteria(new RequestCriteria($req));
-            $tunjanganRoles = $this->tunjanganPositionRepository->findByField('position_id',$req->input('position_id'));
+        $positions = ['' => ''] + Position::pluck('name', 'id')->all();
+        $tunjangans = ['' => ''] + Tunjangan::pluck('name', 'id')->all();
+        if ($req->input('position_id')) {
+            //  $this->tunjanganRoleRepository->pushCriteria(new RequestCriteria($req));
+            $tunjanganRoles = $this->tunjanganPositionRepository->findByField('position_id', $req->input('position_id'));
             $filter = array();
-            foreach($tunjanganRoles as $tj){
-                array_push($filter,$tj->tunjangan_id);
+            foreach ($tunjanganRoles as $tj) {
+                array_push($filter, $tj->tunjangan_id);
             };
-            $tunjangans = [''=>''] +Tunjangan::whereNotIn('id', $filter)->pluck('name', 'id')->all();
-           // return $tunjangans;
+            $tunjangans = ['' => ''] + Tunjangan::whereNotIn('id', $filter)->pluck('name', 'id')->all();
+            // return $tunjangans;
         }
-        
-        return view('tunjangan_positions.create',compact('tunjangans','positions'));
+
+        return view('tunjangan_positions.create', compact('tunjangans', 'positions'));
     }
 
     /**
@@ -86,7 +84,7 @@ class TunjanganPositionController extends AppBaseController
      */
     public function show($id)
     {
-        $tunjanganPosition = $this->tunjanganPositionRepository->with('tunjangans','positions')->findWithoutFail($id);
+        $tunjanganPosition = $this->tunjanganPositionRepository->with('tunjangans', 'positions')->findWithoutFail($id);
 
         if (empty($tunjanganPosition)) {
             Flash::error('Tunjangan Position not found');
@@ -114,16 +112,16 @@ class TunjanganPositionController extends AppBaseController
             return redirect(route('tunjanganPositions.index'));
         }
 
-        $positions = [''=>''] +Position::pluck('name', 'id')->all();
-        $tunjangans = [''=>''] +Tunjangan::pluck('name', 'id')->all();
-        return view('tunjangan_positions.edit',compact('tunjanganPosition','tunjangans','positions'));
+        $positions = ['' => ''] + Position::pluck('name', 'id')->all();
+        $tunjangans = ['' => ''] + Tunjangan::pluck('name', 'id')->all();
+        return view('tunjangan_positions.edit', compact('tunjanganPosition', 'tunjangans', 'positions'));
         //return view('tunjangan_positions.edit')->with('tunjanganPosition');
     }
 
     /**
      * Update the specified TunjanganPosition in storage.
      *
-     * @param  int              $id
+     * @param  int $id
      * @param UpdateTunjanganPositionRequest $request
      *
      * @return Response

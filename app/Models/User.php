@@ -87,12 +87,21 @@ class User extends Model
 
     use Auditable;
 
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'nik' => '',
+        'nama_rekening' => '',
+        'rekening' => '',
+        'bank' => '',
+        'cabang' => '',
+        'name' => '',
+        'role' => ''
+    ];
     public $table = 'users';
-    
-
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
         'nik',
         'email',
@@ -107,7 +116,7 @@ class User extends Model
         'department',
         'image'
     ];
-
+    protected $dates = ['deleted_at'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -129,34 +138,19 @@ class User extends Model
         'image' => 'string'
     ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'nik' => '',
-        'nama_rekening' => '',
-        'rekening' => '',
-        'bank' => '',
-        'cabang' => '',
-        'name' => '',
-        'role' => ''
-    ];
-
     public function roles()
     {
-        return $this->hasOne('App\Models\Role', 'id','role');
+        return $this->hasOne('App\Models\Role', 'id', 'role');
     }
 
     public function positions()
     {
-        return $this->hasOne('App\Models\Position', 'id','position');
+        return $this->hasOne('App\Models\Position', 'id', 'position');
     }
 
     public function departments()
     {
-        return $this->hasOne('App\Models\Department', 'id','department');
+        return $this->hasOne('App\Models\Department', 'id', 'department');
     }
 
     public function leave()
@@ -173,8 +167,8 @@ class User extends Model
     {
         return $this->belongsTo('App\Models\Project');
     }
-	
-	public function projectMember()
+
+    public function projectMember()
     {
         return $this->belongsTo('App\Models\ProjectMember');
     }
@@ -198,10 +192,10 @@ class User extends Model
     {
         return $this->belongsTo('App\Models\ApprovalHistory');
     }
-    
+
     public function getApprovalCount($userId)
     {
-        $result = DB::select( DB::raw("
+        $result = DB::select(DB::raw("
             select count(*) 
                 FROM approval_histories ah1 LEFT JOIN approval_histories ah2
                 ON (ah1.transaction_id = ah2.transaction_id AND ah1.sequence_id < ah2.sequence_id)

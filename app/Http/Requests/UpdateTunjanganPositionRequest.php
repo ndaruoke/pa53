@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\TunjanganPosition;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTunjanganPositionRequest extends FormRequest
 {

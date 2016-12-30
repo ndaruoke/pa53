@@ -14,7 +14,7 @@
                 <div class="row">
                     {!! Form::open(['route' => 'timesheetDetails.store']) !!}
 
-                        @include('timesheet_details.fields')
+                    @include('timesheet_details.fields')
 
                     {!! Form::close() !!}
                 </div>

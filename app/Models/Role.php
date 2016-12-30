@@ -52,29 +52,6 @@ class Role extends Model
 
     use Auditable;
 
-    public $table = 'roles';
-    
-
-    protected $dates = ['deleted_at'];
-
-
-    public $fillable = [
-        'name',
-        'description',
-        'status'
-    ];
-
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'name' => 'string',
-        'description' => 'string',
-        'status' => 'integer'
-    ];
-
     /**
      * Validation rules
      *
@@ -84,6 +61,23 @@ class Role extends Model
         'name' => 'required',
         'description' => 'required',
         'status' => 'required'
+    ];
+    public $table = 'roles';
+    public $fillable = [
+        'name',
+        'description',
+        'status'
+    ];
+    protected $dates = ['deleted_at'];
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'name' => 'string',
+        'description' => 'string',
+        'status' => 'integer'
     ];
 
     public function user()
@@ -98,6 +92,6 @@ class Role extends Model
 
     public function statuses()
     {
-        return $this->hasOne('App\Models\Constant', 'value','status')->where('category', '=','Status');
+        return $this->hasOne('App\Models\Constant', 'value', 'status')->where('category', '=', 'Status');
     }
 }

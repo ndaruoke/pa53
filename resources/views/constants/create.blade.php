@@ -14,7 +14,7 @@
                 <div class="row">
                     {!! Form::open(['route' => 'constants.store']) !!}
 
-                        @include('constants.fields')
+                    @include('constants.fields')
 
                     {!! Form::close() !!}
                 </div>
