@@ -5,10 +5,10 @@ namespace App\DataTables;
 use App\Models\Timesheet;
 use Form;
 use Yajra\Datatables\Services\DataTable;
+use Auth;
 
 class TimesheetDataTable extends DataTable
 {
-
     /**
      * @return \Illuminate\Http\JsonResponse
      */
@@ -27,9 +27,9 @@ class TimesheetDataTable extends DataTable
      */
     public function query()
     {
-        $timesheets = Timesheet::where('user_id','=',Auth::user()->id)->get();
+        $timesheets = Timesheet::where('user_id','=',1)->get();
 
-        return $this->applyScopes($timesheets);
+        return $timesheets;
     }
 
     /**

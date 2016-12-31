@@ -400,7 +400,7 @@ class Add_Timesheet extends Controller
     {
         // return response()->json( $this->getTunjanganPerumahan());
 
-//return response()->json( TimesheetDetail::where('timesheet_id','=',1)->get());
+        return response()->json(Timesheet::where('user_id','=',1)->get());
 
         return response()->json(Timesheet::where('user_id', '=', Auth::user()->id)->get());
         return Auth::user()->id;

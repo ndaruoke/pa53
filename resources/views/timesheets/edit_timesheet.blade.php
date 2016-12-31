@@ -4,7 +4,6 @@
 
     <div class="content">
         @include('flash::message')
-
         @if(!isset($_POST['week']))
             <hr>
             <?php function getListDate($y, $m, $w)
@@ -24,9 +23,7 @@
                 for ($i = 1; $i < $totalDayWeek + 1; $i++) {
                     $listDate[] = $y . '-' . $m . '-' . $i;
                 }
-
                 return array('period' => $period, 'week' => $w, 'year' => $y, 'listDate' => $listDate);
-
             }
 
             ?>
@@ -38,6 +35,12 @@
             {!! Form::open(['route' => 'add_timesheet.create','id'=>'create_timesheet']) !!}
 
             <div class="clearfix"></div>
+
+            <?php 
+            function rupiahFormat($value){
+                return number_format($value, 2,',', '.');
+            }
+            ?>
 
             <div class="col-md-12">
                 <div class="box">
@@ -57,19 +60,19 @@
                                 <td>Tarif Insentif</td>
                                 <td rowspan="5">{{$summary['lokal']['count']}} Hari</td>
                                 <td></td>
-                                <td>Rp. {{$summary['lokal']['Insentif Project']}}</td>
+                                <td>Rp. {{rupiahFormat($summary['lokal']['Insentif Project'])}}</td>
                             </tr>
                             <tr>
                                 <td>Tarif Transport Lokal</td>
 
                                 <td></td>
-                                <td>Rp. {{$summary['lokal']['Transport Lokal']}}</td>
+                                <td>Rp. {{rupiahFormat($summary['lokal']['Transport Lokal'])}}</td>
                             </tr>
                             <tr>
                                 <td>Tarif Insentif Luar Kota</td>
 
                                 <td></td>
-                                <td>Rp. {{$summary['lokal']['Transport Luar Kota']}}</td>
+                                <td>Rp. {{rupiahFormat($summary['lokal']['Transport Luar Kota'])}}</td>
                             </tr>
                             <tr>
 
@@ -87,19 +90,19 @@
                                 <td>Tarif Insentif</td>
                                 <td rowspan="5">{{$summary['non_lokal']['count']}} Hari</td>
                                 <td></td>
-                                <td>Rp. {{$summary['non_lokal']['Insentif Project']}}</td>
+                                <td>Rp. {{rupiahFormat($summary['non_lokal']['Insentif Project'])}}</td>
                             </tr>
                             <tr>
                                 <td>Tarif Transport Lokal</td>
 
                                 <td></td>
-                                <td>Rp. {{$summary['non_lokal']['Transport Lokal']}}</td>
+                                <td>Rp. {{rupiahFormat($summary['non_lokal']['Transport Lokal'])}}</td>
                             </tr>
                             <tr>
                                 <td>Tarif Insentif Luar Kota</td>
 
                                 <td></td>
-                                <td>Rp. {{$summary['non_lokal']['Transport Luar Kota']}}</td>
+                                <td>Rp. {{rupiahFormat($summary['non_lokal']['Transport Luar Kota'])}}</td>
                             </tr>
                             <tr>
 
@@ -118,19 +121,19 @@
                                 <td>Tarif Insentif</td>
                                 <td rowspan="5">{{$summary['luar_jawa']['count']}} Hari</td>
                                 <td></td>
-                                <td>Rp. {{$summary['luar_jawa']['Insentif Project']}}</td>
+                                <td>Rp. {{rupiahFormat($summary['luar_jawa']['Insentif Project'])}}</td>
                             </tr>
                             <tr>
                                 <td>Tarif Transport Lokal</td>
 
                                 <td></td>
-                                <td>Rp. {{$summary['luar_jawa']['Transport Lokal']}}</td>
+                                <td>Rp. {{rupiahFormat($summary['luar_jawa']['Transport Lokal'])}}</td>
                             </tr>
                             <tr>
                                 <td>Tarif Insentif Luar Kota</td>
 
                                 <td></td>
-                                <td>Rp. {{$summary['luar_jawa']['Transport Luar Kota']}}</td>
+                                <td>Rp. {{rupiahFormat($summary['luar_jawa']['Transport Luar Kota'])}}</td>
                             </tr>
                             <tr>
 
@@ -148,13 +151,13 @@
                                 <td>Tarif Insentif</td>
                                 <td rowspan="3">{{$summary['internasional']['count']}} Hari</td>
                                 <td></td>
-                                <td>Rp. {{$summary['internasional']['Insentif Project']}}</td>
+                                <td>Rp. {{rupiahFormat($summary['internasional']['Insentif Project'])}}</td>
                             </tr>
                             <tr>
                                 <td>Tarif Transport Lokal</td>
 
                                 <td></td>
-                                <td>Rp. {{$summary['internasional']['Transport Lokal']}}</td>
+                                <td>Rp. {{rupiahFormat($summary['internasional']['Transport Lokal'])}}</td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -165,14 +168,14 @@
                             <tr>
                                 <td><b>Tunjangan Bantuan Perumahan</b></td>
                                 <td></td>
-                                <td>Rp. {!! $sum_timesheet_insentif !!}</td>
-                                <td>Rp. {!! $sum_timesheet_insentif !!}</td>
+                                <td>Rp. {!! rupiahFormat($sum_timesheet_insentif) !!}</td>
+                                <td>Rp. {!! rupiahFormat($sum_timesheet_insentif) !!}</td>
                             </tr>
                             <tr>
                                 <td><b>Fasilitas Transport Proyek Konsultasi Luar Kota</b></td>
                                 <td></td>
-                                <td>Rp. {!! $sum_timesheet_transport !!}</td>
-                                <td>Rp. {!! $sum_timesheet_transport !!}</td>
+                                <td>Rp. {!! rupiahFormat($sum_timesheet_transport) !!}</td>
+                                <td>Rp. {!! rupiahFormat($sum_timesheet_transport )!!}</td>
                             </tr>
                             <tr>
                                 <th>TOTAL</th>
@@ -180,7 +183,7 @@
                                 <th></th>
                                 <th></th>
                                 <th>Rp.
-                                    {!! $summary['lokal']['Insentif Project'] + $summary['lokal']['Transport Lokal']+ $summary['lokal']['Transport Luar Kota']+$summary['non_lokal']['Insentif Project']+$summary['non_lokal']['Transport Lokal']+$summary['non_lokal']['Transport Luar Kota']+$summary['luar_jawa']['Insentif Project']+$summary['luar_jawa']['Transport Lokal']+$summary['luar_jawa']['Transport Luar Kota']+$summary['internasional']['Insentif Project']+$summary['internasional']['Transport Lokal']+$sum_timesheet_insentif + $sum_timesheet_transport !!}
+                                    {!! rupiahFormat($summary['lokal']['Insentif Project'] + $summary['lokal']['Transport Lokal']+ $summary['lokal']['Transport Luar Kota']+$summary['non_lokal']['Insentif Project']+$summary['non_lokal']['Transport Lokal']+$summary['non_lokal']['Transport Luar Kota']+$summary['luar_jawa']['Insentif Project']+$summary['luar_jawa']['Transport Lokal']+$summary['luar_jawa']['Transport Luar Kota']+$summary['internasional']['Insentif Project']+$summary['internasional']['Transport Lokal']+$sum_timesheet_insentif + $sum_timesheet_transport) !!}
                                 </th>
                             </tr>
                             <tr>
@@ -213,7 +216,9 @@
                         <table class="table table-hover">
                             <tbody>
                             <tr>
-                                <th>Sent</th>
+                                <th>
+                                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                                </th>
                                 <th>Proyek</th>
                                 <th>Tanggal</th>
                                 <th width="70">Start</th>
@@ -330,7 +335,7 @@
                                         {!! Form::select('insentif['.$row.'][lokasi]', [''=>'']+$nonlokal, $detail->Lokasi, ['class' => 'form-control ','onchange'=>'onChangeLocation(this,'.$row.')']) !!}
                                     </td>
                                     <td>
-                                    {{ Form::text('insentif['.$row.'][value]', $detail->value, array('class' => 'form-control','id'=>'insentiv'.$row.'value','readonly'=>'')) }}
+                                    {{ Form::text('insentif['.$row.'][value]', $detail->value, array('class' => 'form-control money','id'=>'insentiv'.$row.'value','readonly'=>'')) }}
                                     <td>
                                         {{ Form::text('insentif['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control')) }}
                                     </td>
@@ -375,7 +380,7 @@
                                         {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
                                     </td>
                                     <td>
-                                    {{ Form::text('trans['.$row.'][value]', $detail->value, array('class' => 'form-control')) }}
+                                    {{ Form::text('trans['.$row.'][value]', $detail->value, array('class' => 'form-control money')) }}
                                     <td>
                                         {{ Form::text('trans['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control')) }}
                                     </td>
@@ -412,7 +417,9 @@
 
 
 @section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.1.0/vanilla-masker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
     <script>
         $(document).ready(function () {
             for (i = 0; i < 7; i++) {
@@ -433,6 +440,12 @@
                     $('#timesheet' + id + 'lokasi').prop("disabled", true);
                 }
                 else if (selected === 'IMPLEMENTASI') {
+                    $('#timesheet' + id + 'activity_other').show();
+                    //  $('#timesheet'+id+'lokasi').val("").trigger("change");
+                    $('#timesheet' + id + 'lokasi').prop("disabled", false);
+                }
+
+                 else if (selected === 'IDLE') {
                     $('#timesheet' + id + 'activity_other').show();
                     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
                     $('#timesheet' + id + 'lokasi').prop("disabled", false);
@@ -468,7 +481,7 @@
 
                     ?>' +
                 '</select></td>' +
-                '   <td><input type="text" name="trans[' + id + '][value]" class="form-control"  ></td>  ' +
+                '   <td><input type="text" name="trans[' + id + '][value]" class="form-control money"  ></td>  ' +
                 '   <td><input type="text" name="trans[' + id + '][desc]" class="form-control"  ></td><td></td>  ' +
                 '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  ' +
                 '   </tr>  ' +
@@ -495,7 +508,7 @@
 
                     ?>' +
                 '</select></td>' +
-                '   <td><input type="text" name="insentif[' + id + '][value]"  id="insentiv' + id + 'value" class="form-control" ></td>  ' +
+                '   <td><input type="text" name="insentif[' + id + '][value]"  id="insentiv' + id + 'value" class="form-control money" ></td>  ' +
                 '   <td><input type="text" name="insentif[' + id + '][desc]" class="form-control" ></td><td></td>  ' +
                 '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  ' +
                 '   </tr>  ' +
@@ -511,6 +524,7 @@
                 // $("#tb_trasnportasi").append(row);
                 $(getRowTransport(id)).appendTo("#tb_trasnportasi");
                 id++;
+                formatCurr();
             });
             $(document).on('click', '.remove', function () {
                 var trIndex = $(this).closest("tr").index();
@@ -525,6 +539,7 @@
                 //   data.find("input").val('');
                 $(getRowInsentif(id)).appendTo("#tb_insentif");
                 id++;
+                formatCurr();
             });
             $(document).on('click', '.remove', function () {
                 var trIndex = $(this).closest("tr").index();
@@ -544,8 +559,54 @@
             }
         }
 
+        $(document).ready(function ($) {
+            formatCurr();
+        });
+
+        function formatCurr(){
+            VMasker(document.querySelectorAll(".money")).maskMoney({
+                // Decimal precision -> "90"
+                precision: 0,
+                // Decimal separator -> ",90"
+                separator: ',',
+                // Number delimiter -> "12.345.678"
+                delimiter: '.',
+                // Money unit -> "R$ 12.345.678,90"
+                unit: 'Rp'
+            });
+        }
+
+
+        $("#create_timesheet").submit(function ($) {
+            VMasker(document.querySelectorAll(".money")).unMask();
+        });
 
     </script>
+    <script>
+  $(function () {
+    //Enable iCheck plugin for checkboxes
+    //iCheck for checkbox and radio inputs
+    $('.mailbox-messages input[type="checkbox"]').iCheck({
+      checkboxClass: 'icheckbox_flat-blue',
+      radioClass: 'iradio_flat-blue'
+    });
+
+    //Enable check and uncheck all functionality
+    $(".checkbox-toggle").click(function () {
+      var clicks = $(this).data('clicks');
+      if (clicks) {
+        //Uncheck all checkboxes
+        $("input[type='checkbox']").iCheck("uncheck");
+        $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+      } else {
+        //Check all checkboxes
+        $("input[type='checkbox']").iCheck("check");
+        $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+      }
+      $(this).data("clicks", !clicks);
+    });
+  });
+</script>
 
 @endsection
 @endsection

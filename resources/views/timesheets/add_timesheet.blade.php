@@ -127,7 +127,9 @@
                         <table class="table table-hover">
                             <tbody>
                             <tr>
-                                <th>Sent</th>
+                               <th>
+                                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                                </th>
                                 <th>Proyek</th>
                                 <th>Tanggal</th>
                                 <th width="70">Start</th>
@@ -264,6 +266,12 @@
                     $('#timesheet' + id + 'lokasi').prop("disabled", false);
                 }
 
+                 else if (selected === 'IDLE') {
+                    $('#timesheet' + id + 'activity_other').show();
+                    //  $('#timesheet'+id+'lokasi').val("").trigger("change");
+                    $('#timesheet' + id + 'lokasi').prop("disabled", false);
+                }
+
                 else if (selected === 'MANAGED OPERATION') {
                     $('#timesheet' + id + 'activity_other').show();
                     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
@@ -301,7 +309,7 @@
 
                     ?>' +
                 '</select></td>' +
-                '   <td><input type="text" name="trans[' + id + '][value]" class="form-control" ></td>  ' +
+                '   <td><input type="text" name="trans[' + id + '][value]" class="form-control money" ></td>  ' +
                 '   <td><input type="text" name="trans[' + id + '][desc]" class="form-control" ></td>  ' +
                 '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  ' +
                 '   </tr>  ' +
@@ -328,7 +336,7 @@
 
                     ?>' +
                 '</select></td>' +
-                '   <td><input type="text" name="insentif[' + id + '][value]" id="insentiv' + id + 'value" class="form-control" readonly ></td>  ' +
+                '   <td><input type="text" name="insentif[' + id + '][value]" id="insentiv' + id + 'value" class="form-control money" readonly ></td>  ' +
                 '   <td><input type="text" name="insentif[' + id + '][desc]" class="form-control" ></td>  ' +
                 '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  ' +
                 '   </tr>  ' +
@@ -344,6 +352,7 @@
                 // $("#tb_trasnportasi").append(row);
                 $(getRowTransport(id)).appendTo("#tb_trasnportasi");
                 id++;
+                formatCurr();
             });
             $(document).on('click', '.remove', function () {
                 var trIndex = $(this).closest("tr").index();
@@ -358,6 +367,7 @@
                 //   data.find("input").val('');
                 $(getRowInsentif(id)).appendTo("#tb_insentif");
                 id++;
+                formatCurr();
             });
             $(document).on('click', '.remove', function () {
                 var trIndex = $(this).closest("tr").index();
@@ -375,10 +385,59 @@
             else if (obj.value === 'INTERNATIONAL') {
                 $('#insentiv' + id + 'value').val({{ $bantuan_perumahan['internasional'] }})
             }
+            formatCurr();
+        }
+
+        $(document).ready(function ($) {
+            formatCurr();
+        });
+
+        function formatCurr(){
+            VMasker(document.querySelectorAll(".money")).maskMoney({
+                // Decimal precision -> "90"
+                precision: 0,
+                // Decimal separator -> ",90"
+                separator: ',',
+                // Number delimiter -> "12.345.678"
+                delimiter: '.',
+                // Money unit -> "R$ 12.345.678,90"
+                unit: 'Rp'
+            });
         }
 
 
+        $("#create_timesheet").submit(function ($) {
+            VMasker(document.querySelectorAll(".money")).unMask();
+        });
+
+
     </script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
+      <script>
+  $(function () {
+    //Enable iCheck plugin for checkboxes
+    //iCheck for checkbox and radio inputs
+    $('.mailbox-messages input[type="checkbox"]').iCheck({
+      checkboxClass: 'icheckbox_flat-blue',
+      radioClass: 'iradio_flat-blue'
+    });
+
+    //Enable check and uncheck all functionality
+    $(".checkbox-toggle").click(function () {
+      var clicks = $(this).data('clicks');
+      if (clicks) {
+        //Uncheck all checkboxes
+        $("input[type='checkbox']").iCheck("uncheck");
+        $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+      } else {
+        //Check all checkboxes
+        $("input[type='checkbox']").iCheck("check");
+        $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+      }
+      $(this).data("clicks", !clicks);
+    });
+  });
+</script>
 
 @endsection
 @endsection
