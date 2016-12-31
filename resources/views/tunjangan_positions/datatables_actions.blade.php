@@ -1,8 +1,10 @@
 {!! Form::open(['route' => ['tunjanganPositions.destroy', $id], 'method' => 'delete']) !!}
 <div class='btn-group'>
+<!--
     <a href="{{ route('tunjanganPositions.show', $id) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-eye-open"></i>
     </a>
+    -->
     <a href="{{ route('tunjanganPositions.edit', $id) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-edit"></i>
     </a>

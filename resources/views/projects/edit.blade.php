@@ -27,8 +27,31 @@
     <script type="text/javascript" src="{{ URL::asset('js/multiselect.min.js') }}"></script>
     <script type="text/javascript">
 
+        $('#claimable').change(function() {
+            if ($(this).val() == 0) {
+                $('#budget').val(0);
+                $('#budget').prop('readonly', true);
+
+                $('#iwo').val('N/A');
+                $('#iwo').prop('readonly', true);
+
+                VMasker(document.querySelector("#budget")).maskMoney({
+                    precision: 0,
+                    separator: ',',
+                    delimiter: '.',
+                    unit: 'Rp'
+                });
+            } else
+            {
+                $('#budget').prop('readonly', false);
+                $('#iwo').prop('readonly', false);
+                $('#iwo').val('');
+            }
+
+        });
+
         $(document).ready(function ($) {
-            VMasker(document.querySelector("#budgetid")).maskMoney({
+            VMasker(document.querySelector("#budget")).maskMoney({
                 // Decimal precision -> "90"
                 precision: 0,
                 // Decimal separator -> ",90"
@@ -41,10 +64,27 @@
         });
 
         $("#project_form").submit(function ($) {
-            VMasker(document.querySelector("#budgetid")).unMask();
+            VMasker(document.querySelector("#budget")).unMask();
         });
 
         jQuery(document).ready(function ($) {
+            //change claimable
+            $('#claimable').change(function() {
+                if ($(this).data('options') == 0) {
+                    $('#budget').val(0);
+                    $('#budget').prop('disabled', true);
+
+                    $('#iwo').val('N/A');
+                    $('#iwo').prop('disabled', true);
+
+                } else
+                {
+                    $('#budget').prop('disabled', false);
+                    $('#iwo').prop('disabled', false);
+                }
+
+            });
+
             //remove duplicates
             var origin = new Array();
             $('#search option').each(function () {

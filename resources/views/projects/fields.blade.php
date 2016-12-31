@@ -11,23 +11,23 @@
     {!! Form::select('pm_user_id', [''=>'']+$user, null, ['class' => 'form-control select2']) !!}
 </div>
 
-<!-- Budget Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('budget', 'Budget :') !!}
-    {!! Form::text('budget', null, ['id'=>'budgetid','class' => 'form-control']) !!}
-</div>
-
-<!-- Code Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('iwo', 'Iwo:') !!}
-    {!! Form::text('code', null, ['class' => 'form-control ']) !!}
-</div>
-
 <!-- Claimable Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('claimable', 'Claimable:') !!}
 
     {!! Form::select('claimable', array(''=>'',1=>'Yes',0=>'No'), null, ['class' => 'form-control select2']) !!}
+</div>
+
+<!-- Budget Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('budget', 'Budget :') !!}
+    {!! Form::text('budget', null, ['id'=>'budget','class' => 'form-control']) !!}
+</div>
+
+<!-- Code Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('iwo', 'Iwo:') !!}
+    {!! Form::text('code', null, ['id'=>'iwo','class' => 'form-control']) !!}
 </div>
 
 <!-- Department Id Field -->

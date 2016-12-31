@@ -1,8 +1,10 @@
 {!! Form::open(['route' => ['userLeaves.destroy', $id], 'method' => 'delete']) !!}
 <div class='btn-group'>
+<!--
     <a href="{{ route('userLeaves.show', $id) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-eye-open"></i>
     </a>
+    -->
     <a href="{{ route('userLeaves.edit', $id) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-edit"></i>
     </a>
