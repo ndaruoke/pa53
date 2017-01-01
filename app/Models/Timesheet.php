@@ -165,8 +165,74 @@ class Timesheet extends Model
 
     public static function gettotaltunjangan($userId, $approvalId, $approvalStatus)
     {
-        return Timesheet::getTotalInsentif($userId, $approvalId, $approvalStatus) +
+        return
+            Timesheet::getTotalMandays($userId, $approvalId, $approvalStatus) +
+            Timesheet::getTotalInsentif($userId, $approvalId, $approvalStatus) +
             Timesheet::getTotalTransport($userId, $approvalId, $approvalStatus);
+    }
+
+    public static function getTotalMandays($userId, $approvalId, $approvalStatus)
+    {
+        $insentif = 0;
+
+        $mandays = DB::select(DB::raw("SELECT lokasi , count(*)total FROM `timesheet_details` 
+        JOIN timesheets ON timesheets.id = timesheet_details.timesheet_id
+        JOIN approval_histories ON approval_histories.transaction_id = timesheet_details.id
+        where approval_histories.user_id = " . $userId . " 
+        and approval_histories.approval_id = " . $approvalId . " 
+        and approval_histories.approval_status = " . $approvalStatus . " 
+        and selected = 1 group by lokasi"));
+
+        $tunjangans = DB::select(DB::raw('SELECT positions.name,tunjangans.name,lokal,non_lokal,luar_jawa,internasional 
+                      FROM tunjangan_positions,tunjangans,positions,users 
+                      WHERE tunjangan_positions.tunjangan_id = tunjangans.id and tunjangan_positions.position_id = positions.id and users.position = positions.id 
+                      and users.id = ' . $userId));
+
+        foreach ($tunjangans as $t) {
+            $arr['lokal'][$t->name] = $t->lokal;
+            $arr['non_lokal'][$t->name] = $t->non_lokal;
+            $arr['luar_jawa'][$t->name] = $t->luar_jawa;
+            $arr['internasional'][$t->name] = $t->internasional;
+        }
+
+        foreach ($mandays as $m) {
+        if ($m->lokasi === "JABODETABEK") {
+            if (!empty ($arr)) {
+                if ($arr['lokal'] != null) {
+                    foreach ($arr['lokal'] as $key => $value) {
+                        $insentif += $value * $m->total;
+                    }
+                }
+            }
+
+        } else if ($m->lokasi === "LUARJAWA") {
+            if (!empty ($arr)) {
+                if ($arr['luar_jawa'] != null) {
+                    foreach ($arr['luar_jawa'] as $key => $value) {
+                        $insentif += $value * $m->total;
+                    }
+                }
+            }
+        } else if ($m->lokasi === "JAWA") {
+            if (!empty ($arr)) {
+                if ($arr['non_lokal'] != null) {
+                    foreach ($arr['non_lokal'] as $key => $value) {
+                        $insentif += $value * $m->total;
+                    }
+                }
+            }
+        } else if ($m->lokasi === "INTERNATIONAL") {
+            if (!empty ($arr)) {
+                if ($arr['internasional'] != null) {
+                    foreach ($arr['internasional'] as $key => $value) {
+                        $insentif += $value * $m->total;
+                    }
+                }
+            }
+        }
+    }
+
+        return $insentif;
     }
 
     public static function getTotalInsentif($userId, $approvalId, $approvalStatus)
@@ -176,7 +242,7 @@ class Timesheet extends Model
             ->where('approval_histories.approval_id', '=', $approvalId)
             ->where('approval_histories.user_id', '=', $userId)
             ->where('approval_histories.approval_status', '=', $approvalStatus)
-            ->whereIn('transaction_type', [2, 4])//insentif dan bantuan perumahan
+            ->whereIn('transaction_type', [4])//bantuan perumahan
             ->pluck('timesheet_insentif.value')->sum();
 
         return $insentif;

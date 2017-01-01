@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Project;
 use App\Models\Timesheet;
 use App\Models\TimesheetDetail;
@@ -206,10 +207,14 @@ class Add_Timesheet extends Controller
 
     public function queryTimesheetId($week, $month, $year)
     {
+        //add only user
+        $userId = Auth::User()->id;
+
         $timesheets = DB::table('timesheets')
             ->where('week', $week)
             ->where('month', $month)
-            ->where('year', $year)->get();
+            ->where('year', $year)
+            ->where('user_id', $userId)->get();
         if (count($timesheets) > 0) {
             return $timesheets[0]->id;
         } else {
@@ -325,59 +330,102 @@ class Add_Timesheet extends Controller
 
         $user = Auth::user()->id;
 
+
         foreach ($timesheetDetail as $td) {
             $project = DB::table('projects')
                 ->where('id', '=', $td->project_id)->first();
 
-            $saveDetail = DB::table('approval_histories')
-                ->insertGetId(array(
-                    'date' => $td->date,
-                    'note' => $td->activity,
-                    'sequence_id' => 0,
-                    'transaction_id' => $td->id,
-                    'transaction_type' => 2,
-                    'approval_status' => 0,
-                    'user_id' => $user,
-                    'approval_id' => $project->pm_user_id,
-                    'group_approval_id' => 0
-                ));
+            $approval = User::where('id', '=', $project->pm_user_id)->first();
+
+            $detailExist = $this->isApprovalHistoryExist($td->id, 2, $user, $approval);
+
+            if (!empty($detailExist)) {
+                $detail = $this->updateApprovalHistory($detailExist->id, $td->date, $td->activity, $td->id, 2, $user, $approval['id']);
+            } else {
+                $detail = $this->insertApprovalHistory($td->date, $td->activity, $td->id, 2, $user, $approval['id']);
+            }
         }
 
         foreach ($timesheetInsentif as $ti) {
             $project = DB::table('projects')
                 ->where('id', '=', $ti->project_id)->first();
 
-            $saveInsentif = DB::table('approval_histories')
-                ->insertGetId(array(
-                    'date' => $ti->date,
-                    'note' => $ti->keterangan,
-                    'sequence_id' => 0,
-                    'transaction_id' => $ti->id,
-                    'transaction_type' => 4,
-                    'approval_status' => 0,
-                    'user_id' => $user,
-                    'approval_id' => $project->pm_user_id,
-                    'group_approval_id' => 0
-                ));
+            $approval = User::where('id', '=', $project->pm_user_id)->first();
+
+            $insentifExist = $this->isApprovalHistoryExist($td->id, 4, $user, $approval);
+
+            if (!empty($insentifExist)) {
+                $insentif = $this->updateApprovalHistory($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
+            } else {
+                $insentif = $this->insertApprovalHistory($ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
+            }
         }
 
         foreach ($timesheetTransport as $tt) {
             $project = DB::table('projects')
                 ->where('id', '=', $tt->project_id)->first();
 
-            $saveTransport = DB::table('approval_histories')
-                ->insertGetId(array(
-                    'date' => $tt->date,
-                    'note' => $tt->keterangan,
-                    'sequence_id' => 0,
-                    'transaction_id' => $tt->id,
-                    'transaction_type' => 3,
-                    'approval_status' => 0,
-                    'user_id' => $user,
-                    'approval_id' => $project->pm_user_id,
-                    'group_approval_id' => 0
-                ));
+            $approval = User::where('id', '=', $project->pm_user_id)->first();
+
+            $transportExist = $this->isApprovalHistoryExist($td->id, 3, $user, $approval);
+
+            if (!empty($transportExist)) {
+                $transport = $this->updateApprovalHistory($transportExist->id, $tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
+            } else {
+                $transport = $this->insertApprovalHistory($tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
+            }
         }
+    }
+
+    function isApprovalHistoryExist($transactionId, $transactionType, $user, $approval)
+    {
+        $transactionExist = DB::table('approval_histories')
+            ->select('id')
+            ->where('transaction_id', '=', $transactionId)
+            ->where('transaction_type', '=', $transactionType)
+            ->where('user_id', '=', $user)
+            ->where(function ($query) use ($approval) {
+                $query->where('approval_id', '=', $approval['id'])
+                    ->orWhere('group_approval_id', '=', $approval['role']);
+            })->first();
+
+        return $transactionExist;
+    }
+
+    function insertApprovalHistory($date, $note, $transactionId, $transactionType, $user, $approvalId)
+    {
+        $saveTransaction = DB::table('approval_histories')
+            ->insertGetId(array(
+                'date' => $date,
+                'note' => $note,
+                'sequence_id' => 0,
+                'transaction_id' => $transactionId,
+                'transaction_type' => $transactionType,
+                'approval_status' => 0,
+                'user_id' => $user,
+                'approval_id' => $approvalId,
+                'group_approval_id' => 0
+            ));
+        return $saveTransaction;
+    }
+
+    function updateApprovalHistory($id, $date, $note, $transactionId, $transactionType, $user, $approvalId)
+    {
+        $updateDetail = DB::table('approval_histories')
+            ->where('id', $id)
+            ->update(array(
+                'date' => $date,
+                'note' => $note,
+                'sequence_id' => 0,
+                'transaction_id' => $transactionId,
+                'transaction_type' => $transactionType,
+                'approval_status' => 0,
+                'user_id' => $user,
+                'approval_id' => $approvalId,
+                'group_approval_id' => 0
+            ));
+
+        return $updateDetail;
     }
 
     function search($array, $key, $value)

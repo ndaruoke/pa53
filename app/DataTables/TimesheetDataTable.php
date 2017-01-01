@@ -2,10 +2,10 @@
 
 namespace App\DataTables;
 
+use Auth;
 use App\Models\Timesheet;
 use Form;
 use Yajra\Datatables\Services\DataTable;
-use Auth;
 
 class TimesheetDataTable extends DataTable
 {

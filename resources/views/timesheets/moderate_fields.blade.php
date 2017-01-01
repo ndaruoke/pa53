@@ -331,17 +331,17 @@
 
             <div class="clearfix"></div>
 
-
-
             {{ Form::hidden('userId', $userId) }}
 
             <div class="form-group col-sm-12">
-                {!! Form::select('moderation',
-                  [1 => 'Approve', 2 => 'Reject'],
-                  null,
-                  ['class' => 'form-control select2'])
-                !!}
-                {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
+                @if($approvalStatus==0)
+                    {!! Form::select('moderation',
+                      [1 => 'Approve', 2 => 'Reject'],
+                      null,
+                      ['class' => 'form-control select2'])
+                    !!}
+                    {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
+                @endif
                 <a href="{!! route('timesheets.moderation') !!}" class="btn btn-success">Back</a>
             </div>
             <div class="clearfix"></div>

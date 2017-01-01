@@ -16,7 +16,6 @@ class MenuCountService
         $user = Auth::user();
         $this->leave = Leave::pending()->where('approval_id', $user->id)->count();
         $this->timesheet = DB::table('timesheet_details')
-            ->select('approval_histories.user_id')
             ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_details.id')
             ->join('users', 'users.id', 'approval_histories.user_id')
             ->where('approval_histories.approval_status', '=', 0)
@@ -25,7 +24,6 @@ class MenuCountService
                 $query->where('approval_histories.approval_id', '=', $user->id)
                     ->orWhere('approval_histories.group_approval_id', '=', $user->role);
             })
-            ->groupBy('user_id')
             ->count();
     }
 }

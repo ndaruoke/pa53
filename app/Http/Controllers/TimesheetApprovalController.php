@@ -119,7 +119,7 @@ class TimesheetApprovalController extends AppBaseController
             return redirect(route('leaves.moderation'));
         }
 
-        return view('timesheets.moderation_edit', compact('user', 'userId', 'lokasi', 'activity', 'timesheets', 'project', 'timesheet_details', 'timesheet_insentif', 'timesheet_transport', 'summary'));
+        return view('timesheets.moderation_edit', compact('approvalStatus', 'user', 'userId', 'lokasi', 'activity', 'timesheets', 'project', 'timesheet_details', 'timesheet_insentif', 'timesheet_transport', 'summary'));
     }
 
     public function populateSummary($timesheets, $user, $approval, $approvalStatus, $timesheet_insentif, $timesheet_transport)
@@ -136,7 +136,7 @@ class TimesheetApprovalController extends AppBaseController
         $summary['total'] = 0;
 
         //TODO without insentif
-        if (!empty(timesheet_insentif)) {
+        if (!empty($timesheet_insentif)) {
             foreach ($timesheet_insentif as $adcost) {
                 $summary['total'] += $adcost->value;
             }
@@ -171,7 +171,11 @@ class TimesheetApprovalController extends AppBaseController
          **/
         $mandays = DB::select(DB::raw("SELECT lokasi , count(*)total FROM `timesheet_details` 
         JOIN timesheets ON timesheets.id = timesheet_details.timesheet_id
-        where user_id = " . $user['id'] . " and selected = 1 group by lokasi"));
+        JOIN approval_histories ON approval_histories.transaction_id = timesheet_details.id
+        where approval_histories.user_id = " . $user['id'] . " 
+        and approval_histories.approval_id = " . $approval['id'] . " 
+        and approval_histories.approval_status = " . $approvalStatus . " 
+        and selected = 1 group by lokasi"));
 
 
         foreach ($mandays as $m) {
@@ -195,9 +199,11 @@ class TimesheetApprovalController extends AppBaseController
                 }
             } else if ($m->lokasi === "JAWA") {
                 $summary['non_lokal']['count'] = $m->total;
-                foreach ($arr['non_lokal'] as $key => $value) {
-                    $summary['non_lokal'][$key] = $value * $m->total;
-                    //   echo $key. ' = '.$value. ' * '.$m->total.' '.$value*$m->total.'<br>';
+                if (!empty ($arr)) {
+                    foreach ($arr['non_lokal'] as $key => $value) {
+                        $summary['non_lokal'][$key] = $value * $m->total;
+                        //   echo $key. ' = '.$value. ' * '.$m->total.' '.$value*$m->total.'<br>';
+                    }
                 }
             } else if ($m->lokasi === "INTERNATIONAL") {
                 $summary['internasional']['count'] = $m->total;
@@ -482,18 +488,18 @@ class TimesheetApprovalController extends AppBaseController
         }
 
         if ($approvalHistory->sequence_id == 0 || $approvalHistory->sequence_id == 1) {
-            $saveDetail = DB::table('approval_histories')
-                ->insertGetId(array(
-                    'date' => $approvalHistory->date,
-                    'note' => $approvalHistory->note,
-                    'sequence_id' => $sequence,
-                    'transaction_id' => $approvalHistory->transaction_id,
-                    'transaction_type' => $approvalHistory->transaction_type,
-                    'approval_status' => 0,
-                    'user_id' => $approvalHistory->user_id,
-                    'approval_id' => $approvalId,
-                    'group_approval_id' => $groupApprovalId
-                ));
+
+            $isExist = $this->isApprovalHistoryExist($approvalHistory->transaction_id, $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
+
+
+            if (!empty($isExist)) {
+                $approvalHistory = $this->insertApprovalHistory($approvalHistory->date, $approvalHistory->note, $sequence, $approvalHistory->transaction_id,
+                    $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
+            } else {
+                $approvalHistory = $this->updateApprovalHistory($isExist->id, $approvalHistory->date, $approvalHistory->note, $sequence, $approvalHistory->transaction_id,
+                    $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
+            }
+
         }
     }
 
@@ -608,5 +614,57 @@ class TimesheetApprovalController extends AppBaseController
         } else {
             return $this->getHRD();
         }
+    }
+
+    private function isApprovalHistoryExist($transactionId, $transactionType, $user, $approvalId, $groupApprovalId)
+    {
+        $transactionExist = DB::table('approval_histories')
+            ->select('id')
+            ->where('transaction_id', '=', $transactionId)
+            ->where('transaction_type', '=', $transactionType)
+            ->where('user_id', '=', $user)
+            ->where(function ($query) use ($approvalId, $groupApprovalId) {
+                $query->where('approval_id', '=', $approvalId)
+                    ->orWhere('group_approval_id', '=', $groupApprovalId);
+            })->first();
+
+        return $transactionExist;
+    }
+
+    private function insertApprovalHistory($date, $note, $sequence, $transactionId, $transactionType, $user, $approvalId, $groupApprovalId)
+    {
+        $saveTransaction = DB::table('approval_histories')
+            ->insertGetId(array(
+                'date' => $date,
+                'note' => $note,
+                'sequence_id' => $sequence,
+                'transaction_id' => $transactionId,
+                'transaction_type' => $transactionType,
+                'approval_status' => 0,
+                'user_id' => $user,
+                'approval_id' => $approvalId,
+                'group_approval_id' => $groupApprovalId
+            ));
+
+        return $saveTransaction;
+    }
+
+    private function updateApprovalHistory($id, $date, $note, $sequence, $transactionId, $transactionType, $user, $approvalId, $groupApprovalId)
+    {
+        $updateDetail = DB::table('approval_histories')
+            ->where('id', $id)
+            ->update(array(
+                'date' => $date,
+                'note' => $note,
+                'sequence_id' => $sequence,
+                'transaction_id' => $transactionId,
+                'transaction_type' => $transactionType,
+                'approval_status' => 0,
+                'user_id' => $user,
+                'approval_id' => $approvalId,
+                'group_approval_id' => $groupApprovalId
+            ));
+
+        return $updateDetail;
     }
 }
