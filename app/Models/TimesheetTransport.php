@@ -169,7 +169,7 @@ class TimesheetTransport extends Model
         }
         $status = '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="' . $this->getColor($approval_ts[0]['status']) . '" data-original-title="' . $approval_ts[0]['approval'] . ' ' . $approval_ts[0]['status'] . '"></i>';
         $status .= '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="' . $this->getColor($approval_ts[1]['status']) . '" data-original-title="' . $approval_ts[1]['approval'] . ' ' . $approval_ts[1]['status'] . '"></i>';
-        $status .= '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="' . $this->getColor($approval_ts[2]['status']) . '" data-original-title="' . $approval_ts[2]['approval'] . ' ' . $approval_ts[2]['status'] . '"></i>';
+        $status .= '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="' . $this->getColorFinance($approval_ts[2]['status']) . '" data-original-title="' . $approval_ts[2]['approval'] . ' ' . $approval_ts[2]['status'] . '"></i>';
 
         return $status;
     }
@@ -178,6 +178,20 @@ class TimesheetTransport extends Model
     {
         if ($status == "Approved") {
             return 'color:#00a65a';
+        } else if ($status == "Rejected") {
+            return 'color:#dd4b39';
+        } else if ($status == "Postponed") {
+            return 'color:cyan';
+        } else if ($status == "Paid") {
+            return 'color:green';
+        } else {
+            return 'color:orange';
+        }
+    }
+    public function getColorFinance($status)
+    {
+        if ($status == "Approved") {
+            return 'color:blue';
         } else if ($status == "Rejected") {
             return 'color:#dd4b39';
         } else if ($status == "Postponed") {

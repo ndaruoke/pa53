@@ -218,6 +218,7 @@
                                 <th>Proyek</th>
                                 <th>Transportasi</th>
                                 <th>Keterangan</th>
+                                <th>File</th>
                                 <th><a href="javascript:void(0);" style="font-size:18px;" id="addTransportasi"
                                        title="Add Transportasi"><span class="glyphicon glyphicon-plus"></span></a></th>
                         </table>
@@ -242,6 +243,7 @@
             {!! Form::close() !!}
 
         @endif
+
     </div>
 
 
@@ -311,6 +313,18 @@
                 '</select></td>' +
                 '   <td><input type="text" name="trans[' + id + '][value]" class="form-control money" ></td>  ' +
                 '   <td><input type="text" name="trans[' + id + '][desc]" class="form-control" ></td>  ' +
+                '   <td> '+
+                '<center>'+
+'                <p>'+
+'                    <a href="javascript:changeProfile('+id+')" style="text-decoration: none;"><i                               class="glyphicon glyphicon-edit"></i> Change</a>  '+
+'                    <a href="javascript:removeFile('+id+')" style="color: red;text-decoration: none;"><i'+
+'                                class="glyphicon glyphicon-trash"></i>'+
+'                        Remove</a>  <a target="_blank" href="" id="dl'+id+'"></a>'+
+'                </p>'+
+'                <input type="text" name="trans['+id+'][file]" id="flname'+id+'" style="display: none;">'+
+'                <input type="file" id="file'+id+'" onchange="fileChange('+id+')" style="display: none"/>'+
+'            </center>';
+                ' </td>  ' +
                 '   <td><a href="javascript:void(0);"  class="remove"><span class="glyphicon glyphicon-remove"></span></a></td>  ' +
                 '   </tr>  ' +
                 '    ';
@@ -438,7 +452,81 @@
     });
   });
 </script>
+<script>
+    var filename = '';
+    function changeProfile(id) {
+        $('#file'+id).click();
+    }
 
+    function fileChange(id){
+        if ($('#file'+id).val() != '') {
+            upload(id);
+        }        
+    }
+
+    function upload(id) {
+        var file_data = $('#file'+id).prop('files')[0];
+        var form_data = new FormData();
+        form_data.append('file', file_data);
+        $.ajaxSetup({
+            headers: {'X-CSRF-Token': $('meta[name=_token]').attr('content')}
+        });
+        $.ajax({
+            url: "{{url('uploadfile')}}", // point to server-side PHP script
+            data: form_data,
+            type: 'POST',
+            contentType: false,       // The content type used when sending data to the server.
+            cache: false,             // To unable request pages to be cached
+            processData: false,
+            success: function (data) {
+                if (data.fail) {
+                    console.log(data.errors['file']);
+                }
+                else {
+                    filename = data;
+                    $('#dl'+id).html(data);
+                    $('#dl'+id).attr("href", '{{asset('upload')}}/' + data);
+                    $("#flname"+id).val(data);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+                $('#dl'+id).html("");
+                $('#dl'+id).attr("href", "");
+                $('#dl'+id).html("");
+                $("#flname"+id).val("");
+            }
+        });
+    }
+    function removeFile(id) {
+        filename = $("#flname"+id).val();
+        if (filename != '')
+            if (confirm('Are you sure want to remove profile picture?'))
+                $.ajax({
+                    url: "{{url('rmvfile')}}/" + filename, // point to server-side PHP script
+                    type: 'GET',
+                    contentType: false,       // The content type used when sending data to the server.
+                    cache: false,             // To unable request pages to be cached
+                    processData: false,
+                    success: function (data) {
+                        $('#dl'+id).html("");
+                        $('#dl'+id).attr("href", "");
+                        $('#dl'+id).html("");
+                        $("#flname"+id).val("");
+                        filename = '';
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+                });
+    }
+
+    function fileName(path){
+    path = path.substring(path.lastIndexOf("/")+ 1);
+    return (path.match(/[^.]+(\.[^?#]+)?/) || [])[0];
+}
+
+</script>
 @endsection
 @endsection
 

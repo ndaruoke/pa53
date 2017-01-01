@@ -14,7 +14,7 @@ use Flash;
 use Illuminate\Http\Request;
 use Response;
 use Yajra\Datatables\Facades\Datatables;
-
+use File;
 
 class Add_Timesheet extends Controller
 {
@@ -272,6 +272,7 @@ class Add_Timesheet extends Controller
                         'date' => $value['date'],
                         'project_id' => $value['project_id'],
                         'value' => $value['value'],
+                        'file' => $value['file'],
                         'keterangan' => $value['desc'],
                         //    'end_time'=> $value['end'],
                         'timesheet_id' => $id,
@@ -426,5 +427,31 @@ class Add_Timesheet extends Controller
         } else {
             return 'color:orange';
         }
+    }
+
+    public function postUploadImageFile(Request $request)
+    {
+        // $validator = Validator::make($request->all(),
+        //     [
+        //         'file' => 'image',
+        //     ],
+        //     [
+        //         'file.image' => 'The file must be an image (jpeg, png, bmp, gif, or svg)'
+        //     ]);
+        // if ($validator->fails())
+        //     return array(
+        //         'fail' => true,
+        //         'errors' => $validator->getMessageBag()->toArray()
+        //     );
+        $extension = $request->file('file')->getClientOriginalExtension(); // getting image extension
+        $dir = 'upload/';
+        $filename = uniqid() . '_' . time() . '.' . $extension;
+        $request->file('file')->move($dir, $filename);
+        return $filename;
+    }
+
+    public function getRemoveImageFile($filename)
+    {
+        File::delete('upload/' . $filename);
     }
 }

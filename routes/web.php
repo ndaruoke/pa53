@@ -124,6 +124,13 @@ Route::get('timesheet_history', 'Add_Timesheet@getColumns');
 Route::get('timesheet/show/{id}', array('uses' => 'Add_Timesheet@show',
 'as' => 'add_timesheet.show'));
 
+
+Route::post('uploadfile', array('uses' => 'Add_Timesheet@postUploadImageFile',
+'as' => 'add_timesheet.uploadfile'));
+
+Route::get('rmvfile/{id}', array('uses' => 'Add_Timesheet@getRemoveImageFile',
+'as' => 'add_timesheet.rmvfile'));
+
 Route::post('add_timesheet/create', array('uses' => 'Add_Timesheet@create',
 'as' => 'add_timesheet.store'));
 
