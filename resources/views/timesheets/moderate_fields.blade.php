@@ -201,7 +201,7 @@
                         <h3 class="box-title">Timesheet</h3>
                     </div>
                     <div class="box-body">
-                        <table class="table table-hover">
+                        <table class="table table-hover" style="overflow-x: scroll; overflow-y: hidden;">
                             <tbody>
                             <tr>
                                 <th>Proyek</th>
@@ -211,7 +211,9 @@
                                 <th>Lokasi</th>
                                 <th>Aktifitas</th>
                                 <th>Keterangan</th>
-                                <th>Cek</th>
+                                <th>
+                                    <button type="button" id="detailcheckbox" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                                </th>
                             </tr>
                             @foreach ($timesheet_details as $row=>$detail)
                                 <tr>
@@ -338,10 +340,14 @@
                     {!! Form::select('moderation',
                       [1 => 'Approve', 2 => 'Reject'],
                       null,
-                      ['class' => 'form-control select2'])
+                      ['class' => 'form-control select2', 'id' => 'moderation'])
                     !!}
+                    {{ Form::text('approval_note', null, array('class' => 'form-control', 'style'=>'visibility:hidden', 'id' => 'approval_note', 'placeholder'=>'rejection note')) }}
                     {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
                 @endif
+
+
+
                 <a href="{!! route('timesheets.moderation') !!}" class="btn btn-success">Back</a>
             </div>
             <div class="clearfix"></div>
@@ -350,7 +356,45 @@
         @endif
     </div>
 
+    @section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
+    <script>
+        $(function () {
+            //Enable iCheck plugin for checkboxes
+            //iCheck for checkbox and radio inputs
+            $('.mailbox-messages input[type="checkbox"]').iCheck({
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue'
+            });
 
+            //Enable check and uncheck all functionality
+            $(".checkbox-toggle").click(function () {
+                var clicks = $(this).data('clicks');
+                if (clicks) {
+                    //Uncheck all checkboxes
+                    $("input[type='checkbox']").iCheck("uncheck");
+                    $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+                } else {
+                    //Check all checkboxes
+                    $("input[type='checkbox']").iCheck("check");
+                    $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+                }
+                $(this).data("clicks", !clicks);
+            });
+        });
+
+        $('#moderation').change(function() {
+            if ($(this).val() == 2) {
+                $('#approval_note').css('visibility', 'visible');
+            } else
+            {
+                $('#approval_note').css('visibility', 'hidden');
+            }
+
+        });
+
+    </script>
+    @endsection
 
 @endsection
 

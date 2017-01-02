@@ -94,7 +94,8 @@ class ApprovalHistory extends Model
         'transaction_type',
         'user_id',
         'approval_id',
-        'group_approval_id'
+        'group_approval_id',
+        'approval_note'
     ];
     protected $dates = ['deleted_at'];
     /**

@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use URL;
 
 class Handler extends ExceptionHandler
 {
@@ -44,6 +45,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
+            $url = URL::to('/');
+            return response()->view('errors.custom', ['title'=>'Not Authorized please login again','url'=>$url], 500);
+        }
+
         return parent::render($request, $exception);
     }
 
