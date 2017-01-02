@@ -41,6 +41,20 @@
 
             </div>
         </div>
+        @if($user->role == 4)
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="small-box bg-blue pull-left">
+                    <div class="inner">
+                        <h3>{{$count->timesheetpaid}}</h3>
+                        <p>Paid Request</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-android-checkbox-blank"></i>
+                    </div>
+
+                </div>
+            </div>
+        @endif
     </section>
     <div class="content">
         <div class="clearfix"></div>

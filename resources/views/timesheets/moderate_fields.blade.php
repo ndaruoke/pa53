@@ -337,6 +337,7 @@
 
             <div class="form-group col-sm-12">
                 @if($approvalStatus==0)
+                    {{ Form::hidden('paid', false) }}
                     {!! Form::select('moderation',
                       [1 => 'Approve', 2 => 'Reject'],
                       null,
@@ -345,7 +346,10 @@
                     {{ Form::text('approval_note', null, array('class' => 'form-control', 'style'=>'visibility:hidden', 'id' => 'approval_note', 'placeholder'=>'rejection note')) }}
                     {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
                 @endif
-
+                @if($approvalStatus==1)
+                    {{ Form::hidden('paid', true) }}
+                    {!! Form::submit('Paid',['name'=>'action','class' => 'btn btn-primary']) !!}
+                @endif
 
 
                 <a href="{!! route('timesheets.moderation') !!}" class="btn btn-success">Back</a>
