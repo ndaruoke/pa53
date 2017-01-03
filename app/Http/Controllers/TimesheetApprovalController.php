@@ -357,7 +357,7 @@ class TimesheetApprovalController extends AppBaseController
 
 
             //transport
-            if (!empty($transId)) {
+            else if(!empty($transId)) {
                 $approvalHistoryTransportId = DB::
                 table('approval_histories')->
                 whereIn('transaction_id', $transId)->
@@ -378,7 +378,7 @@ class TimesheetApprovalController extends AppBaseController
 
 
             //adcost
-            if (!empty($insId)) {
+            else if (!empty($insId)) {
                 $approvalHistoryInsentifId = DB::
                 table('approval_histories')->
                 whereIn('transaction_id', $insId)->
