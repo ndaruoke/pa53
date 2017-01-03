@@ -315,7 +315,7 @@ class Timesheet extends Model
         if(isset($appr['rejected']) && $appr['rejected'] > 0){
             $color = '#dd4b39';
         };
-        $statuses = '<i class="fa fa-fw fa-circle" title="" style="color:"'.$color.'></i>';
+        $statuses = '<i class="fa fa-fw fa-circle" title="" style="color:'.$color.'"></i>';
         return $statuses;
     }
 
