@@ -496,7 +496,7 @@ class TimesheetApprovalController extends AppBaseController
                 {
                     $detail = TimesheetDetail::find($id);
                     $detail->approval_status = 0; //reset status
-                    $detail->save;
+                    $detail->save();
                 }
             }
 
