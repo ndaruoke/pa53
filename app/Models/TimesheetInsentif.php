@@ -112,7 +112,7 @@ class TimesheetInsentif extends Model
 
     public function getApprovalAttribute()
     {
-        $approval_ts = DB::select(DB::raw('select sequence_id,
+        $approval_ts = DB::select(DB::raw('select sequence_id,approval_histories.date,
 CASE 
 WHEN sequence_id=0 THEN "PM"
 WHEN sequence_id=1 THEN "PMO"
@@ -138,6 +138,7 @@ and users.id = approval_histories.approval_id order by sequence_id'));
         if (!isset($approval_ts[0]['sequence_id'])) {
             $newdata = array(
                 'sequence_id' => '0',
+                'date' => '',
                 'approval_id' => '',
                 'approval' => 'PM',
                 'name' => 'test',
@@ -149,6 +150,7 @@ and users.id = approval_histories.approval_id order by sequence_id'));
         if (!isset($approval_ts[1]['sequence_id'])) {
             $newdata = array(
                 'sequence_id' => '1',
+                'date' => '',
                 'approval_id' => '',
                 'approval' => 'PMO',
                 'name' => 'test',
@@ -160,6 +162,7 @@ and users.id = approval_histories.approval_id order by sequence_id'));
         if (!isset($approval_ts[2]['sequence_id'])) {
             $newdata = array(
                 'sequence_id' => '2',
+                'date' => '',
                 'approval_id' => '',
                 'approval' => 'Finance',
                 'name' => 'test',
@@ -168,9 +171,9 @@ and users.id = approval_histories.approval_id order by sequence_id'));
             );
             array_push($approval_ts, $newdata);
         }
-        $status = '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="' . $this->getColor($approval_ts[0]['status']) . '" data-original-title="' . $approval_ts[0]['approval'] . ' ' . $approval_ts[0]['status'] . '"></i>';
-        $status .= '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="' . $this->getColor($approval_ts[1]['status']) . '" data-original-title="' . $approval_ts[1]['approval'] . ' ' . $approval_ts[1]['status'] . '"></i>';
-        $status .= '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="' . $this->getColorFinance($approval_ts[2]['status']) . '" data-original-title="' . $approval_ts[2]['approval'] . ' ' . $approval_ts[2]['status'] . '"></i>';
+        $status = '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="' . $this->getColor($approval_ts[0]['status']) . '" data-original-title="'. $approval_ts[0]['date'] .' ' . $approval_ts[0]['approval'] . ' ' . $approval_ts[0]['status'] . '"></i>';
+        $status .= '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="' . $this->getColor($approval_ts[1]['status']) . '" data-original-title="' . $approval_ts[1]['date'] .' '. $approval_ts[1]['approval'] . ' ' . $approval_ts[1]['status'] . '"></i>';
+        $status .= '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="' . $this->getColorFinance($approval_ts[2]['status']) . '" data-original-title="' . $approval_ts[2]['date'] .' '. $approval_ts[2]['approval'] . ' ' . $approval_ts[2]['status'] . '"></i>';
 
         return $status;
     }
