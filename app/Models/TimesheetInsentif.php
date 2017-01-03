@@ -198,7 +198,7 @@ and users.id = approval_histories.approval_id order by sequence_id'));
         } else if ($status == "Postponed") {
             return 'color:cyan';
         } else if ($status == "Paid") {
-            return 'color:green';
+            return 'color:#00a65a';
         } else {
             return 'color:orange';
         }

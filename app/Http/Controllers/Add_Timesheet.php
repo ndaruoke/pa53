@@ -281,6 +281,7 @@ class Add_Timesheet extends Controller
                         'keterangan' => $value['desc'],
                         //    'end_time'=> $value['end'],
                         'timesheet_id' => $id,
+                        'status' => $approval_status
                         //   'project_id'=> $value['project'],
                     ] + (isset($value['id']) ? array('id' => $value['id']) : array());
             }
@@ -295,6 +296,7 @@ class Add_Timesheet extends Controller
                         'keterangan' => $value['desc'],
                         'lokasi' => $value['lokasi'],
                         'timesheet_id' => $id,
+                        'status' => $approval_status
                         //   'project_id'=> $value['project'],
                     ] + (isset($value['id']) ? array('id' => $value['id']) : array());
             }
@@ -445,17 +447,58 @@ class Add_Timesheet extends Controller
         return $results;
     }
 
+    function in_multiarray($elem, $array,$field)
+    {
+        $top = sizeof($array) - 1;
+        $bottom = 0;
+        while($bottom <= $top)
+        {
+            if($array[$bottom][$field] == $elem)
+                return true;
+            else 
+                if(is_array($array[$bottom][$field]))
+                    if(in_multiarray($elem, ($array[$bottom][$field])))
+                        return true;
+
+            $bottom++;
+        }        
+        return false;
+    }
+
     public function getColumns()
     {
-        // return response()->json( $this->getTunjanganPerumahan());
-
+        $array = DB::select(DB::raw('select approval_histories.approval_status, count(approval_histories.approval_status)total from approval_histories,timesheet_details,timesheets WHERE transaction_type=2 and timesheet_details.timesheet_id = timesheets.id and approval_histories.transaction_id = timesheet_details.id and timesheets.id = 1 group by approval_histories.approval_status'));
+        //return response()->json($array);
+        $appr = array();
+        foreach($array as $a){
+            //array_push($appr,array($a->approval_status=>$a->total));
+            if($a->approval_status == 0){
+                $status = 'pending';
+            } else if($a->approval_status == 1){
+                $status = 'approved';
+            } else if($a->approval_status == 2){
+                $status = 'rejected';
+            } else if($a->approval_status == 3){
+                $status = 'postponed';
+            } else if($a->approval_status == 4){
+                $status = 'paid';
+            } 
+            $appr[$status]=$a->total;
+        }
+        $color = 'orange';
+        if(isset($appr['rejected']) && $appr['rejected'] > 0){
+            $color = '#dd4b39';
+        };
+        $statuses = '<i class="fa fa-fw fa-circle" title="" style="color:"'.$color.'></i>';
+        return $statuses;
+        return $this->in_multiarray("1", json_encode($array),"approval_status");
         return response()->json(Timesheet::where('user_id','=',1)->get());
 
         return response()->json(Timesheet::where('user_id', '=', Auth::user()->id)->get());
         return Auth::user()->id;
         return response()->json($this->populateSummary());
         // return response()->json(Timesheet::all());
-        //return response()->json(DB::select(DB::raw('SELECT id,periode,week, MONTHNAME(STR_TO_DATE(month, "%m")) as month,year FROM `timesheets`')));
+        //return response()->json(DB::select(DB::raw('select approval_histories.approval_status, count(approval_histories.approval_status) from approval_histories,timesheet_details,timesheets WHERE transaction_type=2 and timesheet_details.timesheet_id = timesheets.id and approval_histories.transaction_id = timesheet_details.id and timesheets.id = 1 group by approval_histories.approval_status')));
         //return response()->json(DB::table('timesheets')->select(['id', 'periode', 'week', 'month', 'year'])->get());
         $columns = ['id', 'periode', 'week', 'month', 'year'];
         if (Datatables::getRequest()->ajax()) {

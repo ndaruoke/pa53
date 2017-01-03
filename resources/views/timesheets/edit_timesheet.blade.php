@@ -323,6 +323,7 @@
                                 </th>
                             </tr>
                             @foreach ($timesheet_insentif as $row=>$detail)
+                                @if($detail->status != 1)
                                 <tr>
 
                                     <td>
@@ -343,6 +344,30 @@
                                     <td><a href="javascript:void(0);" class="remove"><span
                                                     class="glyphicon glyphicon-remove"></span></a></td>
                                 </tr>
+                                @else
+                                <tr>
+                                    <td>
+                                    {{ Form::hidden('insentif['.$row.'][id]', $detail->id) }}
+                                    {{ Form::date('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled'=>'')) }}
+                                    {{ Form::hidden('insentif['.$row.'][date]', $detail->date) }}
+                                    <td>
+                                    {{ Form::hidden('insentif['.$row.'][project_id]', $detail->project_id) }}
+                                    {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','disabled'=>'']) !!}
+                                    </td>
+                                    <td>
+                                    {{ Form::hidden('insentif['.$row.'][lokasi]', $detail->Lokasi) }}
+                                    {!! Form::select('insentif['.$row.'][lokasi]', [''=>'']+$nonlokal, $detail->Lokasi, ['class' => 'form-control ','onchange'=>'onChangeLocation(this,'.$row.')','disabled'=>'']) !!}
+                                    </td>
+                                    <td>
+                                    {{ Form::text('insentif['.$row.'][value]', $detail->value, array('class' => 'form-control money','id'=>'insentiv'.$row.'value','readonly'=>'')) }}
+                                    <td>
+                                        {{ Form::text('insentif['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control','readonly'=>'')) }}
+                                    </td>
+                                    <td>{!!$detail->approval!!}</td>
+                                    <td><a href="javascript:void(0);" class="remove"><span
+                                                    class="glyphicon glyphicon-remove"></span></a></td>
+                                </tr>
+                                @endif
                             @endforeach
                         </table>
                     </div>
@@ -373,6 +398,7 @@
                                 </th>
                             </tr>
                             @foreach ($timesheet_transport as $row=>$detail)
+                                @if($detail->status != 1)
                                 <tr>
                                     <td>
                                     {{ Form::hidden('trans['.$row.'][id]', $detail->id) }}
@@ -386,22 +412,52 @@
                                         {{ Form::text('trans['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control')) }}
                                     </td>
                                     <td>
-           <center>
-                <p>
-                    <a href="javascript:changeProfile({{$row}})" style="text-decoration: none;"><i                               class="glyphicon glyphicon-edit"></i> Change</a>&nbsp;&nbsp;
-                    <a href="javascript:removeFile({{$row}})" style="color: red;text-decoration: none;"><i
-                                class="glyphicon glyphicon-trash"></i>
-                        Remove</a>&nbsp;&nbsp;
-                    <a target="_blank" href="{{asset('upload')}}/{{$detail->file}}" id="dl{{$row}}">{{$detail->file}}</a>
-                </p>
-                <input type="text" name="trans[{{$row}}][file]" id="flname{{$row}}" style="display: none" value="{{$detail->file}}">
-                <input type="file" id="file{{$row}}" onchange="fileChange({{$row}})" style="display: none"/>
-            </center>
+                                    <center>
+                                            <p>
+                                                <a href="javascript:changeProfile({{$row}})" style="text-decoration: none;"><i                               class="glyphicon glyphicon-edit"></i> Change</a>&nbsp;&nbsp;
+                                                <a href="javascript:removeFile({{$row}})" style="color: red;text-decoration: none;"><i
+                                                            class="glyphicon glyphicon-trash"></i>
+                                                    Remove</a>&nbsp;&nbsp;
+                                                <a target="_blank" href="{{asset('upload')}}/{{$detail->file}}" id="dl{{$row}}">{{$detail->file}}</a>
+                                            </p>
+                                            <input type="text" name="trans[{{$row}}][file]" id="flname{{$row}}" style="display: none" value="{{$detail->file}}">
+                                            <input type="file" id="file{{$row}}" onchange="fileChange({{$row}})" style="display: none"/>
+                                        </center>
                                     </td>
                                     <td>{!!$detail->approval!!}</td>
                                     <td><a href="javascript:void(0);" class="remove">
                                     <span class="glyphicon glyphicon-remove"></span></a></td>
                                 </tr>
+                                @else
+                                <tr>
+                                    <td>
+                                    {{ Form::hidden('trans['.$row.'][id]', $detail->id) }}
+                                    {{ Form::hidden('trans['.$row.'][date]', $detail->date) }}
+                                    {{ Form::date('trans['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled'=>'')) }}
+                                    <td>
+                                    {{ Form::hidden('trans['.$row.'][project_id]', $detail->project_id) }}
+                                    {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','disabled'=>'']) !!}
+                                    </td>
+                                    <td>
+                                    {{ Form::hidden('trans['.$row.'][value]', $detail->value) }}
+                                    {{ Form::text('trans['.$row.'][value]', $detail->value, array('class' => 'form-control money','readonly'=>'')) }}
+                                    <td>
+                                        {{ Form::text('trans['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control','readonly'=>'')) }}
+                                    </td>
+                                    <td>
+                                    <center>
+                                            <p>
+                                                <a target="_blank" href="{{asset('upload')}}/{{$detail->file}}" id="dl{{$row}}">{{$detail->file}}</a>
+                                            </p>
+                                            <input type="text" name="trans[{{$row}}][file]" id="flname{{$row}}" style="display: none" value="{{$detail->file}}">
+                                            <input type="file" id="file{{$row}}" onchange="fileChange({{$row}})" style="display: none"/>
+                                        </center>
+                                    </td>
+                                    <td>{!!$detail->approval!!}</td>
+                                    <td><a href="javascript:void(0);" class="remove">
+                                    <span class="glyphicon glyphicon-remove"></span></a></td>
+                                </tr>
+                                @endif
                             @endforeach
                         </table>
                     </div>
@@ -420,8 +476,11 @@
             {{ Form::hidden('period', getListDate($timesheet->year,$timesheet->month,$timesheet->week)['period']) }}
 
             <div class="form-group col-sm-12">
+            @if($timesheet->action === 'Disimpan')
+            {!! Form::submit('Save',['name'=>'action','class' => 'btn btn-primary']) !!}
+            @endif
                 {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
-                {!! Form::submit('Save',['name'=>'action','class' => 'btn btn-primary']) !!}
+                
             </div>
             <div class="clearfix"></div>
             {!! Form::close() !!}

@@ -293,21 +293,29 @@ class Timesheet extends Model
 
     public function getApprovalAttribute()
     {
-        $liststatus = DB::select(DB::raw("select if(approval_histories.approval_status = 0,'approved','rejected')status , count(approval_histories.approval_status)total from timesheet_details, approval_histories where timesheet_details.id = approval_histories.transaction_id and timesheet_details.timesheet_id = " . $this->id . " and approval_histories.transaction_type = 12  group by status"));
-        $statuses = '';
-        foreach ($liststatus as $status) {
-            if ($status->status === 'approved') {
-                //
-                $statuses = $statuses . ' ' . '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="color:#00a65a" data-original-title="' . $status->status . ' (' . $status->total . ')"></i>';
-            } else {
-                $statuses = $statuses . ' ' . '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="color:#dd4b39" data-original-title="' . $status->status . ' (' . $status->total . ')"></i>';
-            }
-
+              $array = DB::select(DB::raw('select approval_histories.approval_status, count(approval_histories.approval_status)total from approval_histories,timesheet_details,timesheets WHERE transaction_type=2 and timesheet_details.timesheet_id = timesheets.id and approval_histories.transaction_id = timesheet_details.id and timesheets.id = '.$this->id.' group by approval_histories.approval_status'));
+        //return response()->json($array);
+        $appr = array();
+        foreach($array as $a){
+            //array_push($appr,array($a->approval_status=>$a->total));
+            if($a->approval_status == 0){
+                $status = 'pending';
+            } else if($a->approval_status == 1){
+                $status = 'approved';
+            } else if($a->approval_status == 2){
+                $status = 'rejected';
+            } else if($a->approval_status == 3){
+                $status = 'postponed';
+            } else if($a->approval_status == 4){
+                $status = 'paid';
+            } 
+            $appr[$status]=$a->total;
         }
-        if ($statuses === '') {
-            // 'waiting';
-            $statuses = '<i class="fa fa-fw fa-circle" data-toggle="tooltip" title="" style="color:#f39c12" data-original-title="Verivikasi"></i>';
-        }
+        $color = 'orange';
+        if(isset($appr['rejected']) && $appr['rejected'] > 0){
+            $color = '#dd4b39';
+        };
+        $statuses = '<i class="fa fa-fw fa-circle" title="" style="color:"'.$color.'></i>';
         return $statuses;
     }
 
