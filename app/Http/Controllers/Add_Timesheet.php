@@ -354,7 +354,7 @@ class Add_Timesheet extends Controller
 
             $approval = User::where('id', '=', $project->pm_user_id)->first();
 
-            $insentifExist = $this->isApprovalHistoryExist($td->id, 4, $user, $approval);
+            $insentifExist = $this->isApprovalHistoryExist($ti->id, 4, $user, $approval);
 
             if (!empty($insentifExist)) {
                 $insentif = $this->updateApprovalHistory($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
@@ -369,7 +369,7 @@ class Add_Timesheet extends Controller
 
             $approval = User::where('id', '=', $project->pm_user_id)->first();
 
-            $transportExist = $this->isApprovalHistoryExist($td->id, 3, $user, $approval);
+            $transportExist = $this->isApprovalHistoryExist($tt->id, 3, $user, $approval);
 
             if (!empty($transportExist)) {
                 $transport = $this->updateApprovalHistory($transportExist->id, $tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
