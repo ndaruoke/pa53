@@ -272,7 +272,7 @@
                             @foreach ($timesheet_insentif as $row=>$detail)
                                 <tr>
                                     <td>
-                                    {{ Form::text('insentif['.$row.'][date]', substr($detail->date,0,10), array('class' => 'form-control','disabled')) }}
+                                    {{ Form::text('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled')) }}
                                     <td>
                                         {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2', 'disabled']) !!}
                                     </td>
@@ -311,7 +311,7 @@
                             @foreach ($timesheet_transport as $row=>$detail)
                                 <tr>
                                     <td>
-                                    {{ Form::text('trans['.$row.'][date]', substr($detail->date,0,10), array('class' => 'form-control','disabled')) }}
+                                    {{ Form::text('trans['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled')) }}
                                     <td>
                                         {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','disabled']) !!}
                                     </td>
