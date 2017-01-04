@@ -151,9 +151,9 @@
                                 </td>
                                 <td class="col-md-1">{{$date}}{{ Form::hidden('timesheet['.$row.'][date]', $date) }}</td>
                                 <td class="col-md-1"><input type="text" name="timesheet[{{$row}}][start]"
-                                                            class="form-control timepicker" placeholder="00:00"></td>
+                                                            class="form-control timepicker" placeholder="08:00"></td>
                                 <td class="col-md-1"><input type="text" name="timesheet[{{$row}}][end]"
-                                                            class="form-control timepicker" placeholder="00:00"></td>
+                                                            class="form-control timepicker" placeholder="17:00"></td>
                                 <td>
                                     {!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, null, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi']) !!}
                                 </td>
