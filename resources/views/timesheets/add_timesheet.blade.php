@@ -32,10 +32,9 @@
                 <option value="12">Desember</option>
             </select>
             <select name="year" class="form-control select2" style="width: 20%;">
-                <option>2016</option>
                 <option>2017</option>
-                <option>2016</option>
-                <option>2017</option>
+                <option>2018</option>
+                <option>2019</option>
             </select>
             <span class="input-group-btn">
                     <button type="submit" class="btn btn-info btn-flat">Tampilkan</button>
