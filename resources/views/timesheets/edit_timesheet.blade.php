@@ -232,7 +232,7 @@
                                     <tr>
                                         {{ Form::hidden('timesheet['.$row.'][id]', $detail->id) }}
                                         <td class="col-md-1">
-                                            {{ Form::checkbox('timesheet['.$row.'][select]', true, $detail->selected,['disabled'=>'']) }}
+                                            <!--{{ Form::checkbox('timesheet['.$row.'][select]', true, $detail->selected,['disabled'=>'']) }}-->
                                             {{ Form::hidden('timesheet['.$row.'][select]',  $detail->selected) }}
                                         </td>
                                         <td>
