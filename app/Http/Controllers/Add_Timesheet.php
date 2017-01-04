@@ -337,7 +337,7 @@ class Add_Timesheet extends Controller
             $project = DB::table('projects')
                 ->where('id', '=', $td->project_id)->first();
 
-            $approval = User::where('id', '=', $project->pm_user_id);
+            $approval = User::where('id', '=', $project->pm_user_id)->first();
 
             $detailExist = $this->isApprovalHistoryExist($td->id, 2, $user, $approval);
 
