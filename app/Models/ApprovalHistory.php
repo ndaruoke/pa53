@@ -83,7 +83,8 @@ class ApprovalHistory extends Model
         'sequence_id' => 'required',
         'transaction_id' => 'required',
         'transaction_type' => 'required',
-        'user_id' => 'required'
+        'user_id' => 'required',
+        'approval_note' => 'required'
     ];
     public $table = 'approval_histories';
     public $fillable = [
@@ -110,7 +111,8 @@ class ApprovalHistory extends Model
         'user_id' => 'integer',
         'approval_id' => 'integer',
         'group_approval_id' => 'integer',
-        'transaction_type' => 'integer'
+        'transaction_type' => 'integer',
+        'approval_note' => 'string'
     ];
 
     public function timesheets()
