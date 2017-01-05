@@ -97,6 +97,9 @@ class TimesheetApprovalController extends AppBaseController
         $timesheets = Timesheet::where('approval_id', '=', $approvalId)->where('user_id', '=', $userId)->get();
         $timesheet_details = DB::
         table('timesheet_details')->
+        select('timesheet_details.date','timesheet_details.id','timesheet_details.activity','timesheet_details.approval_status',
+            'timesheet_details.project_id','timesheet_details.start_time','timesheet_details.end_time',
+            'timesheet_details.lokasi','timesheet_details.activity_detail','approval_histories.transaction_id')->
         join('approval_histories', 'approval_histories.transaction_id', 'timesheet_details.id')->
         where('approval_histories.approval_id', '=', $approvalId)->
         where('approval_histories.approval_status', '=', $approvalStatus)->
@@ -105,6 +108,7 @@ class TimesheetApprovalController extends AppBaseController
         get();
         $timesheet_insentif = DB::
         table('timesheet_insentif')->
+        select('timesheet_insentif.date','timesheet_insentif.id','timesheet_insentif.keterangan','timesheet_insentif.status','timesheet_insentif.value','timesheet_insentif.project_id', 'approval_histories.transaction_id')->
         join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')->
         where('approval_histories.approval_id', '=', $approvalId)->
         where('approval_histories.approval_status', '=', $approvalStatus)->
@@ -610,7 +614,6 @@ class TimesheetApprovalController extends AppBaseController
         if ($approvalHistory->sequence_id == 0 || $approvalHistory->sequence_id == 1) {
 
             $isExist = $this->isApprovalHistoryExist($approvalHistory->transaction_id, $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
-
 
             if ($isExist==null) {
                 $approvalHistory = $this->insertApprovalHistory($approvalHistory->date, $approvalHistory->note, $sequence, $approvalHistory->transaction_id,
