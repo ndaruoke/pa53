@@ -434,7 +434,7 @@ class TimesheetApprovalController extends AppBaseController
                 foreach ($approvalHistoryDetailId as $id) {
                     ApprovalHistory::reject($id->id);
 
-                    $approval = ApprovalHistory::find($id->id);
+                    $approval = DB::table('approval_histories')->where('id','=',$id->id)->first();
                     $approval->approval_note = $request->approval_note;
                     $approval->save();
                 }
