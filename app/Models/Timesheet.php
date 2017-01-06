@@ -109,7 +109,8 @@ class Timesheet extends Model
 
         foreach ($result as $r) {
             $r->count = Timesheet::getapprovalcount($r->user_id, $approval, $approvalStatus);
-            $r->insentif = Timesheet::gettotaltunjangan($r->user_id, $r->approval_id, $approvalStatus);
+            $total = Timesheet::gettotaltunjangan($r->user_id, $r->approval_id, $approvalStatus);
+            $r->insentif = "Rp ". number_format($total, 0 , ',' , '.' );
         }
 
         return $result;
