@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Constant;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\Timesheet;
@@ -57,8 +58,8 @@ class Add_Timesheet extends Controller
 
     public function show($id)
     {
-        $lokasi = array('JABODETABEK' => 'JABODETABEK', 'DOMESTIK P. JAWA' => 'DOMESTIK P. JAWA', 'DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA', 'INTERNATIONAL' => 'INTERNATIONAL', 'UNCLAIMABLE' => 'UNCLAIMABLE');
-        $activity = array('CUTI' => 'CUTI', 'LIBUR' => 'LIBUR', 'IDLE' => 'IDLE', 'SAKIT' => 'SAKIT', 'SUPPORT' => 'SUPPORT', 'IMPLEMENTASI' => 'IMPLEMENTASI', 'MANAGED OPERATION' => 'MANAGED OPERATION');
+        $lokasi = ['' => ''] + Constant::where('category', 'Location')->orderBy('name', 'asc')->pluck('name', 'value')->all();
+        $activity = ['' => ''] + Constant::where('category', 'Activity')->orderBy('name', 'asc')->pluck('name', 'value')->all();
         $project = Project::pluck('project_name', 'id')->all();
         $timesheet = Timesheet::where('id', '=', $id)->first();
         $timesheet_details = TimesheetDetail::where('timesheet_id', '=', $id)->get();
@@ -197,8 +198,8 @@ class Add_Timesheet extends Controller
             return redirect()->route('add_timesheet.show', ['id' => $ts]);
         }
 
-        $lokasi = array('JABODETABEK' => 'JABODETABEK', 'DOMESTIK P. JAWA' => 'DOMESTIK P. JAWA', 'DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA', 'INTERNATIONAL' => 'INTERNATIONAL', 'UNCLAIMABLE' => 'UNCLAIMABLE');
-        $activity = array('CUTI' => 'CUTI', 'LIBUR' => 'LIBUR', 'IDLE' => 'IDLE', 'SAKIT' => 'SAKIT', 'SUPPORT' => 'SUPPORT', 'IMPLEMENTASI' => 'IMPLEMENTASI', 'MANAGED OPERATION' => 'MANAGED OPERATION');
+        $lokasi = ['' => ''] + Constant::where('category', 'Location')->orderBy('name', 'asc')->pluck('name', 'value')->all();
+        $activity = ['' => ''] + Constant::where('category', 'Activity')->orderBy('name', 'asc')->pluck('name', 'value')->all();
         $project = Project::pluck('project_name', 'id')->all();
         $nonlokal = array('DOMESTIK P. JAWA' => 'DOMESTIK P. JAWA', 'DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA', 'INTERNATIONAL' => 'INTERNATIONAL');
         $bantuan_perumahan = $this->getTunjanganPerumahan();
@@ -324,10 +325,12 @@ class Add_Timesheet extends Controller
 
         $timesheetInsentif = DB::table('timesheet_insentif')
             ->where('timesheet_id', '=', $timesheetId)
+            ->where('status','=',1)
             ->get();
 
         $timesheetTransport = DB::table('timesheet_transport')
             ->where('timesheet_id', '=', $timesheetId)
+            ->where('status','=',1)
             ->get();
 
         $user = Auth::user()->id;
@@ -341,7 +344,7 @@ class Add_Timesheet extends Controller
 
             $detailExist = $this->isApprovalHistoryExist($td->id, 2, $user, $approval);
 
-            if (!empty($detailExist)) {
+            if (!is_null($detailExist)) {
                 $detail = $this->updateApprovalHistory($detailExist->id, $td->date, $td->activity, $td->id, 2, $user, $approval['id']);
             } else {
                 $detail = $this->insertApprovalHistory($td->date, $td->activity, $td->id, 2, $user, $approval['id']);
@@ -356,7 +359,7 @@ class Add_Timesheet extends Controller
 
             $insentifExist = $this->isApprovalHistoryExist($ti->id, 4, $user, $approval);
 
-            if (!empty($insentifExist)) {
+            if (!is_null($insentifExist)) {
                 $insentif = $this->updateApprovalHistory($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
             } else {
                 $insentif = $this->insertApprovalHistory($ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
@@ -371,7 +374,7 @@ class Add_Timesheet extends Controller
 
             $transportExist = $this->isApprovalHistoryExist($tt->id, 3, $user, $approval);
 
-            if (!empty($transportExist)) {
+            if (!is_null($transportExist)) {
                 $transport = $this->updateApprovalHistory($transportExist->id, $tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
             } else {
                 $transport = $this->insertApprovalHistory($tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);

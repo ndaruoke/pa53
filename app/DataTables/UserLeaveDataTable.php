@@ -48,7 +48,7 @@ class UserLeaveDataTable extends DataTable
                 'scrollX' => false,
                 'buttons' => [
                     'print',
-                    'reset',
+
                     'reload',
                     [
                          'extend'  => 'collection',

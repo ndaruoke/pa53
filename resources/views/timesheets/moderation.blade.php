@@ -46,7 +46,31 @@
                 <div class="small-box bg-blue pull-left">
                     <div class="inner">
                         <h3>{{$count->timesheetpaid}}</h3>
-                        <p>Paid Request</p>
+                        <p>Paid Transaction</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-android-checkbox-blank"></i>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="small-box bg-orange pull-left">
+                    <div class="inner">
+                        <h3>{{$count->timesheetonhold}}</h3>
+                        <p>On Hold Transaction</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-android-checkbox-blank"></i>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="small-box bg-orange pull-left">
+                    <div class="inner">
+                        <h3>{{$count->timesheetoverbudget}}</h3>
+                        <p>Over Budget</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-android-checkbox-blank"></i>
@@ -72,10 +96,26 @@
                 <span class="input-group-btn">
                     <button type="reset" class="btn" disabled="disabled">Timesheet</button>
                 </span>
-                        {!! Form::select('approvalStatus', $approvalStatus, $status, ['class' => 'form-control select2']) !!}
+                        <span>
+                            @if($user['role']!=4)
+                                {!! Form::select('approvalStatus',
+                                  [0 => 'Pending', 1 => 'Approve', 2 => 'Reject'],
+                                  $status,
+                                  ['class' => 'form-control select2', 'id' => 'approvalStatus'])
+                                !!}
+                            @endif
+                            @if($user['role']==4)
+                                {!! Form::select('approvalStatus',
+                                  [0 => 'Pending', 1 => 'Approve', 2 => 'Reject', 4 => 'Paid', 5 => 'On Hold', 6 => 'Over Budget'],
+                                  $status,
+                                  ['class' => 'form-control select2', 'id' => 'approvalStatus'])
+                                !!}
+                            @endif
+
+                        </span>
                         <span class="input-group-btn">
-                    <button type="submit" class="btn btn-info btn-flat">Tampilkan</button>
-                </span>
+                            <button type="submit" class="btn btn-info btn-flat" >Tampilkan</button>
+                        </span>
                     </div>
                 </div>
 

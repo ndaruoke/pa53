@@ -48,7 +48,7 @@ class ApprovalHistoryDataTable extends DataTable
                 'scrollX' => true,
                 'buttons' => [
                     'print',
-                    'reset',
+
                     'reload',
                     [
                          'extend'  => 'collection',

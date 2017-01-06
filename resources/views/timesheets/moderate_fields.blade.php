@@ -336,8 +336,7 @@
             {{ Form::hidden('userId', $userId) }}
 
             <div class="form-group col-sm-12">
-                @if($approvalStatus==0)
-                    {{ Form::hidden('paid', false) }}
+                @if($approval['role']!=4)
                     {!! Form::select('moderation',
                       [1 => 'Approve', 2 => 'Reject'],
                       null,
@@ -346,9 +345,22 @@
                     {{ Form::text('approval_note', null, array('class' => 'form-control', 'style'=>'visibility:hidden', 'id' => 'approval_note', 'placeholder'=>'rejection note')) }}
                     {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
                 @endif
-                @if($approvalStatus==1)
-                    {{ Form::hidden('paid', true) }}
-                    {!! Form::submit('Paid',['name'=>'action','class' => 'btn btn-primary']) !!}
+                @if($approval['role']==4 && $approvalStatus==0)
+                        {!! Form::select('moderation',
+                          [1 => 'Approve', 2 => 'Reject',5 => 'On Hold', 6 => 'Over Budget'],
+                          null,
+                          ['class' => 'form-control select2', 'id' => 'moderation'])
+                        !!}
+                        {{ Form::text('approval_note', null, array('class' => 'form-control', 'style'=>'visibility:hidden', 'id' => 'approval_note', 'placeholder'=>'rejection note')) }}
+                    {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
+                @endif
+                @if($approval['role']==4 && $approvalStatus==1)
+                    {!! Form::select('moderation',
+                      [4 => 'Paid'],
+                      null,
+                      ['class' => 'form-control select2', 'id' => 'moderation'])
+                    !!}
+                    {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
                 @endif
 
 
@@ -388,7 +400,7 @@
         });
 
         $('#moderation').change(function() {
-            if ($(this).val() == 2) {
+            if ($(this).val() == 2 || $(this).val() == 5) {
                 $('#approval_note').css('visibility', 'visible');
             } else
             {
