@@ -465,6 +465,14 @@
 
     function upload(id) {
         var file_data = $('#file'+id).prop('files')[0];
+        if(!(file_data.name.split('.').pop()==='pdf' || file_data.name.split('.').pop() ==='jpeg')){
+        alert('mohon upload file dengan exstensi jpeg atau pdf');
+        return false;
+        }
+        if((file_data.size/1000000)>3){
+        alert('mohon upload file di bawah 3 MB');
+        return false;
+        }
         var form_data = new FormData();
         form_data.append('file', file_data);
         $.ajaxSetup({

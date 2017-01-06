@@ -112,7 +112,7 @@ class TimesheetTransport extends Model
 
     public function getApprovalAttribute()
     {
-        $approval_ts = DB::select(DB::raw('select sequence_id, approval_histories.date,
+        $approval_ts = DB::select(DB::raw('select sequence_id, approval_histories.moderated_at as date,
         CASE 
         WHEN sequence_id=0 THEN "PM"
         WHEN sequence_id=1 THEN "PMO"

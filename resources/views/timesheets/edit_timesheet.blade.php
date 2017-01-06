@@ -43,6 +43,15 @@
             ?>
 
             <div class="col-md-12">
+            @if(count($alert)>0)
+            <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-ban"></i> Catatan</h4>
+                @foreach ($alert as $a)
+                 {{$a->approval_note}}<br>
+                 @endforeach
+              </div>
+            @endif
                 <div class="box">
                     <div class="box-header with-border">
                         <h3 class="box-title">TIMESHEET SUMMARY</h3>
@@ -706,6 +715,14 @@
 
     function upload(id) {
         var file_data = $('#file'+id).prop('files')[0];
+        if(!(file_data.name.split('.').pop()==='pdf' || file_data.name.split('.').pop() ==='jpeg')){
+        alert('mohon upload file dengan exstensi jpeg atau pdf');
+        return false;
+        }
+        if((file_data.size/1000000)>3){
+        alert('mohon upload file di bawah 3 MB');
+        return false;
+        }
         var form_data = new FormData();
         form_data.append('file', file_data);
         $.ajaxSetup({

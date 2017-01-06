@@ -154,7 +154,7 @@ class TimesheetDetail extends Model
 
     public function getStatusAttribute()
     {
-        $approval_ts = DB::select(DB::raw('select approval_histories.date,sequence_id,
+        $approval_ts = DB::select(DB::raw('select approval_histories.moderated_at as date,sequence_id,
 CASE 
 WHEN sequence_id=0 THEN "PM"
 WHEN sequence_id=1 THEN "PMO"

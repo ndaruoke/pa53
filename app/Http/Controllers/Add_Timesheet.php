@@ -58,6 +58,7 @@ class Add_Timesheet extends Controller
 
     public function show($id)
     {
+        $alert = DB::select(DB::raw("SELECT approval_note FROM approval_histories,timesheets,timesheet_details where timesheet_details.timesheet_id = timesheets.id and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." group by approval_note"));
         $lokasi = ['' => ''] + Constant::where('category', 'Location')->orderBy('name', 'asc')->pluck('name', 'value')->all();
         $activity = ['' => ''] + Constant::where('category', 'Activity')->orderBy('name', 'asc')->pluck('name', 'value')->all();
         $project = Project::pluck('project_name', 'id')->all();
@@ -78,7 +79,7 @@ class Add_Timesheet extends Controller
         $bantuan_perumahan = $this->getTunjanganPerumahan();
         //return response()->json($timesheet_transport);
         $summary = $this->populateSummary($id);
-        return view('timesheets.edit_timesheet', compact('lokasi', 'activity', 'timesheet', 'project', 'id', 'timesheet_details', 'timesheet_insentif', 'timesheet_transport', 'summary', 'nonlokal', 'bantuan_perumahan', 'sum_timesheet_insentif', 'sum_timesheet_transport'));
+        return view('timesheets.edit_timesheet', compact('alert','lokasi', 'activity', 'timesheet', 'project', 'id', 'timesheet_details', 'timesheet_insentif', 'timesheet_transport', 'summary', 'nonlokal', 'bantuan_perumahan', 'sum_timesheet_insentif', 'sum_timesheet_transport'));
     }
 
     public function populateSummary($timesheet_id)
