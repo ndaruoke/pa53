@@ -58,17 +58,23 @@
                                 <td>Tarif Insentif</td>
                                 <td rowspan="5">{{$summary['lokal']['count']}} Hari</td>
                                 <td></td>
-                                <td>Rp. {{$summary['lokal']['Insentif Project']}}</td>
+                                <td>
+                                    {{ Form::text('', $summary['lokal']['Insentif Project'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <td>
                             </tr>
                             <tr>
                                 <td>Tarif Transport Lokal</td>
                                 <td></td>
-                                <td>Rp. {{$summary['lokal']['Transport Lokal']}}</td>
+                                <td>
+                                    {{ Form::text('', $summary['lokal']['Transport Lokal'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <td>
                             </tr>
                             <tr>
                                 <td>Tarif Insentif Luar Kota</td>
                                 <td></td>
-                                <td>Rp. {{$summary['lokal']['Transport Luar Kota']}}</td>
+                                <td>
+                                    {{ Form::text('', $summary['lokal']['Transport Luar Kota'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <td>
                             </tr>
                             <tr>
 
@@ -86,17 +92,23 @@
                                 <td>Tarif Insentif</td>
                                 <td rowspan="5">{{$summary['non_lokal']['count']}} Hari</td>
                                 <td></td>
-                                <td>Rp. {{$summary['non_lokal']['Insentif Project']}}</td>
+                                <td>
+                                    {{ Form::text('', $summary['non_lokal']['Insentif Project'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <td>
                             </tr>
                             <tr>
                                 <td>Tarif Transport Lokal</td>
                                 <td></td>
-                                <td>Rp. {{$summary['non_lokal']['Transport Lokal']}}</td>
+                                <td>
+                                    {{ Form::text('', $summary['non_lokal']['Transport Lokal'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <td>
                             </tr>
                             <tr>
                                 <td>Tarif Insentif Luar Kota</td>
                                 <td></td>
-                                <td>Rp. {{$summary['non_lokal']['Transport Luar Kota']}}</td>
+                                <td>
+                                {{ Form::text('', $summary['non_lokal']['Transport Luar Kota'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <td>
                             </tr>
                             <tr>
 
@@ -115,17 +127,23 @@
                                 <td>Tarif Insentif</td>
                                 <td rowspan="5">{{$summary['luar_jawa']['count']}} Hari</td>
                                 <td></td>
-                                <td>Rp. {{$summary['luar_jawa']['Insentif Project']}}</td>
+                                <td>
+                                {{ Form::text('', $summary['luar_jawa']['Insentif Project'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <td>
                             </tr>
                             <tr>
                                 <td>Tarif Transport Lokal</td>
                                 <td></td>
-                                <td>Rp. {{$summary['luar_jawa']['Transport Lokal']}}</td>
+                                <td>
+                                {{ Form::text('', $summary['luar_jawa']['Transport Lokal'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <td>
                             </tr>
                             <tr>
                                 <td>Tarif Insentif Luar Kota</td>
                                 <td></td>
-                                <td>Rp. {{$summary['luar_jawa']['Transport Luar Kota']}}</td>
+                                <td>
+                                {{ Form::text('', $summary['luar_jawa']['Transport Luar Kota'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <td>
                             </tr>
                             <tr>
 
@@ -143,12 +161,16 @@
                                 <td>Tarif Insentif</td>
                                 <td rowspan="3">{{$summary['internasional']['count']}} Hari</td>
                                 <td></td>
-                                <td>Rp. {{$summary['internasional']['Insentif Project']}}</td>
+                                <td>
+                                    {{ Form::text('', $summary['internasional']['Insentif Project'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <td>
                             </tr>
                             <tr>
                                 <td>Tarif Transport Lokal</td>
                                 <td></td>
-                                <td>Rp. {{$summary['internasional']['Transport Lokal']}}</td>
+                                <td>
+                                    {{ Form::text('', $summary['internasional']['Transport Lokal'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -161,7 +183,9 @@
 
                                 <td rowspan="1">{{$summary['perumahan']['count']}} Hari</td>
                                 <td></td>
-                                <td>Rp. {{$summary['perumahan']['total']}}</td>
+                                <td>
+                                    {{ Form::text('', $summary['perumahan']['total'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <td>
                             </tr>
                             </tr>
                             <tr>
@@ -169,14 +193,18 @@
 
                                 <td rowspan="1">{{$summary['adcost']['count']}} Hari</td>
                                 <td></td>
-                                <td>Rp. {{$summary['adcost']['total']}}</td>
+                                <td>
+                                    {{ Form::text('', $summary['adcost']['total'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <td>
                             </tr>
                             </tr>
                             <tr>
                                 <th>TOTAL</th>
                                 <th></th>
                                 <th></th>
-                                <th>Rp. {{$summary['total']}}</th>
+                                <th>
+                                    {{ Form::text('', $summary['total'], array('class' => 'form-control money','readonly'=>'readonly')) }}
+                                <th>
                             </tr>
                             <tr>
                                 <th></th>
@@ -277,7 +305,7 @@
                                         {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2', 'disabled']) !!}
                                     </td>
                                     <td>
-                                    {{ Form::text('insentif['.$row.'][value]', $detail->value, array('class' => 'form-control', 'disabled')) }}
+                                    {{ Form::text('insentif['.$row.'][value]', $detail->value, array('class' => 'form-control money', 'disabled')) }}
                                     <td>
                                     <td>
                                         {{ Form::text('insentif['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control', 'disabled')) }}
@@ -316,7 +344,7 @@
                                         {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','disabled']) !!}
                                     </td>
                                     <td>
-                                    {{ Form::text('trans['.$row.'][value]', $detail->value, array('class' => 'form-control','disabled')) }}
+                                    {{ Form::text('trans['.$row.'][value]', $detail->value, array('class' => 'form-control money','disabled')) }}
                                     <td>
                                         {{ Form::text('trans['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control','disabled')) }}
                                     </td>
@@ -376,6 +404,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
     <script>
         $(function () {
+
+            VMasker(document.querySelectorAll(".money")).maskMoney({
+                // Decimal precision -> "90"
+                precision: 0,
+                // Decimal separator -> ",90"
+                separator: ',',
+                // Number delimiter -> "12.345.678"
+                delimiter: '.',
+                // Money unit -> "R$ 12.345.678,90"
+                unit: 'Rp'
+            });
+
             //Enable iCheck plugin for checkboxes
             //iCheck for checkbox and radio inputs
             $('.mailbox-messages input[type="checkbox"]').iCheck({
