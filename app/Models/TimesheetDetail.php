@@ -161,7 +161,7 @@ WHEN sequence_id=1 THEN "PMO"
 WHEN sequence_id=2 THEN "Finance"
 END approval, 
 approval_id
-,users.name,note ,approval_status
+,note ,approval_status
 
 , 
         CASE 
@@ -173,9 +173,9 @@ approval_id
         WHEN approval_status=5 THEN "Onhold"
         WHEN approval_status=6 THEN "Overbudget"
         END status
-from approval_histories,users where transaction_type = 2 
+from approval_histories where transaction_type = 2 
 and transaction_id = ' . $this->id . '
-and users.id = approval_histories.approval_id order by sequence_id'));
+order by sequence_id'));
 
         $approval_ts = json_decode(json_encode($approval_ts), True);
 //return response()->json( $approval_ts);
@@ -187,7 +187,7 @@ and users.id = approval_histories.approval_id order by sequence_id'));
                 'date' => '',
                 'approval_id' => '',
                 'approval' => 'PM',
-                'name' => 'test',
+             //   'name' => 'test',
                 'approval_status' => 3,
                 'status' => 'Pending'
             );
@@ -199,7 +199,7 @@ and users.id = approval_histories.approval_id order by sequence_id'));
                 'date' => '',
                 'approval_id' => '',
                 'approval' => 'PMO',
-                'name' => 'test',
+              //  'name' => 'test',
                 'approval_status' => 3,
                 'status' => 'Pending'
             );
@@ -211,7 +211,7 @@ and users.id = approval_histories.approval_id order by sequence_id'));
                 'date' => '',
                 'approval_id' => '',
                 'approval' => 'Finance',
-                'name' => 'test',
+              //  'name' => 'test',
                 'approval_status' => 3,
                 'status' => 'Pending'
             );
