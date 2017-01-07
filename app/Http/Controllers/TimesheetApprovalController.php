@@ -817,8 +817,11 @@ class TimesheetApprovalController extends AppBaseController
                 $approvalHistory = $this->insertApprovalHistory($approvalHistory->date, $approvalHistory->note, $sequence, $approvalHistory->transaction_id,
                     $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
             } else {
-                $approvalHistory = $this->updateApprovalHistory($isExist->id, $approvalHistory->date, $approvalHistory->note, $sequence, $approvalHistory->transaction_id,
-                    $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
+                if($isExist->approval_status != 1)
+                {
+                    $approvalHistory = $this->updateApprovalHistory($isExist->id, $approvalHistory->date, $approvalHistory->note, $sequence, $approvalHistory->transaction_id,
+                        $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
+                }
             }
 
         }
