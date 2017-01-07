@@ -214,7 +214,7 @@ class TimesheetApprovalController extends AppBaseController
                     }
                 }
 
-            } else if ($m->lokasi === "LUARJAWA") {
+            } else if ($m->lokasi === "DOMESTIK L. JAWA") {
                 $summary['luar_jawa']['count'] = $m->total;
                 if (!empty ($arr)) {
                     foreach ($arr['luar_jawa'] as $key => $value) {
@@ -222,7 +222,7 @@ class TimesheetApprovalController extends AppBaseController
                         //  echo $key. ' = '.$value. ' * '.$m->total.' '.$value*$m->total.'<br>';
                     }
                 }
-            } else if ($m->lokasi === "JAWA") {
+            } else if ($m->lokasi === "DOMESTIK P. JAWA") {
                 $summary['non_lokal']['count'] = $m->total;
                 if (!empty ($arr)) {
                     foreach ($arr['non_lokal'] as $key => $value) {
