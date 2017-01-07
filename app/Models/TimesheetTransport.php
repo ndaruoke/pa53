@@ -126,6 +126,8 @@ class TimesheetTransport extends Model
         WHEN approval_status=2 THEN "Rejected"
         WHEN approval_status=3 THEN "Postponed"
         WHEN approval_status=4 THEN "Paid"
+        WHEN approval_status=5 THEN "Onhold"
+        WHEN approval_status=6 THEN "Overbudget"
         END status
         from approval_histories,users where transaction_type = 4 
         and transaction_id = ' . $this->id . '
@@ -185,7 +187,14 @@ class TimesheetTransport extends Model
             return 'color:#dd4b39';
         } else if ($status == "Postponed") {
             return 'color:cyan';
-        } else if ($status == "Paid") {
+        } 
+        else if ($status == "Onhold") {
+            return 'color:#dd4b39';
+        }
+        else if ($status == "Overbudget") {
+            return 'color:#dd4b39';
+        }
+        else if ($status == "Paid") {
             return 'color:green';
         } else {
             return 'color:orange';
@@ -197,7 +206,14 @@ class TimesheetTransport extends Model
             return 'color:blue';
         } else if ($status == "Rejected") {
             return 'color:#dd4b39';
-        } else if ($status == "Postponed") {
+        } 
+        else if ($status == "Onhold") {
+            return 'color:#dd4b39';
+        }
+        else if ($status == "Overbudget") {
+            return 'color:#dd4b39';
+        }
+        else if ($status == "Postponed") {
             return 'color:cyan';
         } else if ($status == "Paid") {
             return 'color:green';
