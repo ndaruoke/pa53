@@ -331,17 +331,16 @@ class TimesheetApprovalController extends AppBaseController
      */
     public function moderationUpdate(Request $request)
     {
-        if (empty($request->moderation )&& $request->paid != "1") {
-            Flash::error('Please choose reject or approve');
-
-            return back()->withInput();
-        }
-
         $userId = $request->userId;
         $approval = Auth::user();
 
         foreach ($request->timesheetdetail as $key => $value) {
             if (!empty($value['choose'])) $timesheetDetailId[] = ['id' => $value['transaction_id']];
+            else
+            {
+                Flash::error('Please tick timesheet detail');
+                return back()->withInput();
+            }
         }
 
         if (!empty($request->trans)) {
@@ -527,22 +526,35 @@ class TimesheetApprovalController extends AppBaseController
         if($request->moderation == "4") //paid
         {
             $this->paidTimesheetDetail($timesheetDetailId, $approval);
-            $this->paidAdCost($insId, $approval);
-            $this->paidTransport($transId, $approval);
+            if(!is_null($insId))
+            {
+                $this->paidAdCost($insId, $approval);
+            }
+            if(!is_null($transId)) {
+                $this->paidTransport($transId, $approval);
+            }
         }
 
         if($request->moderation == "5") //onhold
         {
             $this->onholdTimesheetDetail($timesheetDetailId, $approval, $request);
-            $this->onholdAdCost($insId, $approval, $request);
-            $this->onholdTransport($transId, $approval, $request);
+            if(!is_null($insId)) {
+                $this->onholdAdCost($insId, $approval, $request);
+            }
+            if(!is_null($transId)) {
+                $this->onholdTransport($transId, $approval, $request);
+            }
         }
 
         if($request->moderation == "6") //over budget
         {
             $this->overbudgetTimesheetDetail($timesheetDetailId, $approval);
-            $this->overbudgetAdCost($insId, $approval);
-            $this->overbudgetTransport($transId, $approval);
+            if(!is_null($insId)) {
+                $this->overbudgetAdCost($insId, $approval);
+            }
+            if(!is_null($transId)) {
+                $this->overbudgetTransport($transId, $approval);
+            }
         }
 
         if($request->moderation == 2 && empty($request->approval_note))

@@ -5,8 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3dd7a13a-f1b8-452f-940f-5fa9045cf6b8" name="Default" comment="add audit and separate leave from admin and non admin user">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Add_Timesheet.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Add_Timesheet.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php" />
     </list>
     <ignored path="pa53.iws" />
@@ -43,11 +41,11 @@
       <file leaf-file-name="TimesheetApprovalController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-338">
-              <caret line="908" column="42" lean-forward="false" selection-start-line="908" selection-start-column="42" selection-end-line="908" selection-end-column="42" />
+            <state relative-caret-position="67">
+              <caret line="332" column="5" lean-forward="false" selection-start-line="332" selection-start-column="5" selection-end-line="332" selection-end-column="5" />
               <folding>
-                <marker date="1483802058000" expanded="true" signature="6751:7075" ph="SELECT posit... tunjangan_positions" />
-                <marker date="1483802058000" expanded="true" signature="8869:9408" ph="SELECT lokas... timesheet_details" />
+                <marker date="1483802768000" expanded="true" signature="6751:7075" ph="SELECT posit... tunjangan_positions" />
+                <marker date="1483802768000" expanded="true" signature="8869:9408" ph="SELECT lokas... timesheet_details" />
               </folding>
             </state>
           </provider>
@@ -147,7 +145,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>queryTimesheetId</find>
       <find>table</find>
       <find>checkbox-toggle</find>
       <find>Timesheet not found</find>
@@ -177,6 +174,7 @@
       <find>createNextHistory</find>
       <find>createApprovalHistory</find>
       <find>isApprovalHistoryExist</find>
+      <find>paidAdCost</find>
     </findStrings>
     <replaceStrings>
       <replace>this.textContent</replace>
@@ -569,7 +567,7 @@
       <workItem from="1483752960052" duration="2618000" />
       <workItem from="1483758301627" duration="3160000" />
       <workItem from="1483795418056" duration="874000" />
-      <workItem from="1483798664910" duration="3153000" />
+      <workItem from="1483798664910" duration="3686000" />
     </task>
     <task id="LOCAL-00001" summary="rename to PA Metrasys">
       <created>1476512413193</created>
@@ -743,7 +741,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="237305000" />
+    <option name="totallyTimeSpent" value="237838000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -854,7 +852,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php</url>
-          <line>785</line>
+          <line>797</line>
           <option name="timeStamp" value="187" />
         </line-breakpoint>
       </breakpoints>
@@ -1283,11 +1281,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-338">
-          <caret line="908" column="42" lean-forward="false" selection-start-line="908" selection-start-column="42" selection-end-line="908" selection-end-column="42" />
+        <state relative-caret-position="67">
+          <caret line="332" column="5" lean-forward="false" selection-start-line="332" selection-start-column="5" selection-end-line="332" selection-end-column="5" />
           <folding>
-            <marker date="1483802058000" expanded="true" signature="6751:7075" ph="SELECT posit... tunjangan_positions" />
-            <marker date="1483802058000" expanded="true" signature="8869:9408" ph="SELECT lokas... timesheet_details" />
+            <marker date="1483802768000" expanded="true" signature="6751:7075" ph="SELECT posit... tunjangan_positions" />
+            <marker date="1483802768000" expanded="true" signature="8869:9408" ph="SELECT lokas... timesheet_details" />
           </folding>
         </state>
       </provider>
