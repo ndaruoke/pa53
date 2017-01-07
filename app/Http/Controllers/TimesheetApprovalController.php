@@ -906,7 +906,7 @@ class TimesheetApprovalController extends AppBaseController
     private function isApprovalHistoryExist($transactionId, $transactionType, $user, $approvalId, $groupApprovalId)
     {
         $transactionExist = DB::table('approval_histories')
-            ->select('id')
+            ->select('id','approval_status')
             ->where('transaction_id', '=', $transactionId)
             ->where('transaction_type', '=', $transactionType)
             ->where('user_id', '=', $user)

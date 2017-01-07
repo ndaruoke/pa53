@@ -346,7 +346,9 @@ class Add_Timesheet extends Controller
             $detailExist = $this->isApprovalHistoryExist($td->id, 2, $user, $approval);
 
             if (!is_null($detailExist)) {
-                $detail = $this->updateApprovalHistory($detailExist->id, $td->date, $td->activity, $td->id, 2, $user, $approval['id']);
+                if($detailExist->approval_status != 1) {
+                    $detail = $this->updateApprovalHistory($detailExist->id, $td->date, $td->activity, $td->id, 2, $user, $approval['id']);
+                }
             } else {
                 $detail = $this->insertApprovalHistory($td->date, $td->activity, $td->id, 2, $user, $approval['id']);
             }
@@ -361,7 +363,9 @@ class Add_Timesheet extends Controller
             $insentifExist = $this->isApprovalHistoryExist($ti->id, 4, $user, $approval);
 
             if (!is_null($insentifExist)) {
-                $insentif = $this->updateApprovalHistory($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
+                if($insentifExist->approval_status != 1) {
+                    $insentif = $this->updateApprovalHistory($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
+                }
             } else {
                 $insentif = $this->insertApprovalHistory($ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
             }
@@ -376,7 +380,9 @@ class Add_Timesheet extends Controller
             $transportExist = $this->isApprovalHistoryExist($tt->id, 3, $user, $approval);
 
             if (!is_null($transportExist)) {
-                $transport = $this->updateApprovalHistory($transportExist->id, $tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
+                if($transportExist->approval_status != 1) {
+                    $transport = $this->updateApprovalHistory($transportExist->id, $tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
+                }
             } else {
                 $transport = $this->insertApprovalHistory($tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
             }
@@ -386,7 +392,7 @@ class Add_Timesheet extends Controller
     function isApprovalHistoryExist($transactionId, $transactionType, $user, $approval)
     {
         $transactionExist = DB::table('approval_histories')
-            ->select('id')
+            ->select('id','approval_status')
             ->where('transaction_id', '=', $transactionId)
             ->where('transaction_type', '=', $transactionType)
             ->where('user_id', '=', $user)
