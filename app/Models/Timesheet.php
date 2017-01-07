@@ -186,8 +186,10 @@ class Timesheet extends Model
 
         $tunjangans = DB::select(DB::raw('SELECT positions.name,tunjangans.name,lokal,non_lokal,luar_jawa,internasional 
                       FROM tunjangan_positions,tunjangans,positions,users 
-                      WHERE tunjangan_positions.tunjangan_id = tunjangans.id and tunjangan_positions.position_id = positions.id and users.position = positions.id 
-                      and users.id = ' . $userId));
+                      WHERE tunjangans.name != "Bantuan Perumahan"
+                      and tunjangan_positions.tunjangan_id = tunjangans.id 
+                      and tunjangan_positions.position_id = positions.id 
+                      and users.position = positions.id and users.id = ' . $userId));
 
         foreach ($tunjangans as $t) {
             $arr['lokal'][$t->name] = $t->lokal;
@@ -196,42 +198,43 @@ class Timesheet extends Model
             $arr['internasional'][$t->name] = $t->internasional;
         }
 
-        foreach ($mandays as $m) {
-        if ($m->lokasi === "JABODETABEK") {
-            if (!empty ($arr)) {
-                if ($arr['lokal'] != null) {
-                    foreach ($arr['lokal'] as $key => $value) {
-                        $insentif += $value * $m->total;
+        foreach ($mandays as $m)
+        {
+            if ($m->lokasi === "JABODETABEK") {
+                if (!empty ($arr)) {
+                    if ($arr['lokal'] != null) {
+                        foreach ($arr['lokal'] as $key => $value) {
+                            $insentif += $value * $m->total;
+                        }
                     }
                 }
-            }
 
-        } else if ($m->lokasi === "DOMESTIK L. JAWA") {
-            if (!empty ($arr)) {
-                if ($arr['luar_jawa'] != null) {
-                    foreach ($arr['luar_jawa'] as $key => $value) {
-                        $insentif += $value * $m->total;
+            } else if ($m->lokasi === "DOMESTIK L. JAWA") {
+                if (!empty ($arr)) {
+                    if ($arr['luar_jawa'] != null) {
+                        foreach ($arr['luar_jawa'] as $key => $value) {
+                            $insentif += $value * $m->total;
+                        }
                     }
                 }
-            }
-        } else if ($m->lokasi === "DOMESTIK P. JAWA") {
-            if (!empty ($arr)) {
-                if ($arr['non_lokal'] != null) {
-                    foreach ($arr['non_lokal'] as $key => $value) {
-                        $insentif += $value * $m->total;
+            } else if ($m->lokasi === "DOMESTIK P. JAWA") {
+                if (!empty ($arr)) {
+                    if ($arr['non_lokal'] != null) {
+                        foreach ($arr['non_lokal'] as $key => $value) {
+                            $insentif += $value * $m->total;
+                        }
                     }
                 }
-            }
-        } else if ($m->lokasi === "INTERNATIONAL") {
-            if (!empty ($arr)) {
-                if ($arr['internasional'] != null) {
-                    foreach ($arr['internasional'] as $key => $value) {
-                        $insentif += $value * $m->total;
+            } else if ($m->lokasi === "INTERNATIONAL") {
+                if (!empty ($arr)) {
+                    if ($arr['internasional'] != null) {
+                        foreach ($arr['internasional'] as $key => $value) {
+                            $insentif += $value * $m->total;
+                        }
                     }
                 }
             }
         }
-    }
 
         return $insentif;
     }

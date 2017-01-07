@@ -149,7 +149,10 @@ class TimesheetApprovalController extends AppBaseController
 
     public function populateSummary($timesheets, $user, $approval, $approvalStatus, $timesheet_insentif, $timesheet_transport)
     {
-        $tunjangans = DB::select(DB::raw('SELECT positions.name,tunjangans.name,lokal,non_lokal,luar_jawa,internasional FROM tunjangan_positions,tunjangans,positions,users WHERE tunjangan_positions.tunjangan_id = tunjangans.id and tunjangan_positions.position_id = positions.id and users.position = positions.id and users.id = ' . $user->id));
+        $tunjangans = DB::select(DB::raw('SELECT positions.name,tunjangans.name,lokal,non_lokal,luar_jawa,internasional 
+            FROM tunjangan_positions,tunjangans,positions,users 
+            WHERE tunjangan_positions.tunjangan_id = tunjangans.id and tunjangan_positions.position_id = positions.id 
+            and users.position = positions.id and users.id = ' . $user->id));
 
         foreach ($tunjangans as $t) {
             $arr['lokal'][$t->name] = $t->lokal;
