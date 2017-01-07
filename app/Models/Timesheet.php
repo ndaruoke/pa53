@@ -109,7 +109,7 @@ class Timesheet extends Model
 
         foreach ($result as $r) {
             $r->count = Timesheet::getapprovalcount($r->user_id, $approval, $approvalStatus);
-            $total = Timesheet::gettotaltunjangan($r->user_id, $r->approval_id, $approvalStatus);
+            $total = Timesheet::gettotaltunjangan($r->user_id, $approval, $approvalStatus);
             $r->insentif = "Rp ". number_format($total, 0 , ',' , '.' );
         }
 
@@ -164,15 +164,15 @@ class Timesheet extends Model
         }
     }
 
-    public static function gettotaltunjangan($userId, $approvalId, $approvalStatus)
+    public static function gettotaltunjangan($userId, $approval, $approvalStatus)
     {
         return
-            Timesheet::getTotalMandays($userId, $approvalId, $approvalStatus) +
-            Timesheet::getTotalInsentif($userId, $approvalId, $approvalStatus) +
-            Timesheet::getTotalTransport($userId, $approvalId, $approvalStatus);
+            Timesheet::getTotalMandays($userId, $approval, $approvalStatus) +
+            Timesheet::getTotalInsentif($userId, $approval, $approvalStatus) +
+            Timesheet::getTotalTransport($userId, $approval, $approvalStatus);
     }
 
-    public static function getTotalMandays($userId, $approvalId, $approvalStatus)
+    public static function getTotalMandays($userId, $approval, $approvalStatus)
     {
         $insentif = 0;
 
@@ -180,7 +180,7 @@ class Timesheet extends Model
         JOIN timesheets ON timesheets.id = timesheet_details.timesheet_id
         JOIN approval_histories ON approval_histories.transaction_id = timesheet_details.id
         where approval_histories.user_id = " . $userId . " 
-        and (approval_histories.approval_id = " . $approval['id'] . " or approval_histories.role_id = " . $approval['role'] . ")
+        and (approval_histories.approval_id = " . $approval['id'] . " or approval_histories.group_approval_id = " . $approval['role'] . ")
         and approval_histories.approval_status = " . $approvalStatus . " 
         and selected = 1 group by lokasi"));
 
@@ -239,11 +239,11 @@ class Timesheet extends Model
         return $insentif;
     }
 
-    public static function getTotalInsentif($userId, $approvalId, $approvalStatus)
+    public static function getTotalInsentif($userId, $approval, $approvalStatus)
     {
         $insentif = DB::table('timesheet_insentif')
             ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')
-            ->where('approval_histories.approval_id', '=', $approvalId)
+            ->where('approval_histories.approval_id', '=', $approval->id)
             ->where('approval_histories.user_id', '=', $userId)
             ->where('approval_histories.approval_status', '=', $approvalStatus)
             ->whereIn('transaction_type', [4])//bantuan perumahan
@@ -252,11 +252,11 @@ class Timesheet extends Model
         return $insentif;
     }
 
-    public static function getTotalTransport($userId, $approvalId, $approvalStatus)
+    public static function getTotalTransport($userId, $approval, $approvalStatus)
     {
         $transport = DB::table('timesheet_transport')
             ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')
-            ->where('approval_histories.approval_id', '=', $approvalId)
+            ->where('approval_histories.approval_id', '=', $approval->id)
             ->where('approval_histories.user_id', '=', $userId)
             ->where('approval_histories.approval_status', '=', $approvalStatus)
             ->where('transaction_type', '=', 3)//adcost

@@ -201,7 +201,7 @@ class TimesheetApprovalController extends AppBaseController
         JOIN timesheets ON timesheets.id = timesheet_details.timesheet_id
         JOIN approval_histories ON approval_histories.transaction_id = timesheet_details.id
         where approval_histories.user_id = " . $user['id'] . " 
-        and (approval_histories.approval_id = " . $approval['id'] . " or approval_histories.role_id = " . $approval['role'] . ")
+        and (approval_histories.approval_id = " . $approval['id'] . " or approval_histories.group_approval_id = " . $approval['role'] . ")
         and approval_histories.approval_status = " . $approvalStatus . " 
         and selected = 1 group by lokasi"));
 
