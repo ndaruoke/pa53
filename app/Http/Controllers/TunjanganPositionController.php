@@ -92,7 +92,7 @@ class TunjanganPositionController extends AppBaseController
             return redirect(route('tunjanganPositions.index'));
         }
 
-        return view('tunjangan_positions.show')->with('tunjanganPosition', $tunjanganPosition);
+        return view('tunjangan_positions.show')->with('tunjanganPosition');
     }
 
     /**

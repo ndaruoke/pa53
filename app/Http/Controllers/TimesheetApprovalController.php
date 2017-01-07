@@ -527,9 +527,9 @@ class TimesheetApprovalController extends AppBaseController
 
         if($request->moderation == "5") //onhold
         {
-            $this->onholdTimesheetDetail($timesheetDetailId, $approval);
-            $this->onholdAdCost($insId, $approval);
-            $this->onholdTransport($transId, $approval);
+            $this->onholdTimesheetDetail($timesheetDetailId, $approval, $request);
+            $this->onholdAdCost($insId, $approval, $request);
+            $this->onholdTransport($transId, $approval, $request);
         }
 
         if($request->moderation == "6") //over budget
@@ -620,7 +620,7 @@ class TimesheetApprovalController extends AppBaseController
             }
     }
 
-    public function onholdTimesheetDetail($timesheetDetailId, $approval)
+    public function onholdTimesheetDetail($timesheetDetailId, $approval, $request)
     {
         //timesheet detail
         if (!empty($timesheetDetailId)) {
@@ -637,6 +637,9 @@ class TimesheetApprovalController extends AppBaseController
             foreach ($approvalHistoryDetailId as $id) {
                 $approval = ApprovalHistory::find($id->id);
                 $approval->approval_status = 5; //onhold
+                $approval->updated_at = Carbon\Carbon::now();
+                $approval->moderated_at = Carbon\Carbon::now();
+                $approval->approval_note = $request->approval_note;
                 $approval->save();
             }
         }
@@ -645,7 +648,7 @@ class TimesheetApprovalController extends AppBaseController
 
     }
 
-    public function onholdTransport($transId, $approval)
+    public function onholdTransport($transId, $approval, $request)
     {
         //transport
         if(!empty($transId)) {
@@ -662,6 +665,9 @@ class TimesheetApprovalController extends AppBaseController
             foreach ($approvalHistoryTransportId as $id) {
                 $approval = ApprovalHistory::find($id->id);
                 $approval->approval_status = 5; //onhold
+                $approval->updated_at = Carbon\Carbon::now();
+                $approval->moderated_at = Carbon\Carbon::now();
+                $approval->approval_note = $request->approval_note;
                 $approval->save();
             }
 
@@ -671,7 +677,7 @@ class TimesheetApprovalController extends AppBaseController
 
     }
 
-    public function onholdAdCost($insId, $approval)
+    public function onholdAdCost($insId, $approval, $request)
     {
         //adcost
         if (!empty($insId)) {
@@ -688,6 +694,9 @@ class TimesheetApprovalController extends AppBaseController
             foreach ($approvalHistoryInsentifId as $id) {
                 $approval = ApprovalHistory::find($id->id);
                 $approval->approval_status = 5; //onhold
+                $approval->updated_at = Carbon\Carbon::now();
+                $approval->moderated_at = Carbon\Carbon::now();
+                $approval->approval_note = $request->approval_note;
                 $approval->save();
             }
         }
@@ -848,43 +857,6 @@ class TimesheetApprovalController extends AppBaseController
      */
     public function moderationReject($id)
     {
-        $timesheet = $this->timesheetRepository->findWithoutFail($id);
-        if (empty($timesheet)) {
-            Flash::error('Timesheet not found');
-
-            return redirect(route('timesheet.moderation'));
-        }
-        $userLeave = $this->userLeaveRepository->findByField('user_id', $leave->user_id)->first();
-        if (empty($userLeave)) {
-            Flash::error('User Leave not found');
-
-            return redirect(route('leaves.moderation'));
-        }
-
-        $endDate = new Carbon($leave->end_date);
-        $startDate = new Carbon($leave->start_date);
-        $dayCount = $endDate->diff($startDate)->days;
-        $userLeave->leave_used = $userLeave->leave_used - $dayCount;
-
-        $userLeave->save();
-
-        $leave = Leave::reject($id);
-
-        if ($leave == false) {
-            Flash::error('Reject Leave Fail');
-
-            return redirect(route('leaves.moderation'));
-        }
-
-        $leave = $this->leaveRepository->findWithoutFail($id);
-        $approver = User::where('id', $leave->approval_id)->get()->first();
-        $user = User::where('id', $leave->user_id)->get()->first();
-        //send email
-        Mail::to($user->email)
-            ->queue(new LeaveNotification($leave, $approver, $user, 'rejected'));
-
-        Flash::success('Reject successfully.');
-
         return redirect(route('leaves.moderation'));
     }
 

@@ -6,6 +6,7 @@ use Eloquent as Model;
 use Hootlex\Moderation\Moderatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
+use Carbon\Carbon;
 
 /**
  * @SWG\Definition(
@@ -147,7 +148,7 @@ class ApprovalHistory extends Model
 
     public function getDateAttribute($date)
     {
-        $cDate = \Carbon\Carbon::parse($date)->toDateString();
+        $cDate = Carbon::parse($date)->toDateString();
         return $cDate;
     }
 

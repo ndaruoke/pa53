@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
+use \Carbon\Carbon;
 
 /**
  * @SWG\Definition(
@@ -111,7 +112,7 @@ class UserLeave extends Model
 
     public function getExpireDateAttribute($date)
     {
-        $cDate = \Carbon\Carbon::parse($date)->toDateString();
+        $cDate = Carbon::parse($date)->toDateString();
         return $cDate;
     }
 }
