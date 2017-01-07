@@ -249,7 +249,7 @@
                                     <td>
                                         {!! Form::select('timesheetdetail['.$row.'][project]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2', 'disabled']) !!}
                                     </td>
-                                    <td>{{substr($detail->date,0,10)}}{{ Form::hidden('timesheetdetail['.$row.'][date]', str_replace(' 00:00:00','',$detail->date)) }}</td>
+                                    <td>{{$detail->id_date}}{{ Form::hidden('timesheetdetail['.$row.'][date]', str_replace(' 00:00:00','',$detail->date)) }}</td>
                                     <td><input type="text" name="timesheetdetail[{{$row}}][start]"
                                                class="form-control timepicker" placeholder="00:00"
                                                value="{{ $detail->start_time }}" disabled="true"></td>
@@ -300,7 +300,7 @@
                             @foreach ($timesheet_insentif as $row=>$detail)
                                 <tr>
                                     <td>
-                                    {{ Form::text('insentif['.$row.'][date]', substr($detail->date,0,10), array('class' => 'form-control','disabled')) }}
+                                    {{ Form::text('insentif['.$row.'][date]', $detail->id_date, array('class' => 'form-control','disabled')) }}
                                     <td>
                                         {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2', 'disabled']) !!}
                                     </td>
@@ -339,7 +339,7 @@
                             @foreach ($timesheet_transport as $row=>$detail)
                                 <tr>
                                     <td>
-                                    {{ Form::text('trans['.$row.'][date]', substr($detail->date,0,10), array('class' => 'form-control','disabled')) }}
+                                    {{ Form::text('trans['.$row.'][date]', $detail->id_date, array('class' => 'form-control','disabled')) }}
                                     <td>
                                         {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','disabled']) !!}
                                     </td>
