@@ -373,7 +373,7 @@
                                             <a href="{{url('dl')}}/{{$detail->file}}">{{str_limit($detail->file,9)}}</a>
                                         @endif
                                     </td>
-                                    @if($detail->approval_status != 0)
+                                    @if($detail->approval_status != 0 && $approval['role']!=4)
                                         <td class="col-md-1">
                                             {!! $detail->approval !!}
                                         </td>
@@ -383,6 +383,13 @@
                                             {{ Form::checkbox('trans['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
+                                    @if($detail->approval_status != 0 && $approval['role']==4)
+                                        <td class="col-md-1">
+                                            {!! $detail->approval !!}
+                                            {{ Form::checkbox('trans['.$row.'][choose]', true) }}
+                                        </td>
+                                    @endif
+
                                     </td>
                                     {{ Form::hidden('trans['.$row.'][transaction_id]', $detail->transaction_id) }}
                                     </td>

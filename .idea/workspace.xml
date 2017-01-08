@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3dd7a13a-f1b8-452f-940f-5fa9045cf6b8" name="Default" comment="add audit and separate leave from admin and non admin user">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Timesheet.php" afterPath="$PROJECT_DIR$/app/Models/Timesheet.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php" afterPath="$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php" />
     </list>
     <ignored path="pa53.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -55,7 +55,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Timesheet.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Timesheet.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/Timesheet.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="122">
@@ -213,20 +213,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="moderate_fields.blade.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="moderate_fields.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="326" column="64" lean-forward="false" selection-start-line="326" selection-start-column="64" selection-end-line="326" selection-end-column="64" />
+            <state relative-caret-position="257">
+              <caret line="388" column="97" lean-forward="false" selection-start-line="388" selection-start-column="97" selection-end-line="388" selection-end-column="97" />
               <folding>
-                <marker date="1483877921000" expanded="true" signature="12564:12780" ph="..." />
-                <marker date="1483877921000" expanded="true" signature="12578:12778" ph="..." />
-                <marker date="1483877921000" expanded="true" signature="20511:20723" ph="..." />
-                <marker date="1483877921000" expanded="true" signature="20525:20701" ph="..." />
-                <marker date="1483877921000" expanded="true" signature="21122:21385" ph="..." />
-                <marker date="1483877921000" expanded="true" signature="21136:21359" ph="..." />
-                <marker date="1483877921000" expanded="true" signature="21784:21978" ph="..." />
-                <marker date="1483877921000" expanded="true" signature="21798:21956" ph="..." />
+                <marker date="1483878680000" expanded="true" signature="12564:12780" ph="..." />
+                <marker date="1483878680000" expanded="true" signature="12578:12778" ph="..." />
+                <marker date="1483878680000" expanded="true" signature="20950:21162" ph="..." />
+                <marker date="1483878680000" expanded="true" signature="20964:21140" ph="..." />
+                <marker date="1483878680000" expanded="true" signature="21561:21824" ph="..." />
+                <marker date="1483878680000" expanded="true" signature="21575:21798" ph="..." />
+                <marker date="1483878680000" expanded="true" signature="22223:22417" ph="..." />
+                <marker date="1483878680000" expanded="true" signature="22237:22395" ph="..." />
               </folding>
             </state>
           </provider>
@@ -289,7 +289,6 @@
       <find>onholdTimesheetDetail</find>
       <find>onholdAdCost</find>
       <find>total</find>
-      <find>approval</find>
       <find>createNextHistory</find>
       <find>createApprovalHistory</find>
       <find>isApprovalHistoryExist</find>
@@ -308,6 +307,7 @@
       <find>getTotalTransport</find>
       <find>gettotaltunjangan</find>
       <find>getapprovalmoderation</find>
+      <find>approval</find>
     </findStrings>
     <replaceStrings>
       <replace>this.textContent</replace>
@@ -401,8 +401,8 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/Add_Timesheet.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php" />
         <option value="$PROJECT_DIR$/routes/web.php" />
-        <option value="$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php" />
         <option value="$PROJECT_DIR$/app/Models/Timesheet.php" />
+        <option value="$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php" />
       </list>
     </option>
   </component>
@@ -702,7 +702,7 @@
       <workItem from="1483795418056" duration="874000" />
       <workItem from="1483798664910" duration="7830000" />
       <workItem from="1483854035970" duration="2426000" />
-      <workItem from="1483868993871" duration="6041000" />
+      <workItem from="1483868993871" duration="6324000" />
     </task>
     <task id="LOCAL-00001" summary="rename to PA Metrasys">
       <created>1476512413193</created>
@@ -876,7 +876,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="250449000" />
+    <option name="totallyTimeSpent" value="250732000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1521,23 +1521,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="326" column="64" lean-forward="false" selection-start-line="326" selection-start-column="64" selection-end-line="326" selection-end-column="64" />
-          <folding>
-            <marker date="1483877921000" expanded="true" signature="12564:12780" ph="..." />
-            <marker date="1483877921000" expanded="true" signature="12578:12778" ph="..." />
-            <marker date="1483877921000" expanded="true" signature="20511:20723" ph="..." />
-            <marker date="1483877921000" expanded="true" signature="20525:20701" ph="..." />
-            <marker date="1483877921000" expanded="true" signature="21122:21385" ph="..." />
-            <marker date="1483877921000" expanded="true" signature="21136:21359" ph="..." />
-            <marker date="1483877921000" expanded="true" signature="21784:21978" ph="..." />
-            <marker date="1483877921000" expanded="true" signature="21798:21956" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="77">
@@ -1562,6 +1545,23 @@
             <marker date="1483878317000" expanded="true" signature="5298:5887" ph="SELECT lokas... timesheet_details" />
             <marker date="1483878317000" expanded="true" signature="5935:6377" ph="SELECT posit... tunjangan_positions" />
             <marker date="1483878317000" expanded="true" signature="10581:10938" ph="select appro... approval_histories" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="388" column="97" lean-forward="false" selection-start-line="388" selection-start-column="97" selection-end-line="388" selection-end-column="97" />
+          <folding>
+            <marker date="1483878680000" expanded="true" signature="12564:12780" ph="..." />
+            <marker date="1483878680000" expanded="true" signature="12578:12778" ph="..." />
+            <marker date="1483878680000" expanded="true" signature="20950:21162" ph="..." />
+            <marker date="1483878680000" expanded="true" signature="20964:21140" ph="..." />
+            <marker date="1483878680000" expanded="true" signature="21561:21824" ph="..." />
+            <marker date="1483878680000" expanded="true" signature="21575:21798" ph="..." />
+            <marker date="1483878680000" expanded="true" signature="22223:22417" ph="..." />
+            <marker date="1483878680000" expanded="true" signature="22237:22395" ph="..." />
           </folding>
         </state>
       </provider>
