@@ -149,7 +149,7 @@
                                 <td class="col-md-3">
                                     {!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, null, ['class' => 'form-control select2']) !!}
                                 </td>
-                                <td class="col-md-1">{{$date}}{{ Form::hidden('timesheet['.$row.'][date]', $date) }}</td>
+                                <td class="col-md-1">{{date('d-m-Y', strtotime($date))}}{{ Form::hidden('timesheet['.$row.'][date]', $date) }}</td>
                                 <td class="col-md-1"><input type="text" name="timesheet[{{$row}}][start]"
                                                             class="form-control timepicker" value="08:00"></td>
                                 <td class="col-md-1"><input type="text" name="timesheet[{{$row}}][end]"
@@ -270,19 +270,31 @@
                  else if (selected === 'IDLE') {
                     $('#timesheet' + id + 'activity_other').show();
                     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
-                    $('#timesheet' + id + 'lokasi').prop("disabled", false);
+                    $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
+                    // $('#timesheet'+id+'lokasi').prop("disabled", true);
+                    $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
+                        $(this).attr('disabled', 'disabled');
+                    });
                 }
 
                 else if (selected === 'MANAGED OPERATION') {
                     $('#timesheet' + id + 'activity_other').show();
                     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
-                    $('#timesheet' + id + 'lokasi').prop("disabled", false);
+                    $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
+                    // $('#timesheet'+id+'lokasi').prop("disabled", true);
+                    $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
+                        $(this).attr('disabled', 'disabled');
+                    });
                 }
 
                 else {
                     $('#timesheet' + id + 'activity_other').hide();
                     // $('#timesheet'+id+'lokasi').val("").trigger("change");
-                    $('#timesheet' + id + 'lokasi').prop("disabled", false);
+                   $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
+                    // $('#timesheet'+id+'lokasi').prop("disabled", true);
+                    $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
+                        $(this).attr('disabled', 'disabled');
+                    });
                 }
 
             }, 50);
@@ -301,7 +313,7 @@
 
         function getRowTransport(id) {
             var row = '<tr>' +
-                '   <td><input type="date" name="trans[' + id + '][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  ' +
+                '   <td><input type="date" data-date-format="dd/mm/yyyy" name="trans[' + id + '][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  ' +
                 '   <td><select class="form-control" name="trans[' + id + '][project_id]" ><option value="" selected="selected"></option>' +
                 '<?php
                     foreach ($project as $key => $value) {
@@ -332,7 +344,7 @@
 
         function getRowInsentif(id) {
             var row = '<tr>' +
-                '   <td><input type="date" name="insentif[' + id + '][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  ' +
+                '   <td><input type="date" data-date-format="dd/mm/yyyy" name="insentif[' + id + '][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  ' +
                 '   <td><select class="form-control" name="insentif[' + id + '][project_id]"><option value="" selected="selected" ></option>' +
                 '<?php
                     foreach ($project as $key => $value) {

@@ -248,7 +248,7 @@
                                             {!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control ','disabled'=>'disabled']) !!}
                                             {!! Form::hidden('timesheet['.$row.'][project]', $detail->project_id) !!}
                                         </td>
-                                        <td>{{str_replace(' 00:00:00','',$detail->date)}}{{ Form::hidden('timesheet['.$row.'][date]', str_replace(' 00:00:00','',$detail->date)) }}</td>
+                                        <td>{{date('d-m-Y', strtotime(str_replace(' 00:00:00','',$detail->date)))}}{{ Form::hidden('timesheet['.$row.'][date]', str_replace(' 00:00:00','',$detail->date)) }}</td>
                                         <td><input type="text" name="timesheet[{{$row}}][start]"
                                                    class="form-control timepicker" placeholder="00:00"
                                                    value="{{ $detail->start_time }}" readonly></td>
@@ -279,7 +279,7 @@
                                         <td>
                                             {!! Form::select('timesheet['.$row.'][project]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
                                         </td>
-                                        <td>{{str_replace(' 00:00:00','',$detail->date)}}{{ Form::hidden('timesheet['.$row.'][date]', str_replace(' 00:00:00','',$detail->date)) }}</td>
+                                        <td>{{date('d-m-Y', strtotime(str_replace(' 00:00:00','',$detail->date)))}}{{ Form::hidden('timesheet['.$row.'][date]', str_replace(' 00:00:00','',$detail->date)) }}</td>
                                         <td><input type="text" name="timesheet[{{$row}}][start]"
                                                    class="form-control timepicker" placeholder="00:00"
                                                    value="{{ $detail->start_time }}"></td>
@@ -524,24 +524,27 @@
                 else if (selected === 'IMPLEMENTASI') {
                     $('#timesheet' + id + 'activity_other').show();
                     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
-                    $('#timesheet' + id + 'lokasi').prop("disabled", false);
+                     $('#timesheet' + id + 'lokasi').prop("disabled", false);
                 }
 
                  else if (selected === 'IDLE') {
                     $('#timesheet' + id + 'activity_other').show();
                     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
-                    $('#timesheet' + id + 'lokasi').prop("disabled", false);
+                   $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
+                    $('#timesheet' + id + 'lokasi').prop("disabled", true);
                 }
 
                 else if (selected === 'MANAGED OPERATION') {
                     $('#timesheet' + id + 'activity_other').show();
                     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
-                    $('#timesheet' + id + 'lokasi').prop("disabled", false);
+                    $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
+                    $('#timesheet' + id + 'lokasi').prop("disabled", true);
                 }
                 else {
                     $('#timesheet' + id + 'activity_other').hide();
                     //    $('#timesheet'+id+'lokasi').val("").trigger("change");
-                    $('#timesheet' + id + 'lokasi').prop("disabled", false);
+                    $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
+                    $('#timesheet' + id + 'lokasi').prop("disabled", true);
                 }
 
             }, 50);
@@ -554,7 +557,7 @@
 
         function getRowTransport(id) {
             var row = '<tr>' +
-                '   <td><input name="trans[' + id + '][id]" type="hidden" value="' + id + '"><input type="date" name="trans[' + id + '][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  ' +
+                '   <td><input name="trans[' + id + '][id]" type="hidden" value="' + id + '"><input type="date" data-date-format="dd/mm/yyyy" name="trans[' + id + '][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  ' +
                 '   <td><select class="form-control" name="trans[' + id + '][project_id]"  ><option value="" selected="selected"></option>' +
                 '<?php
                     foreach ($project as $key => $value) {
@@ -585,7 +588,7 @@
 
         function getRowInsentif(id) {
             var row = '<tr>' +
-                '   <td><input name="insentif[' + id + '][id]" type="hidden" value="' + id + '"><input type="date" name="insentif[' + id + '][date]" value="{!!date("Y-m-d")!!}" class="form-control"  ></td>  ' +
+                '   <td><input name="insentif[' + id + '][id]" type="hidden" value="' + id + '"><input type="date" data-date-format="dd/mm/yyyy" name="insentif[' + id + '][date]" value="{!!date("Y-m-d")!!}" class="form-control"  ></td>  ' +
                 '   <td><select class="form-control" name="insentif[' + id + '][project_id]"><option value="" selected="selected"  ></option>' +
                 '<?php
                     foreach ($project as $key => $value) {
