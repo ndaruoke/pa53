@@ -332,15 +332,6 @@ class TimesheetApprovalController extends AppBaseController
         $userId = $request->userId;
         $approval = Auth::user();
 
-        foreach ($request->timesheetdetail as $key => $value) {
-            if (!empty($value['choose'])) $timesheetDetailId[] = ['id' => $value['transaction_id']];
-            else
-            {
-                Flash::error('Please tick timesheet detail');
-                return back()->withInput();
-            }
-        }
-
         if (!empty($request->trans)) {
             foreach ($request->trans as $key => $value) {
                 if (!empty($value['choose'])) $transId[] = ['id' => $value['transaction_id']];

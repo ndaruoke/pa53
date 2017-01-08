@@ -282,6 +282,7 @@
                                     @endif
                                     @if($detail->approval_status != 0 && $approval['role']==4)
                                         <td class="col-md-1">
+                                            {!! $detail->status !!} |
                                             {{ Form::checkbox('timesheetdetail['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
@@ -336,6 +337,7 @@
                                     @endif
                                     @if($detail->approval_status != 0 && $approval['role']==4)
                                         <td class="col-md-1">
+                                            {!! $detail->approval !!} |
                                             {{ Form::checkbox('insentif['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
@@ -395,6 +397,7 @@
                                     @endif
                                     @if($detail->approval_status != 0 && $approval['role']==4)
                                         <td class="col-md-1">
+                                            {!! $detail->approval !!} |
                                             {{ Form::checkbox('trans['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
