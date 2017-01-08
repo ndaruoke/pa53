@@ -415,6 +415,9 @@
 
         $(document).ready(function ($) {
             formatCurr();
+             $("#create_timesheet").submit(function ($) {
+            VMasker(document.querySelectorAll(".money")).unMask();
+        });
         });
 
         function formatCurr(){
@@ -431,9 +434,7 @@
         }
 
 
-        $("#create_timesheet").submit(function ($) {
-            VMasker(document.querySelectorAll(".money")).unMask();
-        });
+
 
 
     </script>
