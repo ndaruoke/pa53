@@ -270,7 +270,7 @@
                                                value="{{$detail->activity_detail}}" style="display:visible;"
                                                disabled="true">
                                     </td>
-                                    @if($detail->approval_status_history != 0&& $approval['role']!=4)
+                                    @if($detail->approval_status_history != 0 && $approval['role']!=4)
                                         <td class="col-md-1">
                                             {!! $detail->status !!}
                                         </td>
@@ -282,7 +282,6 @@
                                     @endif
                                     @if($detail->approval_status != 0 && $approval['role']==4)
                                         <td class="col-md-1">
-                                            {!! $detail->status !!} |
                                             {{ Form::checkbox('timesheetdetail['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
@@ -337,7 +336,6 @@
                                     @endif
                                     @if($detail->approval_status != 0 && $approval['role']==4)
                                         <td class="col-md-1">
-                                            {!! $detail->approval !!} |
                                             {{ Form::checkbox('insentif['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
@@ -397,7 +395,6 @@
                                     @endif
                                     @if($detail->approval_status != 0 && $approval['role']==4)
                                         <td class="col-md-1">
-                                            {!! $detail->approval !!} |
                                             {{ Form::checkbox('trans['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
