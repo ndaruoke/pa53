@@ -270,12 +270,12 @@
                                                value="{{$detail->activity_detail}}" style="display:visible;"
                                                disabled="true">
                                     </td>
-                                    @if($detail->approval_status != 0)
+                                    @if($detail->approval_status_history != 0)
                                         <td class="col-md-1">
                                             {!! $detail->status !!}
                                         </td>
                                     @endif
-                                    @if($detail->approval_status == 0)
+                                    @if($detail->approval_status_history == 0)
                                         <td class="col-md-1">
                                             {{ Form::checkbox('timesheetdetail['.$row.'][choose]', true) }}
                                         </td>
