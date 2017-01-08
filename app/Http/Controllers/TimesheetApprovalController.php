@@ -554,7 +554,7 @@ class TimesheetApprovalController extends AppBaseController
             {
                 $this->overbudgetTimesheetDetail($timesheetDetailId, $approval);
             }
-            if((!empty($insId))
+            if(!empty($insId))
             {
                 $this->overbudgetAdCost($insId, $approval);
             }
