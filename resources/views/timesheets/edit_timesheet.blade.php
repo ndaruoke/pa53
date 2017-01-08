@@ -337,7 +337,7 @@
 
                                     <td>
                                     {{ Form::hidden('insentif['.$row.'][id]', $detail->id) }}
-                                    {{ Form::date('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control')) }}
+                                    {{ Form::date('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control','data-date-format'=>'dd/mm/yyyy')) }}
                                     <td>
                                         {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
                                     </td>
@@ -357,7 +357,7 @@
                                 <tr>
                                     <td>
                                     {{ Form::hidden('insentif['.$row.'][id]', $detail->id) }}
-                                    {{ Form::date('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled'=>'')) }}
+                                    {{ Form::date('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled'=>'','data-date-format'=>'dd/mm/yyyy')) }}
                                     {{ Form::hidden('insentif['.$row.'][date]', $detail->date) }}
                                     <td>
                                     {{ Form::hidden('insentif['.$row.'][project_id]', $detail->project_id) }}
@@ -411,7 +411,7 @@
                                 <tr>
                                     <td>
                                     {{ Form::hidden('trans['.$row.'][id]', $detail->id) }}
-                                    {{ Form::date('trans['.$row.'][date]', $detail->date, array('class' => 'form-control')) }}
+                                    {{ Form::date('trans['.$row.'][date]', $detail->date, array('class' => 'form-control','data-date-format'=>'dd/mm/yyyy')) }}
                                     <td>
                                         {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
                                     </td>
@@ -442,7 +442,7 @@
                                     <td>
                                     {{ Form::hidden('trans['.$row.'][id]', $detail->id) }}
                                     {{ Form::hidden('trans['.$row.'][date]', $detail->date) }}
-                                    {{ Form::date('trans['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled'=>'')) }}
+                                    {{ Form::date('trans['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled'=>'','data-date-format'=>'dd/mm/yyyy')) }}
                                     <td>
                                     {{ Form::hidden('trans['.$row.'][project_id]', $detail->project_id) }}
                                     {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','disabled'=>'']) !!}
