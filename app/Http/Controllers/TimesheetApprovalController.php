@@ -127,7 +127,7 @@ class TimesheetApprovalController extends AppBaseController
         $timesheet_transport = DB::
         table('timesheet_transport')->
         select(DB::raw('DATE_FORMAT(timesheet_transport.date, \'%d-%m-%Y\') as id_date, timesheet_transport.date,timesheet_transport.id,timesheet_transport.keterangan,
-            timesheet_transport.status,timesheet_transport.value,timesheet_transport.project_id, approval_histories.transaction_id'))->
+            timesheet_transport.status,timesheet_transport.value,timesheet_transport.project_id, timesheet_transport.file, approval_histories.transaction_id'))->
         join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')->
         where('approval_histories.approval_status', '=', $approvalStatus)->
         where('approval_histories.transaction_type', '=', 4)->

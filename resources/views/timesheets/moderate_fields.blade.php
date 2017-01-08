@@ -335,6 +335,7 @@
                                 <th>Proyek</th>
                                 <th>Jumlah</th>
                                 <th>Keterangan</th>
+                                <th>Attachment</th>
                                 </th></tr>
                             @foreach ($timesheet_transport as $row=>$detail)
                                 <tr>
@@ -347,6 +348,11 @@
                                     {{ Form::text('trans['.$row.'][value]', $detail->value, array('class' => 'form-control money','disabled')) }}
                                     <td>
                                         {{ Form::text('trans['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control','disabled')) }}
+                                    </td>
+                                    <td>
+                                        @if($detail->file!=null)
+                                            <a href="{{asset('upload')}}/{{$detail->file}}">{{$detail->file}}</a>
+                                        @endif
                                     </td>
                                     <td class="col-md-1">
                                         {{ Form::checkbox('trans['.$row.'][choose]', true) }}
