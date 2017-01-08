@@ -281,8 +281,8 @@
                                         </td>
                                     @endif
                                     @if($detail->approval_status != 0 && $approval['role']==4)
-                                        <td class="col-md-2">
-                                            {!! $detail->approval !!} |
+                                        <td class="col-md-1">
+                                            {!! $detail->status !!} |
                                             {{ Form::checkbox('trans['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
