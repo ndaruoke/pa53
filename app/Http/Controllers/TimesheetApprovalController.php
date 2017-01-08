@@ -519,11 +519,12 @@ class TimesheetApprovalController extends AppBaseController
         if($request->moderation == "4") //paid
         {
             $this->paidTimesheetDetail($timesheetDetailId, $approval);
-            if(!is_null($insId))
+            if($insId != null)
             {
                 $this->paidAdCost($insId, $approval);
             }
-            if(!is_null($transId)) {
+            if($transId != null)
+            {
                 $this->paidTransport($transId, $approval);
             }
         }
