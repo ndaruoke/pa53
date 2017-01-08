@@ -270,9 +270,17 @@
                                                value="{{$detail->activity_detail}}" style="display:visible;"
                                                disabled="true">
                                     </td>
-                                    <td class="col-md-1">
-                                        {{ Form::checkbox('timesheetdetail['.$row.'][choose]', true) }}
-                                    </td>
+                                    @if($detail->approval_status != 0)
+                                        <td class="col-md-1">
+                                            {!! $detail->status !!}
+                                        </td>
+                                    @endif
+                                    @if($detail->approval_status == 0)
+                                        <td class="col-md-1">
+                                            {{ Form::checkbox('timesheetdetail['.$row.'][choose]', true) }}
+                                        </td>
+                                    @endif
+
                                     {{ Form::hidden('timesheetdetail['.$row.'][transaction_id]', $detail->transaction_id) }}
                                 </tr>
                             @endforeach
@@ -300,7 +308,7 @@
                             @foreach ($timesheet_insentif as $row=>$detail)
                                 <tr>
                                     <td class="col-md-2">
-                                    {{ Form::text('insentif['.$row.'][date]', $detail->id_date, array('class' => 'form-control','disabled')) }}
+                                        {{ Form::text('insentif['.$row.'][date]', $detail->id_date, array('class' => 'form-control','disabled')) }}
                                     </td>
                                     <td class="col-md-3">
                                         {!! Form::select('insentif['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2', 'disabled']) !!}
@@ -311,10 +319,19 @@
                                     <td class="col-md-3">
                                         {{ Form::text('insentif['.$row.'][desc]', $detail->keterangan, array('class' => 'form-control', 'disabled')) }}
                                     </td>
+                                    @if($detail->approval_status != 0)
+                                        <td class="col-md-1">
+                                            {!! $detail->approval !!}
+                                        </td>
+                                    @endif
+                                    @if($detail->status == 0)
+                                        <td class="col-md-1">
+                                            {{ Form::checkbox('insentif['.$row.'][choose]', true) }}
+                                        </td>
+                                    @endif
                                     <td class="col-md-1">
-                                        {{ Form::checkbox('insentif['.$row.'][choose]', true) }}
-                                    <td class="col-md-1">
-                                    {{ Form::hidden('insentif['.$row.'][transaction_id]', $detail->transaction_id) }}
+                                        {{ Form::hidden('insentif['.$row.'][transaction_id]', $detail->transaction_id) }}
+                                    </td>
                                 </tr>
                             @endforeach
                         </table>
@@ -341,7 +358,7 @@
                             @foreach ($timesheet_transport as $row=>$detail)
                                 <tr>
                                     <td class="col-md-2">
-                                    {{ Form::text('trans['.$row.'][date]', $detail->id_date, array('class' => 'form-control','disabled')) }}
+                                        {{ Form::text('trans['.$row.'][date]', $detail->id_date, array('class' => 'form-control','disabled')) }}
                                     </td>
                                     <td class="col-md-3">
                                         {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2','disabled']) !!}
@@ -353,13 +370,22 @@
                                     </td>
                                     <td class="col-md-1">
                                         @if($detail->file!=null)
-                                            <a href="{{asset('upload')}}/{{$detail->file}}">{{$detail->file}}</a>
+                                            <a href="{{asset('upload')}}/{{$detail->file}}">{{str_limit($detail->file,9)}}</a>
                                         @endif
                                     </td>
-                                    <td class="col-md-1">
-                                        {{ Form::checkbox('trans['.$row.'][choose]', true) }}
+                                    @if($detail->approval_status != 0)
+                                        <td class="col-md-1">
+                                            {!! $detail->approval !!}
+                                        </td>
+                                    @endif
+                                    @if($detail->approval_status == 0)
+                                        <td class="col-md-1">
+                                            {{ Form::checkbox('trans['.$row.'][choose]', true) }}
+                                        </td>
+                                    @endif
                                     </td>
                                     {{ Form::hidden('trans['.$row.'][transaction_id]', $detail->transaction_id) }}
+                                    </td>
                                 </tr>
                             @endforeach
                         </table>

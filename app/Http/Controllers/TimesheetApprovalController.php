@@ -98,8 +98,7 @@ class TimesheetApprovalController extends AppBaseController
         $activity = ['' => ''] + Constant::where('category', 'Activity')->orderBy('name', 'asc')->pluck('name', 'value')->all();
         $project = Project::pluck('project_name', 'id')->all();
         $timesheets = Timesheet::where('approval_id', '=', $approvalId)->where('user_id', '=', $userId)->get();
-        $timesheet_details = DB::
-        table('timesheet_details')->
+        $timesheet_details = TimesheetDetail::
         select(DB::raw('DATE_FORMAT(timesheet_details.date, \'%d-%m-%Y\') as id_date, timesheet_details.date,timesheet_details.id,timesheet_details.activity,
             timesheet_details.approval_status,timesheet_details.project_id, timesheet_details.start_time,timesheet_details.end_time,
             timesheet_details.lokasi,timesheet_details.activity_detail,approval_histories.transaction_id'))->
@@ -112,10 +111,9 @@ class TimesheetApprovalController extends AppBaseController
         })->
         where('selected', '=', '1')->
         get();
-        $timesheet_insentif = DB::
-        table('timesheet_insentif')->
+        $timesheet_insentif = TimesheetInsentif::
         select(DB::raw('DATE_FORMAT(timesheet_insentif.date, \'%d-%m-%Y\') as id_date, timesheet_insentif.date,timesheet_insentif.id,timesheet_insentif.keterangan,
-            timesheet_insentif.status,timesheet_insentif.value,timesheet_insentif.project_id, approval_histories.transaction_id'))->
+            timesheet_insentif.status,timesheet_insentif.value,timesheet_insentif.project_id, approval_histories.transaction_id, approval_histories.approval_status'))->
         join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')->
         where('approval_histories.approval_status', '=', $approvalStatus)->
         where('approval_histories.transaction_type', '=', 3)->
@@ -124,10 +122,9 @@ class TimesheetApprovalController extends AppBaseController
                 ->orWhere('approval_histories.group_approval_id', '=', $approval['role']);
         })->
         get();
-        $timesheet_transport = DB::
-        table('timesheet_transport')->
+        $timesheet_transport = TimesheetTransport::
         select(DB::raw('DATE_FORMAT(timesheet_transport.date, \'%d-%m-%Y\') as id_date, timesheet_transport.date,timesheet_transport.id,timesheet_transport.keterangan,
-            timesheet_transport.status,timesheet_transport.value,timesheet_transport.project_id, timesheet_transport.file, approval_histories.transaction_id'))->
+            timesheet_transport.status,timesheet_transport.value,timesheet_transport.project_id, timesheet_transport.file, approval_histories.transaction_id, approval_histories.approval_status'))->
         join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')->
         where('approval_histories.approval_status', '=', $approvalStatus)->
         where('approval_histories.transaction_type', '=', 4)->
