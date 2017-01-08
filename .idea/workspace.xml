@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3dd7a13a-f1b8-452f-940f-5fa9045cf6b8" name="Default" comment="add audit and separate leave from admin and non admin user">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php" afterPath="$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
     </list>
     <ignored path="pa53.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,8 +42,8 @@
       <file leaf-file-name="TimesheetApprovalController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="851">
-              <caret line="202" column="8" lean-forward="false" selection-start-line="202" selection-start-column="8" selection-end-line="202" selection-end-column="53" />
+            <state relative-caret-position="632">
+              <caret line="378" column="31" lean-forward="false" selection-start-line="378" selection-start-column="23" selection-end-line="378" selection-end-column="31" />
               <folding>
                 <element signature="e#40#88#0#PHP" expanded="true" />
                 <marker date="1483872540000" expanded="true" signature="6842:7166" ph="SELECT posit... tunjangan_positions" />
@@ -56,7 +56,7 @@
       <file leaf-file-name="Timesheet.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/Timesheet.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="97">
+            <state relative-caret-position="-938">
               <caret line="178" column="45" lean-forward="true" selection-start-line="178" selection-start-column="45" selection-end-line="178" selection-end-column="45" />
               <folding>
                 <marker date="1483872620000" expanded="true" signature="4043:4439" ph="select count... approval_histories" />
@@ -211,11 +211,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="moderate_fields.blade.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="moderate_fields.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
-              <caret line="372" column="66" lean-forward="false" selection-start-line="372" selection-start-column="66" selection-end-line="372" selection-end-column="66" />
+            <state relative-caret-position="122">
+              <caret line="360" column="60" lean-forward="false" selection-start-line="360" selection-start-column="55" selection-end-line="360" selection-end-column="60" />
               <folding>
                 <marker date="1483876000000" expanded="true" signature="12564:12780" ph="..." />
                 <marker date="1483876000000" expanded="true" signature="12578:12778" ph="..." />
@@ -230,11 +230,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="web.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="web.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes/web.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
-              <caret line="127" column="19" lean-forward="false" selection-start-line="127" selection-start-column="13" selection-end-line="127" selection-end-column="19" />
+            <state relative-caret-position="307">
+              <caret line="141" column="36" lean-forward="true" selection-start-line="141" selection-start-column="36" selection-end-line="141" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -246,17 +246,10 @@
             <state relative-caret-position="15">
               <caret line="374" column="60" lean-forward="false" selection-start-line="374" selection-start-column="52" selection-end-line="374" selection-end-column="60" />
               <folding>
-                <marker date="1483875941000" expanded="true" signature="40103:40183" ph="{...}" />
-                <marker date="1483875941000" expanded="true" signature="40103:40197" ph="{...}" />
-                <marker date="1483875941000" expanded="true" signature="40103:40483" ph="{&quot;url&quot;: &quot;{{url('uploadfile')}}&quot;...}" />
-                <marker date="1483875941000" expanded="true" signature="40103:40491" ph="{...}" />
-                <marker date="1483875941000" expanded="true" signature="40103:41661" ph="..." />
-                <marker date="1483875941000" expanded="true" signature="40248:40473" ph="{...}" />
-                <marker date="1483875941000" expanded="true" signature="40520:41512" ph="{...}" />
-                <marker date="1483875941000" expanded="true" signature="40688:41504" ph="{&quot;type&quot;: 'GET'...}" />
-                <marker date="1483875941000" expanded="true" signature="41092:41349" ph="{...}" />
-                <marker date="1483875941000" expanded="true" signature="41408:41486" ph="{...}" />
-                <marker date="1483875941000" expanded="true" signature="41541:41651" ph="{...}" />
+                <element signature="e#24504#24525#0#HTML" expanded="true" />
+                <element signature="e#24666#24687#0#HTML" expanded="true" />
+                <element signature="e#26878#26899#0#HTML" expanded="true" />
+                <element signature="e#27040#27061#0#HTML" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -283,7 +276,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>start_time</find>
       <find>r</find>
       <find>TimesheetInsentif</find>
       <find>rejectApprovalHistory</find>
@@ -311,8 +303,9 @@
       <find>getTotalMandays</find>
       <find>show</find>
       <find>status</find>
-      <find>mandays</find>
       <find>upload</find>
+      <find>mandays</find>
+      <find>trans</find>
     </findStrings>
     <replaceStrings>
       <replace>this.textContent</replace>
@@ -406,8 +399,8 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/Add_Timesheet.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php" />
         <option value="$PROJECT_DIR$/app/Models/Timesheet.php" />
-        <option value="$PROJECT_DIR$/routes/web.php" />
         <option value="$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php" />
+        <option value="$PROJECT_DIR$/routes/web.php" />
       </list>
     </option>
   </component>
@@ -707,7 +700,7 @@
       <workItem from="1483795418056" duration="874000" />
       <workItem from="1483798664910" duration="7830000" />
       <workItem from="1483854035970" duration="2426000" />
-      <workItem from="1483868993871" duration="4163000" />
+      <workItem from="1483868993871" duration="5649000" />
     </task>
     <task id="LOCAL-00001" summary="rename to PA Metrasys">
       <created>1476512413193</created>
@@ -881,7 +874,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="248571000" />
+    <option name="totallyTimeSpent" value="250057000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1348,26 +1341,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/timesheets/edit_timesheet.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="374" column="60" lean-forward="false" selection-start-line="374" selection-start-column="52" selection-end-line="374" selection-end-column="60" />
-          <folding>
-            <marker date="1483875941000" expanded="true" signature="40103:40183" ph="{...}" />
-            <marker date="1483875941000" expanded="true" signature="40103:40197" ph="{...}" />
-            <marker date="1483875941000" expanded="true" signature="40103:40483" ph="{&quot;url&quot;: &quot;{{url('uploadfile')}}&quot;...}" />
-            <marker date="1483875941000" expanded="true" signature="40103:40491" ph="{...}" />
-            <marker date="1483875941000" expanded="true" signature="40103:41661" ph="..." />
-            <marker date="1483875941000" expanded="true" signature="40248:40473" ph="{...}" />
-            <marker date="1483875941000" expanded="true" signature="40520:41512" ph="{...}" />
-            <marker date="1483875941000" expanded="true" signature="40688:41504" ph="{&quot;type&quot;: 'GET'...}" />
-            <marker date="1483875941000" expanded="true" signature="41092:41349" ph="{...}" />
-            <marker date="1483875941000" expanded="true" signature="41408:41486" ph="{...}" />
-            <marker date="1483875941000" expanded="true" signature="41541:41651" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/projects/create.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1005">
@@ -1525,21 +1498,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="851">
-          <caret line="202" column="8" lean-forward="false" selection-start-line="202" selection-start-column="8" selection-end-line="202" selection-end-column="53" />
-          <folding>
-            <element signature="e#40#88#0#PHP" expanded="true" />
-            <marker date="1483872540000" expanded="true" signature="6842:7166" ph="SELECT posit... tunjangan_positions" />
-            <marker date="1483872540000" expanded="true" signature="8960:9551" ph="SELECT lokas... timesheet_details" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/Timesheet.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="97">
+        <state relative-caret-position="-938">
           <caret line="178" column="45" lean-forward="true" selection-start-line="178" selection-start-column="45" selection-end-line="178" selection-end-column="45" />
           <folding>
             <marker date="1483872620000" expanded="true" signature="4043:4439" ph="select count... approval_histories" />
@@ -1550,18 +1511,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="127" column="19" lean-forward="false" selection-start-line="127" selection-start-column="13" selection-end-line="127" selection-end-column="19" />
-          <folding />
+        <state relative-caret-position="632">
+          <caret line="378" column="31" lean-forward="false" selection-start-line="378" selection-start-column="23" selection-end-line="378" selection-end-column="31" />
+          <folding>
+            <element signature="e#40#88#0#PHP" expanded="true" />
+            <marker date="1483872540000" expanded="true" signature="6842:7166" ph="SELECT posit... tunjangan_positions" />
+            <marker date="1483872540000" expanded="true" signature="8960:9551" ph="SELECT lokas... timesheet_details" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/timesheets/edit_timesheet.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="374" column="60" lean-forward="false" selection-start-line="374" selection-start-column="52" selection-end-line="374" selection-end-column="60" />
+          <folding>
+            <element signature="e#24504#24525#0#HTML" expanded="true" />
+            <element signature="e#24666#24687#0#HTML" expanded="true" />
+            <element signature="e#26878#26899#0#HTML" expanded="true" />
+            <element signature="e#27040#27061#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="372" column="66" lean-forward="false" selection-start-line="372" selection-start-column="66" selection-end-line="372" selection-end-column="66" />
+        <state relative-caret-position="122">
+          <caret line="360" column="60" lean-forward="false" selection-start-line="360" selection-start-column="55" selection-end-line="360" selection-end-column="60" />
           <folding>
             <marker date="1483876000000" expanded="true" signature="12564:12780" ph="..." />
             <marker date="1483876000000" expanded="true" signature="12578:12778" ph="..." />
@@ -1572,6 +1550,14 @@
             <marker date="1483876000000" expanded="true" signature="21775:21969" ph="..." />
             <marker date="1483876000000" expanded="true" signature="21789:21947" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="141" column="36" lean-forward="true" selection-start-line="141" selection-start-column="36" selection-end-line="141" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>

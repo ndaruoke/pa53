@@ -138,6 +138,9 @@ Route::get('rmvfile/{id}', array('uses' => 'Add_Timesheet@getRemoveImageFile',
 Route::get('dl/{file}', array('uses' => 'Add_Timesheet@downloadFile',
 'as' => 'add_timesheet.dl'));
 
+Route::post('add_timesheet/create', array('uses' => 'Add_Timesheet@create',
+    'as' => 'add_timesheet.store'));
+
 Route::post('add_timesheet/form', array('uses' => 'Add_Timesheet@form',
 'as' => 'add_timesheet.form'));
 Route::resource('add_timesheet', 'Add_Timesheet');
