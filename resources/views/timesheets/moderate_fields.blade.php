@@ -324,7 +324,7 @@
                                             {!! $detail->approval !!}
                                         </td>
                                     @endif
-                                    @if($detail->status == 0)
+                                    @if($detail->approval_status == 0)
                                         <td class="col-md-1">
                                             {{ Form::checkbox('insentif['.$row.'][choose]', true) }}
                                         </td>
