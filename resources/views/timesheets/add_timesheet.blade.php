@@ -249,6 +249,17 @@
 @section('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.8/validator.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay_progress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay.min.js"></script>
+    
+    <script>
+$(document).ajaxStart(function(){
+    $.LoadingOverlay("show");
+});
+$(document).ajaxStop(function(){
+    $.LoadingOverlay("hide");
+});
+    </script>
     <script>
         function onChangeActivity(id) {
             setTimeout(function () {

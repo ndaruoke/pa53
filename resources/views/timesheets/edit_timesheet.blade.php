@@ -502,6 +502,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.1.0/vanilla-masker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay_progress.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay.min.js"></script>
+    <script>
+ $(document).ajaxStart(function(){
+    $.LoadingOverlay("show");
+});
+$(document).ajaxStop(function(){
+    $.LoadingOverlay("hide");
+});
+    </script>
     <script>
         $(document).ready(function () {
             for (i = 0; i < 7; i++) {
