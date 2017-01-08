@@ -200,6 +200,7 @@ class TimesheetApprovalController extends AppBaseController
         where approval_histories.user_id = " . $user['id'] . " 
         and (approval_histories.approval_id = " . $approval['id'] . " or approval_histories.group_approval_id = " . $approval['role'] . ")
         and approval_histories.approval_status = " . $approvalStatus . " 
+        and approval_histories.transaction_type = 2
         and selected = 1 group by lokasi"));
 
 
