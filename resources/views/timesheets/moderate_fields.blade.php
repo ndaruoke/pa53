@@ -370,7 +370,7 @@
                                     </td>
                                     <td class="col-md-1">
                                         @if($detail->file!=null)
-                                            <a href="{{asset('upload')}}/{{$detail->file}}">{{str_limit($detail->file,9)}}</a>
+                                            <a href="{{url('dl')}}/{{$detail->file}}">{{str_limit($detail->file,9)}}</a>
                                         @endif
                                     </td>
                                     @if($detail->approval_status != 0)
