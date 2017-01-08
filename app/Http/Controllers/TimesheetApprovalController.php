@@ -101,7 +101,7 @@ class TimesheetApprovalController extends AppBaseController
         $timesheet_details = TimesheetDetail::
         select(DB::raw('DATE_FORMAT(timesheet_details.date, \'%d-%m-%Y\') as id_date, timesheet_details.date,timesheet_details.id,timesheet_details.activity,
             timesheet_details.approval_status,timesheet_details.project_id, timesheet_details.start_time,timesheet_details.end_time,
-            timesheet_details.lokasi,timesheet_details.activity_detail,approval_histories.transaction_id, timesheet_details.approval_status as approval_status_history'))->
+            timesheet_details.lokasi,timesheet_details.activity_detail,approval_histories.transaction_id, approval_histories.approval_status as approval_status_history'))->
         join('approval_histories', 'approval_histories.transaction_id', 'timesheet_details.id')->
         where('approval_histories.approval_status', '=', $approvalStatus)->
         where('approval_histories.transaction_type', '=', 2)->

@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3dd7a13a-f1b8-452f-940f-5fa9045cf6b8" name="Default" comment="add audit and separate leave from admin and non admin user">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php" afterPath="$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php" />
     </list>
     <ignored path="pa53.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,12 +41,12 @@
       <file leaf-file-name="TimesheetApprovalController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="103" column="166" lean-forward="false" selection-start-line="103" selection-start-column="143" selection-end-line="103" selection-end-column="166" />
+            <state relative-caret-position="746">
+              <caret line="143" column="0" lean-forward="false" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
               <folding>
                 <element signature="e#40#88#0#PHP" expanded="true" />
-                <marker date="1483869373000" expanded="true" signature="6841:7165" ph="SELECT posit... tunjangan_positions" />
-                <marker date="1483869373000" expanded="true" signature="8959:9498" ph="SELECT lokas... timesheet_details" />
+                <marker date="1483869854000" expanded="true" signature="6842:7166" ph="SELECT posit... tunjangan_positions" />
+                <marker date="1483869854000" expanded="true" signature="8960:9499" ph="SELECT lokas... timesheet_details" />
               </folding>
             </state>
           </provider>
@@ -73,7 +72,7 @@
       <file leaf-file-name="moderate_fields.blade.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="545">
+            <state relative-caret-position="380">
               <caret line="277" column="72" lean-forward="false" selection-start-line="277" selection-start-column="72" selection-end-line="277" selection-end-column="72" />
               <folding>
                 <marker date="1483869382000" expanded="true" signature="12564:12780" ph="..." />
@@ -94,16 +93,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="5610">
               <caret line="374" column="60" lean-forward="false" selection-start-line="374" selection-start-column="52" selection-end-line="374" selection-end-column="60" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="web.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/routes/web.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1725">
-              <caret line="124" column="22" lean-forward="false" selection-start-line="124" selection-start-column="9" selection-end-line="124" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -243,8 +232,8 @@
         <option value="$PROJECT_DIR$/app/Models/Timesheet.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Add_Timesheet.php" />
         <option value="$PROJECT_DIR$/resources/views/timesheets/add_timesheet.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php" />
         <option value="$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php" />
       </list>
     </option>
   </component>
@@ -544,7 +533,7 @@
       <workItem from="1483795418056" duration="874000" />
       <workItem from="1483798664910" duration="7830000" />
       <workItem from="1483854035970" duration="2426000" />
-      <workItem from="1483868993871" duration="395000" />
+      <workItem from="1483868993871" duration="1066000" />
     </task>
     <task id="LOCAL-00001" summary="rename to PA Metrasys">
       <created>1476512413193</created>
@@ -718,7 +707,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="244803000" />
+    <option name="totallyTimeSpent" value="245474000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -731,7 +720,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="735" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30546874" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -740,21 +729,21 @@
       <window_info id="Database" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32649842" sideWeight="0.49707174" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329653" sideWeight="0.49707174" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3078078" sideWeight="0.44140625" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Command Line Tools Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4159159" sideWeight="0.43704244" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32882884" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32732734" sideWeight="0.4359375" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3078078" sideWeight="0.44140625" order="4" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -832,6 +821,11 @@
           <line>794</line>
           <option name="timeStamp" value="187" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php</url>
+          <line>143</line>
+          <option name="timeStamp" value="193" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog>
@@ -840,7 +834,7 @@
           </selected-grouping-rules>
         </breakpoints-dialog>
       </breakpoints-dialog>
-      <option name="time" value="193" />
+      <option name="time" value="194" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="index.php">
@@ -1081,20 +1075,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../phpmyadmin/tbl_replace.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../phpmyadmin/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
@@ -1227,7 +1207,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="545">
+        <state relative-caret-position="380">
           <caret line="277" column="72" lean-forward="false" selection-start-line="277" selection-start-column="72" selection-end-line="277" selection-end-column="72" />
           <folding>
             <marker date="1483869382000" expanded="true" signature="12564:12780" ph="..." />
@@ -1242,14 +1222,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php">
+    <entry file="file://$PROJECT_DIR$/../../phpmyadmin/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding>
+            <marker date="1448283212000" expanded="true" signature="4126:4153" ph="..." />
+            <marker date="1448283212000" expanded="true" signature="6321:6327" ph=" " />
+            <marker date="1448283212000" expanded="true" signature="16845:16851" ph=" " />
+            <marker date="1448283212000" expanded="true" signature="16851:16857" ph=" " />
+            <marker date="1448283212000" expanded="true" signature="16857:16863" ph=" " />
+            <marker date="1448283212000" expanded="true" signature="16863:16869" ph=" " />
+            <marker date="1448283212000" expanded="true" signature="16869:16875" ph=" " />
+            <marker date="1448283212000" expanded="true" signature="16875:16881" ph=" " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../phpmyadmin/tbl_replace.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
-          <caret line="103" column="166" lean-forward="false" selection-start-line="103" selection-start-column="143" selection-end-line="103" selection-end-column="166" />
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="746">
+          <caret line="143" column="0" lean-forward="false" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
           <folding>
             <element signature="e#40#88#0#PHP" expanded="true" />
-            <marker date="1483869373000" expanded="true" signature="6841:7165" ph="SELECT posit... tunjangan_positions" />
-            <marker date="1483869373000" expanded="true" signature="8959:9498" ph="SELECT lokas... timesheet_details" />
+            <marker date="1483869854000" expanded="true" signature="6842:7166" ph="SELECT posit... tunjangan_positions" />
+            <marker date="1483869854000" expanded="true" signature="8960:9499" ph="SELECT lokas... timesheet_details" />
           </folding>
         </state>
       </provider>
