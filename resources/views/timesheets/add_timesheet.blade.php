@@ -3,7 +3,7 @@
 @section('content')
 
 
-    {!! Form::open(['route' => 'add_timesheet.form','data-toggle'=>'validator','id'=>'create_timesheet']) !!}
+    {!! Form::open(['route' => 'add_timesheet.form','data-toggle'=>'validator']) !!}
 
 
     <div class="box-body">
@@ -106,7 +106,7 @@
             <div class="clearfix"></div>
 
 
-            {!! Form::open(['route' => 'add_timesheet.create']) !!}
+            {!! Form::open(['route' => 'add_timesheet.create','id'=>'create_timesheet']) !!}
 
             <div class="clearfix"></div>
 
