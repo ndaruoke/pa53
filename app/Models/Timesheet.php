@@ -244,8 +244,11 @@ class Timesheet extends Model
     {
         $insentif = DB::table('timesheet_insentif')
             ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')
-            ->where('approval_histories.approval_id', '=', $approval->id)
             ->where('approval_histories.user_id', '=', $userId)
+            ->where(function ($query) use ($approval) {
+                $query->where('approval_histories.approval_id', '=', $approval->id)
+                    ->orWhere('approval_histories.group_approval_id', '=', $approval->role);
+            })
             ->where('approval_histories.approval_status', '=', $approvalStatus)
             ->whereIn('transaction_type', [4])//bantuan perumahan
             ->pluck('timesheet_insentif.value')->sum();
@@ -257,8 +260,11 @@ class Timesheet extends Model
     {
         $transport = DB::table('timesheet_transport')
             ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')
-            ->where('approval_histories.approval_id', '=', $approval->id)
             ->where('approval_histories.user_id', '=', $userId)
+            ->where(function ($query) use ($approval) {
+                $query->where('approval_histories.approval_id', '=', $approval->id)
+                    ->orWhere('approval_histories.group_approval_id', '=', $approval->role);
+            })
             ->where('approval_histories.approval_status', '=', $approvalStatus)
             ->where('transaction_type', '=', 3)//adcost
             ->pluck('timesheet_transport.value')->sum();
