@@ -182,6 +182,7 @@ class Timesheet extends Model
         where approval_histories.user_id = " . $userId . " 
         and (approval_histories.approval_id = " . $approval['id'] . " or approval_histories.group_approval_id = " . $approval['role'] . ")
         and approval_histories.approval_status = " . $approvalStatus . " 
+        and approval_histories.transaction_type = 2  
         and selected = 1 group by lokasi"));
 
         $tunjangans = DB::select(DB::raw('SELECT positions.name,tunjangans.name,lokal,non_lokal,luar_jawa,internasional 
