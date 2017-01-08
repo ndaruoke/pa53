@@ -555,4 +555,8 @@ class Add_Timesheet extends Controller
     {
         File::delete('upload/' . $filename);
     }
+
+    public function downloadFile($filename){
+        return response()->download(public_path('upload/'.$filename));
+    }
 }

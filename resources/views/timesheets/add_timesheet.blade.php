@@ -481,7 +481,7 @@
 
     function upload(id) {
         var file_data = $('#file'+id).prop('files')[0];
-        if(!(file_data.name.split('.').pop()==='pdf' || file_data.name.split('.').pop() ==='jpeg')){
+        if(!(file_data.name.split('.').pop()==='pdf' || ( file_data.name.split('.').pop() ==='jpeg' || file_data.name.split('.').pop() ==='jpg'))){
         alert('mohon upload file dengan exstensi jpeg atau pdf');
         return false;
         }
@@ -508,7 +508,7 @@
                 else {
                     filename = data;
                     $('#dl'+id).html(data);
-                    $('#dl'+id).attr("href", '{{asset('upload')}}/' + data);
+                    $('#dl'+id).attr("href", '{{url('dl')}}/' + data);
                     $("#flname"+id).val(data);
                 }
             },

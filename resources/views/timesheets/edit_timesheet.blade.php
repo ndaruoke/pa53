@@ -427,7 +427,7 @@
                                                 <a href="javascript:removeFile({{$row}})" style="color: red;text-decoration: none;"><i
                                                             class="glyphicon glyphicon-trash"></i>
                                                     Remove</a>&nbsp;&nbsp;
-                                                <a target="_blank" href="{{asset('upload')}}/{{$detail->file}}" id="dl{{$row}}">{{$detail->file}}</a>
+                                                <a target="_blank" href="{{url('dl')}}/{{$detail->file}}" id="dl{{$row}}">{{$detail->file}}</a>
                                             </p>
                                             <input type="text" name="trans[{{$row}}][file]" id="flname{{$row}}" style="display: none" value="{{$detail->file}}">
                                             <input type="file" id="file{{$row}}" onchange="fileChange({{$row}})" style="display: none"/>
@@ -456,7 +456,7 @@
                                     <td>
                                     <center>
                                             <p>
-                                                <a target="_blank" href="{{asset('upload')}}/{{$detail->file}}" id="dl{{$row}}">{{$detail->file}}</a>
+                                                <a target="_blank" href="{{url('dl')}}/{{$detail->file}}" id="dl{{$row}}">{{$detail->file}}</a>
                                             </p>
                                             <input type="text" name="trans[{{$row}}][file]" id="flname{{$row}}" style="display: none" value="{{$detail->file}}">
                                             <input type="file" id="file{{$row}}" onchange="fileChange({{$row}})" style="display: none"/>
@@ -722,7 +722,7 @@
 
     function upload(id) {
         var file_data = $('#file'+id).prop('files')[0];
-        if(!(file_data.name.split('.').pop()==='pdf' || file_data.name.split('.').pop() ==='jpeg')){
+        if(!(file_data.name.split('.').pop()==='pdf' || ( file_data.name.split('.').pop() ==='jpeg' || file_data.name.split('.').pop() ==='jpg'))){
         alert('mohon upload file dengan exstensi jpeg atau pdf');
         return false;
         }
@@ -749,7 +749,7 @@
                 else {
                     filename = data;
                     $('#dl'+id).html(data);
-                    $('#dl'+id).attr("href", '{{asset('upload')}}/' + data);
+                    $('#dl'+id).attr("href", '{{url('dl')}}/' + data);
                     $("#flname"+id).val(data);
                 }
             },
