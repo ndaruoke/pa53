@@ -518,12 +518,15 @@ class TimesheetApprovalController extends AppBaseController
 
         if($request->moderation == "4") //paid
         {
-            $this->paidTimesheetDetail($timesheetDetailId, $approval);
-            if($insId != null)
+            if (!empty($timesheetDetailId))
+            {
+                $this->paidTimesheetDetail($timesheetDetailId, $approval);
+            }
+            if(!empty($insId))
             {
                 $this->paidAdCost($insId, $approval);
             }
-            if($transId != null)
+            if(!empty($transId))
             {
                 $this->paidTransport($transId, $approval);
             }
@@ -531,22 +534,32 @@ class TimesheetApprovalController extends AppBaseController
 
         if($request->moderation == "5") //onhold
         {
-            $this->onholdTimesheetDetail($timesheetDetailId, $approval, $request);
-            if(!is_null($insId)) {
+            if(!empty(timesheetDetailId ))
+            {
+                $this->onholdTimesheetDetail($timesheetDetailId, $approval, $request);
+            }
+            if(!empty($insId))
+            {
                 $this->onholdAdCost($insId, $approval, $request);
             }
-            if(!is_null($transId)) {
+            if(!empty($transId))
+            {
                 $this->onholdTransport($transId, $approval, $request);
             }
         }
 
         if($request->moderation == "6") //over budget
         {
-            $this->overbudgetTimesheetDetail($timesheetDetailId, $approval);
-            if(!is_null($insId)) {
+            if (!empty($timesheetDetailId))
+            {
+                $this->overbudgetTimesheetDetail($timesheetDetailId, $approval);
+            }
+            if((!empty($insId))
+            {
                 $this->overbudgetAdCost($insId, $approval);
             }
-            if(!is_null($transId)) {
+            if(!empty($transId))
+            {
                 $this->overbudgetTransport($transId, $approval);
             }
         }
