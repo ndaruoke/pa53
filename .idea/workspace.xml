@@ -216,17 +216,17 @@
       <file leaf-file-name="moderate_fields.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
-              <caret line="284" column="63" lean-forward="false" selection-start-line="284" selection-start-column="63" selection-end-line="284" selection-end-column="63" />
+            <state relative-caret-position="-643">
+              <caret line="340" column="71" lean-forward="false" selection-start-line="340" selection-start-column="71" selection-end-line="340" selection-end-column="71" />
               <folding>
-                <marker date="1483879700000" expanded="true" signature="12564:12780" ph="..." />
-                <marker date="1483879700000" expanded="true" signature="12578:12778" ph="..." />
-                <marker date="1483879700000" expanded="true" signature="21829:22041" ph="..." />
-                <marker date="1483879700000" expanded="true" signature="21843:22019" ph="..." />
-                <marker date="1483879700000" expanded="true" signature="22440:22703" ph="..." />
-                <marker date="1483879700000" expanded="true" signature="22454:22677" ph="..." />
-                <marker date="1483879700000" expanded="true" signature="23102:23296" ph="..." />
-                <marker date="1483879700000" expanded="true" signature="23116:23274" ph="..." />
+                <marker date="1483879788000" expanded="true" signature="12564:12780" ph="..." />
+                <marker date="1483879788000" expanded="true" signature="12578:12778" ph="..." />
+                <marker date="1483879788000" expanded="true" signature="21842:22054" ph="..." />
+                <marker date="1483879788000" expanded="true" signature="21856:22032" ph="..." />
+                <marker date="1483879788000" expanded="true" signature="22453:22716" ph="..." />
+                <marker date="1483879788000" expanded="true" signature="22467:22690" ph="..." />
+                <marker date="1483879788000" expanded="true" signature="23115:23309" ph="..." />
+                <marker date="1483879788000" expanded="true" signature="23129:23287" ph="..." />
               </folding>
             </state>
           </provider>
@@ -702,7 +702,7 @@
       <workItem from="1483795418056" duration="874000" />
       <workItem from="1483798664910" duration="7830000" />
       <workItem from="1483854035970" duration="2426000" />
-      <workItem from="1483868993871" duration="6829000" />
+      <workItem from="1483868993871" duration="6924000" />
     </task>
     <task id="LOCAL-00001" summary="rename to PA Metrasys">
       <created>1476512413193</created>
@@ -876,7 +876,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="251237000" />
+    <option name="totallyTimeSpent" value="251332000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1551,17 +1551,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/timesheets/moderate_fields.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="284" column="63" lean-forward="false" selection-start-line="284" selection-start-column="63" selection-end-line="284" selection-end-column="63" />
+        <state relative-caret-position="-643">
+          <caret line="340" column="71" lean-forward="false" selection-start-line="340" selection-start-column="71" selection-end-line="340" selection-end-column="71" />
           <folding>
-            <marker date="1483879700000" expanded="true" signature="12564:12780" ph="..." />
-            <marker date="1483879700000" expanded="true" signature="12578:12778" ph="..." />
-            <marker date="1483879700000" expanded="true" signature="21829:22041" ph="..." />
-            <marker date="1483879700000" expanded="true" signature="21843:22019" ph="..." />
-            <marker date="1483879700000" expanded="true" signature="22440:22703" ph="..." />
-            <marker date="1483879700000" expanded="true" signature="22454:22677" ph="..." />
-            <marker date="1483879700000" expanded="true" signature="23102:23296" ph="..." />
-            <marker date="1483879700000" expanded="true" signature="23116:23274" ph="..." />
+            <marker date="1483879788000" expanded="true" signature="12564:12780" ph="..." />
+            <marker date="1483879788000" expanded="true" signature="12578:12778" ph="..." />
+            <marker date="1483879788000" expanded="true" signature="21842:22054" ph="..." />
+            <marker date="1483879788000" expanded="true" signature="21856:22032" ph="..." />
+            <marker date="1483879788000" expanded="true" signature="22453:22716" ph="..." />
+            <marker date="1483879788000" expanded="true" signature="22467:22690" ph="..." />
+            <marker date="1483879788000" expanded="true" signature="23115:23309" ph="..." />
+            <marker date="1483879788000" expanded="true" signature="23129:23287" ph="..." />
           </folding>
         </state>
       </provider>
