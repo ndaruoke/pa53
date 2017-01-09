@@ -267,9 +267,9 @@ $(document).ajaxStop(function(){
                 if (selected === 'SUPPORT') {
                     $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
                     // $('#timesheet'+id+'lokasi').prop("disabled", true);
-                    $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
-                        $(this).attr('disabled', 'disabled');
-                    });
+                    // $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
+                    //     $(this).attr('disabled', 'disabled');
+                    // });
                     $('#timesheet' + id + 'activity_other').hide();
                 }
                 else if (selected === 'IMPLEMENTASI') {
@@ -283,9 +283,9 @@ $(document).ajaxStop(function(){
                     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
                     $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
                     // $('#timesheet'+id+'lokasi').prop("disabled", true);
-                    $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
-                        $(this).attr('disabled', 'disabled');
-                    });
+                    // $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
+                    //     $(this).attr('disabled', 'disabled');
+                    // });
                 }
 
                 else if (selected === 'MANAGED OPERATION') {
@@ -293,9 +293,9 @@ $(document).ajaxStop(function(){
                     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
                     $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
                     // $('#timesheet'+id+'lokasi').prop("disabled", true);
-                    $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
-                        $(this).attr('disabled', 'disabled');
-                    });
+                    // $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
+                    //     $(this).attr('disabled', 'disabled');
+                    // });
                 }
 
                 else {
@@ -303,9 +303,9 @@ $(document).ajaxStop(function(){
                     // $('#timesheet'+id+'lokasi').val("").trigger("change");
                    $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
                     // $('#timesheet'+id+'lokasi').prop("disabled", true);
-                    $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
-                        $(this).attr('disabled', 'disabled');
-                    });
+                    // $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
+                    //     $(this).attr('disabled', 'disabled');
+                    // });
                 }
 
             }, 50);

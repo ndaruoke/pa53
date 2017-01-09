@@ -529,7 +529,7 @@ $(document).ajaxStop(function(){
                 var selected = $("[id*=select2-timesheet" + id + "activity]").text();
                 if (selected === 'SUPPORT') {
                     $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
-                    $('#timesheet' + id + 'lokasi').prop("disabled", true);
+                  //  $('#timesheet' + id + 'lokasi').prop("disabled", true);
                 }
                 else if (selected === 'IMPLEMENTASI') {
                     $('#timesheet' + id + 'activity_other').show();
@@ -541,20 +541,20 @@ $(document).ajaxStop(function(){
                     $('#timesheet' + id + 'activity_other').show();
                     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
                    $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
-                    $('#timesheet' + id + 'lokasi').prop("disabled", true);
+                   // $('#timesheet' + id + 'lokasi').prop("disabled", true);
                 }
 
                 else if (selected === 'MANAGED OPERATION') {
                     $('#timesheet' + id + 'activity_other').show();
                     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
                     $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
-                    $('#timesheet' + id + 'lokasi').prop("disabled", true);
+                   // $('#timesheet' + id + 'lokasi').prop("disabled", true);
                 }
                 else {
                     $('#timesheet' + id + 'activity_other').hide();
                     //    $('#timesheet'+id+'lokasi').val("").trigger("change");
                     $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
-                    $('#timesheet' + id + 'lokasi').prop("disabled", true);
+                   // $('#timesheet' + id + 'lokasi').prop("disabled", true);
                 }
 
             }, 50);
