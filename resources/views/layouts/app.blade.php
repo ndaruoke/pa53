@@ -28,7 +28,7 @@
 
             <!-- Logo -->
             <a href="#" class="logo">
-                <b><h5>Timesheet</h5><p><h5>Management</h5></p></b>
+                <b><h4>Timesheet</h4><p style="margin-top:-5%"><h4>Management</h4></p></b>
             </a>
 
             <!-- Header Navbar -->
