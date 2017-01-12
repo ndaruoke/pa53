@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3dd7a13a-f1b8-452f-940f-5fa9045cf6b8" name="Default" comment="add audit and separate leave from admin and non admin user">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php" />
     </list>
     <ignored path="pa53.iws" />
@@ -42,12 +41,12 @@
       <file leaf-file-name="TimesheetApprovalController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="124" column="28" lean-forward="false" selection-start-line="124" selection-start-column="8" selection-end-line="124" selection-end-column="28" />
+            <state relative-caret-position="465">
+              <caret line="138" column="51" lean-forward="false" selection-start-line="138" selection-start-column="51" selection-end-line="138" selection-end-column="51" />
               <folding>
                 <element signature="e#40#88#0#PHP" expanded="true" />
-                <marker date="1484237225000" expanded="true" signature="6899:7223" ph="SELECT posit... tunjangan_positions" />
-                <marker date="1484237225000" expanded="true" signature="9017:9608" ph="SELECT lokas... timesheet_details" />
+                <marker date="1484237329000" expanded="true" signature="6900:7224" ph="SELECT posit... tunjangan_positions" />
+                <marker date="1484237329000" expanded="true" signature="9018:9609" ph="SELECT lokas... timesheet_details" />
               </folding>
             </state>
           </provider>
@@ -592,7 +591,7 @@
       <workItem from="1483798664910" duration="7830000" />
       <workItem from="1483854035970" duration="2426000" />
       <workItem from="1483868993871" duration="10624000" />
-      <workItem from="1484236607587" duration="486000" />
+      <workItem from="1484236607587" duration="569000" />
     </task>
     <task id="LOCAL-00001" summary="rename to PA Metrasys">
       <created>1476512413193</created>
@@ -766,7 +765,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="255518000" />
+    <option name="totallyTimeSpent" value="255601000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -877,7 +876,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php</url>
-          <line>807</line>
+          <line>809</line>
           <option name="timeStamp" value="187" />
         </line-breakpoint>
       </breakpoints>
@@ -1297,12 +1296,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TimesheetApprovalController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="124" column="28" lean-forward="false" selection-start-line="124" selection-start-column="8" selection-end-line="124" selection-end-column="28" />
+        <state relative-caret-position="465">
+          <caret line="138" column="51" lean-forward="false" selection-start-line="138" selection-start-column="51" selection-end-line="138" selection-end-column="51" />
           <folding>
             <element signature="e#40#88#0#PHP" expanded="true" />
-            <marker date="1484237225000" expanded="true" signature="6899:7223" ph="SELECT posit... tunjangan_positions" />
-            <marker date="1484237225000" expanded="true" signature="9017:9608" ph="SELECT lokas... timesheet_details" />
+            <marker date="1484237329000" expanded="true" signature="6900:7224" ph="SELECT posit... tunjangan_positions" />
+            <marker date="1484237329000" expanded="true" signature="9018:9609" ph="SELECT lokas... timesheet_details" />
           </folding>
         </state>
       </provider>

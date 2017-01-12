@@ -111,6 +111,7 @@ class TimesheetApprovalController extends AppBaseController
         })->
         where('selected', '=', '1')->
         get();
+
         $timesheet_insentif = TimesheetInsentif::
         select(DB::raw('DATE_FORMAT(timesheet_insentif.date, \'%d-%m-%Y\') as id_date, timesheet_insentif.date,timesheet_insentif.id,timesheet_insentif.keterangan,
             timesheet_insentif.status,timesheet_insentif.value,timesheet_insentif.project_id, approval_histories.transaction_id, approval_histories.approval_status'))->
@@ -122,6 +123,7 @@ class TimesheetApprovalController extends AppBaseController
                 ->orWhere('approval_histories.group_approval_id', '=', $approval['role']);
         })->
         get();
+
         $timesheet_transport = TimesheetTransport::
         select(DB::raw('DATE_FORMAT(timesheet_transport.date, \'%d-%m-%Y\') as id_date, timesheet_transport.date,timesheet_transport.id,timesheet_transport.keterangan,
             timesheet_transport.status,timesheet_transport.value,timesheet_transport.project_id, timesheet_transport.file, approval_histories.transaction_id, approval_histories.approval_status'))->
@@ -134,7 +136,7 @@ class TimesheetApprovalController extends AppBaseController
         })->
         get();
 
-        return response()->json($timesheet_transport);
+        return response()->json($timesheet_insentif);
 
         $summary = $this->populateSummary($timesheets, $user, $approval, $approvalStatus, $timesheet_insentif, $timesheet_transport);
 
