@@ -117,7 +117,7 @@ class TimesheetApprovalController extends AppBaseController
             timesheet_insentif.status,timesheet_insentif.value,timesheet_insentif.project_id, approval_histories.transaction_id, approval_histories.approval_status'))->
         join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')->
         where('approval_histories.approval_status', '=', $approvalStatus)->
-        where('approval_histories.transaction_type', '=', 3)->
+        where('approval_histories.transaction_type', '=', 4)->
         where(function ($query) use ($approval) {
             $query->where('approval_histories.approval_id', '=', $approval['id'])
                 ->orWhere('approval_histories.group_approval_id', '=', $approval['role']);
@@ -129,14 +129,12 @@ class TimesheetApprovalController extends AppBaseController
             timesheet_transport.status,timesheet_transport.value,timesheet_transport.project_id, timesheet_transport.file, approval_histories.transaction_id, approval_histories.approval_status'))->
         join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')->
         where('approval_histories.approval_status', '=', $approvalStatus)->
-        where('approval_histories.transaction_type', '=', 4)->
+        where('approval_histories.transaction_type', '=', 3)->
         where(function ($query) use ($approval) {
             $query->where('approval_histories.approval_id', '=', $approval['id'])
                 ->orWhere('approval_histories.group_approval_id', '=', $approval['role']);
         })->
         get();
-
-        return response()->json($timesheet_insentif);
 
         $summary = $this->populateSummary($timesheets, $user, $approval, $approvalStatus, $timesheet_insentif, $timesheet_transport);
 
