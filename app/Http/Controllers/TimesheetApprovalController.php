@@ -537,7 +537,7 @@ class TimesheetApprovalController extends AppBaseController
 
         if($request->moderation == "5") //onhold
         {
-            if(!empty(timesheetDetailId ))
+            if(!empty($timesheetDetailId ))
             {
                 $this->onholdTimesheetDetail($timesheetDetailId, $approval, $request);
             }
