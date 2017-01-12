@@ -133,6 +133,9 @@ class TimesheetApprovalController extends AppBaseController
                 ->orWhere('approval_histories.group_approval_id', '=', $approval['role']);
         })->
         get();
+
+        return response()->json($timesheet_transport);
+
         $summary = $this->populateSummary($timesheets, $user, $approval, $approvalStatus, $timesheet_insentif, $timesheet_transport);
 
         if (empty($timesheets)) {
