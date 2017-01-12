@@ -235,8 +235,8 @@
                 {{ Form::hidden('period', getListDate($_POST["year"],$_POST["month"],$_POST["week"])['period']) }}
             @endif
             <div class="form-group col-sm-12">
-                {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
-                {!! Form::submit('Save',['name'=>'action','class' => 'btn btn-primary']) !!}
+                {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary','id'=>'submitBtn']) !!}
+                {!! Form::submit('Save',['name'=>'action','class' => 'btn btn-primary','id'=>'saveBtn']) !!}
             </div>
             <div class="clearfix"></div>
             {!! Form::close() !!}
@@ -266,10 +266,7 @@ $(document).ajaxStop(function(){
                 var selected = $("[id*=select2-timesheet" + id + "activity]").text();
                 if (selected === 'SUPPORT') {
                     $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
-                    // $('#timesheet'+id+'lokasi').prop("disabled", true);
-                    // $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
-                    //     $(this).attr('disabled', 'disabled');
-                    // });
+                    $('#timesheet'+id+'lokasi').prop("disabled", true);                   
                     $('#timesheet' + id + 'activity_other').hide();
                 }
                 else if (selected === 'IMPLEMENTASI') {
@@ -282,30 +279,22 @@ $(document).ajaxStop(function(){
                     $('#timesheet' + id + 'activity_other').show();
                     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
                     $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
-                    // $('#timesheet'+id+'lokasi').prop("disabled", true);
-                    // $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
-                    //     $(this).attr('disabled', 'disabled');
-                    // });
+                    $('#timesheet'+id+'lokasi').prop("disabled", true); 
                 }
 
                 else if (selected === 'MANAGED OPERATION') {
                     $('#timesheet' + id + 'activity_other').show();
                     //  $('#timesheet'+id+'lokasi').val("").trigger("change");
                     $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
-                    // $('#timesheet'+id+'lokasi').prop("disabled", true);
-                    // $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
-                    //     $(this).attr('disabled', 'disabled');
-                    // });
+                    $('#timesheet'+id+'lokasi').prop("disabled", true); 
+                    
                 }
 
                 else {
                     $('#timesheet' + id + 'activity_other').hide();
                     // $('#timesheet'+id+'lokasi').val("").trigger("change");
                    $('#timesheet' + id + 'lokasi').val("UNCLAIMABLE").trigger("change");
-                    // $('#timesheet'+id+'lokasi').prop("disabled", true);
-                    // $(' #timesheet' + id + 'lokasi option:not(:selected)').each(function () {
-                    //     $(this).attr('disabled', 'disabled');
-                    // });
+                    $('#timesheet'+id+'lokasi').prop("disabled", true); 
                 }
 
             }, 50);
@@ -426,6 +415,11 @@ $(document).ajaxStop(function(){
 
         $(document).ready(function ($) {
             formatCurr();
+            $('#submitBtn,#saveBtn').click(function(e){
+                e.preventDefault();
+                $('[disabled]').removeAttr('disabled');
+                $('#create_timesheet').submit();
+            });
             $("#create_timesheet").submit(function ($) {
             VMasker(document.querySelectorAll(".money")).unMask();
         });

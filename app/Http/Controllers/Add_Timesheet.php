@@ -285,7 +285,7 @@ class Add_Timesheet extends Controller
                         'timesheet_id' => $id,
                         'status' => $approval_status
                         //   'project_id'=> $value['project'],
-                    ] + (isset($value['id']) ? array('id' => $value['id']) : array());
+                    ];// + (isset($value['id']) ? array('id' => $value['id']) : array());
             }
             DB::table('timesheet_transport')->insert($trans);
         }
@@ -300,7 +300,7 @@ class Add_Timesheet extends Controller
                         'timesheet_id' => $id,
                         'status' => $approval_status
                         //   'project_id'=> $value['project'],
-                    ] + (isset($value['id']) ? array('id' => $value['id']) : array());
+                    ] ;//+ (isset($value['id']) ? array('id' => $value['id']) : array());
             }
             DB::table('timesheet_insentif')->insert($ins);
         }
