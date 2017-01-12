@@ -129,7 +129,7 @@ approval_id
         WHEN approval_status=5 THEN "Onhold"
         WHEN approval_status=6 THEN "Overbudget"
         END status
-from approval_histories where transaction_type = 3  
+from approval_histories where transaction_type = 4  
 and transaction_id = ' . $this->id . '
 order by sequence_id'));
 

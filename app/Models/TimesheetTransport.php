@@ -129,7 +129,7 @@ class TimesheetTransport extends Model
         WHEN approval_status=5 THEN "Onhold"
         WHEN approval_status=6 THEN "Overbudget"
         END status
-        from approval_histories where transaction_type = 4 
+        from approval_histories where transaction_type = 3 
         and transaction_id = ' . $this->id . '
         order by sequence_id'));
         $approval_ts = json_decode(json_encode($approval_ts), True);
