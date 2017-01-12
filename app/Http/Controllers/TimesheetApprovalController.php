@@ -373,12 +373,12 @@ class TimesheetApprovalController extends AppBaseController
             }
 
 
-                //transport
+                //transport 3
             if (!empty($transId)) {
                 $approvalHistoryTransportId = DB::
                 table('approval_histories')->
                 whereIn('transaction_id', $transId)->
-                where('approval_histories.transaction_type', '=', 4)->
+                where('approval_histories.transaction_type', '=', 3)->
                 where(function ($query) use ($approval) {
                     $query->where('approval_id', '=', $approval['id'])
                         ->orWhere('group_approval_id', '=', $approval['role']);
@@ -392,12 +392,12 @@ class TimesheetApprovalController extends AppBaseController
             }
 
 
-                //adcost
+                //adcost perumahan 4
             if (!empty($insId)) {
                 $approvalHistoryInsentifId = DB::
                 table('approval_histories')->
                 whereIn('transaction_id', $insId)->
-                where('approval_histories.transaction_type', '=', 3)->
+                where('approval_histories.transaction_type', '=', 4)->
                 where(function ($query) use ($approval) {
                     $query->where('approval_id', '=', $approval['id'])
                         ->orWhere('group_approval_id', '=', $approval['role']);
