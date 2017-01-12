@@ -683,7 +683,7 @@ class TimesheetApprovalController extends AppBaseController
             $approvalHistoryTransportId = DB::
             table('approval_histories')->
             whereIn('transaction_id', $transId)->
-            where('approval_histories.transaction_type', '=', 4)->
+            where('approval_histories.transaction_type', '=', 3)->
             where(function ($query) use ($approval) {
                 $query->where('approval_id', '=', $approval['id'])
                     ->orWhere('group_approval_id', '=', $approval['role']);
@@ -712,7 +712,7 @@ class TimesheetApprovalController extends AppBaseController
             $approvalHistoryInsentifId = DB::
             table('approval_histories')->
             whereIn('transaction_id', $insId)->
-            where('approval_histories.transaction_type', '=', 3)->
+            where('approval_histories.transaction_type', '=', 4)->
             where(function ($query) use ($approval) {
                 $query->where('approval_id', '=', $approval['id'])
                     ->orWhere('group_approval_id', '=', $approval['role']);
@@ -762,7 +762,7 @@ class TimesheetApprovalController extends AppBaseController
             $approvalHistoryTransportId = DB::
             table('approval_histories')->
             whereIn('transaction_id', $transId)->
-            where('approval_histories.transaction_type', '=', 4)->
+            where('approval_histories.transaction_type', '=', 3)->
             where(function ($query) use ($approval) {
                 $query->where('approval_id', '=', $approval['id'])
                     ->orWhere('group_approval_id', '=', $approval['role']);
@@ -788,7 +788,7 @@ class TimesheetApprovalController extends AppBaseController
             $approvalHistoryInsentifId = DB::
             table('approval_histories')->
             whereIn('transaction_id', $insId)->
-            where('approval_histories.transaction_type', '=', 3)->
+            where('approval_histories.transaction_type', '=', 4)->
             where(function ($query) use ($approval) {
                 $query->where('approval_id', '=', $approval['id'])
                     ->orWhere('group_approval_id', '=', $approval['role']);
