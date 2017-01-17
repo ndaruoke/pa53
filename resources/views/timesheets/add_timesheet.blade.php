@@ -32,7 +32,8 @@
                 <option value="12">Desember</option>
             </select>
             <select name="year" class="form-control select2" style="width: 20%;">
-                <option>2017</option>
+                <option>2016</option>
+                <option selected="selected">2017</option>
                 <option>2018</option>
                 <option>2019</option>
             </select>
