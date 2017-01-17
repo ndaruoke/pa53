@@ -103,6 +103,7 @@ class TimesheetApprovalController extends AppBaseController
             timesheet_details.approval_status,timesheet_details.project_id, timesheet_details.start_time,timesheet_details.end_time,
             timesheet_details.lokasi,timesheet_details.activity_detail,approval_histories.transaction_id, approval_histories.approval_status as approval_status_history'))->
         join('approval_histories', 'approval_histories.transaction_id', 'timesheet_details.id')->
+        where('approval_histories.user_id', '=', $user['id'])->
         where('approval_histories.approval_status', '=', $approvalStatus)->
         where('approval_histories.transaction_type', '=', 2)->
         where(function ($query) use ($approval) {
