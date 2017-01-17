@@ -116,6 +116,7 @@ class TimesheetApprovalController extends AppBaseController
         select(DB::raw('DATE_FORMAT(timesheet_insentif.date, \'%d-%m-%Y\') as id_date, timesheet_insentif.date,timesheet_insentif.id,timesheet_insentif.keterangan,
             timesheet_insentif.status,timesheet_insentif.value,timesheet_insentif.project_id, approval_histories.transaction_id, approval_histories.approval_status'))->
         join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')->
+        where('approval_histories.user_id', '=', $user['id'])->
         where('approval_histories.approval_status', '=', $approvalStatus)->
         where('approval_histories.transaction_type', '=', 4)->
         where(function ($query) use ($approval) {
@@ -128,6 +129,7 @@ class TimesheetApprovalController extends AppBaseController
         select(DB::raw('DATE_FORMAT(timesheet_transport.date, \'%d-%m-%Y\') as id_date, timesheet_transport.date,timesheet_transport.id,timesheet_transport.keterangan,
             timesheet_transport.status,timesheet_transport.value,timesheet_transport.project_id, timesheet_transport.file, approval_histories.transaction_id, approval_histories.approval_status'))->
         join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')->
+        where('approval_histories.user_id', '=', $user['id'])->
         where('approval_histories.approval_status', '=', $approvalStatus)->
         where('approval_histories.transaction_type', '=', 3)->
         where(function ($query) use ($approval) {
@@ -975,5 +977,37 @@ class TimesheetApprovalController extends AppBaseController
             ));
 
         return $updateDetail;
+    }
+
+    private function getProjectBudget($timesheet_details, $timesheet_insentif, $timesheet_transport)
+    {
+
+
+        $mandays = TimesheetDetail::select(DB::raw('project_id, lokasi, count(*)total'))->
+            join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')->
+            where('approval_histories.approval_status', '=', 4)->
+            where('approval_histories.transaction_type', '=', 4)->
+            whereIn('approval_histories.transaction_id', $timesheet_insentif->pluck('transaction_id'))->
+            where('selected','=',1)->
+            groupBy('timesheet_insentif.project_id')->
+            get();
+
+
+        $timesheetInsentifValue = TimesheetInsentif::select(DB::raw('sum(timesheet_insentif.value)total, timesheet_insentif.project_id'))->
+            join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')->
+            where('approval_histories.approval_status', '=', 4)->
+            where('approval_histories.transaction_type', '=', 4)->
+            whereIn('approval_histories.transaction_id', $timesheet_insentif->pluck('transaction_id'))->
+            groupBy('timesheet_insentif.project_id')->
+            get();
+
+        $timesheetTransportValue = TimesheetTransport::
+        select(DB::raw('sum(timesheet_transport.value)total, timesheet_transport.project_id'))->
+            join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')->
+            where('approval_histories.approval_status', '=', 4)->
+            where('approval_histories.transaction_type', '=', 3)->
+            whereIn('approval_histories.transaction_id', $timesheet_transport->pluck('transaction_id'))->
+            groupBy('timesheet_transport.project_id')->
+            get();
     }
 }
