@@ -30,6 +30,10 @@ class ProjectDataTable extends DataTable
 
         $projects = Project::with(['users','departments'])->get();
 
+        foreach ($projects as $r) {
+            $r->budget_currency = "Rp ". number_format($r->budget, 0 , ',' , '.' );
+        }
+
         return $this->applyScopes($projects);
     }
 
@@ -74,8 +78,7 @@ class ProjectDataTable extends DataTable
     {
         return [
             'project_name' => ['name' => 'project_name', 'data' => 'project_name'],
-            'tunjangan_list' => ['name' => 'tunjangan_list', 'data' => 'tunjangan_list'],
-            'budget' => ['name' => 'budget', 'data' => 'budget'],
+            'budget' => ['name' => 'budget_currency', 'data' => 'budget_currency'],
             'code' => ['name' => 'code', 'data' => 'code'],
             'claimable' => ['name' => 'claimable', 'data' => 'claimable'],
             'department_id' => ['name' => 'departments.name', 'data' => 'departments.name'],

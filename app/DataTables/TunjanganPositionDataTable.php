@@ -29,6 +29,13 @@ class TunjanganPositionDataTable extends DataTable
     {
         $tunjanganPositions = TunjanganPosition::with(['tunjangans','positions'])->get();
 
+        foreach ($tunjanganPositions as $r) {
+            $r->lokal_currency = "Rp ". number_format($r->lokal, 0 , ',' , '.' );
+            $r->non_lokal_currency = "Rp ". number_format($r->non_lokal, 0 , ',' , '.' );
+            $r->luar_jawa_currency = "Rp ". number_format($r->luar_jawa, 0 , ',' , '.' );
+            $r->internasional_currency = "Rp ". number_format($r->internasional, 0 , ',' , '.' );
+        }
+
         return $this->applyScopes($tunjanganPositions);
     }
 
@@ -74,10 +81,10 @@ class TunjanganPositionDataTable extends DataTable
         return [
             'tunjangan_id' => ['name' => 'tunjangans.name', 'data' => 'tunjangans.name'],
             'position_id' => ['name' => 'positions.name', 'data' => 'positions.name'],
-            'lokal' => ['name' => 'lokal', 'data' => 'lokal'],
-            'non_lokal' => ['name' => 'non_lokal', 'data' => 'non_lokal'],
-            'luar_jawa' => ['name' => 'luar_jawa', 'data' => 'luar_jawa'],
-            'internasional' => ['name' => 'internasional', 'data' => 'internasional']
+            'lokal' => ['name' => 'lokal_currency', 'data' => 'lokal_currency'],
+            'non_lokal' => ['name' => 'non_lokal_currency', 'data' => 'non_lokal_currency'],
+            'luar_jawa' => ['name' => 'luar_jawa_currency', 'data' => 'luar_jawa_currency'],
+            'internasional' => ['name' => 'internasional_currency', 'data' => 'internasional_currency']
         ];
     }
 
