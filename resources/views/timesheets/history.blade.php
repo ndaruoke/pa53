@@ -22,7 +22,6 @@
 
 
                 @section('scripts')
-                    //test
                     @include('layouts.datatables_js')
                     {!! $html->scripts() !!}
                 @endsection

@@ -141,6 +141,8 @@ class TimesheetApprovalController extends AppBaseController
 
         $summary = $this->populateSummary($timesheets, $user, $approval, $approvalStatus, $timesheet_insentif, $timesheet_transport);
 
+        $projectbudget = $this->getProjectBudget($user, $approval, $timesheet_details, $timesheet_insentif, $timesheet_transport);
+
         if (empty($timesheets)) {
             Flash::error('Timesheet not found');
 
@@ -980,20 +982,142 @@ class TimesheetApprovalController extends AppBaseController
         return $updateDetail;
     }
 
-    private function getProjectBudget($timesheet_details, $timesheet_insentif, $timesheet_transport)
+    private function getProjectBudget($user, $approval, $timesheet_details, $timesheet_insentif, $timesheet_transport)
     {
+        $timesheetDetailValue = $this->getDetailValue($user, $approval, $timesheet_details);
 
+        $timesheetInsentifValue = $this->getInsentifValue($timesheet_insentif);
 
-        $mandays = TimesheetDetail::select(DB::raw('project_id, lokasi, count(*)total'))->
-            join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')->
-            where('approval_histories.approval_status', '=', 4)->
-            where('approval_histories.transaction_type', '=', 4)->
-            whereIn('approval_histories.transaction_id', $timesheet_insentif->pluck('transaction_id'))->
-            where('selected','=',1)->
-            groupBy('timesheet_insentif.project_id')->
-            get();
+        $timesheetTransportValue = $this->getTransportValue($timesheet_transport);
 
+        $summaryBudget = [];
 
+        foreach($timesheetDetailValue as $detail)
+        {
+            if(array_key_exists('project_id', $summaryBudget) && $summaryBudget['project_id'] == $detail['project_id'])
+            {
+                $summaryBudget['total'] += $detail['Transport Lokal'];
+                $summaryBudget['total'] += $detail['Transport Luar Kota'];
+                $summaryBudget['total'] += $detail['Insentif Project'];
+            } else
+            {
+                $summaryBudget['project_id'] = $detail['project_id'];
+
+                $summaryBudget['total'] = 0;
+                $summaryBudget['total'] += $detail['Transport Lokal'];
+                $summaryBudget['total'] += $detail['Transport Luar Kota'];
+                $summaryBudget['total'] += $detail['Insentif Project'];
+
+                $summaryBudget['budget'] = $detail['budget'];
+            }
+        }
+
+        foreach($timesheetTransportValue as $transport)
+        {
+            if(array_key_exists('project_id', $summaryBudget) && $summaryBudget['project_id'] == $transport['project_id'])
+            {
+                $summaryBudget['total'] += $transport->total;
+            } else
+            {
+                $summaryBudget['project_id'] = $detail['project_id'];
+
+                $summaryBudget['total'] = 0;
+                $summaryBudget['total'] = $transport['total'];
+
+                $summaryBudget['budget'] = $transport['budget'];
+            }
+        }
+
+        foreach($timesheetInsentifValue as $insentif)
+        {
+            if(array_key_exists('project_id', $summaryBudget) && $summaryBudget['project_id'] == $insentif['project_id'])
+            {
+                $summaryBudget['total'] += $insentif->total;
+            } else
+            {
+                $summaryBudget['project_id'] = $detail['project_id'];
+
+                $summaryBudget['total'] = 0;
+                $summaryBudget['total'] = $insentif['total'];
+
+                $summaryBudget['budget'] = $insentif['budget'];
+            }
+
+        }
+        return collect($summaryBudget)->groupBy('project_id');
+    }
+
+    private function getDetailValue($user, $approval, $timesheet_details)
+    {
+        $mandays = TimesheetDetail::select(DB::raw('project_id, lokasi, budget, count(*)total'))->
+        join('approval_histories', 'approval_histories.transaction_id', 'timesheet_details.id')->
+        join('projects', 'timesheet_details.project_id', 'projects.id')->
+        where('approval_histories.approval_status', '=', 4)->
+        where('approval_histories.transaction_type', '=', 2)->
+        whereIn('approval_histories.transaction_id', $timesheet_details->pluck('transaction_id'))->
+        where('selected','=',1)->
+        groupBy('timesheet_details.lokasi')->
+        get();
+
+        $tunjangans = DB::select(DB::raw('SELECT positions.name,tunjangans.name,lokal,non_lokal,luar_jawa,internasional 
+            FROM tunjangan_positions,tunjangans,positions,users 
+            WHERE tunjangan_positions.tunjangan_id = tunjangans.id and tunjangan_positions.position_id = positions.id 
+            and users.position = positions.id and users.id = ' . $user->id));
+
+        foreach ($tunjangans as $t) {
+            $arr['lokal'][$t->name] = $t->lokal;
+            $arr['non_lokal'][$t->name] = $t->non_lokal;
+            $arr['luar_jawa'][$t->name] = $t->luar_jawa;
+            $arr['internasional'][$t->name] = $t->internasional;
+        }
+
+        foreach ($mandays as $m) {
+            if ($m->lokasi === "JABODETABEK") {
+                $detail['lokal']['budget'] = $m->budget;
+                $detail['lokal']['project_id'] = $m->project_id;
+                $detail['lokal']['total'] = $m->total;
+                if (!empty ($arr)) {
+                    if ($arr['lokal'] != null) {
+                        foreach ($arr['lokal'] as $key => $value) {
+                            $detail['lokal'][$key] = $value * $m->total;
+                        }
+                    }
+                }
+            } else if ($m->lokasi === "DOMESTIK L. JAWA") {
+                $detail['luar_jawa']['budget'] = $m->budget;
+                $detail['luar_jawa']['project_id'] = $m->project_id;
+                $detail['luar_jawa']['total'] = $m->total;
+                if (!empty ($arr)) {
+                    foreach ($arr['luar_jawa'] as $key => $value) {
+                        $detail['luar_jawa'][$key] = $value * $m->total;
+                    }
+                }
+            } else if ($m->lokasi === "DOMESTIK P. JAWA") {
+                $detail['non_lokal']['budget'] = $m->budget;
+                $detail['non_lokal']['project_id'] = $m->project_id;
+                $detail['non_lokal']['total'] = $m->total;
+                if (!empty ($arr)) {
+                    foreach ($arr['non_lokal'] as $key => $value) {
+                        $detail['non_lokal'][$key] = $value * $m->total;
+                    }
+                }
+            } else if ($m->lokasi === "INTERNATIONAL") {
+                $detail['internasional']['budget'] = $m->budget;
+                $detail['internasional']['project_id'] = $m->project_id;
+                $detail['internasional']['total'] = $m->total;
+                if (!empty ($arr)) {
+                    foreach ($arr['internasional'] as $key => $value) {
+                        $detail['internasional'][$key] = $value * $m->total;
+                    }
+                }
+            }
+        }
+
+        return $detail;
+    }
+
+    private function getInsentifValue($timesheet_insentif)
+    {
         $timesheetInsentifValue = TimesheetInsentif::select(DB::raw('sum(timesheet_insentif.value)total, timesheet_insentif.project_id'))->
             join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')->
             where('approval_histories.approval_status', '=', 4)->
@@ -1002,13 +1126,20 @@ class TimesheetApprovalController extends AppBaseController
             groupBy('timesheet_insentif.project_id')->
             get();
 
+        return $timesheetInsentifValue;
+    }
+
+    private function getTransportValue($timesheet_transport)
+    {
         $timesheetTransportValue = TimesheetTransport::
-        select(DB::raw('sum(timesheet_transport.value)total, timesheet_transport.project_id'))->
+            select(DB::raw('sum(timesheet_transport.value)total, timesheet_transport.project_id'))->
             join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')->
             where('approval_histories.approval_status', '=', 4)->
             where('approval_histories.transaction_type', '=', 3)->
             whereIn('approval_histories.transaction_id', $timesheet_transport->pluck('transaction_id'))->
             groupBy('timesheet_transport.project_id')->
             get();
+
+        return $timesheetTransportValue;
     }
 }
