@@ -669,9 +669,16 @@ $(document).ajaxStop(function(){
 
         $(document).ready(function ($) {
             formatCurr();
-            $('#submitBtn,#saveBtn').click(function(e){
+            $('#submitBtn').click(function(e){
                 e.preventDefault();
                 $('[disabled]').removeAttr('disabled');
+                $('#create_timesheet').append('<input type = "hidden" name="action" value="Submit" />');
+                $('#create_timesheet').submit();
+            });
+            $('#saveBtn').click(function(e){
+                e.preventDefault();
+                $('[disabled]').removeAttr('disabled');
+                $('#create_timesheet').append('<input type = "hidden" name="action" value="Save" />');
                 $('#create_timesheet').submit();
             });
              $("#create_timesheet").submit(function ($) {

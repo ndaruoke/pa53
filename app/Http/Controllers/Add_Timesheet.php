@@ -323,19 +323,35 @@ class Add_Timesheet extends Controller
             ->where('timesheet_id', '=', $timesheetId)
             ->where('approval_status', '=', 1)
             ->where('selected', '=', '1')
-            //paid and approve finance in approval history not in
+            ->whereNotIn('id', function($q){
+            $q->select('transaction_id')->from('approval_histories')
+            ->where('sequence_id', '=', '2')
+            ->where('approval_status', '=', '1')
+            ->where('approval_status', '=', '4');
+            })
             ->get();
 
         $timesheetInsentif = DB::table('timesheet_insentif')
             ->where('timesheet_id', '=', $timesheetId)
             ->where('status','=',1)
             //paid and approve finance in approval history not in
+            ->whereNotIn('id', function($q){
+            $q->select('transaction_id')->from('approval_histories')
+            ->where('sequence_id', '=', '2')
+            ->where('approval_status', '=', '1')
+            ->where('approval_status', '=', '4');
+            })
             ->get();
-
-        $timesheetTransport = DB::table('timesheet_transport')
+            $timesheetTransport = DB::table('timesheet_transport')
             ->where('timesheet_id', '=', $timesheetId)
             ->where('status','=',1)
             //paid and approve finance in approval history not in
+            ->whereNotIn('id', function($q){
+            $q->select('transaction_id')->from('approval_histories')
+            ->where('sequence_id', '=', '2')
+            ->where('approval_status', '=', '1')
+            ->where('approval_status', '=', '4');
+            })
             ->get();
 
         $user = Auth::user()->id;
@@ -481,8 +497,18 @@ class Add_Timesheet extends Controller
 
     public function getColumns()
     {
-        $array = DB::select(DB::raw('select approval_histories.approval_status, count(approval_histories.approval_status)total from approval_histories,timesheet_details,timesheets WHERE transaction_type=2 and timesheet_details.timesheet_id = timesheets.id and approval_histories.transaction_id = timesheet_details.id and timesheets.id = 1 group by approval_histories.approval_status'));
-        //return response()->json($array);
+         $timesheetDetail = DB::table('timesheet_details')
+            ->where('timesheet_id', '=',23 )
+            ->where('approval_status', '=', 1)
+            ->where('selected', '=', '1')
+            ->whereNotIn('id', function($q){
+            $q->select('transaction_id')->from('approval_histories')
+            ->where('sequence_id', '=', '2')
+            ->where('approval_status', '=', '1')
+            ->where('approval_status', '=', '4');
+            })
+            ->get();
+            return response()->json($timesheetDetail);
         $appr = array();
         foreach($array as $a){
             //array_push($appr,array($a->approval_status=>$a->total));
