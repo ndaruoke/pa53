@@ -322,16 +322,20 @@ class Add_Timesheet extends Controller
         $timesheetDetail = DB::table('timesheet_details')
             ->where('timesheet_id', '=', $timesheetId)
             ->where('approval_status', '=', 1)
-            ->where('selected', '=', '1')->get();
+            ->where('selected', '=', '1')
+            //paid and approve finance in approval history not in
+            ->get();
 
         $timesheetInsentif = DB::table('timesheet_insentif')
             ->where('timesheet_id', '=', $timesheetId)
             ->where('status','=',1)
+            //paid and approve finance in approval history not in
             ->get();
 
         $timesheetTransport = DB::table('timesheet_transport')
             ->where('timesheet_id', '=', $timesheetId)
             ->where('status','=',1)
+            //paid and approve finance in approval history not in
             ->get();
 
         $user = Auth::user()->id;
