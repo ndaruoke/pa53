@@ -430,7 +430,7 @@
             {{ Form::hidden('userId', $userId) }}
 
             <div class="form-group col-sm-12">
-                @if($approval['role']!=4)
+                @if($approval['role']!=4 && $approvalStatus==0)
                     {!! Form::select('moderation',
                       [1 => 'Approve', 2 => 'Reject'],
                       null,
