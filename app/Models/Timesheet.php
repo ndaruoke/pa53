@@ -101,7 +101,7 @@ class Timesheet extends Model
         'approval_id' => 'integer',
         'approval_status' => 'integer'
     ];
-    protected $appends = ['total', 'monthname', 'status', 'link', 'approval'];
+    protected $appends = ['total', 'monthname', 'status', 'link', 'approval','submitted'];
 
     public static function getapprovalmoderation($approval, $approvalStatus)
     {
@@ -280,6 +280,11 @@ class Timesheet extends Model
     public function approvalHistory()
     {
         return $this->belongsTo('App\Models\ApprovalHistory');
+    }
+
+    public function getSubmittedAttribute()
+    {
+        return count(DB::select(DB::raw('SELECT * FROM `timesheet_details` WHERE timesheet_id=' . $this->id . ' and selected=1')));
     }
 
     public function getTotalAttribute()

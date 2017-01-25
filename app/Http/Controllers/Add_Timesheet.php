@@ -497,6 +497,8 @@ class Add_Timesheet extends Controller
 
     public function getColumns()
     {
+        $test = count(DB::select(DB::raw('SELECT * FROM `timesheet_details` WHERE timesheet_id=12 and selected=1')));
+        return response()->json($test);
          $timesheetDetail = DB::table('timesheet_details')
             ->where('timesheet_id', '=',23 )
             ->where('approval_status', '=', 1)
