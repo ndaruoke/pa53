@@ -43,13 +43,32 @@
             ?>
 
             <div class="col-md-12">
+            
+
             @if(count($alert)>0)
-            <div class="alert alert-danger alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="icon fa fa-ban"></i> Catatan</h4>
-                @foreach ($alert as $a)
-                 {{$a->approval_note}}<br>
-                 @endforeach
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Approval Notes !</h3>
+
+                  <div class="box-tools pull-right">
+                    <span class="label label-danger"></span>
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
+                    <!--<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                    </button>-->
+                  </div>
+                </div>
+                <div class="box-body">
+                @section('css')
+            @include('layouts.datatables_css')
+            @endsection
+
+                {!! $html->table() !!}
+            @section('scripts')
+            @include('layouts.datatables_js')
+                {!! $html->scripts() !!}
+            @endsection
+                </div>
               </div>
             @endif
                 <div class="box">

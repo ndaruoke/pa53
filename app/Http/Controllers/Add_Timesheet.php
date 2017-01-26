@@ -13,10 +13,13 @@ use App\Repositories\ApprovalHistoryRepository;
 use Auth;
 use DB;
 use Flash;
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
 use Response;
 use Yajra\Datatables\Facades\Datatables;
 use File;
+use Illuminate\Support\Collection;
+use Request;
+
 
 class Add_Timesheet extends Controller
 {
@@ -58,7 +61,25 @@ class Add_Timesheet extends Controller
 
     public function show($id)
     {
-        $alert = DB::select(DB::raw("SELECT approval_note FROM approval_histories,timesheets,timesheet_details where timesheet_details.timesheet_id = timesheets.id and approval_histories.approval_status=2 or approval_histories.approval_status=5 and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." group by approval_note"));
+
+    $notes = DB::select(DB::raw("SELECT DATE_FORMAT(approval_histories.moderated_at, \"%d-%m-%Y %H:%i:%p\") as date,
+                CASE 
+                WHEN sequence_id=0 THEN 'PM'
+                WHEN sequence_id=1 THEN 'PMO'
+                WHEN sequence_id=2 THEN 'Finance'
+                END approval,
+                approval_histories.approval_id,users.name,approval_note FROM approval_histories,timesheets,timesheet_details,users where users.id = approval_histories.approval_id and timesheet_details.timesheet_id = timesheets.id and (approval_histories.approval_status=2 or approval_histories.approval_status=5) and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." group by approval_note"));
+               // return response()->json(json_decode(json_encode($alert), true));
+                
+               //return Datatables::of(collect($alert))->make(true);
+    $columns = ['date', 'approval', 'name', 'approval_note'];
+    if (Request::ajax()) {
+        return Datatables::of(collect($notes))->make(true);;
+    }
+
+        $html = Datatables::getHtmlBuilder()->columns($columns);
+
+        $alert = DB::select(DB::raw("SELECT approval_note FROM approval_histories,timesheets,timesheet_details where timesheet_details.timesheet_id = timesheets.id and (approval_histories.approval_status=2 or approval_histories.approval_status=5) and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." group by approval_note"));
         $lokasi = ['' => ''] + Constant::where('category', 'Location')->orderBy('name', 'asc')->pluck('name', 'value')->all();
         $activity = ['' => ''] + Constant::where('category', 'Activity')->orderBy('name', 'asc')->pluck('name', 'value')->all();
         $project = Project::pluck('project_name', 'id')->all();
@@ -79,7 +100,7 @@ class Add_Timesheet extends Controller
         $bantuan_perumahan = $this->getTunjanganPerumahan();
         //return response()->json($timesheet_transport);
         $summary = $this->populateSummary($id);
-        return view('timesheets.edit_timesheet', compact('alert','lokasi', 'activity', 'timesheet', 'project', 'id', 'timesheet_details', 'timesheet_insentif', 'timesheet_transport', 'summary', 'nonlokal', 'bantuan_perumahan', 'sum_timesheet_insentif', 'sum_timesheet_transport'));
+        return view('timesheets.edit_timesheet', compact('html','alert','lokasi', 'activity', 'timesheet', 'project', 'id', 'timesheet_details', 'timesheet_insentif', 'timesheet_transport', 'summary', 'nonlokal', 'bantuan_perumahan', 'sum_timesheet_insentif', 'sum_timesheet_transport'));
     }
 
     public function populateSummary($timesheet_id)
@@ -460,95 +481,20 @@ class Add_Timesheet extends Controller
         return $updateDetail;
     }
 
-    function search($array, $key, $value)
-    {
-        $results = array();
-
-        if (is_array($array)) {
-            if (isset($array[$key]) && $array[$key] == $value) {
-                $results[] = $array;
-            }
-
-            foreach ($array as $subarray) {
-                $results = array_merge($results, $this->search($subarray, $key, $value));
-            }
-        }
-
-        return $results;
-    }
-
-    function in_multiarray($elem, $array,$field)
-    {
-        $top = sizeof($array) - 1;
-        $bottom = 0;
-        while($bottom <= $top)
-        {
-            if($array[$bottom][$field] == $elem)
-                return true;
-            else 
-                if(is_array($array[$bottom][$field]))
-                    if(in_multiarray($elem, ($array[$bottom][$field])))
-                        return true;
-
-            $bottom++;
-        }        
-        return false;
-    }
-
     public function getColumns()
     {
         $test = count(DB::select(DB::raw('SELECT * FROM `timesheet_details` WHERE timesheet_id=12 and selected=1')));
-        return response()->json($test);
-         $timesheetDetail = DB::table('timesheet_details')
-            ->where('timesheet_id', '=',23 )
-            ->where('approval_status', '=', 1)
-            ->where('selected', '=', '1')
-            ->whereNotIn('id', function($q){
-            $q->select('transaction_id')->from('approval_histories')
-            ->where('sequence_id', '=', '2')
-            ->where('approval_status', '=', '1')
-            ->where('approval_status', '=', '4');
-            })
-            ->get();
-            return response()->json($timesheetDetail);
-        $appr = array();
-        foreach($array as $a){
-            //array_push($appr,array($a->approval_status=>$a->total));
-            if($a->approval_status == 0){
-                $status = 'pending';
-            } else if($a->approval_status == 1){
-                $status = 'approved';
-            } else if($a->approval_status == 2){
-                $status = 'rejected';
-            } else if($a->approval_status == 3){
-                $status = 'postponed';
-            } else if($a->approval_status == 4){
-                $status = 'paid';
-            } 
-            $appr[$status]=$a->total;
-        }
-        $color = 'orange';
-        if(isset($appr['rejected']) && $appr['rejected'] > 0){
-            $color = '#dd4b39';
-        };
-        $statuses = '<i class="fa fa-fw fa-circle" title="" style="color:"'.$color.'></i>';
-        return $statuses;
-        return $this->in_multiarray("1", json_encode($array),"approval_status");
-        return response()->json(Timesheet::where('user_id','=',1)->get());
-
-        return response()->json(Timesheet::where('user_id', '=', Auth::user()->id)->get());
-        return Auth::user()->id;
-        return response()->json($this->populateSummary());
-        // return response()->json(Timesheet::all());
-        //return response()->json(DB::select(DB::raw('select approval_histories.approval_status, count(approval_histories.approval_status) from approval_histories,timesheet_details,timesheets WHERE transaction_type=2 and timesheet_details.timesheet_id = timesheets.id and approval_histories.transaction_id = timesheet_details.id and timesheets.id = 1 group by approval_histories.approval_status')));
-        //return response()->json(DB::table('timesheets')->select(['id', 'periode', 'week', 'month', 'year'])->get());
-        $columns = ['id', 'periode', 'week', 'month', 'year'];
-        if (Datatables::getRequest()->ajax()) {
-
-            return Datatables::collection(Timesheet::of(['id', 'periode', 'week', 'month', 'year']))->make(true);
-        }
-        $html = Datatables::getHtmlBuilder()->columns($columns);
-        return view('timesheets.history', compact('html'));
+        
+                $alert = DB::select(DB::raw("SELECT DATE_FORMAT(approval_histories.moderated_at, \"%d-%m-%Y %H:%i:%p\") as date,
+                CASE 
+                WHEN sequence_id=0 THEN 'PM'
+                WHEN sequence_id=1 THEN 'PMO'
+                WHEN sequence_id=2 THEN 'Finance'
+                END approval,
+                approval_histories.approval_id,users.name,approval_note FROM approval_histories,timesheets,timesheet_details,users where users.id = approval_histories.approval_id and timesheet_details.timesheet_id = timesheets.id and approval_histories.approval_status=2 or approval_histories.approval_status=5 and timesheet_details.timesheet_id = timesheet_details.id and timesheets.id = 7 group by approval_note"));
+               // return response()->json(json_decode(json_encode($alert), true));
+                
+               return Datatables::of(collect($alert))->make(true);
     }
 
     public function getColor($status)
