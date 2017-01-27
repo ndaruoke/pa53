@@ -23,6 +23,30 @@
                     <h3>{{$count->timesheetapproved}}</h3>
                     <p>Approved Request</p>
                 </div>
+                <div class="box box-success collapsed-box box-solid">
+                    <div class="box-header with-border">
+                        <h5 class="box-title">Finance</h5>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="box-footer no-padding">
+                            <ul class="nav nav-stacked">
+                                <li><a href="#">Paid <span class="pull-right badge bg-blue">{{$count->timesheetApprovedAndFinancePaid}}</span></a></li>
+                                <li><a href="#">Hold <span class="pull-right badge bg-aqua">{{$count->timesheetApprovedAndFinanceHold}}</span></a></li>
+                                <li><a href="#">Over Budget <span class="pull-right badge bg-green">{{$count->timesheetApprovedAndFinanceOverBudget}}</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+
+
                 <div class="icon">
                     <i class="ion ion-android-checkbox-outline"></i>
                 </div>
