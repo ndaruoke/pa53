@@ -4,6 +4,7 @@
     {{ Form::hidden('userId', $user_id) }}
     {{ Form::hidden('approvalId', $approval_id) }}
     {{ Form::hidden('approvalStatus', $approval_status) }}
+    {{ Form::hidden('timesheetId', $id) }}
 
     {!! Form::button('<i class="glyphicon glyphicon-check"></i>', [
         'type' => 'submit',

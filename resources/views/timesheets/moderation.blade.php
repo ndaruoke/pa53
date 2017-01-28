@@ -23,28 +23,8 @@
                     <h3>{{$count->timesheetapproved}}</h3>
                     <p>Approved Request</p>
                 </div>
-                <div class="box box-success collapsed-box box-solid">
-                    <div class="box-header with-border">
-                        <h5 class="box-title">Finance</h5>
 
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                        <!-- /.box-tools -->
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="box-footer no-padding">
-                            <ul class="nav nav-stacked">
-                                <li><a href="#">Paid <span class="pull-right badge bg-blue">{{$count->timesheetApprovedAndFinancePaid}}</span></a></li>
-                                <li><a href="#">Hold <span class="pull-right badge bg-aqua">{{$count->timesheetApprovedAndFinanceHold}}</span></a></li>
-                                <li><a href="#">Over Budget <span class="pull-right badge bg-green">{{$count->timesheetApprovedAndFinanceOverBudget}}</span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- /.box-body -->
-                </div>
+
 
 
                 <div class="icon">
@@ -81,7 +61,7 @@
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="small-box bg-orange pull-left">
                     <div class="inner">
-                        <h3>{{$count->timesheetonhold}}</h3>
+                        <h3>{{$count->timesheetApprovedAndFinanceHold}}</h3>
                         <p>On Hold Transaction</p>
                     </div>
                     <div class="icon">
@@ -94,7 +74,46 @@
                 <div class="small-box bg-orange pull-left">
                     <div class="inner">
                         <h3>{{$count->timesheetoverbudget}}</h3>
-                        <p>Over Budget</p>
+                        <p>Finance Over Budget</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-android-checkbox-blank"></i>
+                    </div>
+
+                </div>
+            </div>
+        @endif
+
+        @if($user->role != 4)
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="small-box bg-blue pull-left">
+                    <div class="inner">
+                        <h3>{{$count->timesheetApprovedAndFinancePaid}}</h3>
+                        <p>Finance Paid</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-android-checkbox-blank"></i>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="small-box bg-orange pull-left">
+                    <div class="inner">
+                        <h3>{{$count->timesheetApprovedAndFinanceHold}}</h3>
+                        <p>Finance On Hold </p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-android-checkbox-blank"></i>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="small-box bg-orange pull-left">
+                    <div class="inner">
+                        <h3>{{$count->timesheetApprovedAndFinanceOverBudget}}</h3>
+                        <p>Finance Over Budget</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-android-checkbox-blank"></i>

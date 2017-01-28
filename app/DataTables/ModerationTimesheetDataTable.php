@@ -70,6 +70,7 @@ class ModerationTimesheetDataTable extends DataTable
                 'bFilter' => false,
                 'dom' => 'Bfrtip',
                 'scrollX' => true,
+                'order'   => [[1, 'asc'],[2, 'asc']],
                 'buttons' => [
                     'print',
 
@@ -102,6 +103,9 @@ class ModerationTimesheetDataTable extends DataTable
     {
         return [
             'nama' => ['name' => 'name', 'data' => 'name'],
+            'week' => ['name' => 'week', 'data' => 'week'],
+            'month' => ['name' => 'month', 'data' => 'month'],
+            'year' => ['name' => 'year', 'data' => 'year'],
             'jumlah_pengajuan_pa' => ['name' => 'count', 'data' => 'count'],
             'jumlah_pengajuan_tunjangan' => ['name' => 'insentif', 'data' => 'insentif']
         ];
