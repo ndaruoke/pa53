@@ -404,6 +404,8 @@ class Add_Timesheet extends Controller
             $insentifExist = $this->isApprovalHistoryWithDateExist($ti->id, $ti->date, 4, $user, $approval);
 
             if (!is_null($insentifExist)) {
+                $insentif = $this->updateApprovalHistoryId($insentifExist->id, $tt->date, $tt->keterangan, $tt->id, 4, $user, $approval['id']);
+
                 if($insentifExist->approval_status != 1) {
                     $insentif = $this->updateApprovalHistoryWithDate($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
                 }
@@ -421,6 +423,8 @@ class Add_Timesheet extends Controller
             $transportExist = $this->isApprovalHistoryWithDateExist($tt->id, $tt->date, 3, $user, $approval);
 
             if (!is_null($transportExist)) {
+                $transport = $this->updateApprovalHistoryId($transportExist->id, $tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
+
                 if($transportExist->approval_status != 1) //if on progress than not updated
                 {
                     $transport = $this->updateApprovalHistoryWithDate($transportExist->id, $tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
@@ -503,15 +507,6 @@ class Add_Timesheet extends Controller
     function updateApprovalHistoryWithDate($id, $date, $note, $transactionId, $transactionType, $user, $approvalId)
     {
 
-
-        $updateDetailOtherApproval = DB::table('approval_histories')
-            ->where('date', $date)
-            ->where('transaction_type', $transactionType)
-            ->update(array(
-                'transaction_id' => $transactionId,
-                'user_id' => $user
-            ));
-
         $updateDetail = DB::table('approval_histories')
             ->where('date', $date)
             ->where('sequence_id', 0)
@@ -523,6 +518,18 @@ class Add_Timesheet extends Controller
                 'group_approval_id' => 0
             ));
 
+        return $updateDetail;
+    }
+
+    function updateApprovalHistoryId($id, $date, $note, $transactionId, $transactionType, $user, $approvalId)
+    {
+        $updateDetail = DB::table('approval_histories')
+            ->where('date', $date)
+            ->where('transaction_type', $transactionType)
+            ->update(array(
+                'transaction_id' => $transactionId,
+                'user_id' => $user
+            ));
         return $updateDetail;
     }
 
