@@ -130,7 +130,7 @@ approval_id
         WHEN approval_status=6 THEN "Overbudget"
         END status
 from approval_histories where transaction_type = 4  
-and guid = "' . $this->guid . '"
+and guid = ' . $this->guid . '
 order by sequence_id'));
 
         $approval_ts = json_decode(json_encode($approval_ts), True);
