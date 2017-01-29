@@ -150,7 +150,7 @@ class TimesheetApprovalController extends AppBaseController
             return redirect(route('leaves.moderation'));
         }
 
-        return view('timesheets.moderation_edit', compact('approvalStatus', 'user', 'userId', 'lokasi', 'activity', '$timesheetId', 'project', 'timesheet_details', 'timesheet_insentif', 'timesheet_transport', 'summary', 'approval'));
+        return view('timesheets.moderation_edit', compact('approvalStatus', 'user', 'userId', 'lokasi', 'activity', 'timesheetId', 'project', 'timesheet_details', 'timesheet_insentif', 'timesheet_transport', 'summary', 'approval'));
     }
 
     public function populateSummary($timesheetId, $user, $approval, $approvalStatus, $timesheet_insentif, $timesheet_transport)
