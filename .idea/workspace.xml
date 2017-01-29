@@ -59,16 +59,16 @@
       <file leaf-file-name="Add_Timesheet.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Add_Timesheet.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="444" column="15" lean-forward="false" selection-start-line="444" selection-start-column="15" selection-end-line="444" selection-end-column="15" />
+            <state relative-caret-position="180">
+              <caret line="443" column="24" lean-forward="false" selection-start-line="443" selection-start-column="24" selection-end-line="443" selection-end-column="24" />
               <folding>
-                <marker date="1485658032000" expanded="true" signature="1293:1537" ph="SELECT tunja... tunjangan_positions" />
-                <marker date="1485658032000" expanded="true" signature="2270:2516" ph="SELECT DATE_... " />
-                <marker date="1485658032000" expanded="true" signature="3405:3726" ph="SELECT appro... approval_histories" />
-                <marker date="1485658032000" expanded="true" signature="5399:5684" ph="SELECT posit... tunjangan_positions" />
-                <marker date="1485658032000" expanded="true" signature="6070:6200" ph="SELECT lokas... timesheet_details" />
-                <marker date="1485658032000" expanded="true" signature="21631:21701" ph="SELECT * FRO... timesheet_details" />
-                <marker date="1485658032000" expanded="true" signature="21761:22007" ph="SELECT DATE_... " />
+                <marker date="1485658434000" expanded="true" signature="1293:1537" ph="SELECT tunja... tunjangan_positions" />
+                <marker date="1485658434000" expanded="true" signature="2270:2516" ph="SELECT DATE_... " />
+                <marker date="1485658434000" expanded="true" signature="3389:3710" ph="SELECT appro... approval_histories" />
+                <marker date="1485658434000" expanded="true" signature="5383:5668" ph="SELECT posit... tunjangan_positions" />
+                <marker date="1485658434000" expanded="true" signature="6054:6184" ph="SELECT lokas... timesheet_details" />
+                <marker date="1485658434000" expanded="true" signature="21584:21654" ph="SELECT * FRO... timesheet_details" />
+                <marker date="1485658434000" expanded="true" signature="21714:21960" ph="SELECT DATE_... " />
               </folding>
             </state>
           </provider>
@@ -603,7 +603,7 @@
       <workItem from="1484268556140" duration="285000" />
       <workItem from="1484465236673" duration="6919000" />
       <workItem from="1485184233665" duration="5561000" />
-      <workItem from="1485656172980" duration="807000" />
+      <workItem from="1485656172980" duration="1081000" />
     </task>
     <task id="LOCAL-00001" summary="rename to PA Metrasys">
       <created>1476512413193</created>
@@ -777,7 +777,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="282186000" />
+    <option name="totallyTimeSpent" value="282460000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1312,16 +1312,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Add_Timesheet.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="444" column="15" lean-forward="false" selection-start-line="444" selection-start-column="15" selection-end-line="444" selection-end-column="15" />
+        <state relative-caret-position="180">
+          <caret line="443" column="24" lean-forward="false" selection-start-line="443" selection-start-column="24" selection-end-line="443" selection-end-column="24" />
           <folding>
-            <marker date="1485658032000" expanded="true" signature="1293:1537" ph="SELECT tunja... tunjangan_positions" />
-            <marker date="1485658032000" expanded="true" signature="2270:2516" ph="SELECT DATE_... " />
-            <marker date="1485658032000" expanded="true" signature="3405:3726" ph="SELECT appro... approval_histories" />
-            <marker date="1485658032000" expanded="true" signature="5399:5684" ph="SELECT posit... tunjangan_positions" />
-            <marker date="1485658032000" expanded="true" signature="6070:6200" ph="SELECT lokas... timesheet_details" />
-            <marker date="1485658032000" expanded="true" signature="21631:21701" ph="SELECT * FRO... timesheet_details" />
-            <marker date="1485658032000" expanded="true" signature="21761:22007" ph="SELECT DATE_... " />
+            <marker date="1485658434000" expanded="true" signature="1293:1537" ph="SELECT tunja... tunjangan_positions" />
+            <marker date="1485658434000" expanded="true" signature="2270:2516" ph="SELECT DATE_... " />
+            <marker date="1485658434000" expanded="true" signature="3389:3710" ph="SELECT appro... approval_histories" />
+            <marker date="1485658434000" expanded="true" signature="5383:5668" ph="SELECT posit... tunjangan_positions" />
+            <marker date="1485658434000" expanded="true" signature="6054:6184" ph="SELECT lokas... timesheet_details" />
+            <marker date="1485658434000" expanded="true" signature="21584:21654" ph="SELECT * FRO... timesheet_details" />
+            <marker date="1485658434000" expanded="true" signature="21714:21960" ph="SELECT DATE_... " />
           </folding>
         </state>
       </provider>
