@@ -72,7 +72,7 @@ class Add_Timesheet extends Controller
                // return response()->json(json_decode(json_encode($alert), true));
 
                //return Datatables::of(collect($alert))->make(true);
-    $columns = ['date', 'approval', 'name', 'approval_note'];
+    $columns = ['date', 'approval', 'approval_note'];
     if (RequestFacade::ajax()) {
         return Datatables::of(collect($notes))->make(true);;
     }
