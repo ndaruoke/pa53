@@ -13,12 +13,12 @@ use App\Repositories\ApprovalHistoryRepository;
 use Auth;
 use DB;
 use Flash;
-//use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Response;
 use Yajra\Datatables\Facades\Datatables;
 use File;
 use Illuminate\Support\Collection;
-use Request;
+use Request as RequestFacade;
 
 
 class Add_Timesheet extends Controller
@@ -73,7 +73,7 @@ class Add_Timesheet extends Controller
                 
                //return Datatables::of(collect($alert))->make(true);
     $columns = ['date', 'approval', 'name', 'approval_note'];
-    if (Request::ajax()) {
+    if (RequestFacade::ajax()) {
         return Datatables::of(collect($notes))->make(true);;
     }
 
