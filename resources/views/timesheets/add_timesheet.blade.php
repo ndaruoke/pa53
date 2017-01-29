@@ -254,6 +254,17 @@
     <script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay.min.js"></script>
     
     <script>
+    function generateGuid() {
+  var result, i, j;
+  result = '';
+  for (j = 0; j < 32; j++) {
+    if (j == 8 || j == 12 || j == 16 || j == 20)
+      result = result + '-';
+    i = Math.floor(Math.random() * 16).toString(16).toUpperCase();
+    result = result + i;
+  }
+  return result
+}
 $(document).ajaxStart(function(){
     $.LoadingOverlay("show");
 });
@@ -313,7 +324,7 @@ $(document).ajaxStop(function(){
         });
 
         function getRowTransport(id) {
-            var row = '<tr>' +
+            var row = '<tr><input type = "hidden" name="trans[' + id + '][guid]" value="'+generateGuid()+'" />'+
                 '   <td><input type="date" data-date-format="dd/mm/yyyy" name="trans[' + id + '][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  ' +
                 '   <td><select class="form-control" name="trans[' + id + '][project_id]" ><option value="" selected="selected"></option>' +
                 '<?php
@@ -328,7 +339,7 @@ $(document).ajaxStop(function(){
                 '   <td> '+
                 '<center>'+
 '                <p>'+
-'                    <a href="javascript:changeProfile('+id+')" style="text-decoration: none;"><i                               class="glyphicon glyphicon-edit"></i> Change</a>  '+
+'                    <a href="javascript:changeProfile('+id+')" style="text-decoration: none;"><i class="glyphicon glyphicon-edit"></i> Change</a>  '+
 '                    <a href="javascript:removeFile('+id+')" style="color: red;text-decoration: none;"><i'+
 '                                class="glyphicon glyphicon-trash"></i>'+
 '                        Remove</a>  <a target="_blank" href="" id="dl'+id+'"></a>'+
@@ -344,7 +355,7 @@ $(document).ajaxStop(function(){
         }
 
         function getRowInsentif(id) {
-            var row = '<tr>' +
+            var row = '<tr>' +'<input type = "hidden" name="insentif[' + id + '][guid]" value="'+generateGuid()+'" />'+
                 '   <td><input type="date" data-date-format="dd/mm/yyyy" name="insentif[' + id + '][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  ' +
                 '   <td><select class="form-control" name="insentif[' + id + '][project_id]"><option value="" selected="selected" ></option>' +
                 '<?php
@@ -561,6 +572,8 @@ $(document).ajaxStop(function(){
     path = path.substring(path.lastIndexOf("/")+ 1);
     return (path.match(/[^.]+(\.[^?#]+)?/) || [])[0];
 }
+
+
 
 </script>
 @endsection

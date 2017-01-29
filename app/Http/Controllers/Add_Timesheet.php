@@ -302,7 +302,7 @@ class Add_Timesheet extends Controller
                         'value' => $value['value'],
                         'file' => $value['file'],
                         'keterangan' => $value['desc'],
-                        //    'end_time'=> $value['end'],
+                        'guid'=> $value['guid'],
                         'timesheet_id' => $id,
                         'status' => $approval_status
                         //   'project_id'=> $value['project'],
@@ -319,6 +319,7 @@ class Add_Timesheet extends Controller
                         'keterangan' => $value['desc'],
                         'lokasi' => $value['lokasi'],
                         'timesheet_id' => $id,
+                        'guid'=> $value['guid'],
                         'status' => $approval_status
                         //   'project_id'=> $value['project'],
                     ] ;//+ (isset($value['id']) ? array('id' => $value['id']) : array());

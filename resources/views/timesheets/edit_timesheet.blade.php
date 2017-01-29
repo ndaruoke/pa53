@@ -352,6 +352,7 @@
                                 <tr>
 
                                     <td>
+                                    {{ Form::hidden('insentif['.$row.'][guid]', $detail->guid) }}
                                     {{ Form::hidden('insentif['.$row.'][id]', $detail->id) }}
                                     {{ Form::date('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control','data-date-format'=>'dd/mm/yyyy')) }}
                                     <td>
@@ -373,6 +374,7 @@
                                 <tr>
                                     <td>
                                     {{ Form::hidden('insentif['.$row.'][id]', $detail->id) }}
+                                    {{ Form::hidden('insentif['.$row.'][guid]', $detail->guid) }}
                                     {{ Form::date('insentif['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled'=>'','data-date-format'=>'dd/mm/yyyy')) }}
                                     {{ Form::hidden('insentif['.$row.'][date]', $detail->date) }}
                                     <td>
@@ -427,6 +429,7 @@
                                 <tr>
                                     <td>
                                     {{ Form::hidden('trans['.$row.'][id]', $detail->id) }}
+                                    {{ Form::hidden('trans['.$row.'][guid]', $detail->guid) }}
                                     {{ Form::date('trans['.$row.'][date]', $detail->date, array('class' => 'form-control','data-date-format'=>'dd/mm/yyyy')) }}
                                     <td>
                                         {!! Form::select('trans['.$row.'][project_id]', [''=>'']+$project, $detail->project_id, ['class' => 'form-control select2']) !!}
@@ -457,6 +460,7 @@
                                 <tr>
                                     <td>
                                     {{ Form::hidden('trans['.$row.'][id]', $detail->id) }}
+                                    {{ Form::hidden('trans['.$row.'][guid]', $detail->guid) }}
                                     {{ Form::hidden('trans['.$row.'][date]', $detail->date) }}
                                     {{ Form::date('trans['.$row.'][date]', $detail->date, array('class' => 'form-control','disabled'=>'','data-date-format'=>'dd/mm/yyyy')) }}
                                     <td>
@@ -526,6 +530,18 @@
      @include('layouts.datatables_js')
                 {!! $html->scripts() !!}
     <script>
+    function generateGuid() {
+  var result, i, j;
+  result = '';
+  for (j = 0; j < 32; j++) {
+    if (j == 8 || j == 12 || j == 16 || j == 20)
+      result = result + '-';
+    i = Math.floor(Math.random() * 16).toString(16).toUpperCase();
+    result = result + i;
+  }
+  return result
+}
+
  $(document).ajaxStart(function(){
     $.LoadingOverlay("show");
 });
@@ -587,7 +603,7 @@ $(document).ajaxStop(function(){
         });
 
         function getRowTransport(id) {
-            var row = '<tr>' +
+            var row = '<tr><input type = "hidden" name="trans[' + id + '][guid]" value="'+generateGuid()+'" />' +
                 '   <td><input name="trans[' + id + '][id]" type="hidden" value="' + id + '"><input type="date" data-date-format="dd/mm/yyyy" name="trans[' + id + '][date]" value="{!!date("Y-m-d")!!}" class="form-control" ></td>  ' +
                 '   <td><select class="form-control" name="trans[' + id + '][project_id]"  ><option value="" selected="selected"></option>' +
                 '<?php
@@ -618,7 +634,7 @@ $(document).ajaxStop(function(){
         }
 
         function getRowInsentif(id) {
-            var row = '<tr>' +
+            var row = '<tr><input type = "hidden" name="insentif[' + id + '][guid]" value="'+generateGuid()+'" />' +
                 '   <td><input name="insentif[' + id + '][id]" type="hidden" value="' + id + '"><input type="date" data-date-format="dd/mm/yyyy" name="insentif[' + id + '][date]" value="{!!date("Y-m-d")!!}" class="form-control"  ></td>  ' +
                 '   <td><select class="form-control" name="insentif[' + id + '][project_id]"><option value="" selected="selected"  ></option>' +
                 '<?php
