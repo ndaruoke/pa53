@@ -115,9 +115,9 @@ class TimesheetApprovalController extends AppBaseController
         get();
 
         $timesheet_insentif = TimesheetInsentif::
-        select(DB::raw('DATE_FORMAT(timesheet_insentif.date, \'%d-%m-%Y\') as id_date, timesheet_insentif.date,timesheet_insentif.id,timesheet_insentif.keterangan,
-            timesheet_insentif.status,timesheet_insentif.value,timesheet_insentif.project_id, approval_histories.transaction_id, approval_histories.approval_status'))->
-        join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')->
+        select(DB::raw('DATE_FORMAT(timesheet_insentif.date, \'%d-%m-%Y\') as id_date, timesheet_insentif.date,timesheet_insentif.guid,timesheet_insentif.keterangan,
+            timesheet_insentif.status,timesheet_insentif.value,timesheet_insentif.project_id, approval_histories.guid, approval_histories.approval_status'))->
+        join('approval_histories', 'approval_histories.guid', 'timesheet_insentif.guid')->
         where('approval_histories.user_id', '=', $user['id'])->
         where('approval_histories.approval_status', '=', $approvalStatus)->
         where('approval_histories.transaction_type', '=', 4)->
@@ -129,9 +129,9 @@ class TimesheetApprovalController extends AppBaseController
         get();
 
         $timesheet_transport = TimesheetTransport::
-        select(DB::raw('DATE_FORMAT(timesheet_transport.date, \'%d-%m-%Y\') as id_date, timesheet_transport.date,timesheet_transport.id,timesheet_transport.keterangan,
-            timesheet_transport.status,timesheet_transport.value,timesheet_transport.project_id, timesheet_transport.file, approval_histories.transaction_id, approval_histories.approval_status'))->
-        join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')->
+        select(DB::raw('DATE_FORMAT(timesheet_transport.date, \'%d-%m-%Y\') as id_date, timesheet_transport.date,timesheet_transport.guid,timesheet_transport.keterangan,
+            timesheet_transport.status,timesheet_transport.value,timesheet_transport.project_id, timesheet_transport.file, approval_histories.guid, approval_histories.approval_status'))->
+        join('approval_histories', 'approval_histories.guid', 'timesheet_transport.guid')->
         where('approval_histories.user_id', '=', $user['id'])->
         where('approval_histories.approval_status', '=', $approvalStatus)->
         where('approval_histories.transaction_type', '=', 3)->
@@ -348,13 +348,13 @@ class TimesheetApprovalController extends AppBaseController
 
         if (!empty($request->trans)) {
             foreach ($request->trans as $key => $value) {
-                if (!empty($value['choose'])) $transId[] = ['id' => $value['transaction_id']];
+                if (!empty($value['choose'])) $transId[] = ['id' => $value['guid']];
             }
         }
 
         if (!empty($request->insentif)) {
             foreach ($request->insentif as $key => $value) {
-                if (!empty($value['choose'])) $insId[] = ['id' => $value['transaction_id']];
+                if (!empty($value['choose'])) $insId[] = ['id' => $value['guid']];
             }
         }
 
@@ -384,7 +384,7 @@ class TimesheetApprovalController extends AppBaseController
             if (!empty($transId)) {
                 $approvalHistoryTransportId = DB::
                 table('approval_histories')->
-                whereIn('transaction_id', $transId)->
+                whereIn('guid', $transId)->
                 where('approval_histories.transaction_type', '=', 3)->
                 where(function ($query) use ($approval) {
                     $query->where('approval_id', '=', $approval['id'])
@@ -403,7 +403,7 @@ class TimesheetApprovalController extends AppBaseController
             if (!empty($insId)) {
                 $approvalHistoryInsentifId = DB::
                 table('approval_histories')->
-                whereIn('transaction_id', $insId)->
+                whereIn('guid', $insId)->
                 where('approval_histories.transaction_type', '=', 4)->
                 where(function ($query) use ($approval) {
                     $query->where('approval_id', '=', $approval['id'])
@@ -452,7 +452,7 @@ class TimesheetApprovalController extends AppBaseController
 
                 foreach ($timesheetDetailId as $id)
                 {
-                    $detail = TimesheetDetail::find($id)->first();
+                    $detail = TimesheetDetail::find($id)->first(); //only consultant
                     $detail->approval_status = 0; //reset status
                     $detail->save();
                 }
@@ -463,12 +463,12 @@ class TimesheetApprovalController extends AppBaseController
             if (!empty($transId)) {
                 $approvalHistoryTransportId = DB::
                 table('approval_histories')->
-                whereIn('transaction_id', $transId)->
+                whereIn('guid', $transId)->
                 where('approval_histories.transaction_type', '=', 3)->
                 get();
 
                 foreach ($approvalHistoryTransportId as $id) {
-                    $approval = ApprovalHistory::find($id->id);
+                    $approval = ApprovalHistory::where('guid',$id->id)->first();
                     $approval->approval_status = 2;
                     $approval->updated_at = Carbon\Carbon::now();
                     $approval->moderated_at = Carbon\Carbon::now();
@@ -478,7 +478,7 @@ class TimesheetApprovalController extends AppBaseController
 
                 foreach ($transId as $id)
                 {
-                    $detail = TimesheetTransport::find($id)->first();
+                    $detail = TimesheetTransport::where('guid',$id->id)->where('sequence_id', 0)->first(); //only consultant
                     $detail->status = 0; //reset status
                     $detail->save();
                 }
@@ -491,12 +491,12 @@ class TimesheetApprovalController extends AppBaseController
             if (!empty($insId)) {
                 $approvalHistoryInsentifId = DB::
                 table('approval_histories')->
-                whereIn('transaction_id', $insId)->
+                whereIn('guid', $insId)->
                 where('approval_histories.transaction_type', '=', 4)->
                 get();
 
                 foreach ($approvalHistoryInsentifId as $id) {
-                    $approval = ApprovalHistory::find($id->id);
+                    $approval = ApprovalHistory::where('guid',$id->id)->first();
                     $approval->approval_status = 2;
                     $approval->updated_at = Carbon\Carbon::now();
                     $approval->moderated_at = Carbon\Carbon::now();
@@ -506,7 +506,7 @@ class TimesheetApprovalController extends AppBaseController
 
                 foreach ($insId as $id)
                 {
-                    $detail = TimesheetInsentif::find($id)->first();
+                    $detail = TimesheetInsentif::where('guid',$id->id)>where('sequence_id', 0)->first(); //only consultant
                     $detail->status = 0; //reset status
                     $detail->save();
                 }
@@ -568,7 +568,7 @@ class TimesheetApprovalController extends AppBaseController
 
                 foreach ($insId as $id)
                 {
-                    $detail = TimesheetInsentif::find($id)->first();
+                    $detail = TimesheetInsentif::where('guid',$id->id)->first();
                     $detail->status = 0; //reset status
                     $detail->save();
                 }
@@ -579,7 +579,7 @@ class TimesheetApprovalController extends AppBaseController
 
                 foreach ($transId as $id)
                 {
-                    $detail = TimesheetTransport::find($id)->first();
+                    $detail = TimesheetTransport::where('guid',$id->id)->first();
                     $detail->status = 0; //reset status
                     $detail->save();
                 }
@@ -648,7 +648,8 @@ class TimesheetApprovalController extends AppBaseController
         if(!empty($transId)) {
             $approvalHistoryTransportId = DB::
             table('approval_histories')->
-            whereIn('transaction_id', $transId)->
+            whereIn('guid', $transId)->
+            where('sequence_id', 2)->
             where('approval_histories.transaction_type', '=', 3)->
             where(function ($query) use ($approval) {
                 $query->where('approval_id', '=', $approval['id'])
@@ -657,7 +658,7 @@ class TimesheetApprovalController extends AppBaseController
             get();
 
             foreach ($approvalHistoryTransportId as $id) {
-                $approval = ApprovalHistory::find($id->id);
+                $approval = ApprovalHistory::where('guid',$id->guid)->where('sequence_id', 2)->first();
                 $approval->approval_status = 4; //paid
                 $approval->save();
             }
@@ -674,7 +675,8 @@ class TimesheetApprovalController extends AppBaseController
         if (!empty($insId)) {
             $approvalHistoryInsentifId = DB::
             table('approval_histories')->
-            whereIn('transaction_id', $insId)->
+            whereIn('guid', $insId)->
+            where('sequence_id', 2)->
             where('approval_histories.transaction_type', '=', 4)->
             where(function ($query) use ($approval) {
                 $query->where('approval_id', '=', $approval['id'])
@@ -683,7 +685,7 @@ class TimesheetApprovalController extends AppBaseController
             get();
 
                 foreach ($approvalHistoryInsentifId as $id) {
-                    $approval = ApprovalHistory::find($id->id);
+                    $approval = ApprovalHistory::where('guid',$id->guid)->where('sequence_id', 2)->first();
                     $approval->approval_status = 4; //paid
                     $approval->save();
                 }
@@ -741,7 +743,8 @@ class TimesheetApprovalController extends AppBaseController
         if(!empty($transId)) {
             $approvalHistoryTransportId = DB::
             table('approval_histories')->
-            whereIn('transaction_id', $transId)->
+            whereIn('guid', $transId)->
+            where('sequence_id', 2)->
             where('approval_histories.transaction_type', '=', 3)->
             where(function ($query) use ($approval) {
                 $query->where('approval_id', '=', $approval['id'])
@@ -750,7 +753,7 @@ class TimesheetApprovalController extends AppBaseController
             get();
 
             foreach ($approvalHistoryTransportId as $id) {
-                $approval = ApprovalHistory::find($id->id);
+                $approval = ApprovalHistory::where('guid',$id->guid)->where('sequence_id', 2)->first();
                 $approval->approval_status = 5; //onhold
                 $approval->updated_at = Carbon\Carbon::now();
                 $approval->moderated_at = Carbon\Carbon::now();
@@ -760,13 +763,13 @@ class TimesheetApprovalController extends AppBaseController
 
             $approvalHistoryTransportFirstApprovalId = DB::
             table('approval_histories')->
-            whereIn('transaction_id', $transId)->
+            whereIn('guid', $transId)->
             where('approval_histories.transaction_type', '=', 3)->
-            whereIn('approval_histories.sequence_id', [0,1])->
+            where('approval_histories.sequence_id', 0)->
             get();
 
             foreach ($approvalHistoryTransportFirstApprovalId as $id) {
-                $approval = ApprovalHistory::find($id->id);
+                $approval = ApprovalHistory::where('guid',$id->guid)->where('sequence_id', 0)->first();
                 $approval->approval_status = 0;
                 $approval->updated_at = Carbon\Carbon::now();
                 $approval->moderated_at = Carbon\Carbon::now();
@@ -786,7 +789,8 @@ class TimesheetApprovalController extends AppBaseController
         if (!empty($insId)) {
             $approvalHistoryInsentifId = DB::
             table('approval_histories')->
-            whereIn('transaction_id', $insId)->
+            whereIn('guid', $insId)->
+            where('sequence_id', 2)->
             where('approval_histories.transaction_type', '=', 4)->
             where(function ($query) use ($approval) {
                 $query->where('approval_id', '=', $approval['id'])
@@ -795,7 +799,7 @@ class TimesheetApprovalController extends AppBaseController
             get();
 
             foreach ($approvalHistoryInsentifId as $id) {
-                $approval = ApprovalHistory::find($id->id);
+                $approval = ApprovalHistory::where('guid',$id->id)->first();
                 $approval->approval_status = 5; //onhold
                 $approval->updated_at = Carbon\Carbon::now();
                 $approval->moderated_at = Carbon\Carbon::now();
@@ -805,13 +809,13 @@ class TimesheetApprovalController extends AppBaseController
 
             $approvalHistoryInsentifFirstApprovalId = DB::
             table('approval_histories')->
-            whereIn('transaction_id', $insId)->
+            whereIn('guid', $insId)->
             where('approval_histories.transaction_type', '=', 4)->
-            whereIn('approval_histories.sequence_id', [0,1])->
+            where('approval_histories.sequence_id', 0)->
             get();
 
             foreach ($approvalHistoryInsentifFirstApprovalId as $id) {
-                $approval = ApprovalHistory::find($id->id);
+                $approval = ApprovalHistory::where('guid',$id->id)->where('approval_histories.sequence_id', 0)->first();
                 $approval->approval_status = 0;
                 $approval->updated_at = Carbon\Carbon::now();
                 $approval->moderated_at = Carbon\Carbon::now();
@@ -852,7 +856,8 @@ class TimesheetApprovalController extends AppBaseController
         if(!empty($transId)) {
             $approvalHistoryTransportId = DB::
             table('approval_histories')->
-            whereIn('transaction_id', $transId)->
+            whereIn('guid', $transId)->
+            where('sequence_id', 2)->
             where('approval_histories.transaction_type', '=', 3)->
             where(function ($query) use ($approval) {
                 $query->where('approval_id', '=', $approval['id'])
@@ -861,7 +866,7 @@ class TimesheetApprovalController extends AppBaseController
             get();
 
             foreach ($approvalHistoryTransportId as $id) {
-                $approval = ApprovalHistory::find($id->id);
+                $approval = ApprovalHistory::where('guid',$id->id)->where('sequence_id', 2)->first();
                 $approval->approval_status = 6; //over budget
                 $approval->save();
             }
@@ -878,7 +883,8 @@ class TimesheetApprovalController extends AppBaseController
         if (!empty($insId)) {
             $approvalHistoryInsentifId = DB::
             table('approval_histories')->
-            whereIn('transaction_id', $insId)->
+            whereIn('guid', $insId)->
+            where('sequence_id', 2)->
             where('approval_histories.transaction_type', '=', 4)->
             where(function ($query) use ($approval) {
                 $query->where('approval_id', '=', $approval['id'])
@@ -887,7 +893,7 @@ class TimesheetApprovalController extends AppBaseController
             get();
 
             foreach ($approvalHistoryInsentifId as $id) {
-                $approval = ApprovalHistory::find($id->id);
+                $approval = ApprovalHistory::where('guid',$id->id)->where('sequence_id', 2)->first();
                 $approval->approval_status = 6; //over budget
                 $approval->save();
             }
@@ -924,16 +930,34 @@ class TimesheetApprovalController extends AppBaseController
 
         if ($approvalHistory->sequence_id == 0 || $approvalHistory->sequence_id == 1) {
 
-            $isExist = $this->isApprovalHistoryExist($approvalHistory->transaction_id, $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
+            if($approvalHistory->transaction_type == 2) //timesheet_detail
+            {
+                $isExist = $this->isApprovalHistoryExist($approvalHistory->transaction_id, $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
 
-            if ($isExist==null) {
-                $approvalHistory = $this->insertApprovalHistory($approvalHistory->date, $approvalHistory->note, $sequence, $approvalHistory->transaction_id,
-                    $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
-            } else {
-                if($isExist->approval_status != 1)
-                {
-                    $approvalHistory = $this->updateApprovalHistory($isExist->id, $approvalHistory->date, $approvalHistory->note, $sequence, $approvalHistory->transaction_id,
+                if ($isExist==null) {
+                    $approvalHistory = $this->insertApprovalHistory($approvalHistory->date, $approvalHistory->note, $sequence, $approvalHistory->transaction_id,
                         $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
+                } else {
+                    if($isExist->approval_status != 1)
+                    {
+                        $approvalHistory = $this->updateApprovalHistory($isExist->id, $approvalHistory->date, $approvalHistory->note, $sequence, $approvalHistory->transaction_id,
+                            $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
+                    }
+                }
+            }
+            else
+            {
+                $isExist = $this->isApprovalHistoryWithGuidExist($approvalHistory->guid, $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
+
+                if ($isExist==null) {
+                    $approvalHistory = $this->insertApprovalHistoryWithGuid($approvalHistory->date, $approvalHistory->note, $sequence, $approvalHistory->guid,
+                        $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
+                } else {
+                    if($isExist->approval_status != 1)
+                    {
+                        $approvalHistory = $this->updateApprovalHistoryWithGuid($isExist->id, $approvalHistory->date, $approvalHistory->note, $sequence, $approvalHistory->guid,
+                            $approvalHistory->transaction_type, $approvalHistory->user_id, $approvalId, $groupApprovalId);
+                    }
                 }
             }
 
@@ -947,11 +971,11 @@ class TimesheetApprovalController extends AppBaseController
         }
 
         foreach ($approvalHistoryInsentifId as $ti) {
-            $this->rejectAllHistory($ti);
+            $this->rejectAllHistoryWithGuid($ti);
         }
 
         foreach ($approvalHistoryTransportId as $tt) {
-            $this->rejectAllHistory($tt);
+            $this->rejectAllHistoryWithGuid($tt);
         }
     }
 
@@ -960,7 +984,22 @@ class TimesheetApprovalController extends AppBaseController
         $approvalHistoryId = DB::
         table('approval_histories')->
         select('approval_histories.id')->
-        where('transaction_id', '=', $approvalHistory->transaction_id)->
+        where('transaction_id', '=', $approvalHistory->transactionId)->
+        where('approval_histories.transaction_type', '=', $approvalHistory->transaction_type)->
+        where('approval_histories.user_id', '=', $approvalHistory->user_id)->
+        get();
+
+        foreach ($approvalHistoryId as $id) {
+            ApprovalHistory::reject($id->id);
+        }
+    }
+
+    public function rejectAllHistoryWithGuid($approvalHistory)
+    {
+        $approvalHistoryId = DB::
+        table('approval_histories')->
+        select('approval_histories.id')->
+        where('transaction_id', '=', $approvalHistory->transactionId)->
         where('approval_histories.transaction_type', '=', $approvalHistory->transaction_type)->
         where('approval_histories.user_id', '=', $approvalHistory->user_id)->
         get();
@@ -1031,6 +1070,21 @@ class TimesheetApprovalController extends AppBaseController
         return $transactionExist;
     }
 
+    private function isApprovalHistoryWithGuidExist($guid, $transactionType, $user, $approvalId, $groupApprovalId)
+    {
+        $transactionExist = DB::table('approval_histories')
+            ->select('id','approval_status')
+            ->where('guid', '=', $guid)
+            ->where('transaction_type', '=', $transactionType)
+            ->where('user_id', '=', $user)
+            ->where(function ($query) use ($approvalId, $groupApprovalId) {
+                $query->where('approval_id', '=', $approvalId)
+                    ->orWhere('group_approval_id', '=', $groupApprovalId);
+            })->first();
+
+        return $transactionExist;
+    }
+
     private function insertApprovalHistory($date, $note, $sequence, $transactionId, $transactionType, $user, $approvalId, $groupApprovalId)
     {
         $saveTransaction = DB::table('approval_histories')
@@ -1039,6 +1093,24 @@ class TimesheetApprovalController extends AppBaseController
                 'note' => $note,
                 'sequence_id' => $sequence,
                 'transaction_id' => $transactionId,
+                'transaction_type' => $transactionType,
+                'approval_status' => 0,
+                'user_id' => $user,
+                'approval_id' => $approvalId,
+                'group_approval_id' => $groupApprovalId
+            ));
+
+        return $saveTransaction;
+    }
+
+    private function insertApprovalHistoryWithGuid($date, $note, $sequence, $guid, $transactionType, $user, $approvalId, $groupApprovalId)
+    {
+        $saveTransaction = DB::table('approval_histories')
+            ->insertGetId(array(
+                'date' => $date,
+                'note' => $note,
+                'sequence_id' => $sequence,
+                'guid' => $guid,
                 'transaction_type' => $transactionType,
                 'approval_status' => 0,
                 'user_id' => $user,
@@ -1068,6 +1140,25 @@ class TimesheetApprovalController extends AppBaseController
         return $updateDetail;
     }
 
+    private function updateApprovalHistoryWithGuid($id, $date, $note, $sequence, $guid, $transactionType, $user, $approvalId, $groupApprovalId)
+    {
+        $updateDetail = DB::table('approval_histories')
+            ->where('guid', $id)
+            ->update(array(
+                'date' => $date,
+                'note' => $note,
+                'sequence_id' => $sequence,
+                'guid' => $guid,
+                'transaction_type' => $transactionType,
+                'approval_status' => 0,
+                'user_id' => $user,
+                'approval_id' => $approvalId,
+                'group_approval_id' => $groupApprovalId
+            ));
+
+        return $updateDetail;
+    }
+
     private function getProjectBudget($timesheet_details, $timesheet_insentif, $timesheet_transport)
     {
 
@@ -1083,19 +1174,19 @@ class TimesheetApprovalController extends AppBaseController
 
 
         $timesheetInsentifValue = TimesheetInsentif::select(DB::raw('sum(timesheet_insentif.value)total, timesheet_insentif.project_id'))->
-            join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')->
+            join('approval_histories', 'approval_histories.guid', 'timesheet_insentif.guid')->
             where('approval_histories.approval_status', '=', 4)->
             where('approval_histories.transaction_type', '=', 4)->
-            whereIn('approval_histories.transaction_id', $timesheet_insentif->pluck('transaction_id'))->
+            whereIn('approval_histories.guid', $timesheet_insentif->pluck('guid'))->
             groupBy('timesheet_insentif.project_id')->
             get();
 
         $timesheetTransportValue = TimesheetTransport::
         select(DB::raw('sum(timesheet_transport.value)total, timesheet_transport.project_id'))->
-            join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')->
+            join('approval_histories', 'approval_histories.guid', 'timesheet_transport.guid')->
             where('approval_histories.approval_status', '=', 4)->
             where('approval_histories.transaction_type', '=', 3)->
-            whereIn('approval_histories.transaction_id', $timesheet_transport->pluck('transaction_id'))->
+            whereIn('approval_histories.guid', $timesheet_transport->pluck('guid'))->
             groupBy('timesheet_transport.project_id')->
             get();
     }

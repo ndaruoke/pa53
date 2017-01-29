@@ -130,7 +130,7 @@ class TimesheetTransport extends Model
         WHEN approval_status=6 THEN "Overbudget"
         END status
         from approval_histories where transaction_type = 3 
-        and transaction_id = ' . $this->id . '
+        and guid = "' . $this->guid . '"
         order by sequence_id'));
         $approval_ts = json_decode(json_encode($approval_ts), True);
 //return response()->json( $approval_ts);

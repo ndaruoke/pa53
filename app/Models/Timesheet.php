@@ -367,7 +367,7 @@ class Timesheet extends Model
     public static function getTotalInsentifTimesheet($userId, $timesheetId, $approval, $approvalStatus)
     {
         $insentif = DB::table('timesheet_insentif')
-            ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')
+            ->join('approval_histories', 'approval_histories.guid', 'timesheet_insentif.guid')
             ->where('approval_histories.user_id', '=', $userId)
             ->where('timesheet_insentif.timesheet_id', '=', $timesheetId)
             ->where(function ($query) use ($approval) {
@@ -384,7 +384,7 @@ class Timesheet extends Model
     public static function getTotalInsentif($userId, $approval, $approvalStatus)
     {
         $insentif = DB::table('timesheet_insentif')
-            ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_insentif.id')
+            ->join('approval_histories', 'approval_histories.guid', 'timesheet_insentif.guid')
             ->where('approval_histories.user_id', '=', $userId)
             ->where(function ($query) use ($approval) {
                 $query->where('approval_histories.approval_id', '=', $approval->id)
@@ -400,7 +400,7 @@ class Timesheet extends Model
     public static function getTotalTransportTimesheet($userId, $timesheetId, $approval, $approvalStatus)
     {
         $transport = DB::table('timesheet_transport')
-            ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')
+            ->join('approval_histories', 'approval_histories.guid', 'timesheet_transport.guid')
             ->where('approval_histories.user_id', '=', $userId)
             ->where('timesheet_transport.timesheet_id', '=', $timesheetId)
             ->where(function ($query) use ($approval) {
@@ -417,7 +417,7 @@ class Timesheet extends Model
     public static function getTotalTransport($userId, $approval, $approvalStatus)
     {
         $transport = DB::table('timesheet_transport')
-            ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_transport.id')
+            ->join('approval_histories', 'approval_histories.guid', 'timesheet_transport.guid')
             ->where('approval_histories.user_id', '=', $userId)
             ->where(function ($query) use ($approval) {
                 $query->where('approval_histories.approval_id', '=', $approval->id)

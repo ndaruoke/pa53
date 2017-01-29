@@ -292,6 +292,7 @@
                                         </td>
                                     @endif
                                     {{ Form::hidden('timesheetdetail['.$row.'][transaction_id]', $detail->transaction_id) }}
+                                    {{ Form::hidden('timesheetdetail['.$row.'][guid]', $detail->guid) }}
                                 </tr>
                             @endforeach
                             </tbody>
@@ -352,6 +353,7 @@
                                     @endif
                                     <td class="col-md-1">
                                         {{ Form::hidden('insentif['.$row.'][transaction_id]', $detail->transaction_id) }}
+                                        {{ Form::hidden('insentif['.$row.'][guid]', $detail->guid) }}
                                     </td>
                                 </tr>
                             @endforeach
@@ -417,6 +419,7 @@
                                         @endif
                                     </td>
                                     {{ Form::hidden('trans['.$row.'][transaction_id]', $detail->transaction_id) }}
+                                    {{ Form::hidden('trans['.$row.'][guid]', $detail->guid) }}
                                     </td>
                                 </tr>
                             @endforeach

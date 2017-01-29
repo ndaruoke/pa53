@@ -68,7 +68,10 @@ class Add_Timesheet extends Controller
                 WHEN sequence_id=1 THEN 'PMO'
                 WHEN sequence_id=2 THEN 'Finance'
                 END approval,
-                approval_histories.approval_id,approval_note FROM approval_histories,timesheets,timesheet_details where timesheet_details.timesheet_id = timesheets.id and (approval_histories.approval_status=2 or approval_histories.approval_status=5) and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." group by approval_note"));
+                approval_histories.approval_id,approval_note 
+                FROM approval_histories,timesheets,timesheet_details 
+                where timesheet_details.timesheet_id = timesheets.id and (approval_histories.approval_status=2 or approval_histories.approval_status=5) 
+                and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." group by approval_note"));
                // return response()->json(json_decode(json_encode($alert), true));
 
                //return Datatables::of(collect($alert))->make(true);
@@ -79,7 +82,11 @@ class Add_Timesheet extends Controller
 
         $html = Datatables::getHtmlBuilder()->columns($columns);
 
-        $alert = DB::select(DB::raw("SELECT approval_note FROM approval_histories,timesheets,timesheet_details where timesheet_details.timesheet_id = timesheets.id and (approval_histories.approval_status=2 or approval_histories.approval_status=5) and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." group by approval_note"));
+        $alert = DB::select(DB::raw("SELECT approval_note 
+            FROM approval_histories,timesheets,timesheet_details 
+            where timesheet_details.timesheet_id = timesheets.id and (approval_histories.approval_status=2 or approval_histories.approval_status=5) 
+            and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." 
+            group by approval_note"));
         $lokasi = ['' => ''] + Constant::where('category', 'Location')->orderBy('name', 'asc')->pluck('name', 'value')->all();
         $activity = ['' => ''] + Constant::where('category', 'Activity')->orderBy('name', 'asc')->pluck('name', 'value')->all();
         $project = Project::pluck('project_name', 'id')->all();
@@ -357,22 +364,21 @@ class Add_Timesheet extends Controller
             ->where('timesheet_id', '=', $timesheetId)
             ->where('status','=',1)
             //paid and approve finance in approval history not in
-            ->whereNotIn('id', function($q){
-            $q->select('transaction_id')->from('approval_histories')
-            ->where('sequence_id', '=', '2')
-            ->where('approval_status', '=', '1')
-            ->where('approval_status', '=', '4');
+            ->whereNotIn('guid', function($q){
+                $q->select('guid')->from('approval_histories')
+                ->where('sequence_id', '=', '2')
+                ->where('approval_status', '=', '1')
+                ->where('approval_status', '=', '4');
             })
             ->get();
             $timesheetTransport = DB::table('timesheet_transport')
             ->where('timesheet_id', '=', $timesheetId)
             ->where('status','=',1)
-            //paid and approve finance in approval history not in
-            ->whereNotIn('id', function($q){
-            $q->select('transaction_id')->from('approval_histories')
-            ->where('sequence_id', '=', '2')
-            ->where('approval_status', '=', '1')
-            ->where('approval_status', '=', '4');
+            ->whereNotIn('guid', function($q){
+                $q->select('guid')->from('approval_histories')
+                ->where('sequence_id', '=', '2')
+                ->where('approval_status', '=', '1')
+                ->where('approval_status', '=', '4');
             })
             ->get();
 
@@ -402,16 +408,14 @@ class Add_Timesheet extends Controller
 
             $approval = User::where('id', '=', $project->pm_user_id)->first();
 
-            $insentifExist = $this->isApprovalHistoryWithDateExist($ti->id, $ti->date, 4, $user, $approval);
+            $insentifExist = $this->isApprovalHistoryWithGuidExist($ti->guid, 4, $user, $approval);
 
             if (!is_null($insentifExist)) {
-                $insentif = $this->updateApprovalHistoryId($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
-
                 if($insentifExist->approval_status != 1) {
-                    $insentif = $this->updateApprovalHistoryWithDate($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
+                    $insentif = $this->updateApprovalHistoryWithGuid($insentifExist->guid, $ti->keterangan, 4, $user, $approval['id']);
                 }
             } else {
-                $insentif = $this->insertApprovalHistory($ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
+                $insentif = $this->insertApprovalHistoryWithGuid($ti->date, $ti->keterangan, $ti->guid, 4, $user, $approval['id']);
             }
         }
 
@@ -421,17 +425,15 @@ class Add_Timesheet extends Controller
 
             $approval = User::where('id', '=', $project->pm_user_id)->first();
 
-            $transportExist = $this->isApprovalHistoryWithDateExist($tt->id, $tt->date, 3, $user, $approval);
+            $transportExist = $this->isApprovalHistoryWithGuidExist($tt->guid, 3, $user, $approval);
 
             if (!is_null($transportExist)) {
-                $transport = $this->updateApprovalHistoryId($transportExist->id, $tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
-
                 if($transportExist->approval_status != 1) //if on progress than not updated
                 {
-                    $transport = $this->updateApprovalHistoryWithDate($transportExist->id, $tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
+                    $transport = $this->updateApprovalHistoryWithGuid($transportExist->guid, $tt->date, $tt->keterangan, 3, $user, $approval['id']);
                 }
             } else {
-                $transport = $this->insertApprovalHistory($tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
+                $transport = $this->insertApprovalHistoryWithGuid($tt->date, $tt->keterangan, $tt->guid, 3, $user, $approval['id']);
             }
         }
     }
@@ -451,14 +453,11 @@ class Add_Timesheet extends Controller
         return $transactionExist;
     }
 
-    function isApprovalHistoryWithDateExist($transactionId, $date, $transactionType, $user, $approval)
+    function isApprovalHistoryWithGuidExist($guid, $transactionType, $user, $approval)
     {
         $transactionExist = DB::table('approval_histories')
-            ->select('id','approval_status')
-            ->where(function ($query) use ($transactionId, $date) {
-                $query->where('transaction_id', '=', $transactionId)
-                    ->orWhere('date', '=', $date);
-            })
+            ->select('guid','approval_status')
+            ->where('guid', '=', $guid)
             ->where('transaction_type', '=', $transactionType)
             ->where('user_id', '=', $user)
             ->where(function ($query) use ($approval) {
@@ -477,6 +476,23 @@ class Add_Timesheet extends Controller
                 'note' => $note,
                 'sequence_id' => 0,
                 'transaction_id' => $transactionId,
+                'transaction_type' => $transactionType,
+                'approval_status' => 0,
+                'user_id' => $user,
+                'approval_id' => $approvalId,
+                'group_approval_id' => 0
+            ));
+        return $saveTransaction;
+    }
+
+    function insertApprovalHistoryWithGuid($date, $note, $guid, $transactionType, $user, $approvalId)
+    {
+        $saveTransaction = DB::table('approval_histories')
+            ->insertGetId(array(
+                'date' => $date,
+                'note' => $note,
+                'sequence_id' => 0,
+                'guid' => $guid,
                 'transaction_type' => $transactionType,
                 'approval_status' => 0,
                 'user_id' => $user,
@@ -505,32 +521,22 @@ class Add_Timesheet extends Controller
         return $updateDetail;
     }
 
-    function updateApprovalHistoryWithDate($id, $date, $note, $transactionId, $transactionType, $user, $approvalId)
+    function updateApprovalHistoryWithGuid($guid, $note, $transactionType, $user, $approvalId)
     {
 
         $updateDetail = DB::table('approval_histories')
-            ->where('date', $date)
+            ->where('guid', $guid)
             ->where('sequence_id', 0)
             ->where('transaction_type', $transactionType)
             ->update(array(
+                'date' => $date,
+                'note' => $note,
                 'sequence_id' => 0,
                 'approval_status' => 0,
                 'approval_id' => $approvalId,
                 'group_approval_id' => 0
             ));
 
-        return $updateDetail;
-    }
-
-    function updateApprovalHistoryId($id, $date, $note, $transactionId, $transactionType, $user, $approvalId)
-    {
-        $updateDetail = DB::table('approval_histories')
-            ->where('date', $date)
-            ->where('transaction_type', $transactionType)
-            ->update(array(
-                'transaction_id' => $transactionId,
-                'user_id' => $user
-            ));
         return $updateDetail;
     }
 

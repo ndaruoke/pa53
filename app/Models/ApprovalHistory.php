@@ -113,7 +113,8 @@ class ApprovalHistory extends Model
         'approval_id' => 'integer',
         'group_approval_id' => 'integer',
         'transaction_type' => 'integer',
-        'approval_note' => 'string'
+        'approval_note' => 'string',
+        'guid' => 'string'
     ];
 
     public function timesheets()
