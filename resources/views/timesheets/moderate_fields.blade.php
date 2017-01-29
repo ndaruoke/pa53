@@ -428,7 +428,7 @@
             <div class="clearfix"></div>
 
             {{ Form::hidden('userId', $userId) }}
-            {{ Form::hidden('timesheetId', $id) }}
+            {{ Form::hidden('timesheetId', $timesheetId) }}
 
             <div class="form-group col-sm-12">
                 @if($approval['role']!=4 && $approvalStatus==0)
