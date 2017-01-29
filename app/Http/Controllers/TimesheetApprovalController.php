@@ -717,7 +717,7 @@ class TimesheetApprovalController extends AppBaseController
             table('approval_histories')->
             whereIn('transaction_id', $timesheetDetailId)->
             where('approval_histories.transaction_type', '=', 2)->
-            where('approval_histories.sequence_id', '=', 0)->
+            whereIn('approval_histories.sequence_id', [0,1])->
             get();
 
             foreach ($approvalHistoryDetailFirstApprovalId as $id) {
@@ -762,7 +762,7 @@ class TimesheetApprovalController extends AppBaseController
             table('approval_histories')->
             whereIn('transaction_id', $transId)->
             where('approval_histories.transaction_type', '=', 3)->
-            where('approval_histories.sequence_id', '=', 0)->
+            whereIn('approval_histories.sequence_id', [0,1])->
             get();
 
             foreach ($approvalHistoryTransportFirstApprovalId as $id) {
@@ -807,7 +807,7 @@ class TimesheetApprovalController extends AppBaseController
             table('approval_histories')->
             whereIn('transaction_id', $insId)->
             where('approval_histories.transaction_type', '=', 4)->
-            where('approval_histories.sequence_id', '=', 0)->
+            whereIn('approval_histories.sequence_id', [0,1])->
             get();
 
             foreach ($approvalHistoryInsentifFirstApprovalId as $id) {
