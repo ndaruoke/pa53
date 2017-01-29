@@ -64,10 +64,7 @@
             @endsection
 
                 {!! $html->table() !!}
-            @section('scripts')
-            @include('layouts.datatables_js')
-                {!! $html->scripts() !!}
-            @endsection
+            
                 </div>
               </div>
             @endif
@@ -837,4 +834,7 @@ $(document).ajaxStop(function(){
 @endsection
 @endsection
 
-
+@section('scripts')
+            @include('layouts.datatables_js')
+                {!! $html->scripts() !!}
+            @endsection
