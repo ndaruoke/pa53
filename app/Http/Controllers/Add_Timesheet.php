@@ -401,11 +401,11 @@ class Add_Timesheet extends Controller
 
             $approval = User::where('id', '=', $project->pm_user_id)->first();
 
-            $insentifExist = $this->isApprovalHistoryExist($ti->id, 4, $user, $approval);
+            $insentifExist = $this->isApprovalHistoryWithDateExist($ti->id, $ti->date, 4, $user, $approval);
 
             if (!is_null($insentifExist)) {
                 if($insentifExist->approval_status != 1) {
-                    $insentif = $this->updateApprovalHistory($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
+                    $insentif = $this->updateApprovalHistoryWithDate($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
                 }
             } else {
                 $insentif = $this->insertApprovalHistory($ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
@@ -418,11 +418,12 @@ class Add_Timesheet extends Controller
 
             $approval = User::where('id', '=', $project->pm_user_id)->first();
 
-            $transportExist = $this->isApprovalHistoryExist($tt->id, 3, $user, $approval);
+            $transportExist = $this->isApprovalHistoryWithDateExist($tt->id, $tt->date, 3, $user, $approval);
 
             if (!is_null($transportExist)) {
-                if($transportExist->approval_status != 1) {
-                    $transport = $this->updateApprovalHistory($transportExist->id, $tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
+                if($transportExist->approval_status != 1) //if on progress than not updated
+                {
+                    $transport = $this->updateApprovalHistoryWithDate($transportExist->id, $tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
                 }
             } else {
                 $transport = $this->insertApprovalHistory($tt->date, $tt->keterangan, $tt->id, 3, $user, $approval['id']);
@@ -442,6 +443,24 @@ class Add_Timesheet extends Controller
                 $query->where('approval_id', '=', $approval['id'])
                     ->orWhere('group_approval_id', '=', $approval['role']);
             })->first();
+        return $transactionExist;
+    }
+
+    function isApprovalHistoryWithDateExist($transactionId, $date, $transactionType, $user, $approval)
+    {
+        $transactionExist = DB::table('approval_histories')
+            ->select('id','approval_status')
+            ->where(function ($query) use ($transactionId, $date) {
+                $query->where('transaction_id', '=', $transactionId)
+                    ->orWhere('date', '=', $date);
+            })
+            ->where('transaction_type', '=', $transactionType)
+            ->where('user_id', '=', $user)
+            ->where(function ($query) use ($approval) {
+                $query->where('approval_id', '=', $approval['id'])
+                    ->orWhere('group_approval_id', '=', $approval['role']);
+            })
+            ->where('sequence_id','=',0)->first();
         return $transactionExist;
     }
 
@@ -474,6 +493,31 @@ class Add_Timesheet extends Controller
                 'transaction_type' => $transactionType,
                 'approval_status' => 0,
                 'user_id' => $user,
+                'approval_id' => $approvalId,
+                'group_approval_id' => 0
+            ));
+
+        return $updateDetail;
+    }
+
+    function updateApprovalHistoryWithDate($id, $date, $note, $transactionId, $transactionType, $user, $approvalId)
+    {
+
+
+        $updateDetailOtherApproval = DB::table('approval_histories')
+            ->where('date', $date)
+            ->update(array(
+                'transaction_id' => $transactionId,
+                'transaction_type' => $transactionType,
+                'user_id' => $user
+            ));
+
+        $updateDetail = DB::table('approval_histories')
+            ->where('date', $date)
+            ->where('sequence_id', 0)
+            ->update(array(
+                'sequence_id' => 0,
+                'approval_status' => 0,
                 'approval_id' => $approvalId,
                 'group_approval_id' => 0
             ));

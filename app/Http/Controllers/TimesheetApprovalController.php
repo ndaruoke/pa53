@@ -554,15 +554,38 @@ class TimesheetApprovalController extends AppBaseController
             if(!empty($timesheetDetailId ))
             {
                 $this->onholdTimesheetDetail($timesheetDetailId, $approval, $request);
+
+                foreach ($timesheetDetailId as $id)
+                {
+                    $detail = TimesheetDetail::find($id)->first();
+                    $detail->approval_status = 0; //reset status
+                    $detail->save();
+                }
             }
             if(!empty($insId))
             {
                 $this->onholdAdCost($insId, $approval, $request);
+
+                foreach ($insId as $id)
+                {
+                    $detail = TimesheetInsentif::find($id)->first();
+                    $detail->status = 0; //reset status
+                    $detail->save();
+                }
             }
             if(!empty($transId))
             {
                 $this->onholdTransport($transId, $approval, $request);
+
+                foreach ($transId as $id)
+                {
+                    $detail = TimesheetTransport::find($id)->first();
+                    $detail->status = 0; //reset status
+                    $detail->save();
+                }
             }
+
+
             DB::table('timesheets')
                 ->where('id', $timesheetId)
                 ->update(array(
@@ -689,6 +712,23 @@ class TimesheetApprovalController extends AppBaseController
                 $approval->approval_note = $request->approval_note;
                 $approval->save();
             }
+
+            $approvalHistoryDetailFirstApprovalId = DB::
+            table('approval_histories')->
+            whereIn('transaction_id', $timesheetDetailId)->
+            where('approval_histories.transaction_type', '=', 2)->
+            where('approval_histories.sequence_id', '=', 0)->
+            get();
+
+            foreach ($approvalHistoryDetailFirstApprovalId as $id) {
+                $approval = ApprovalHistory::find($id->id);
+                $approval->approval_status = 0;
+                $approval->updated_at = Carbon\Carbon::now();
+                $approval->moderated_at = Carbon\Carbon::now();
+                $approval->approval_note = $request->approval_note;
+                $approval->save();
+            }
+
         }
 
 
@@ -718,6 +758,22 @@ class TimesheetApprovalController extends AppBaseController
                 $approval->save();
             }
 
+            $approvalHistoryTransportFirstApprovalId = DB::
+            table('approval_histories')->
+            whereIn('transaction_id', $transId)->
+            where('approval_histories.transaction_type', '=', 3)->
+            where('approval_histories.sequence_id', '=', 0)->
+            get();
+
+            foreach ($approvalHistoryTransportFirstApprovalId as $id) {
+                $approval = ApprovalHistory::find($id->id);
+                $approval->approval_status = 0;
+                $approval->updated_at = Carbon\Carbon::now();
+                $approval->moderated_at = Carbon\Carbon::now();
+                $approval->approval_note = $request->approval_note;
+                $approval->save();
+            }
+
         }
 
 
@@ -741,6 +797,22 @@ class TimesheetApprovalController extends AppBaseController
             foreach ($approvalHistoryInsentifId as $id) {
                 $approval = ApprovalHistory::find($id->id);
                 $approval->approval_status = 5; //onhold
+                $approval->updated_at = Carbon\Carbon::now();
+                $approval->moderated_at = Carbon\Carbon::now();
+                $approval->approval_note = $request->approval_note;
+                $approval->save();
+            }
+
+            $approvalHistoryInsentifFirstApprovalId = DB::
+            table('approval_histories')->
+            whereIn('transaction_id', $insId)->
+            where('approval_histories.transaction_type', '=', 4)->
+            where('approval_histories.sequence_id', '=', 0)->
+            get();
+
+            foreach ($approvalHistoryInsentifFirstApprovalId as $id) {
+                $approval = ApprovalHistory::find($id->id);
+                $approval->approval_status = 0;
                 $approval->updated_at = Carbon\Carbon::now();
                 $approval->moderated_at = Carbon\Carbon::now();
                 $approval->approval_note = $request->approval_note;
