@@ -521,6 +521,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
         <script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay_progress.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.loadingoverlay/latest/loadingoverlay.min.js"></script>
+     @include('layouts.datatables_js')
+                {!! $html->scripts() !!}
     <script>
  $(document).ajaxStart(function(){
     $.LoadingOverlay("show");
@@ -834,7 +836,6 @@ $(document).ajaxStop(function(){
 @endsection
 @endsection
 
-@section('scripts')
-            @include('layouts.datatables_js')
-                {!! $html->scripts() !!}
-            @endsection
+<!--@section('scripts')
+           
+@endsection-->
