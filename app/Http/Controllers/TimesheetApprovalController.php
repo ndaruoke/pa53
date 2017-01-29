@@ -339,6 +339,7 @@ class TimesheetApprovalController extends AppBaseController
     public function moderationUpdate(Request $request)
     {
         $userId = $request->userId;
+        $timesheetId = $request->timesheetId;
         $approval = Auth::user();
 
         foreach ($request->timesheetdetail as $key => $value) {
@@ -521,6 +522,13 @@ class TimesheetApprovalController extends AppBaseController
                 $approvalHistoryInsentifId = [];
             }
 
+            DB::table('timesheets')
+                ->where('id', $timesheetId)
+                ->update(array(
+                    'action' => 'Moderation'
+                ));
+
+
             Flash::success('Reject successfully.');
         }
 
@@ -555,6 +563,11 @@ class TimesheetApprovalController extends AppBaseController
             {
                 $this->onholdTransport($transId, $approval, $request);
             }
+            DB::table('timesheets')
+                ->where('id', $timesheetId)
+                ->update(array(
+                    'action' => 'Moderation'
+                ));
         }
 
         if($request->moderation == "6") //over budget
