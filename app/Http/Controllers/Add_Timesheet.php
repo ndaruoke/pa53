@@ -506,17 +506,16 @@ class Add_Timesheet extends Controller
 
         $updateDetailOtherApproval = DB::table('approval_histories')
             ->where('date', $date)
-            ->where('transaction_type', '!=',2)
+            ->where('transaction_type', $transactionType)
             ->update(array(
                 'transaction_id' => $transactionId,
-                'transaction_type' => $transactionType,
                 'user_id' => $user
             ));
 
         $updateDetail = DB::table('approval_histories')
             ->where('date', $date)
             ->where('sequence_id', 0)
-            ->where('transaction_type', '!=',2)
+            ->where('transaction_type', $transactionType)
             ->update(array(
                 'sequence_id' => 0,
                 'approval_status' => 0,
