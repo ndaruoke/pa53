@@ -13,12 +13,12 @@ use App\Repositories\ApprovalHistoryRepository;
 use Auth;
 use DB;
 use Flash;
-//use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Response;
 use Yajra\Datatables\Facades\Datatables;
 use File;
 use Illuminate\Support\Collection;
-use Request;
+use Request as RequestFacade;
 
 
 class Add_Timesheet extends Controller
@@ -68,12 +68,12 @@ class Add_Timesheet extends Controller
                 WHEN sequence_id=1 THEN 'PMO'
                 WHEN sequence_id=2 THEN 'Finance'
                 END approval,
-                approval_histories.approval_id,users.name,approval_note FROM approval_histories,timesheets,timesheet_details,users where users.id = approval_histories.approval_id and timesheet_details.timesheet_id = timesheets.id and (approval_histories.approval_status=2 or approval_histories.approval_status=5) and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." group by approval_note"));
+                approval_histories.approval_id,approval_note FROM approval_histories,timesheets,timesheet_details where timesheet_details.timesheet_id = timesheets.id and (approval_histories.approval_status=2 or approval_histories.approval_status=5) and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." group by approval_note"));
                // return response()->json(json_decode(json_encode($alert), true));
 
                //return Datatables::of(collect($alert))->make(true);
     $columns = ['date', 'approval', 'name', 'approval_note'];
-    if (Request::ajax()) {
+    if (RequestFacade::ajax()) {
         return Datatables::of(collect($notes))->make(true);;
     }
 
