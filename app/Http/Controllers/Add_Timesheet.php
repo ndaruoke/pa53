@@ -404,7 +404,7 @@ class Add_Timesheet extends Controller
             $insentifExist = $this->isApprovalHistoryWithDateExist($ti->id, $ti->date, 4, $user, $approval);
 
             if (!is_null($insentifExist)) {
-                $insentif = $this->updateApprovalHistoryId($insentifExist->id, $tt->date, $tt->keterangan, $tt->id, 4, $user, $approval['id']);
+                $insentif = $this->updateApprovalHistoryId($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
 
                 if($insentifExist->approval_status != 1) {
                     $insentif = $this->updateApprovalHistoryWithDate($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
