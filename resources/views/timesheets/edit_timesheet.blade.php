@@ -504,7 +504,10 @@
             @if($timesheet->action === 'Disimpan')
             {!! Form::submit('Save',['name'=>'action','class' => 'btn btn-primary','id'=>'saveBtn']) !!}
             @endif
-                            {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary','id'=>'submitBtn']) !!}
+            @if($timesheet->action === 'Disimpan' || $timesheet->action === 'Moderation')
+            {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary','id'=>'submitBtn']) !!}
+            @endif
+            
                 
                 
             </div>
