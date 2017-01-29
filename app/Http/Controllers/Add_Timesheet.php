@@ -436,12 +436,13 @@ class Add_Timesheet extends Controller
             ->select('id','approval_status')
             ->where('transaction_id', '=', $transactionId)
             ->where('transaction_type', '=', $transactionType)
-            ->where('user_id', '=', $user)
+            ->where('user_id', '=', $user)->first();
+            /**
             ->where(function ($query) use ($approval) {
                 $query->where('approval_id', '=', $approval['id'])
                     ->orWhere('group_approval_id', '=', $approval['role']);
-            })->first();
-
+            })
+            **/
         return $transactionExist;
     }
 
