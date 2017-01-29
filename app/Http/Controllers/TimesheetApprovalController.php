@@ -554,15 +554,38 @@ class TimesheetApprovalController extends AppBaseController
             if(!empty($timesheetDetailId ))
             {
                 $this->onholdTimesheetDetail($timesheetDetailId, $approval, $request);
+
+                foreach ($timesheetDetailId as $id)
+                {
+                    $detail = TimesheetDetail::find($id)->first();
+                    $detail->approval_status = 0; //reset status
+                    $detail->save();
+                }
             }
             if(!empty($insId))
             {
                 $this->onholdAdCost($insId, $approval, $request);
+
+                foreach ($insId as $id)
+                {
+                    $detail = TimesheetInsentif::find($id)->first();
+                    $detail->status = 0; //reset status
+                    $detail->save();
+                }
             }
             if(!empty($transId))
             {
                 $this->onholdTransport($transId, $approval, $request);
+
+                foreach ($transId as $id)
+                {
+                    $detail = TimesheetTransport::find($id)->first();
+                    $detail->status = 0; //reset status
+                    $detail->save();
+                }
             }
+
+
             DB::table('timesheets')
                 ->where('id', $timesheetId)
                 ->update(array(
