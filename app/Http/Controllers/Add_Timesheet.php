@@ -457,7 +457,7 @@ class Add_Timesheet extends Controller
     {
         $transactionExist = DB::table('approval_histories')
             ->select('guid','approval_status')
-            ->where('guid', '=', $guid)
+            ->where('guid', '=', '"'.$guid.'"')
             ->where('transaction_type', '=', $transactionType)
             ->where('user_id', '=', $user)
             ->where(function ($query) use ($approval) {
