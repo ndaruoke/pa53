@@ -62,31 +62,24 @@ class Add_Timesheet extends Controller
     public function show($id)
     {
 
-    $notes = DB::select(DB::raw("SELECT DATE_FORMAT(approval_histories.moderated_at, \"%d-%m-%Y %H:%i:%p\") as date,
+    $notes = DB::select(DB::raw("SELECT DATE_FORMAT(approval_histories.date, '%d-%m-%Y') AS timesheet_date,DATE_FORMAT(approval_histories.moderated_at, \"%d-%m-%Y %H:%i:%p\") as moderation_date,
                 CASE 
                 WHEN sequence_id=0 THEN 'PM'
                 WHEN sequence_id=1 THEN 'PMO'
                 WHEN sequence_id=2 THEN 'Finance'
                 END approval,
-                approval_histories.approval_id,approval_note 
-                FROM approval_histories,timesheets,timesheet_details 
-                where timesheet_details.timesheet_id = timesheets.id and (approval_histories.approval_status=2 or approval_histories.approval_status=5) 
-                and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." group by approval_note"));
+                approval_histories.approval_id,approval_note FROM approval_histories,timesheets,timesheet_details where timesheet_details.timesheet_id = timesheets.id and (approval_histories.approval_status=2 or approval_histories.approval_status=5) and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." group by approval_histories.date ORDER BY timesheet_date"));
                // return response()->json(json_decode(json_encode($alert), true));
 
                //return Datatables::of(collect($alert))->make(true);
-    $columns = ['date', 'approval', 'approval_note'];
+    $columns = ['timesheet_date','moderation_date', 'approval', 'approval_note'];
     if (RequestFacade::ajax()) {
         return Datatables::of(collect($notes))->make(true);;
     }
 
         $html = Datatables::getHtmlBuilder()->columns($columns);
 
-        $alert = DB::select(DB::raw("SELECT approval_note 
-            FROM approval_histories,timesheets,timesheet_details 
-            where timesheet_details.timesheet_id = timesheets.id and (approval_histories.approval_status=2 or approval_histories.approval_status=5) 
-            and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." 
-            group by approval_note"));
+        $alert = DB::select(DB::raw("SELECT approval_note FROM approval_histories,timesheets,timesheet_details where timesheet_details.timesheet_id = timesheets.id and (approval_histories.approval_status=2 or approval_histories.approval_status=5) and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." group by approval_histories.date"));
         $lokasi = ['' => ''] + Constant::where('category', 'Location')->orderBy('name', 'asc')->pluck('name', 'value')->all();
         $activity = ['' => ''] + Constant::where('category', 'Activity')->orderBy('name', 'asc')->pluck('name', 'value')->all();
         $project = Project::pluck('project_name', 'id')->all();
