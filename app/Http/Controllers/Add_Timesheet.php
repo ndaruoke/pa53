@@ -412,7 +412,7 @@ class Add_Timesheet extends Controller
 
             if (!is_null($insentifExist)) {
                 if($insentifExist->approval_status != 1) {
-                    $insentif = $this->updateApprovalHistoryWithGuid($insentifExist->guid, $ti->keterangan, 4, $user, $approval['id']);
+                    $insentif = $this->updateApprovalHistory($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
                 }
             } else {
                 $insentif = $this->insertApprovalHistoryWithGuid($ti->date, $ti->keterangan, $ti->guid, 4, $user, $approval['id']);
@@ -430,7 +430,7 @@ class Add_Timesheet extends Controller
             if (!is_null($transportExist)) {
                 if($transportExist->approval_status != 1) //if on progress than not updated
                 {
-                    $transport = $this->updateApprovalHistoryWithGuid($transportExist->guid, $tt->date, $tt->keterangan, 3, $user, $approval['id']);
+                    $transport = $this->updateApprovalHistory($transportExist->id, $tt->date, $tt->keterangan, $td->id, 3, $user, $approval['id']);
                 }
             } else {
                 $transport = $this->insertApprovalHistoryWithGuid($tt->date, $tt->keterangan, $tt->guid, 3, $user, $approval['id']);
@@ -456,7 +456,7 @@ class Add_Timesheet extends Controller
     function isApprovalHistoryWithGuidExist($guid, $transactionType, $user, $approval)
     {
         $transactionExist = DB::table('approval_histories')
-            ->select('guid','approval_status')
+            ->select('id', 'guid','approval_status')
             ->where('guid', '=', $guid)
             ->where('transaction_type', '=', $transactionType)
             ->where('user_id', '=', $user)
@@ -529,7 +529,6 @@ class Add_Timesheet extends Controller
             ->where('sequence_id', 0)
             ->where('transaction_type', $transactionType)
             ->update(array(
-                'date' => $date,
                 'note' => $note,
                 'sequence_id' => 0,
                 'approval_status' => 0,

@@ -482,7 +482,11 @@ class Timesheet extends Model
                 $status = 'postponed';
             } else if($a->approval_status == 4){
                 $status = 'paid';
-            } 
+            } else if($a->approval_status == 5){
+                $status = 'on hold';
+            } else if($a->approval_status == 6){
+                $status = 'over budget';
+            }
             $appr[$status]=$a->total;
         }
         $color = 'orange';

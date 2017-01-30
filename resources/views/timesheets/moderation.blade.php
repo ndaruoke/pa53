@@ -61,7 +61,7 @@
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="small-box bg-orange pull-left">
                     <div class="inner">
-                        <h3>{{$count->timesheetApprovedAndFinanceHold}}</h3>
+                        <h3>{{$count->timesheetonhold}}</h3>
                         <p>On Hold Transaction</p>
                     </div>
                     <div class="icon">
@@ -74,7 +74,7 @@
                 <div class="small-box bg-orange pull-left">
                     <div class="inner">
                         <h3>{{$count->timesheetoverbudget}}</h3>
-                        <p>Finance Over Budget</p>
+                        <p>Over Budget</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-android-checkbox-blank"></i>
