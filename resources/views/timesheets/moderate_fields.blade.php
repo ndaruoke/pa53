@@ -280,13 +280,15 @@
                                             {{ Form::checkbox('timesheetdetail['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
-                                    @if(($detail->approval_status_history == 0 || $detail->approval_status_history == 1) && $approval['role']==4)
+                                    @if(($detail->approval_status == 0 || $detail->approval_status == 1 || $detail->approval_status == 5 || $detail->approval_status == 6)
+                                        && $approval['role']==4)
                                         <td class="col-md-1">
                                             {!! $detail->status !!} |
                                             {{ Form::checkbox('timesheetdetail['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
-                                    @if($detail->approval_status_history != 0 && $detail->approval_status_history != 1 && $approval['role']==4)
+                                    @if($detail->approval_status_history != 0 && $detail->approval_status_history != 1 && $detail->approval_status_history != 5 && $detail->approval_status_history != 6
+                                        && $approval['role']==4)
                                         <td class="col-md-1">
                                             {!! $detail->status !!}
                                         </td>
@@ -340,13 +342,15 @@
                                             {{ Form::checkbox('insentif['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
-                                    @if(($detail->approval_status == 0 || $detail->approval_status == 1) && $approval['role']==4)
+                                    @if(($detail->approval_status == 0 || $detail->approval_status == 1 || $detail->approval_status == 5 || $detail->approval_status == 6)
+                                        && $approval['role']==4)
                                         <td class="col-md-1">
                                             {!! $detail->approval !!} |
                                             {{ Form::checkbox('insentif['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
-                                    @if($detail->approval_status != 0 && $detail->approval_status != 1 && $approval['role']==4)
+                                    @if($detail->approval_status_history != 0 && $detail->approval_status_history != 1 && $detail->approval_status_history != 5 && $detail->approval_status_history != 6
+                                        && $approval['role']==4)
                                         <td class="col-md-1">
                                             {!! $detail->approval !!}
                                         </td>
@@ -406,13 +410,15 @@
                                             {{ Form::checkbox('trans['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
-                                    @if(($detail->approval_status == 0 || $detail->approval_status == 1) && $approval['role']==4)
+                                    @if(($detail->approval_status == 0 || $detail->approval_status == 1 || $detail->approval_status == 5 || $detail->approval_status == 6)
+                                        && $approval['role']==4)
                                         <td class="col-md-1">
                                             {!! $detail->approval !!} |
                                             {{ Form::checkbox('trans['.$row.'][choose]', true) }}
                                         </td>
                                     @endif
-                                    @if($detail->approval_status != 0 && $detail->approval_status != 1 && $approval['role']==4)
+                                    @if($detail->approval_status_history != 0 && $detail->approval_status_history != 1 && $detail->approval_status_history != 5 && $detail->approval_status_history != 6
+                                        && $approval['role']==4)
                                         <td class="col-md-1">
                                             {!! $detail->approval !!}
                                         </td>
@@ -452,7 +458,7 @@
                         {{ Form::text('approval_note', null, array('class' => 'form-control', 'style'=>'visibility:hidden', 'id' => 'approval_note', 'placeholder'=>'rejection note')) }}
                     {!! Form::submit('Submit',['name'=>'action','class' => 'btn btn-primary']) !!}
                 @endif
-                @if($approval['role']==4 && $approvalStatus==1)
+                @if($approval['role']==4 && ($approvalStatus==1 || $approvalStatus==5 || $approvalStatus==6))
                     {!! Form::select('moderation',
                       [4 => 'Paid'],
                       null,
