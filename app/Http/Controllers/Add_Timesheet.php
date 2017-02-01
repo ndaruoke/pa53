@@ -247,6 +247,34 @@ class Add_Timesheet extends Controller
 
     public function create(Request $req)
     {
+        $timesheetDetailCollection = collect($req->timesheet);
+        $timesheetTransportCollection = collect($req->trans);
+        $timesheetInsentifCollection = collect($req->insentif);
+
+        $tp = $timesheetDetailCollection->pluck('project');
+
+        $emptyDetail = $timesheetDetailCollection->filter(function ($value, $key) {
+            return ($value['project'] == null || $value['project'] == 0) && isset($value['select']);
+        });
+
+        $emptyTransport = $timesheetTransportCollection->filter(function ($value, $key) {
+            return ($value['project_id'] == null || $value['project_id'] == 0);
+        });
+
+        $emptyInsentif = $timesheetInsentifCollection->filter(function ($value, $key) {
+            return ($value['project_id'] == null || $value['project_id'] == 0);
+        });
+
+        if($emptyDetail->count()>0 || $emptyTransport->count()>0 || $emptyInsentif->count()>0)
+        {
+            $varMessage = "";
+            if($emptyDetail->count()>0) $varMessage = $varMessage. ' ' . ('Project must be filled on : '.$emptyDetail->pluck('date'));
+            if($emptyInsentif->count()>0) $varMessage = $varMessage . ' ' . ('Insentif must be filled on : '.$emptyInsentif->pluck('date'));
+            if($emptyTransport->count()>0) $varMessage = $varMessage . ' ' . ('Transport must be filled on : '.$emptyTransport->pluck('date'));
+            Flash::error($varMessage);
+            return back()->withInput();
+        }
+
         //return response()->json($req);
         $action = $req->action == 'Save' ? 'Disimpan' : 'Terkirim';
         $approval_status = $req->action == 'Save' ? '0' : '1';

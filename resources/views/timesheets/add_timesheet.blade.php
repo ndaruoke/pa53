@@ -2,7 +2,7 @@
 
 @section('content')
 
-
+    @include('flash::message')
     {!! Form::open(['route' => 'add_timesheet.form','data-toggle'=>'validator']) !!}
 
 
