@@ -136,3 +136,7 @@
 
 @endif
 
+<li class="{{ Request::is('panduan*') ? 'active' : '' }}">
+    <a href="panduan"><i class="fa fa-sticky-note-o"></i><span>Panduan</span></a>
+</li>
+

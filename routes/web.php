@@ -165,3 +165,11 @@ Route::resource('leaves', 'LeaveController');
 Route::resource('timesheetTransports', 'TimesheetTransportController');
 
 Route::resource('timesheetInsentifs', 'TimesheetInsentifController');
+
+Route::get('/panduan', function () {
+    return view('users.download');
+});
+
+// Route::post('uploadimo', array('uses' => 'ImoController@postUploadFile',
+// 'as' => 'uploadimo'));
+// Route::resource('imos', 'ImoController');
