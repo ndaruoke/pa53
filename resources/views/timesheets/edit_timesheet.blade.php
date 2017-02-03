@@ -14,7 +14,7 @@
                     $period = 2;
                 }
 
-                $totalDay = cal_days_in_month(CAL_GREGORIAN, $m, $y);
+                $totalDay = date('t', mktime(0, 0, 0, $m, 1, $y)); 
                 $totalDayWeek = 7;
                 if ($w == 4) {
                     $totalDayWeek = $totalDay - 21;
