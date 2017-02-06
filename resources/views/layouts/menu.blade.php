@@ -106,6 +106,12 @@
 
 <!-- Common User -->
 @if (Auth::user()->hasRole('CBS|Consultant|Finance|Manager|PMO|VP'))
+    @if (Auth::user()->hasRole('Finance'))
+    <li class="{{ Request::is('users*') ? 'active' : '' }}">
+        <a href="{!! route('users.index') !!}"><i class="fa fa-user"></i><span>User</span></a>
+    </li>
+    @endif
+
     <li class="{{ Request::is('timesheets*') ? 'active' : '' }}">
         <a href="{!! route('timesheets.index') !!}"><i class="fa fa-calendar"></i><span>Timesheet</span></a>
     </li>
