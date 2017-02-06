@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\SendTimesheetReportEmail::class
+        \App\Console\Commands\SendTimesheetReportEmail::class
     ];
 
     /**
@@ -24,8 +24,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('SendTimesheetReportEmail::class')
-                 ->weekly()->mondays()->at('10:00');
+
+        $schedule->command('email:send')->everyFiveMinutes();
+                 //->weekly()->mondays()->at('10:00');
     }
 
     /**

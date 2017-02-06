@@ -2,9 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Repositories\UserRepository;
 use Illuminate\Console\Command;
 use App\Repositories\TimesheetRepository;
 use App\Repositories\TimesheetDetailRepository;
+use App\Models\User;
+use Mail;
+use App\Mail\TimesheetSubmission;
 
 class SendTimesheetReportEmail extends Command
 {
@@ -14,6 +18,10 @@ class SendTimesheetReportEmail extends Command
      * @var string
      */
     protected $signature = 'email:send';
+
+    /** @var  Repository */
+    private $timesheetRepository;
+    private $userRepository;
 
     /**
      * The console command description.
@@ -27,9 +35,11 @@ class SendTimesheetReportEmail extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(TimesheetRepository $timesheetRepo, UserRepository $userRepo)
     {
         parent::__construct();
+        $this->timesheetRepository = $timesheetRepo;
+        $this->userRepository = $userRepo;
     }
 
     /**
@@ -43,15 +53,36 @@ class SendTimesheetReportEmail extends Command
 
         //$user = $this->argument('user');
 
+        $id = 1;
+        $timesheet = $this->timesheetRepository->with('users')->find($id);
 
-        $timesheet = $this->timesheetRepository->with('users')->findWithoutFail($id);
 
-        if(false)
-        {
-            $this->line('Timesheet failed to send');
-        } else {
-            $this->line('Timesheet has been send to HRD');
-        }
+        $user = User::where('id', $id)->first();
+
+
+        /**
+         *
+        $this->info($user->toJson());
+        $this->line($timesheet->toJson());
+        $request = $this->createFromUser($user);
+        $this->info($user->toJson());
+        $this->line($timesheet->toJson());
+        dd($request);
+
+         *
+         * **/
+
+        $mail = Mail::to($user['email'])
+            ->send(new TimesheetSubmission($user, $timesheet));
+
+        $this->info('Executed');
         
+    }
+
+    private function createFromUser(User $user)
+    {
+        return array(
+            'name' => $user->name
+        );
     }
 }

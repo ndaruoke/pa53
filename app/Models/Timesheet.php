@@ -511,4 +511,19 @@ class Timesheet extends Model
     {
         return $this->hasMany('App\Models\TimesheetTransport');
     }
+
+    public static function getreport($approvalStatus)
+    {
+        $result = DB::table('timesheets')
+            ->select('user.nik','users.email','users.name','projects.code','projects.project_name','projects.claimable','timesheet_details.activity','timesheet_details.start_time','timesheet_detail.end_time','timesheets.id','timesheets.week', 'timesheets.month', 'timesheets.year', 'approval_histories.user_id', 'approval_histories.approval_id', 'approval_histories.approval_status')
+            ->join('timesheet_details', 'timesheet_details.timesheet_id', 'timesheets.id')
+            ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_details.id')
+            ->join('users', 'users.id', 'approval_histories.user_id')
+            ->where('approval_histories.approval_status', '=', $approvalStatus)
+            ->where('transaction_type', '=', 2)
+            ->groupBy('timesheets.user_id', 'timesheets.id')
+            ->get();
+
+        return $result;
+    }
 }
