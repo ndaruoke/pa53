@@ -85,6 +85,9 @@
 
 <!-- PMO -->
 @if (Auth::user()->hasRole('PMO'))
+   <li class="{{ Request::is('users*') ? 'active' : '' }}">
+        <a href="{!! route('users.index') !!}"><i class="fa fa-user"></i><span>User</span></a>
+    </li>
     <li class="{{ Request::is('projects*') ? 'active' : '' }}">
         <a href="{!! route('projects.index') !!}"><i class="fa fa-laptop"></i><span>Project</span></a>
     </li>
@@ -106,11 +109,6 @@
 
 <!-- Common User -->
 @if (Auth::user()->hasRole('CBS|Consultant|Finance|Manager|PMO|VP'))
-    @if (Auth::user()->hasRole('Finance'))
-    <li class="{{ Request::is('users*') ? 'active' : '' }}">
-        <a href="{!! route('users.index') !!}"><i class="fa fa-user"></i><span>User</span></a>
-    </li>
-    @endif
 
     <li class="{{ Request::is('timesheets*') ? 'active' : '' }}">
         <a href="{!! route('timesheets.index') !!}"><i class="fa fa-calendar"></i><span>Timesheet</span></a>
