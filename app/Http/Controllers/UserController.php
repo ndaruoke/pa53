@@ -14,6 +14,7 @@ use Flash;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
 use Response;
+use File;
 
 class UserController extends AppBaseController
 {
@@ -250,12 +251,12 @@ class UserController extends AppBaseController
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $filename = uniqid($user->name) . $image->getClientOriginalExtension();
+            $filename = uniqid(). '.' . $image->getClientOriginalExtension();
 
             $path = public_path('profilepics/' . $filename);
 
             Image::make($image->getRealPath())->resize(200, 200)->save($path);
-            $user->image = $filename;
+            $user['image'] = $filename;
             $user->save();
         }
 
@@ -270,9 +271,9 @@ class UserController extends AppBaseController
                 return redirect()->back();
             }
             $request['password'] = Hash::make($request['password']);
+            $user = $this->userRepository->update($request->all(), $id);
         }
 
-        $user = $this->userRepository->update($request->all(), $id);
 
         Flash::success('User updated successfully.');
 
