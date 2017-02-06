@@ -250,7 +250,7 @@ class UserController extends AppBaseController
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $filename = uniqid($user->name) . $image->getClientOriginalExtension();
 
             $path = public_path('profilepics/' . $filename);
 
