@@ -356,7 +356,7 @@
                                 <tr>
                                     <td>
 
-                                        <p>Dear {{ $name }},</p>
+                                        <p>Dear {{ $approver->name }},</p>
                                         <p>There is request for leave whose name {{ $user->name }}</p>
                                         <p> Leave application with type : {{ $type }} from {{ $startDate }}
                                             to {{ $endDate }}</p>

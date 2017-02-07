@@ -286,9 +286,16 @@ class LeaveController extends AppBaseController
         $cc = $this->getCC($request);
 
         //send email
-        Mail::to($approver->email)
-            ->cc($cc)
-            ->queue(new LeaveSubmission($request->all(), $approver));
+        if($cc!=null)
+        {
+            Mail::to($approver->email)
+                ->cc($cc)
+                ->queue(new LeaveSubmission($request->all(), $approver));
+        } else {
+            Mail::to($approver->email)
+                ->queue(new LeaveSubmission($request->all(), $approver));
+        }
+
 
         Flash::success('Leave saved successfully.');
 
@@ -358,13 +365,22 @@ class LeaveController extends AppBaseController
         {
             $cc = User::whereIn('position', $managingConsultantPosition)
                 ->where('department', $user->department)->get();
-            return $cc->pluck('email')->all()->first();
+            if (!empty($errors)) {
+                return $cc->pluck('email')->all()->first();
+            } else {
+                return null;
+            }
+
         }
         if (in_array($user->position, $consultantPosition)) // PM to VP+HRD
         {
             $cc = User::where('position', 3)
                 ->where('department', $user->department)->get();
-            return $cc->pluck('email')->all()->first();
+            if (!empty($errors)) {
+                return $cc->pluck('email')->all()->first();
+            } else {
+                return null;
+            }
         }
 
         if (in_array($user->position, $managingConsultantPosition)) // Managing Consultant to Vice President

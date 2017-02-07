@@ -29,6 +29,7 @@ class LeaveSubmission extends Mailable implements ShouldQueue
     public $url;
     public $approver;
     public $type;
+    public $name;
 
     /**
      * Create a new message instance.
