@@ -9,6 +9,8 @@ use App\Repositories\TimesheetDetailRepository;
 use App\Models\User;
 use Mail;
 use App\Mail\TimesheetSubmission;
+use Excel;
+use DB;
 
 class SendTimesheetReportEmail extends Command
 {
@@ -54,26 +56,53 @@ class SendTimesheetReportEmail extends Command
         //$user = $this->argument('user');
 
         $id = 1;
-        $timesheet = $this->timesheetRepository->with('users')->find($id);
+
+        $timesheet = DB::
+        table('timesheets')->
+        join('users', 'users.id', 'timesheets.user_id')->
+        join('timesheet_details', 'timesheet_details.timesheet_id', 'timesheets.id')->
+        select('users.nik', 'timesheet_details.project_id','timesheet_details.activity as subject',
+            'timesheet_details.activity_detail as message',
+            'timesheet_details.date as ts_date', 'timesheet_details.created_at as submit_date')->
+        get();
+
+        $data = array();
+        foreach ($timesheet as $result) {
+            $data[] = (array)$result;
+        }
+
+
 
 
         $user = User::where('id', $id)->first();
 
+        $path = Excel::create('Timesheet', function($excel) use ($timesheet, $data) {
 
-        /**
-         *
-        $this->info($user->toJson());
-        $this->line($timesheet->toJson());
-        $request = $this->createFromUser($user);
-        $this->info($user->toJson());
-        $this->line($timesheet->toJson());
-        dd($request);
+            // Set the title
+            $excel->setTitle('Timesheet');
+            // Chain the setters
+            $excel->setCreator('PA-Online')
+                ->setCompany('PT. Sigma Metrasys Solution');
+            // Call them separately
+            $excel->setDescription('Weekly Timesheet');
 
-         *
-         * **/
+            //get data
+            $excel->sheet('timesheet', function($sheet) use ($timesheet, $data) {
+                //$data[] = (array)$timesheet;
+                //dd($timesheet->toArray());
+
+                $sheet->fromArray($data);
+            });
+
+        })->store('xls', false, true);
+
+
+        // send mail
 
         $mail = Mail::to($user['email'])
-            ->send(new TimesheetSubmission($user, $timesheet));
+            ->send(new TimesheetSubmission($user, $path['full']));
+
+
 
         $this->info('Executed');
         

@@ -357,7 +357,7 @@
                                     <td>
 
                                         <p>Dear {{ $user->name }},</p>
-                                        <p>{{ $timesheet }},</p>
+                                        <p>Hereby timesheet report for one week,</p>
                                         <p>Sincerely,</p>
                                         <p>Admin PA Online</p>
                                     </td>

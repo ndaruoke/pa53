@@ -19,18 +19,18 @@ class TimesheetSubmission extends Mailable
      */
     public $user;
     public $url;
-    public $timesheet;
+    public $path;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user, Timesheet $timesheet)
+    public function __construct(User $user, string $path)
     {
         $this->user = $user;
         $this->url = url()->to('/');
-        $this->timesheet = $timesheet;
+        $this->path = $path;
     }
 
     /**
@@ -41,6 +41,7 @@ class TimesheetSubmission extends Mailable
     public function build()
     {
 
-        return $this->view('email.timesheet.submission');
+        return $this->view('email.timesheet.submission')
+            ->attach($this->path);
     }
 }
