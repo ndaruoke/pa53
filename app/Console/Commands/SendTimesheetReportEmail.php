@@ -11,6 +11,7 @@ use Mail;
 use App\Mail\TimesheetSubmission;
 use Excel;
 use DB;
+use App\Models\TimesheetDetail;
 
 class SendTimesheetReportEmail extends Command
 {
@@ -57,21 +58,47 @@ class SendTimesheetReportEmail extends Command
 
         $id = 1;
 
-        $timesheet = DB::
-        table('timesheets')->
+        /**
+        $timesheet = TimesheetDetail::
+        join('timesheets', 'timesheet_details.timesheet_id', 'timesheets.id')->
         join('users', 'users.id', 'timesheets.user_id')->
-        join('timesheet_details', 'timesheet_details.timesheet_id', 'timesheets.id')->
-        select('users.nik', 'timesheet_details.project_id','timesheet_details.activity as subject',
+        join('projects', 'projects.id', 'timesheet_details.project_id')->
+        select('users.nik as user_id',
+            'timesheet_details.project_id',
+            'projects.project_name as wbs_id',
+            'timesheet_details.activity as subject',
             'timesheet_details.activity_detail as message',
-            'timesheet_details.date as ts_date', 'timesheet_details.created_at as submit_date')->
+            'timesheet_details.hour as hour_total',
+            'timesheet_details.date as ts_date',
+            'timesheet_details.created_at as submit_date')->
+        get();
+
+         * **/
+
+        $timesheet = TimesheetDetail::
+        join('timesheets', 'timesheet_details.timesheet_id', 'timesheets.id')->
+        join('users', 'users.id', 'timesheets.user_id')->
+        join('projects', 'projects.id', 'timesheet_details.project_id')->
         get();
 
         $data = array();
+        $count = 0;
         foreach ($timesheet as $result) {
-            $data[] = (array)$result;
+            //$data[] = (array)$result;
+            //$res = array();
+            $res = array(
+                'user_id'=>$result->nik,
+                'project_id'=>$result->project_id,
+                'wbs_id'=>$result->project_name,
+                'subject'=>$result->activity,
+                'message'=>$result->activity_detail,
+                'hour_total'=>$result->hour,
+                'ts_date'=>$result->date,
+                'submit_date'=>$result->created_at->toDateTimeString()
+        );
+            $data[$count] = $res;
+            $count++;
         }
-
-
 
 
         $user = User::where('id', $id)->first();
@@ -91,18 +118,15 @@ class SendTimesheetReportEmail extends Command
                 //$data[] = (array)$timesheet;
                 //dd($timesheet->toArray());
 
-                $sheet->fromArray($data);
+                //$sheet->fromArray($data);
+                $sheet->fromModel($data);
             });
 
         })->store('xls', false, true);
 
-
         // send mail
-
         $mail = Mail::to($user['email'])
             ->send(new TimesheetSubmission($user, $path['full']));
-
-
 
         $this->info('Executed');
         

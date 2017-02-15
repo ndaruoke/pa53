@@ -135,7 +135,7 @@ class TimesheetDetail extends Model
         'moderated_at'
     ];
     protected $dates = ['deleted_at'];
-    protected $appends = ['status'];
+    protected $appends = ['status','hour'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -265,6 +265,14 @@ order by sequence_id'));
         } else {
             return 'color:orange';
         }
+    }
+
+    public function getHourAttribute()
+    {
+        $endTime = explode(',', $this->end_time);
+        $startTime = explode(',', $this->start_time);
+
+        return (int) $endTime[0] - (int) $startTime[0];
     }
 
     public function timesheets()
