@@ -53,7 +53,6 @@ class SendTimesheetReportEmail extends Command
     public function handle()
     {
         //$arguments = $this->arguments();
-
         //$user = $this->argument('user');
 
         $id = 1;
@@ -119,14 +118,14 @@ class SendTimesheetReportEmail extends Command
                 //dd($timesheet->toArray());
 
                 //$sheet->fromArray($data);
-                $sheet->fromModel($data);
+                $sheet->fromModel($data, null, 'A1', true);
             });
 
         })->store('xls', false, true);
 
         // send mail
-        $mail = Mail::to($user['email'])
-            ->send(new TimesheetSubmission($user, $path['full']));
+        //$mail = Mail::to($user['email'])
+         //   ->send(new TimesheetSubmission($user, $path['full']));
 
         $this->info('Executed');
         
