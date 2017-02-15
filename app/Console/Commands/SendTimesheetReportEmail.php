@@ -124,8 +124,7 @@ class SendTimesheetReportEmail extends Command
         })->store('xls', false, true);
 
         // send mail
-        //$mail = Mail::to($user['email'])
-         //   ->send(new TimesheetSubmission($user, $path['full']));
+        $mail = Mail::to($user['email'])->send(new TimesheetSubmission($user, $path['full']));
 
         $this->info('Executed');
         
