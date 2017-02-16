@@ -11,6 +11,7 @@ use Mail;
 use App\Mail\TimesheetSubmission;
 use Excel;
 use DB;
+use Carbon\Carbon;
 use App\Models\TimesheetDetail;
 
 class SendTimesheetReportEmail extends Command
@@ -57,27 +58,11 @@ class SendTimesheetReportEmail extends Command
 
         $id = 1;
 
-        /**
         $timesheet = TimesheetDetail::
         join('timesheets', 'timesheet_details.timesheet_id', 'timesheets.id')->
         join('users', 'users.id', 'timesheets.user_id')->
         join('projects', 'projects.id', 'timesheet_details.project_id')->
-        select('users.nik as user_id',
-            'timesheet_details.project_id',
-            'projects.project_name as wbs_id',
-            'timesheet_details.activity as subject',
-            'timesheet_details.activity_detail as message',
-            'timesheet_details.hour as hour_total',
-            'timesheet_details.date as ts_date',
-            'timesheet_details.created_at as submit_date')->
-        get();
-
-         * **/
-
-        $timesheet = TimesheetDetail::
-        join('timesheets', 'timesheet_details.timesheet_id', 'timesheets.id')->
-        join('users', 'users.id', 'timesheets.user_id')->
-        join('projects', 'projects.id', 'timesheet_details.project_id')->
+        whereBetween('timesheet_details.created_at', [Carbon::today()->subDays(7)->toDateString(),Carbon::today()->toDateString()])->
         get();
 
         $data = array();
@@ -88,7 +73,7 @@ class SendTimesheetReportEmail extends Command
             $res = array(
                 'user_id'=>$result->nik,
                 'project_id'=>$result->project_id,
-                'wbs_id'=>$result->project_name,
+                'wbs_id'=>$result->code,
                 'subject'=>$result->activity,
                 'message'=>$result->activity_detail,
                 'hour_total'=>$result->hour,
