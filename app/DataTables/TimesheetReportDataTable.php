@@ -80,15 +80,22 @@ class TimesheetReportDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'id' => ['name' => 'id', 'id' => 'id'],
-            'periode' => ['name' => 'periode', 'data' => 'periode'],
-            'week' => ['name' => 'week', 'data' => 'week'],
-            'month' => ['name' => 'monthname', 'data' => 'monthname'],
+            'nik' => ['name' => 'nik', 'id' => 'nik'],
+            'email' => ['name' => 'email', 'data' => 'email'],
+            'display_name' => ['name' => 'user_name', 'data' => 'user_name'],
+            'responsibilities' => ['name' => 'position_name', 'data' => 'position_name'],
+            'iwo' => ['name' => 'code', 'data' => 'code'],
+            'project_name' => ['name' => 'project_name', 'data' => 'project_name'],
+            'summary_taskname' => ['name' => 'activity', 'data' => 'activity'],
+            'task_name' => ['name' => 'activity_detail', 'data' => 'activity_detail'],
+
+            'total_work' => ['name' => 'hour', 'data' => 'hour'],
             'year' => ['name' => 'year', 'data' => 'year'],
-        //    'total' => ['name' => 'total', 'data' => 'total'],
-            'total' => ['name' => 'total', 'data' => 'submitted'],
-            'status' => ['name' => 'status', 'data' => 'approval'],
-            'detail' => ['name' => 'link', 'data' => 'link']
+            'month' => ['name' => 'month', 'data' => 'month'],
+            'effort_type' => ['name' => 'constants_name', 'data' => 'constants_name'],
+            'task_type' => ['name' => 'is_billable', 'data' => 'is_billable'],
+            'week_in_month' => ['name' => 'week', 'data' => 'week']
+
         ];
     }
 

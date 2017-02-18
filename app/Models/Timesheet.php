@@ -514,15 +514,22 @@ class Timesheet extends Model
 
     public static function getreport($approvalStatus)
     {
-        $result = DB::table('timesheets')
-            ->select('user.nik','users.email','users.name','projects.code','projects.project_name','projects.claimable','timesheet_details.activity','timesheet_details.start_time','timesheet_detail.end_time','timesheets.id','timesheets.week', 'timesheets.month', 'timesheets.year', 'approval_histories.user_id', 'approval_histories.approval_id', 'approval_histories.approval_status')
-            ->join('timesheet_details', 'timesheet_details.timesheet_id', 'timesheets.id')
+        $result = TimesheetDetail::
+            join('timesheets', 'timesheet_details.timesheet_id', 'timesheets.id')
             ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_details.id')
             ->join('users', 'users.id', 'approval_histories.user_id')
+            ->join('projects', 'projects.id', 'timesheet_details.project_id')
+            ->join('constants', 'constants.value', 'projects.effort_type')
+            ->join('positions', 'positions.id', 'users.position')
             ->where('approval_histories.approval_status', '=', $approvalStatus)
             ->where('transaction_type', '=', 2)
+            ->where('constants.category', '=', 'EffortType')
             ->groupBy('timesheets.user_id', 'timesheets.id')
-            ->get();
+            ->get(['*',
+                DB::raw('users.name as user_name'),
+                DB::raw('positions.name as position_name'),
+                DB::raw('constants.name as constants_name'),
+                DB::raw('case when (projects.claimable = 1) THEN \'Billable\' ELSE \'Non-Billable\' END as is_billable')]);
 
         return $result;
     }

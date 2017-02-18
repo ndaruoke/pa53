@@ -30,7 +30,7 @@ class ReportController extends AppBaseController
      * @param TimesheetReportDataTable $TimesheetReportDataTable
      * @return Response
      */
-    public function index(TimesheetReportDataTable $TimesheetReportDataTable)
+    public function timesheet(TimesheetReportDataTable $TimesheetReportDataTable)
     {
         return $TimesheetReportDataTable->render('Timesheets.index');
     }

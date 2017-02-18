@@ -140,6 +140,10 @@
 
 @endif
 
+<li class="{{ Request::is('report*') ? 'active' : '' }}">
+    <a href="{!! route('report.timesheet') !!}"><i class="fa fa-sticky-note-o"></i><span>Report</span></a>
+</li>
+
 <li class="{{ Request::is('panduan*') ? 'active' : '' }}">
     <a href="panduan"><i class="fa fa-sticky-note-o"></i><span>Panduan</span></a>
 </li>

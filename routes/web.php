@@ -166,6 +166,9 @@ Route::resource('timesheetTransports', 'TimesheetTransportController');
 
 Route::resource('timesheetInsentifs', 'TimesheetInsentifController');
 
+Route::get('report/timesheet', array('uses' => 'ReportController@timesheet',
+    'as' => 'report.timesheet'));
+
 Route::get('/panduan', function () {
     return view('users.download');
 });

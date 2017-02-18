@@ -99,10 +99,6 @@ class SendTimesheetReportEmail extends Command
 
             //get data
             $excel->sheet('timesheet', function($sheet) use ($timesheet, $data) {
-                //$data[] = (array)$timesheet;
-                //dd($timesheet->toArray());
-
-                //$sheet->fromArray($data);
                 $sheet->fromModel($data, null, 'A1', true);
             });
 
