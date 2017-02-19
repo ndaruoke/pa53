@@ -31,7 +31,7 @@ class ReportController extends AppBaseController
      * @param TimesheetReportDataTable $TimesheetReportDataTable
      * @return Response
      */
-    public function timesheet(TimesheetReportDataTable $TimesheetReportDataTable)
+    public function timesheet(TimesheetReportDataTable $timesheetReportDataTable)
     {
         $user = Auth::User();
         if (empty($_REQUEST['reportType'])) {
@@ -39,7 +39,7 @@ class ReportController extends AppBaseController
         } else {
             $reportType = $_REQUEST['reportType'];
         }
-        return $TimesheetReportDataTable->render('reports.timesheet', array('reportType' => $reportType, 'user' => $user));
+        return $timesheetReportDataTable->render('reports.timesheet', array('reportType' => $reportType, 'user' => $user));
     }
 
 

@@ -9,8 +9,6 @@ use Yajra\Datatables\Services\DataTable;
 
 class TimesheetReportDataTable extends DataTable
 {
-
-    private string _reportType ;
     /**
      * @return \Illuminate\Http\JsonResponse
      */
@@ -36,8 +34,6 @@ class TimesheetReportDataTable extends DataTable
         {
             $reportType = array($request['reportType']);
         }
-
-        _reportType = $reportType;
 
         $timesheets = Timesheet::getreport($reportType);
 
@@ -83,7 +79,18 @@ class TimesheetReportDataTable extends DataTable
      */
     private function getColumns()
     {
-        return [
+        $result = array();
+        $request = $_REQUEST;
+
+        if($request['reportType'] != 1)
+        {
+            $result = [
+                'status' => ['name' => 'moderation_name', 'data' => 'moderation_name'],
+                'budget' => ['name' => 'budget', 'data' => 'budget']
+            ];
+        }
+
+        $normalResult = [
             'nik' => ['name' => 'nik', 'id' => 'nik'],
             'email' => ['name' => 'email', 'data' => 'email'],
             'display_name' => ['name' => 'user_name', 'data' => 'user_name'],
@@ -96,11 +103,15 @@ class TimesheetReportDataTable extends DataTable
             'total_work' => ['name' => 'hour', 'data' => 'hour'],
             'year' => ['name' => 'year', 'data' => 'year'],
             'month' => ['name' => 'month', 'data' => 'month'],
-            'effort_type' => ['name' => 'constants_name', 'data' => 'constants_name'],
+            'effort_type' => ['name' => 'effort_name', 'data' => 'effort_name'],
             'task_type' => ['name' => 'is_billable', 'data' => 'is_billable'],
             'week_in_month' => ['name' => 'week', 'data' => 'week']
 
         ];
+
+        $result = array_merge($result,$normalResult);
+
+        return $result;
     }
 
     /**

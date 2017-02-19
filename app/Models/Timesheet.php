@@ -519,17 +519,21 @@ class Timesheet extends Model
             ->join('approval_histories', 'approval_histories.transaction_id', 'timesheet_details.id')
             ->join('users', 'users.id', 'approval_histories.user_id')
             ->join('projects', 'projects.id', 'timesheet_details.project_id')
-            ->join('constants', 'constants.value', 'projects.effort_type')
+            ->join('constants as effort', 'effort.value', 'projects.effort_type')
+            ->join('constants as moderation', 'moderation.value', 'approval_histories.approval_status')
             ->join('positions', 'positions.id', 'users.position')
             ->whereIn('approval_histories.approval_status', $approvalStatus)
             ->where('transaction_type', '=', 2)
-            ->where('constants.category', '=', 'EffortType')
+            ->where('effort.category', '=', 'EffortType')
+            ->where('moderation.category', '=', 'Moderation')
             ->groupBy('timesheets.user_id', 'timesheets.id')
             ->get(['*',
                 DB::raw('users.name as user_name'),
                 DB::raw('positions.name as position_name'),
-                DB::raw('constants.name as constants_name'),
-                DB::raw('case when (projects.claimable = 1) THEN \'Billable\' ELSE \'Non-Billable\' END as is_billable')]);
+                DB::raw('effort.name as effort_name'),
+                DB::raw('case when (projects.claimable = 1) THEN \'Billable\' ELSE \'Non-Billable\' END as is_billable'),
+                DB::raw('moderation.name as moderation_name')
+            ]);
 
         return $result;
     }
