@@ -521,7 +521,7 @@ class Timesheet extends Model
             ->join('projects', 'projects.id', 'timesheet_details.project_id')
             ->join('constants', 'constants.value', 'projects.effort_type')
             ->join('positions', 'positions.id', 'users.position')
-            ->where('approval_histories.approval_status', '=', $approvalStatus)
+            ->whereIn('approval_histories.approval_status', $approvalStatus)
             ->where('transaction_type', '=', 2)
             ->where('constants.category', '=', 'EffortType')
             ->groupBy('timesheets.user_id', 'timesheets.id')

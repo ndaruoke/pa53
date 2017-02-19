@@ -12,6 +12,7 @@ use Flash;
 use Illuminate\Http\Request;
 use Input;
 use Response;
+use Auth;
 
 class ReportController extends AppBaseController
 {
@@ -32,7 +33,13 @@ class ReportController extends AppBaseController
      */
     public function timesheet(TimesheetReportDataTable $TimesheetReportDataTable)
     {
-        return $TimesheetReportDataTable->render('Timesheets.index');
+        $user = Auth::User();
+        if (empty($_REQUEST['reportType'])) {
+            $reportType = 1;
+        } else {
+            $reportType = $_REQUEST['reportType'];
+        }
+        return $TimesheetReportDataTable->render('reports.timesheet', array('reportType' => $reportType, 'user' => $user));
     }
 
 

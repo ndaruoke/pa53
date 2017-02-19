@@ -9,6 +9,8 @@ use Yajra\Datatables\Services\DataTable;
 
 class TimesheetReportDataTable extends DataTable
 {
+
+    private string _reportType ;
     /**
      * @return \Illuminate\Http\JsonResponse
      */
@@ -27,13 +29,15 @@ class TimesheetReportDataTable extends DataTable
     public function query()
     {
         $request = $_REQUEST;
-        if(empty($request['$approvalStatus']))
+        if(empty($request['reportType']))
         {
-            $reportType = 2;
+            $reportType = array(1);
         } else
         {
-            $reportType = $request['$approvalStatus'];
+            $reportType = array($request['reportType']);
         }
+
+        _reportType = $reportType;
 
         $timesheets = Timesheet::getreport($reportType);
 
