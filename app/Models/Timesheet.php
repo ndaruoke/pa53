@@ -512,7 +512,7 @@ class Timesheet extends Model
         return $this->hasMany('App\Models\TimesheetTransport');
     }
 
-    public static function getreport($approvalStatus)
+    public static function getreport($approvalStatus, $allProject, $project, $month, $year)
     {
         $result = TimesheetDetail::
             join('timesheets', 'timesheet_details.timesheet_id', 'timesheets.id')
@@ -523,10 +523,16 @@ class Timesheet extends Model
             ->join('constants as moderation', 'moderation.value', 'approval_histories.approval_status')
             ->join('positions', 'positions.id', 'users.position')
             ->whereIn('approval_histories.approval_status', $approvalStatus)
+            ->where('approval_histories.sequence_id', '=', 2)
             ->where('transaction_type', '=', 2)
             ->where('effort.category', '=', 'EffortType')
             ->where('moderation.category', '=', 'Moderation')
-            ->groupBy('timesheets.user_id', 'timesheets.id')
+            ->where('timesheets.month', '=', $month)
+            ->where('timesheets.year', '=', $year)
+            ->where(function ($query) use ($allProject, $project) {
+                $query->whereRaw('1 = '.$allProject)
+                    ->orWhere('projects.id', '=', $project);
+            })
             ->get(['*',
                 DB::raw('users.name as user_name'),
                 DB::raw('positions.name as position_name'),

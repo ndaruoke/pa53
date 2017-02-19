@@ -6,6 +6,7 @@ use Auth;
 use App\Models\Timesheet;
 use Form;
 use Yajra\Datatables\Services\DataTable;
+use Carbon\Carbon;
 
 class TimesheetReportDataTable extends DataTable
 {
@@ -27,6 +28,7 @@ class TimesheetReportDataTable extends DataTable
     public function query()
     {
         $request = $_REQUEST;
+        $now = Carbon::now();
         if(empty($request['reportType']))
         {
             $reportType = array(1);
@@ -34,8 +36,25 @@ class TimesheetReportDataTable extends DataTable
         {
             $reportType = array($request['reportType']);
         }
+        if (empty($_REQUEST['project']) || $_REQUEST['project'] == 0) {
+            $allProject = 1;
+            $project = 0;
+        } else {
+            $allProject = 0;
+            $project = $_REQUEST['project'];
+        }
+        if (!empty($_REQUEST['month'])) {
+            $month = $_REQUEST['month'];
+        } else {
+            $month = $now->month ;
+        }
+        if (!empty($_REQUEST['year'])) {
+            $year = $_REQUEST['year'];
+        } else {
+            $year = $now->year ;
+        }
 
-        $timesheets = Timesheet::getreport($reportType);
+        $timesheets = Timesheet::getreport($reportType, $allProject, $project, $month, $year);
 
         return $timesheets;
     }
@@ -82,12 +101,14 @@ class TimesheetReportDataTable extends DataTable
         $result = array();
         $request = $_REQUEST;
 
-        if($request['reportType'] != 1)
-        {
-            $result = [
-                'status' => ['name' => 'moderation_name', 'data' => 'moderation_name'],
-                'budget' => ['name' => 'budget', 'data' => 'budget']
-            ];
+        if(!empty($request['reportType'])){
+            if($request['reportType'] != 1)
+            {
+                $result = [
+                    'status' => ['name' => 'moderation_name', 'data' => 'moderation_name'],
+                    'budget' => ['name' => 'budget', 'data' => 'budget']
+                ];
+            }
         }
 
         $normalResult = [
@@ -99,7 +120,6 @@ class TimesheetReportDataTable extends DataTable
             'project_name' => ['name' => 'project_name', 'data' => 'project_name'],
             'summary_taskname' => ['name' => 'activity', 'data' => 'activity'],
             'task_name' => ['name' => 'activity_detail', 'data' => 'activity_detail'],
-
             'total_work' => ['name' => 'hour', 'data' => 'hour'],
             'year' => ['name' => 'year', 'data' => 'year'],
             'month' => ['name' => 'month', 'data' => 'month'],

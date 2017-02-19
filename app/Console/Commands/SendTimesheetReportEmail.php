@@ -57,13 +57,19 @@ class SendTimesheetReportEmail extends Command
         //$user = $this->argument('user');
 
         $id = 1;
+        $approvalStatus = array(1,4); //approve and paid
 
         $timesheet = TimesheetDetail::
         join('timesheets', 'timesheet_details.timesheet_id', 'timesheets.id')->
         join('users', 'users.id', 'timesheets.user_id')->
         join('projects', 'projects.id', 'timesheet_details.project_id')->
+        join('approval_histories', 'approval_histories.transaction_id', 'timesheet_details.id')->
+        whereIn('approval_histories.approval_status', $approvalStatus)->
+        where('approval_histories.sequence_id', '=', 2)->
         whereBetween('timesheet_details.created_at', [Carbon::today()->subDays(7)->toDateString(),Carbon::today()->toDateString()])->
-        get();
+        get(['*',
+            DB::raw('timesheet_details.created_at as created_timesheet')
+        ]);
 
         $data = array();
         $count = 0;
@@ -78,7 +84,7 @@ class SendTimesheetReportEmail extends Command
                 'message'=>$result->activity_detail,
                 'hour_total'=>$result->hour,
                 'ts_date'=>$result->date,
-                'submit_date'=>$result->created_at->toDateTimeString()
+                'submit_date'=>$result->created_timesheet
         );
             $data[$count] = $res;
             $count++;
