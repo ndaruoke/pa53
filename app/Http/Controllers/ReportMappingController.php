@@ -23,7 +23,7 @@ class ReportMappingController extends Controller
     public function index()
     {
         $request = RequestFacade::all();
-        $p_id = '';
+        $p_id = -1;
         if(isset($request['project'])){
             $p_id = $request['project'];
         }
