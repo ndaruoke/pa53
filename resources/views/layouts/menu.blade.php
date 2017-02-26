@@ -47,10 +47,10 @@
                     class="fa fa-pencil-square-o"></i><span>Create Timesheet</span></a>
     </li>
     <!--
-<li class="{{ Request::is('timesheetDetails*') ? 'active' : '' }}">
-    <a href="{!! route('timesheetDetails.index') !!}"><i class="fa fa-calendar-check-o"></i><span>Timesheet Detail</span></a>
-</li>
--->
+        <li class="{{ Request::is('timesheetDetails*') ? 'active' : '' }}">
+            <a href="{!! route('timesheetDetails.index') !!}"><i class="fa fa-calendar-check-o"></i><span>Timesheet Detail</span></a>
+        </li>
+    -->
     <li class="{{ Request::is('tunjangans*') ? 'active' : '' }}">
         <a href="{!! route('tunjangans.index') !!}"><i class="fa fa-money"></i><span>Tunjangan</span></a>
     </li>
@@ -83,8 +83,8 @@
 
 @endif
 
-<!-- PMO -->
-@if (Auth::user()->hasRole('PMO'))
+<!-- PMO and finance-->
+@if (Auth::user()->hasRole('PMO|Finance'))
    <li class="{{ Request::is('users*') ? 'active' : '' }}">
         <a href="{!! route('users.index') !!}"><i class="fa fa-user"></i><span>User</span></a>
     </li>
@@ -107,8 +107,8 @@
 @endif
 
 
-<!-- Common User -->
-@if (Auth::user()->hasRole('CBS|Consultant|Finance|Manager|PMO|VP'))
+<!-- Special User -->
+@if (Auth::user()->hasRole('CBS|Manager|VP|PMO|Finance'))
 
     <li class="{{ Request::is('timesheets*') ? 'active' : '' }}">
         <a href="{!! route('timesheets.index') !!}"><i class="fa fa-calendar"></i><span>Timesheet</span></a>
@@ -138,16 +138,44 @@
         </span></a>
     </li>
 
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-folder"></i> <span>Report</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
+        <ul class="treeview-menu">
+            <li class="{{ Request::is('report*timesheet') ? 'active' : '' }}"><a href="{!! route('report.timesheet') !!}"><i class="fa fa-sticky-note-o"></i><span>Report Timesheet</span></a></li>
+            <li class="{{ Request::is('report*mapping') ? 'active' : '' }}"><a href="{!! route('report.mapping') !!}"><i class="fa fa-sticky-note-o"></i><span>Report Mapping</span></a></li>
+
+        </ul>
+    </li>
+
+    <li class="{{ Request::is('panduan*') ? 'active' : '' }}">
+        <a href="panduan"><i class="fa fa-sticky-note-o"></i><span>Panduan</span></a>
+    </li>
+
 @endif
 
-<li class="{{ Request::is('report*timesheet') ? 'active' : '' }}">
-    <a href="{!! route('report.timesheet') !!}"><i class="fa fa-sticky-note-o"></i><span>Report Timesheet</span></a>
-</li>
-<li class="{{ Request::is('report*mapping') ? 'active' : '' }}">
-    <a href="{!! route('report.mapping') !!}"><i class="fa fa-sticky-note-o"></i><span>Report Mapping</span></a>
-</li>
 
-<li class="{{ Request::is('panduan*') ? 'active' : '' }}">
-    <a href="panduan"><i class="fa fa-sticky-note-o"></i><span>Panduan</span></a>
-</li>
+<!-- Consultant -->
+@if (Auth::user()->hasRole('Consultant'))
 
+    <li class="{{ Request::is('timesheets*') ? 'active' : '' }}">
+        <a href="{!! route('timesheets.index') !!}"><i class="fa fa-calendar"></i><span>Timesheet</span></a>
+    </li>
+    <li class="{{ Request::is('add_timesheet*') ? 'active' : '' }}">
+        <a href="{!! route('add_timesheet.index') !!}"><i
+                    class="fa fa-pencil-square-o"></i><span>Create Timesheet</span></a>
+    </li>
+
+    <li class="{{ Request::is('leaves/submission*') ? 'active' : '' }}">
+        <a href="{!! route('leaves.submission') !!}"><i class="fa fa-hotel"></i><span>Cuti</span></a>
+    </li>
+
+    <li class="{{ Request::is('panduan*') ? 'active' : '' }}">
+        <a href="panduan"><i class="fa fa-sticky-note-o"></i><span>Panduan</span></a>
+    </li>
+
+@endif
