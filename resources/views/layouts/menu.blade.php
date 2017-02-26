@@ -1,4 +1,5 @@
 @inject('count', 'App\Services\MenuCountService')
+@inject('pm', 'App\Services\IsProjectManagerService')
 
 <!-- Admin -->
 @if (Auth::user()->hasRole('Admin'))
@@ -178,4 +179,22 @@
         <a href="panduan"><i class="fa fa-sticky-note-o"></i><span>Panduan</span></a>
     </li>
 
+@endif
+
+@if ($pm->result > 0)
+    <li class="{{ Request::is('leaves/moderation*') ? 'active' : '' }}">
+        <a href="{!! route('leaves.moderation') !!}"><i class="fa fa-hotel"></i><span>Approval Cuti
+            <span class="pull-right-container">
+                <span class="label label-primary pull-right">{{$count->leave}}</span>
+            </span>
+        </span></a>
+    </li>
+
+    <li class="{{ Request::is('timesheets/moderation*') ? 'active' : '' }}">
+        <a href="{!! route('timesheets.moderation') !!}"><i class="fa fa-hotel"></i><span>Approval Timesheet
+            <span class="pull-right-container">
+                <span class="label label-primary pull-right">{{$count->timesheet}}</span>
+            </span>
+        </span></a>
+    </li>
 @endif
