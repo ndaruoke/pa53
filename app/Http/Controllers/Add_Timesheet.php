@@ -317,7 +317,8 @@ class Add_Timesheet extends Controller
                     'project_id' => $value['project'],
                     'selected' => isset($value['select']) ? 1 : 0,
                     'activity_detail' => $value['activity_other'],
-                    'approval_status' => $approval_status
+                    'approval_status' => $approval_status,
+                    'user_type' => $this->getUserType($value['project'])
                 ] + (isset($value['id']) ? array('id' => $value['id']) : array());
         }
         //return response()->json($timesheets);
@@ -332,7 +333,8 @@ class Add_Timesheet extends Controller
                         'keterangan' => $value['desc'],
                         'guid'=> $value['guid'],
                         'timesheet_id' => $id,
-                        'status' => $approval_status
+                        'status' => $approval_status,
+                    'user_type' => $this->getUserType($value['project_id'])
                         //   'project_id'=> $value['project'],
                     ];// + (isset($value['id']) ? array('id' => $value['id']) : array());
             }
@@ -348,7 +350,8 @@ class Add_Timesheet extends Controller
                         'lokasi' => $value['lokasi'],
                         'timesheet_id' => $id,
                         'guid'=> $value['guid'],
-                        'status' => $approval_status
+                        'status' => $approval_status,
+                    'user_type' => $this->getUserType($value['project_id'])
                         //   'project_id'=> $value['project'],
                     ] ;//+ (isset($value['id']) ? array('id' => $value['id']) : array());
             }
@@ -562,18 +565,14 @@ class Add_Timesheet extends Controller
 
     public function getColumns()
     {
-        $test = count(DB::select(DB::raw('SELECT * FROM `timesheet_details` WHERE timesheet_id=12 and selected=1')));
-        
-                $alert = DB::select(DB::raw("SELECT DATE_FORMAT(approval_histories.moderated_at, \"%d-%m-%Y %H:%i:%p\") as date,
-                CASE 
-                WHEN sequence_id=0 THEN 'PM'
-                WHEN sequence_id=1 THEN 'PMO'
-                WHEN sequence_id=2 THEN 'Finance'
-                END approval,
-                approval_histories.approval_id,users.name,approval_note FROM approval_histories,timesheets,timesheet_details,users where users.id = approval_histories.approval_id and timesheet_details.timesheet_id = timesheets.id and approval_histories.approval_status=2 or approval_histories.approval_status=5 and timesheet_details.timesheet_id = timesheet_details.id and timesheets.id = 7 group by approval_note"));
-               // return response()->json(json_decode(json_encode($alert), true));
-                
-               return Datatables::of(collect($alert))->make(true);
+        return $this->getUserType(16);
+         $userId = Auth::User()->id;
+        $user = DB::table('users')
+            ->where('id', $userId)
+           // ->where('pm_user_id', $userId)
+            ->first();
+            return response()->json($user->pjsvp);
+       return $timesheets;
     }
 
     public function getColor($status)
@@ -615,5 +614,29 @@ class Add_Timesheet extends Controller
 
     public function downloadFile($filename){
         return response()->download(public_path('upload/'.$filename));
+    }
+
+    public function getUserType($project_id)
+    {
+        //0 consultant
+        //1 pm
+        //2 pjsvp
+        $userId = Auth::User()->id;
+        $timesheets = DB::table('projects')
+            ->where('id', $project_id)
+            ->where('pm_user_id', $userId)
+            ->get();
+        $user = DB::table('users')
+            ->where('id', $userId)
+            ->first();
+        if(count($user) > 0) {
+            if($user->pjsvp == 1 )
+            return 2;
+        }
+        if (count($timesheets) > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }
