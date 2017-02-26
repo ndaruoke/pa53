@@ -202,6 +202,12 @@ return [
 		 * moderation approval
 		 */
 		Hootlex\Moderation\ModerationServiceProvider::class,
+
+        /**
+         * IDE Helper
+         */
+        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // Laravel IDE helper
+
     ],
 
     /*
