@@ -87,7 +87,7 @@ class Add_Timesheet extends Controller
         $timesheet_details = TimesheetDetail::where('timesheet_id', '=', $id)->get();
         $timesheet_insentif = TimesheetInsentif::where('timesheet_id', '=', $id)->get();
         $sum_timesheet_insentif = 0;
-        foreach ($timesheet_insentif as $g) {
+        foreach ($timesheet_insentif as $g) { 
             $sum_timesheet_insentif += $g->value;
         }
         //echo $sum;
