@@ -174,7 +174,7 @@ Route::get('report/timesheet', array('uses' => 'ReportController@timesheet',
 
 Route::get('/panduan', function () {
     return view('users.download');
-});
+})->name('panduan');;
 
 // Route::post('uploadimo', array('uses' => 'ImoController@postUploadFile',
 // 'as' => 'uploadimo'));

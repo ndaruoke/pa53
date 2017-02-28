@@ -154,7 +154,7 @@
     </li>
 
     <li class="{{ Request::is('panduan*') ? 'active' : '' }}">
-        <a href="panduan"><i class="fa fa-sticky-note-o"></i><span>Panduan</span></a>
+        <a href="{!! route('panduan') !!}"><i class="fa fa-sticky-note-o"></i><span>Panduan</span></a>
     </li>
 
 @endif
@@ -176,7 +176,7 @@
     </li>
 
     <li class="{{ Request::is('panduan*') ? 'active' : '' }}">
-        <a href="panduan"><i class="fa fa-sticky-note-o"></i><span>Panduan</span></a>
+        <a href="{!! route('panduan') !!}"><i class="fa fa-sticky-note-o"></i><span>Panduan</span></a>
     </li>
 
 @endif
