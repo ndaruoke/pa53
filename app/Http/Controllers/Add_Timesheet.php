@@ -439,7 +439,7 @@ class Add_Timesheet extends Controller
             $project = DB::table('projects')
                 ->where('id', '=', $ti->project_id)->first();
 
-            $approval = $this->getApprovalFromUserType($project, $departmentId, $td->user_type);
+            $approval = $this->getApprovalFromUserType($project, $departmentId, $ti->user_type);
 
             $insentifExist = $this->isApprovalHistoryWithGuidExist($ti->guid, 4, $userId, $approval);
 
@@ -456,7 +456,7 @@ class Add_Timesheet extends Controller
             $project = DB::table('projects')
                 ->where('id', '=', $tt->project_id)->first();
 
-            $approval = $this->getApprovalFromUserType($project, $departmentId, $td->user_type);
+            $approval = $this->getApprovalFromUserType($project, $departmentId, $tt->user_type);
 
             $transportExist = $this->isApprovalHistoryWithGuidExist($tt->guid, 3, $userId, $approval);
 
