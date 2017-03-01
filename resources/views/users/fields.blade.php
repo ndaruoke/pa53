@@ -67,8 +67,8 @@
 
 <!-- Position Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('PjsVP ', 'PjsVP :') !!}
-    {!! Form::select('pjsvp ', ['0'=>'No','1'=>'Yes'], null, ['class' => 'form-control select2']) !!}
+    {!! Form::label('PjsVP', 'PjsVP:') !!}
+    {!! Form::select('pjsvp', ['0'=>'No','1'=>'Yes'], null, ['class' => 'form-control select2']) !!}
 </div>
 
 <!-- Submit Field -->
