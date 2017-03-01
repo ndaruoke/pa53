@@ -392,44 +392,46 @@ class Add_Timesheet extends Controller
             ->get();
 
         $timesheetInsentif = DB::table('timesheet_insentif')
-            ->where('timesheet_id', '=', $timesheetId)
-            ->where('status','=',1)
-            //paid and approve finance in approval history not in
-            ->whereNotIn('guid', function($q){
-                $q->select('guid')->from('approval_histories')
-                ->where('sequence_id', '=', '2')
-                ->where('approval_status', '=', '1')
-                ->where('approval_status', '=', '4');
-            })
-            ->get();
-            $timesheetTransport = DB::table('timesheet_transport')
-            ->where('timesheet_id', '=', $timesheetId)
-            ->where('status','=',1)
-            ->whereNotIn('guid', function($q){
-                $q->select('guid')->from('approval_histories')
-                ->where('sequence_id', '=', '2')
-                ->where('approval_status', '=', '1')
-                ->where('approval_status', '=', '4');
-            })
-            ->get();
+        ->where('timesheet_id', '=', $timesheetId)
+        ->where('status','=',1)
+        //paid and approve finance in approval history not in
+        ->whereNotIn('guid', function($q){
+            $q->select('guid')->from('approval_histories')
+            ->where('sequence_id', '=', '2')
+            ->where('approval_status', '=', '1')
+            ->where('approval_status', '=', '4');
+        })
+        ->get();
 
-        $user = Auth::user()->id;
+        $timesheetTransport = DB::table('timesheet_transport')
+        ->where('timesheet_id', '=', $timesheetId)
+        ->where('status','=',1)
+        ->whereNotIn('guid', function($q){
+            $q->select('guid')->from('approval_histories')
+            ->where('sequence_id', '=', '2')
+            ->where('approval_status', '=', '1')
+            ->where('approval_status', '=', '4');
+        })
+        ->get();
+
+        $userId = Auth::user()->id;
+        $departmentId = Auth::user()->department;
 
 
         foreach ($timesheetDetail as $td) {
             $project = DB::table('projects')
                 ->where('id', '=', $td->project_id)->first();
 
-            $approval = User::where('id', '=', $project->pm_user_id)->first();
+            $approval = $this->getApprovalFromUserType($project, $departmentId, $td->user_type);
 
-            $detailExist = $this->isApprovalHistoryExist($td->id, 2, $user, $approval);
+            $detailExist = $this->isApprovalHistoryExist($td->id, 2, $userId, $approval);
 
             if (!is_null($detailExist)) {
                 if($detailExist->approval_status != 1) {
-                    $detail = $this->updateApprovalHistory($detailExist->id, $td->date, $td->activity, $td->id, 2, $user, $approval['id']);
+                    $detail = $this->updateApprovalHistory($detailExist->id, $td->date, $td->activity, $td->id, 2, $userId, $approval['id']);
                 }
             } else {
-                $detail = $this->insertApprovalHistory($td->date, $td->activity, $td->id, 2, $user, $approval['id']);
+                $detail = $this->insertApprovalHistory($td->date, $td->activity, $td->id, 2, $userId, $approval['id'], $td->user_type, $departmentId);
             }
         }
 
@@ -437,16 +439,16 @@ class Add_Timesheet extends Controller
             $project = DB::table('projects')
                 ->where('id', '=', $ti->project_id)->first();
 
-            $approval = User::where('id', '=', $project->pm_user_id)->first();
+            $approval = $this->getApprovalFromUserType($project, $departmentId, $td->user_type);
 
-            $insentifExist = $this->isApprovalHistoryWithGuidExist($ti->guid, 4, $user, $approval);
+            $insentifExist = $this->isApprovalHistoryWithGuidExist($ti->guid, 4, $userId, $approval);
 
             if (!is_null($insentifExist)) {
                 if($insentifExist->approval_status != 1) {
-                    $insentif = $this->updateApprovalHistory($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $user, $approval['id']);
+                    $insentif = $this->updateApprovalHistory($insentifExist->id, $ti->date, $ti->keterangan, $ti->id, 4, $userId, $approval['id']);
                 }
             } else {
-                $insentif = $this->insertApprovalHistoryWithGuid($ti->date, $ti->keterangan, $ti->guid, 4, $user, $approval['id']);
+                $insentif = $this->insertApprovalHistoryWithGuid($ti->date, $ti->keterangan, $ti->guid, 4, $userId, $approval['id'], $ti->user_type, $departmentId);
             }
         }
 
@@ -454,19 +456,39 @@ class Add_Timesheet extends Controller
             $project = DB::table('projects')
                 ->where('id', '=', $tt->project_id)->first();
 
-            $approval = User::where('id', '=', $project->pm_user_id)->first();
+            $approval = $this->getApprovalFromUserType($project, $departmentId, $td->user_type);
 
-            $transportExist = $this->isApprovalHistoryWithGuidExist($tt->guid, 3, $user, $approval);
+            $transportExist = $this->isApprovalHistoryWithGuidExist($tt->guid, 3, $userId, $approval);
 
             if (!is_null($transportExist)) {
                 if($transportExist->approval_status != 1) //if on progress than not updated
                 {
-                    $transport = $this->updateApprovalHistory($transportExist->id, $tt->date, $tt->keterangan, $td->id, 3, $user, $approval['id']);
+                    $transport = $this->updateApprovalHistory($transportExist->id, $tt->date, $tt->keterangan, $td->id, 3, $userId, $approval['id']);
                 }
             } else {
-                $transport = $this->insertApprovalHistoryWithGuid($tt->date, $tt->keterangan, $tt->guid, 3, $user, $approval['id']);
+                $transport = $this->insertApprovalHistoryWithGuid($tt->date, $tt->keterangan, $tt->guid, 3, $userId, $approval['id'],  $tt->user_type, $departmentId);
             }
         }
+    }
+
+    function getApprovalFromUserType($project, $departmentId, $userType)
+    {
+        //check if user type of transaction
+        if($userType == 0) //normal
+        {
+            $approval = User::where('id', '=', $project->pm_user_id)->first();
+        }
+        if($userType == 1) //pm
+        {
+            $approval = User::where('department', '=', $departmentId)->where('pjsvp', '=', 1)->first();
+        }
+        if($userType == 2) //pjs vp
+        {
+            $approval = Auth::user();
+        }
+
+        return $approval;
+
     }
 
     function isApprovalHistoryExist($transactionId, $transactionType, $user, $approval)
@@ -499,36 +521,129 @@ class Add_Timesheet extends Controller
         return $transactionExist;
     }
 
-    function insertApprovalHistory($date, $note, $transactionId, $transactionType, $user, $approvalId)
+    function insertApprovalHistory($date, $note, $transactionId, $transactionType, $user, $approvalId, $userType, $department)
+    {
+        //if pm -> pjsvp -> pmo -> finance
+        //if pjsvp -> autoapprove -> pmo -> finance
+        //if normal -> pm -> pmo -> finance
+
+
+        if($userType == 0) //common
+        {
+            $approval = $approvalId;
+            $approvalStatus = 0;
+            $sequence = 0;
+            $groupApproval = 0;
+
+            return $this->saveTransactionHistory($date, $note, $sequence, $transactionId, $transactionType, $approvalStatus, $user, $approval, $groupApproval);
+        }
+        if($userType == 1) //pm
+        {
+            $approvalUser = User::where('department', '=', $department)->where('pjsvp', '=', 1)->first();
+
+            $approval = $approvalUser['id'];
+            $approvalStatus = 0;
+            $sequence = 0;
+            $groupApproval = 0;
+
+            return $this->saveTransactionHistory($date, $note, $sequence, $transactionId, $transactionType, $approvalStatus, $user, $approval, $groupApproval);
+
+        }
+        if($userType == 2) //pjsvp
+        {
+            $approval = $user;
+            $approvalStatus = 1;
+            $sequence = 0;
+            $groupApproval = 0;
+
+            $this->saveTransactionHistory($date, $note, $sequence, $transactionId, $transactionType, $approvalStatus, $user, $approval, $groupApproval);
+
+            $sequenceNext = 1;
+            $approvalStatusNext = 0;
+            $approvalNext = 0;
+            $groupApprovalNext = 5; //PMO
+
+            return $this->saveTransactionHistory($date, $note, $sequenceNext, $transactionId, $transactionType, $approvalStatusNext, $user, $approvalNext, $groupApprovalNext);
+        }
+    }
+
+    function saveTransactionHistory($date, $note, $sequence, $transactionId, $transactionType, $approvalStatus, $user, $approval, $groupApproval)
     {
         $saveTransaction = DB::table('approval_histories')
             ->insertGetId(array(
                 'date' => $date,
                 'note' => $note,
-                'sequence_id' => 0,
+                'sequence_id' => $sequence,
                 'transaction_id' => $transactionId,
                 'transaction_type' => $transactionType,
-                'approval_status' => 0,
+                'approval_status' => $approvalStatus,
                 'user_id' => $user,
-                'approval_id' => $approvalId,
-                'group_approval_id' => 0
+                'approval_id' => $approval,
+                'group_approval_id' => $groupApproval
             ));
         return $saveTransaction;
     }
 
-    function insertApprovalHistoryWithGuid($date, $note, $guid, $transactionType, $user, $approvalId)
+    function insertApprovalHistoryWithGuid($date, $note, $guid, $transactionType, $user, $approvalId, $userType, $department)
+    {
+        //if pm -> pjsvp -> pmo -> finance
+        //if pjsvp -> autoapprove -> pmo -> finance
+        //if normal -> pm -> pmo -> finance
+
+
+        if($userType == 0) //common
+        {
+            $approval = $approvalId;
+            $approvalStatus = 0;
+            $sequence = 0;
+            $groupApproval = 0;
+
+            return $this->saveTransactionHistoryWithGuid($date, $note, $sequence, $guid, $transactionType, $approvalStatus, $user, $approval, $groupApproval);
+        }
+        if($userType == 1) //pm
+        {
+
+            $approvalUser = User::where('department', '=', $department)->where('pjsvp', '=', 1)->first();
+
+            $approval = $approvalUser['id'];
+            $approvalStatus = 0;
+            $sequence = 0;
+            $groupApproval = 0;
+
+            return $this->saveTransactionHistoryWithGuid($date, $note, $sequence, $guid, $transactionType, $approvalStatus, $user, $approval, $groupApproval);
+
+        }
+        if($userType == 2) //pjsvp
+        {
+            $approval = $user; //approve by pjs vp self
+            $approvalStatus = 1;
+            $sequence = 0;
+            $groupApproval = 0;
+
+            $this->saveTransactionHistory($date, $note, $sequence, $guid, $transactionType, $approvalStatus, $user, $approval, $groupApproval);
+
+            $sequenceNext = 1;
+            $approvalStatusNext = 0;
+            $approvalNext = 0;
+            $groupApprovalNext = 5; //PMO
+
+            return $this->saveTransactionHistoryWithGuid($date, $note, $sequenceNext, $guid, $transactionType, $approvalStatusNext, $user, $approvalNext, $groupApprovalNext);
+        }
+    }
+
+    function saveTransactionHistoryWithGuid($date, $note, $sequenceId, $guid, $transactionType, $approvalStatus, $user, $approval, $groupApproval)
     {
         $saveTransaction = DB::table('approval_histories')
             ->insertGetId(array(
                 'date' => $date,
                 'note' => $note,
-                'sequence_id' => 0,
+                'sequence_id' => $sequenceId,
                 'guid' => $guid,
                 'transaction_type' => $transactionType,
-                'approval_status' => 0,
+                'approval_status' => $approvalStatus,
                 'user_id' => $user,
-                'approval_id' => $approvalId,
-                'group_approval_id' => 0
+                'approval_id' => $approval,
+                'group_approval_id' => $groupApproval
             ));
         return $saveTransaction;
     }
