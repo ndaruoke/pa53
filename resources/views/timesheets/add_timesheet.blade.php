@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@inject('date', 'App\Services\DateService')
 
 @section('content')
 
@@ -11,32 +12,25 @@
                 <span class="input-group-btn">
                     <button type="reset" class="btn" disabled="disabled">Timesheet</button>
                 </span>
-            <select name="week" class="form-control select2" style="width: 40%;">
-                <option value="01">Week 1</option>
-                <option value="02">Week 2</option>
-                <option value="03">Week 3</option>
-                <option value="04">Week 4</option>
-            </select>
-            <select name="month" class="form-control select2" style="width: 40%;">
-                <option value="01">Januari</option>
-                <option value="02">Februari</option>
-                <option value="03">Maret</option>
-                <option value="04">April</option>
-                <option value="05">Mei</option>
-                <option value="06">Juni</option>
-                <option value="07">Juli</option>
-                <option value="08">Agustus</option>
-                <option value="09">September</option>
-                <option value="10">Oktober</option>
-                <option value="11">November</option>
-                <option value="12">Desember</option>
-            </select>
-            <select name="year" class="form-control select2" style="width: 20%;">
-                <option>2016</option>
-                <option selected="selected">2017</option>
-                <option>2018</option>
-                <option>2019</option>
-            </select>
+            {!! Form::select('week',
+              [1 => 'Week 1', 2 => 'Week 2', 3 => 'Week 3', 4 => 'Week 4'],
+              $date->year,
+              ['class' => 'form-control select2', 'id' => 'year', 'style'=>'width: 40%;'])
+            !!}
+
+            {!! Form::select('month',
+            [1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April',
+            5 => 'May', 6 => 'Juny', 7 => 'July', 8 => 'August',
+            9 => 'September', 10 => 'October', 11 => 'November', 12 => 'December'],
+            $date->month,
+            ['class' => 'form-control select2', 'id' => 'week', 'style'=>'width: 40%;'])
+            !!}
+
+            {!! Form::select('year',
+              [2017 => '2017', 2018 => '2018', 2019 => '2019', 2020 => '2020'],
+              $date->year,
+              ['class' => 'form-control select2', 'id' => 'year', 'style'=>'width: 20%;'])
+            !!}
             <span class="input-group-btn">
                     <button type="submit" class="btn btn-info btn-flat">Tampilkan</button>
                 </span>
