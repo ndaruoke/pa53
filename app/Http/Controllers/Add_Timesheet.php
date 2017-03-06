@@ -38,7 +38,8 @@ class Add_Timesheet extends Controller
     {
         $project = ProjectMember::join('projects','project_members.project_id','projects.id')
        ->where('user_id','=',Auth::user()->id)
-       ->where('projects.deleted_at','=',null)
+       //->where('projects.deleted_at','=',null)
+       ->whereRaw('projects.deleted_at is null')
        ->distinct()
        ->pluck('projects.project_name', 'project_id')->all();
         $nonlokal = array('DOMESTIK P. JAWA' => 'DOMESTIK P. JAWA', 'DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA', 'INTERNATIONAL' => 'INTERNATIONAL');
