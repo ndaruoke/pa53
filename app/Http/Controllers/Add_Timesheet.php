@@ -35,13 +35,8 @@ class Add_Timesheet extends Controller
     }
 
     public function index()
-    {
-        $project = ProjectMember::join('projects','project_members.project_id','projects.id')
-       ->where('user_id','=',Auth::user()->id)
-       //->where('projects.deleted_at','=',null)
-       ->whereRaw('projects.deleted_at is null')
-       ->distinct()
-       ->pluck('projects.project_name', 'project_id')->all();
+    {       
+        $project = collect(DB::select(DB::raw("SELECT DISTINCT projects.project_name, project_id FROM project_members join projects on project_members.project_id = projects.id where projects.deleted_at is null and user_id =".Auth::user()->id." ORDER BY `projects`.`project_name` ASC")))->pluck('projects.project_name', 'project_id');
         $nonlokal = array('DOMESTIK P. JAWA' => 'DOMESTIK P. JAWA', 'DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA', 'INTERNATIONAL' => 'INTERNATIONAL');
         $bantuan_perumahan = $this->getTunjanganPerumahan();
         return view('timesheets.add_timesheet', compact('project', 'nonlokal', 'bantuan_perumahan'));
@@ -88,9 +83,8 @@ class Add_Timesheet extends Controller
         $alert = DB::select(DB::raw("SELECT approval_note FROM approval_histories,timesheets,timesheet_details where timesheet_details.timesheet_id = timesheets.id and (approval_histories.approval_status=2 or approval_histories.approval_status=5) and approval_histories.transaction_id = timesheet_details.id and timesheets.id = ".$id." group by approval_histories.date"));
         $lokasi = ['' => ''] + Constant::where('category', 'Location')->orderBy('name', 'asc')->pluck('name', 'value')->all();
         $activity = ['' => ''] + Constant::where('category', 'Activity')->orderBy('name', 'asc')->pluck('name', 'value')->all();
-                $project = ProjectMember::join('projects','project_members.project_id','projects.id')
-       ->where('user_id','=',Auth::user()->id)
-       ->pluck('projects.project_name', 'project_id')->all();
+               $project = collect(DB::select(DB::raw("SELECT DISTINCT projects.project_name, project_id FROM project_members join projects on project_members.project_id = projects.id where projects.deleted_at is null and user_id =".Auth::user()->id." ORDER BY `projects`.`project_name` ASC")))->pluck('projects.project_name', 'project_id');
+
         $timesheet = Timesheet::where('id', '=', $id)->first();
         $timesheet_details = TimesheetDetail::where('timesheet_id', '=', $id)->get();
         $timesheet_insentif = TimesheetInsentif::where('timesheet_id', '=', $id)->get();
