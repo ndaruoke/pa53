@@ -226,6 +226,7 @@ class Add_Timesheet extends Controller
         $activity = ['' => ''] + Constant::where('category', 'Activity')->orderBy('name', 'asc')->pluck('name', 'value')->all();
         $project = ProjectMember::join('projects','project_members.project_id','projects.id')
        ->where('user_id','=',Auth::user()->id)
+       ->whereRaw('projects.deleted_at is null')
        ->pluck('projects.project_name', 'project_id')->all();
         $nonlokal = array('DOMESTIK P. JAWA' => 'DOMESTIK P. JAWA', 'DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA', 'INTERNATIONAL' => 'INTERNATIONAL');
         $bantuan_perumahan = $this->getTunjanganPerumahan();
