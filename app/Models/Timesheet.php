@@ -543,4 +543,163 @@ class Timesheet extends Model
 
         return $result;
     }
+
+
+
+    public static function getFinanceSummary($user_id, $project_id)
+    {
+       $array = DB::select(DB::raw("select * from (SELECT count(week)w,GROUP_CONCAT(timesheets.id) ts_id,periode,month, year,CONCAT(periode,'-',month,'-', year) as pr,week , user_id FROM timesheets group by user_id,pr) as tbl"));
+       $data = array();
+       $project = DB::table('projects')->where('id', $project_id)->first();
+       $user = User::where('id','=',$user_id)->first();
+        foreach ($array as $a ){
+            $total =  Timesheet::getTotalTimesheetValueByProjectsAndPeriod($a->ts_id,$project_id,$user_id);
+            if($a->w == 2 && $total > 0){
+                $data[] = array('timesheet_id'=>$a->ts_id,
+                                'period' => Timesheet::getPeriod($a->periode,$a->month,$a->year),
+                                'project_name'=>$project->project_name,
+                                'iwo_wbs_code'=>$project->code,
+                                'nama_konsultan'=>$user->name,
+                                'nama_bank'=>$user->bank,
+                                'cabang_bank'=>$user->cabang,
+                                'nama_rekening'=>$user->nama_rekening,
+                                'no_rekening'=>$user->rekening,
+                                'status'=> 'not validated',
+                                'total' => $total
+                
+                );
+            }
+        }
+
+        return $data;
+    }
+
+    public static function isPeriodValid($period)
+    {
+       $array = DB::select(DB::raw("select * from (SELECT count(week)w,GROUP_CONCAT(timesheets.id) ts_id,CONCAT(periode,'-',month,'-', year) as pr,week , user_id FROM timesheets group by user_id,pr) as tbl"));
+       $data = array();
+        foreach ($array as $a ){
+            if($a->w == 2){
+                $data[] = array('timesheet_id'=>$a->ts_id);
+            }
+        }
+
+        return $data;
+    }
+
+    public static function getTotalTransportByProject($timesheet_list,$project_id)
+    {
+       // echo $timesheet_list;
+        $list = explode(',', $timesheet_list);
+        $transport = DB::table('timesheet_transport')
+            ->join('timesheets', 'timesheet_transport.timesheet_id', 'timesheets.id')
+            ->where('timesheet_transport.project_id', '=', $project_id)//adcost
+            ->whereIn('timesheets.id', $list)
+            ->pluck('timesheet_transport.value')->sum();
+
+        return $transport;
+    }
+
+    public static function getTotalPerumahanByProject($timesheet_list,$project_id)
+    {
+       // echo $timesheet_list;
+        $list = explode(',', $timesheet_list);
+        $transport = DB::table('timesheet_insentif')
+            ->join('timesheets', 'timesheet_insentif.timesheet_id', 'timesheets.id')
+            ->where('timesheet_insentif.project_id', '=', $project_id)//adcost
+            ->whereIn('timesheets.id', $list)
+            ->pluck('timesheet_insentif.value')->sum();
+
+        return $transport;
+    }
+
+     public static function getTotalMandaysByProject($timesheet_list,$project_id,$userId)
+    {
+        $insentif = 0;
+
+        $mandays = DB::select(DB::raw("SELECT lokasi , count(*)total FROM `timesheet_details` 
+        JOIN timesheets ON timesheets.id = timesheet_details.timesheet_id
+        where timesheets.id in (".$timesheet_list.")
+        and timesheet_details.project_id = ".$project_id."
+        and selected = 1 group by lokasi"));
+
+        $tunjangans = DB::select(DB::raw('SELECT positions.name,tunjangans.name,lokal,non_lokal,luar_jawa,internasional 
+                      FROM tunjangan_positions,tunjangans,positions,users 
+                      WHERE tunjangans.name != "Bantuan Perumahan"
+                      and tunjangan_positions.tunjangan_id = tunjangans.id 
+                      and tunjangan_positions.position_id = positions.id 
+                      and users.position = positions.id and users.id = ' . $userId));
+
+        foreach ($tunjangans as $t) {
+            $arr['lokal'][$t->name] = $t->lokal;
+            $arr['non_lokal'][$t->name] = $t->non_lokal;
+            $arr['luar_jawa'][$t->name] = $t->luar_jawa;
+            $arr['internasional'][$t->name] = $t->internasional;
+        }
+
+        foreach ($mandays as $m)
+        {
+            if ($m->lokasi === "JABODETABEK") {
+                if (!empty ($arr)) {
+                    if ($arr['lokal'] != null) {
+                        foreach ($arr['lokal'] as $key => $value) {
+                            $insentif += $value * $m->total;
+                        }
+                    }
+                }
+
+            } else if ($m->lokasi === "DOMESTIK L. JAWA") {
+                if (!empty ($arr)) {
+                    if ($arr['luar_jawa'] != null) {
+                        foreach ($arr['luar_jawa'] as $key => $value) {
+                            $insentif += $value * $m->total;
+                        }
+                    }
+                }
+            } else if ($m->lokasi === "DOMESTIK P. JAWA") {
+                if (!empty ($arr)) {
+                    if ($arr['non_lokal'] != null) {
+                        foreach ($arr['non_lokal'] as $key => $value) {
+                            $insentif += $value * $m->total;
+                        }
+                    }
+                }
+            } else if ($m->lokasi === "INTERNATIONAL") {
+                if (!empty ($arr)) {
+                    if ($arr['internasional'] != null) {
+                        foreach ($arr['internasional'] as $key => $value) {
+                            $insentif += $value * $m->total;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $insentif;
+    }
+
+
+public static function getTotalTimesheetValueByProjectsAndPeriod($timesheet_list,$project_id,$userId)
+    {
+        $insentif = 0;
+        $insentif = Timesheet::getTotalTransportByProject($timesheet_list,$project_id)+Timesheet::getTotalPerumahanByProject($timesheet_list,$project_id)+Timesheet::getTotalMandaysByProject($timesheet_list,$project_id,$userId);
+        return $insentif;
+    }
+
+public static function getPeriod($period,$month,$year)
+    {
+    //$datetocheck = "2012-03-01";
+    $datetocheck = $year.'-'.$month.'-01';
+    $lastday = date('t',strtotime($datetocheck));
+    if($period==1){
+        $range = "1/".$month.'/'.$year.' - '."15/".$month.'/'.$year;
+    } else {
+        $range = "16/".$month.'/'.$year.' - '.$lastday."/".$month.'/'.$year;
+    }
+        return $range;
+    }
+
+
+
+
 }

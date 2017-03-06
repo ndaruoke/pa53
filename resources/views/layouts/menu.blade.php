@@ -149,7 +149,7 @@
         <ul class="treeview-menu">
             <li class="{{ Request::is('report*timesheet') ? 'active' : '' }}"><a href="{!! route('report.timesheet') !!}"><i class="fa fa-sticky-note-o"></i><span>Report Timesheet</span></a></li>
             <li class="{{ Request::is('report*mapping') ? 'active' : '' }}"><a href="{!! route('report.mapping') !!}"><i class="fa fa-sticky-note-o"></i><span>Report Mapping</span></a></li>
-
+<li class="{{ Request::is('report*finance') ? 'active' : '' }}"><a href="{!! route('report.finance') !!}"><i class="fa fa-sticky-note-o"></i><span>Report Finance</span></a></li>
         </ul>
     </li>
 

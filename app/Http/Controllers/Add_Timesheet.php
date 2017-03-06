@@ -38,6 +38,7 @@ class Add_Timesheet extends Controller
     {
         $project = ProjectMember::join('projects','project_members.project_id','projects.id')
        ->where('user_id','=',Auth::user()->id)
+       ->distinct()
        ->pluck('projects.project_name', 'project_id')->all();
         $nonlokal = array('DOMESTIK P. JAWA' => 'DOMESTIK P. JAWA', 'DOMESTIK L. JAWA' => 'DOMESTIK L. JAWA', 'INTERNATIONAL' => 'INTERNATIONAL');
         $bantuan_perumahan = $this->getTunjanganPerumahan();
@@ -687,12 +688,16 @@ class Add_Timesheet extends Controller
 
     public function getColumns()
     {
-       $project = ProjectMember::join('projects','project_members.project_id','projects.id')
-       ->where('user_id','=',Auth::user()->id)
-       ->pluck('projects.project_name', 'project_id');
-       //->get();
-   //     $project = collect($project)->pluck('id','project_name');
-        return response()->json( $project);
+       //getFinanceSummary($user_id, $project_id)
+       return response()->json(Timesheet::getFinanceSummary(1,1));
+       return response()->json(DB::table('projects')->where('id', 1)->first());
+       
+        $member = DB::table('project_members')
+        ->join('users', 'users.id', 'project_members.user_id')
+        ->where('project_id','=',3)
+        ->pluck('users.name','users.id');
+         return response()->json($member);
+          //return response()->json(Timesheet::getFinanceSummary(1,1));
 
 //         SELECT * FROM `project_members` join projects
 // on project_member.user_id = projects.id

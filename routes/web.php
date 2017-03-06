@@ -172,9 +172,16 @@ Route::get('report/timesheet', array('uses' => 'ReportController@timesheet',
     Route::get('report/mapping', array('uses' => 'ReportMappingController@index',
     'as' => 'report.mapping'));
 
+Route::get('report/finance', array('uses' => 'ReportFinanceController@index',
+    'as' => 'report.finance'));
+
+    Route::get('project_member/{id}', array('uses' => 'ReportFinanceController@getProjectMemberJson',
+'as' => 'project_member'));
+
+    
 Route::get('/panduan', function () {
     return view('users.download');
-})->name('panduan');;
+})->name('panduan');
 
 // Route::post('uploadimo', array('uses' => 'ImoController@postUploadFile',
 // 'as' => 'uploadimo'));
