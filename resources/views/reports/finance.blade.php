@@ -104,7 +104,7 @@
 
 $(document).ready(function() {
     var select2Options = { width: 'resolve' };
-    var apiUrl = 'project_member/:parentId:';
+    var apiUrl = '{{ URL::to() }}/project_member/:parentId:';
     
     $('select').select2(select2Options);                 
     var cascadLoading = new Select2Cascade($('#type'), $('#subtype'), apiUrl, select2Options);
