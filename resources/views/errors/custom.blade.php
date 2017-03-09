@@ -41,9 +41,9 @@
 <div class="container">
     <div class="content">
         <div class="title">{{$title}}</div>
-        <!--@if(!empty($url))
+        @if(!empty($url))
             <a href="{{ $url }}">Back to Login</a>
-        @endif-->
+        @endif
     </div>
 </div>
 </body>
