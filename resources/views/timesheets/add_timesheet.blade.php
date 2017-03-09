@@ -150,7 +150,7 @@
                                 <td class="col-md-1"><input type="text" name="timesheet[{{$row}}][end]"
                                                             class="form-control timepicker" value="17:00"></td>
                                 <td>
-                                    {!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, null, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi']) !!}
+                                    {!! Form::select('timesheet['.$row.'][lokasi]', [''=>'']+$lokasi, isWeekend($date) ? 'UNCLAIMABLE' : null, ['class' => 'form-control select2','id'=>'timesheet'.$row.'lokasi']) !!}
                                 </td>
                                 <td class="col-md-2">
                                     {!! Form::select('timesheet['.$row.'][activity]', [''=>'']+$activity, isWeekend($date) ? 'LIBUR' : null , ['class' => 'form-control select2','id'=>'timesheet'.$row.'activity','onchange'=>'onChangeActivity('.$row.')']) !!}
