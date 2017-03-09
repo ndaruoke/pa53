@@ -24,6 +24,8 @@ class UserController extends AppBaseController
     public function __construct(UserRepository $userRepo)
     {
         $this->middleware('auth');
+        $this->middleware('App\Http\Middleware\AdminMiddleware', ['only' => ['index', 'show']]);
+        $this->middleware('App\Http\Middleware\PMOMiddleware', ['only' => ['index', 'show']]);
         $this->userRepository = $userRepo;
     }
 
@@ -271,10 +273,12 @@ class UserController extends AppBaseController
                 return redirect()->back();
             }
             $request['password'] = Hash::make($request['password']);
-            $user = $this->userRepository->update($request->all(), $id);
         }
-
-
+        else{
+            $request['password'] = $user['password'];
+        }
+        
+        $user = $this->userRepository->update($request->all(), $id);
         Flash::success('User updated successfully.');
 
         return redirect(route('home'));
