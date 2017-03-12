@@ -112,7 +112,7 @@ class SendTimesheetHRReportEmail extends Command
 
         // send mail
         $mail = Mail::to($user['email'])
-            ->cc('ndaruoke@yahoo.com')
+            ->cc('oky.gustiawan@metrasys.co.id')
             ->send(new TimesheetSubmission($user, $path['full']));
 
         $this->info('Executed');
